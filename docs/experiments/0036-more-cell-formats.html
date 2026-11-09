@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0036: More cell formats · iWork file format specification</title>
+<meta name="description" content="iWork file format specification">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
+<div class="layout">
+<nav class="side" aria-label="Contents"><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="../guides/anatomy.html">Reading a Pages document</a></li><li><a href="../guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="../guides/writing.html">Writing a document</a></li><li><a href="../guides/samples.html">Sample files</a></li><li class="group">Specification</li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2–5. Text, styles, objects, layout</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li class="group">Evidence</li><li><a href="index.html">All experiments</a></li></ul></nav>
+<main>
+<h1 id="0036-more-cell-formats">0036: More cell formats<a class="anchor" href="#0036-more-cell-formats" aria-label="Link to this section">#</a></h1>
+<p><strong>Status:</strong> run</p>
+<p><a href="0031-cell-kinds.html">0031</a> decoded number, currency, percent, date and formula cells. Its boolean became the number 1, because AppleScript set the value without a checkbox format. This experiment sets six more formats explicitly through Numbers' AppleScript: checkbox, rating, fraction, scientific, text and duration.</p>
+<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Numbers</td><td>15.4 (build <code>M15.4-7051.0.79-2</code>), with a Norwegian (nb) user interface</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-09</td></tr><tr><td>Baseline</td><td>Experiment <a href="0031-cell-kinds.html">0031</a></td></tr></tbody></table></div>
+<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section">#</a></h2>
+<pre class="lang-bash"><code>mkdir -p samples/0036
+osascript recipes/0036-numbers-formats.applescript &quot;$PWD/samples/0036/formats.numbers&quot;</code></pre>
+<p>The recipe sets each cell's <code>format</code> first, then its value. Numbers' dictionary calls the star rating format <code>rating</code>. Reading the cells back through AppleScript gave:</p>
+<div class="table"><table><thead><tr><th>Cell</th><th>Format set</th><th>Value set</th><th>Shown</th><th>Format read back</th></tr></thead><tbody><tr><td>B2</td><td>checkbox</td><td>true</td><td><code>SANN</code> (true)</td><td>checkbox</td></tr><tr><td>C2</td><td>rating</td><td>3</td><td><code>3 ★</code></td><td>rating</td></tr><tr><td>D2</td><td>fraction</td><td>0.5</td><td><code>1/2</code></td><td>fraction</td></tr><tr><td>E2</td><td>scientific</td><td>1234.5</td><td><code>1,2345E+03</code></td><td>scientific</td></tr><tr><td>F2</td><td>text</td><td>"042"</td><td><code>042</code></td><td>text</td></tr><tr><td>G2</td><td>duration</td><td>90</td><td><code>90</code></td><td>automatic</td></tr></tbody></table></div>
+<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section">#</a></h2>
+<h3 id="the-cells">The cells<a class="anchor" href="#the-cells" aria-label="Link to this section">#</a></h3>
+<p>Cells split by the byte offsets in tile field 5.7, as in 0031. Bytes 0–1 are the version and type, bytes 6–7 a 16-bit value, and bytes 8–11 the flags:</p>
+<div class="table"><table><thead><tr><th>Cell</th><th>Type</th><th>Bytes 6–7</th><th>Flags</th><th>Value</th><th>Keys, in order</th></tr></thead><tbody><tr><td>B2</td><td>6</td><td>0x0020</td><td>0x00041402</td><td>double 1.0</td><td>1, 6, 1</td></tr><tr><td>C2</td><td>2</td><td>0x0001</td><td>0x00003401</td><td>decimal128 3</td><td>2, 1, 2</td></tr><tr><td>D2</td><td>2</td><td>0x0001</td><td>0x00003001</td><td>decimal128 5 × 10⁻¹</td><td>1, 3</td></tr><tr><td>E2</td><td>2</td><td>0x0001</td><td>0x00003001</td><td>decimal128 12345 × 10⁻¹</td><td>1, 4</td></tr><tr><td>F2</td><td>3</td><td>0x0080</td><td>0x00021008</td><td>—</td><td>1, 5, 5</td></tr><tr><td>G2</td><td>2</td><td>0x0004</td><td>0x00013001</td><td>decimal128 90</td><td>1, 7, 6</td></tr></tbody></table></div>
+<h3 id="the-format-list">The format list<a class="anchor" href="#the-format-list" aria-label="Link to this section">#</a></h3>
+<p>The table model's format list (<code>DataList-904541.iwa</code>, list type 2) has seven entries. Their field 1:</p>
+<div class="table"><table><thead><tr><th>Key</th><th>Field 1</th><th>Other fields</th></tr></thead><tbody><tr><td>1</td><td>263</td><td></td></tr><tr><td>2</td><td>267</td><td></td></tr><tr><td>3</td><td>262</td><td>11: −3</td></tr><tr><td>4</td><td>259</td><td>2: 253</td></tr><tr><td>5</td><td>260</td><td></td></tr><tr><td>6</td><td>268</td><td>7: 1, 15: 4, 16: 16, 40: 1</td></tr><tr><td>7</td><td>256</td><td>2: 253</td></tr></tbody></table></div>
+<h3 id="a-list-of-controls">A list of controls<a class="anchor" href="#a-list-of-controls" aria-label="Link to this section">#</a></h3>
+<p><code>DataList-904554.iwa</code> (list type 12), empty in 0031, has two entries:</p>
+<pre><code>key 1: { 1: 8 }
+key 2: { 1: 6, 3: 0.0, 4: 5.0, 5: 1.0 }</code></pre>
+<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section">#</a></h2>
+<p>Taking each cell's keys in order of its flag bits, every key but one fits a list:</p>
+<div class="table"><table><thead><tr><th>Flag bit</th><th>Followed by</th></tr></thead><tbody><tr><td>0x00002</td><td>A double. A checkbox's value: 1.0 for true.</td></tr><tr><td>0x00008</td><td>A string key (<a href="0021-table-cells.html">0021</a>)</td></tr><tr><td>0x00400</td><td>A key into the control list (list type 12): B2 → 1 (the checkbox), C2 → 2 (a rating from 0 to 5 in steps of 1)</td></tr><tr><td>0x01000</td><td>Still unidentified: 6, 1, 1, 1, 5 and 1 here</td></tr><tr><td>0x02000</td><td>Number format: C2 → 2 (rating), D2 → 3 (fraction), E2 → 4 (scientific), G2 → 7 (number)</td></tr><tr><td>0x10000</td><td>Duration format: G2 → 6</td></tr><tr><td>0x20000</td><td>Text format: F2 → 5</td></tr><tr><td>0x40000</td><td>Boolean format: B2 → 1 (checkbox)</td></tr></tbody></table></div>
+<p>That adds to the format kinds of 0031 (256 number, 257 currency, 258 percent, 261 date): 259 scientific, 260 text, 262 fraction, 263 checkbox, 267 rating and 268 duration. Cell type 6 is a boolean.</p>
+<p>G2 carries a duration format key, but Numbers reported its format as automatic and showed <code>90</code>. A cell can keep formats for several kinds side by side, here a number format (key 7) and a duration format (key 6). Which one applies probably depends on the value's kind, so the number format won for a plain number.</p>
+<p>Bytes 6–7 differ by format: 0x0020 for the checkbox, 0x0080 for text, 0x0004 for the duration and 0x0001 for the others. In 0031 they were 0x0802 for currency and 0x0001 for percent. They may record which format the user chose, but that isn't established.</p>
+<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section">#</a></h2>
+<p><em>Likely</em>: the flag bits and format kinds listed above, cell type 6 as a boolean, and list type 12 as cell controls.</p>
+<p><em>Unknown</em>:</p>
+<ul><li>Flag bit 0x1000 and its list.</li><li>Bytes 6–7.</li><li>Why the duration format wasn't applied.</li></ul>
+<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Last built from <a href="https://github.com/alehel/iwork-format">alehel/iwork-format</a>.</p></footer>
+</main>
+
+</div>
+</body>
+</html>

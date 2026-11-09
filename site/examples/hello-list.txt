@@ -1,0 +1,15 @@
+hello.pages: ZIP file, 13 parts
+        size       stored  name
+          23           23  Index/AnnotationAuthorStorage-1732609.iwa
+         542          542  Index/CalculationEngine-1732610.iwa
+        7690         7690  Index/Document.iwa
+          77           77  Index/DocumentMetadata.iwa
+       45708        45708  Index/DocumentStylesheet.iwa
+       16883        16883  Index/Metadata.iwa
+         723          723  Index/ViewState.iwa
+         271          271  Metadata/BuildVersionHistory.plist
+          36           36  Metadata/DocumentIdentifier
+         525          525  Metadata/Properties.plist
+         838          838  preview-micro.jpg
+        1479         1479  preview-web.jpg
+       13885        13885  preview.jpg

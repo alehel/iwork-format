@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0218: An oval · iWork file format specification</title>
+<meta name="description" content="iWork file format specification">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
+<div class="layout">
+<nav class="side" aria-label="Contents"><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="../guides/anatomy.html">Reading a Pages document</a></li><li><a href="../guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="../guides/writing.html">Writing a document</a></li><li><a href="../guides/samples.html">Sample files</a></li><li class="group">Specification</li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2–5. Text, styles, objects, layout</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li class="group">Evidence</li><li><a href="index.html">All experiments</a></li></ul></nav>
+<main>
+<h1 id="0218-an-oval">0218: An oval<a class="anchor" href="#0218-an-oval" aria-label="Link to this section">#</a></h1>
+<p><strong>Status:</strong> run</p>
+<p><a href="0217-editable-shape.html">0217</a> read a rectangle's outline as a path of move, line and close elements. This experiment inserts an oval, to see how curves are stored.</p>
+<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Pages</td><td>15.4 (build <code>M15.4-7051.0.79-2</code>), in Norwegian</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-09</td></tr><tr><td>Baseline</td><td>Experiment <a href="0217-editable-shape.html">0217</a></td></tr></tbody></table></div>
+<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section">#</a></h2>
+<ol><li>Make a document with the body text <code>One</code>: ``<code>bash osascript -e &#x27;tell application &quot;Pages&quot; to set body text of (make new document) to &quot;One&quot;&#x27; </code><code></code></li><li>Choose Insert → Shape → Oval (<em>Sett inn → Figur → Oval</em>).</li><li>Save it as <code>samples/0218/oval.pages</code>.</li></ol>
+<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section">#</a></h2>
+<p>Inserted from the menu, the oval goes into the text. The body becomes <code>One</code> and U+FFFC, and the shape's field 1.2 names the body (1732539). It is 100 × 100.</p>
+<p>Its outline is a field-1.3.5 path with a natural size of 100 × 100 and seven elements, of kinds 1, 4, 4, 4, 4, 5, 1. The first two:</p>
+<pre><code>{ 1: 1, 2: (85.355, 14.645) }                          ← move to
+{ 1: 4, 2: (104.882, 34.171), 2: (104.882, 65.829),
+        2: (85.355, 85.355) }                          ← curve to</code></pre>
+<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section">#</a></h2>
+<p>Element kind 4 is a cubic Bézier curve with three points: two control points and the end point. The oval is four such curves. It starts at 45° on the circle, (50 + 50 cos 45°, 50 − 50 sin 45°), not at a quadrant point. Its control points lie outside the 100 × 100 box. As in 0217, the path ends with a close (5) and a final move (1) back to the start.</p>
+<p>Shapes inserted from the menu sit in the text, like a table inserted from the menu (<a href="0052-floating-table.html">0052</a>).</p>
+<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section">#</a></h2>
+<p><em>Likely</em>: path element kind 4 is a cubic curve with its two control points before its end point.</p>
+<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Last built from <a href="https://github.com/alehel/iwork-format">alehel/iwork-format</a>.</p></footer>
+</main>
+
+</div>
+</body>
+</html>

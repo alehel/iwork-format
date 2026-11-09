@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0016: Header and footer · iWork file format specification</title>
+<meta name="description" content="iWork file format specification">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
+<div class="layout">
+<nav class="side" aria-label="Contents"><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="../guides/anatomy.html">Reading a Pages document</a></li><li><a href="../guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="../guides/writing.html">Writing a document</a></li><li><a href="../guides/samples.html">Sample files</a></li><li class="group">Specification</li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2–5. Text, styles, objects, layout</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li class="group">Evidence</li><li><a href="index.html">All experiments</a></li></ul></nav>
+<main>
+<h1 id="0016-header-and-footer">0016: Header and footer<a class="anchor" href="#0016-header-and-footer" aria-label="Link to this section">#</a></h1>
+<p><strong>Status:</strong> run</p>
+<p><a href="0003-non-ascii-word.html">0003</a> found 18 type-2001 records besides the body, and <a href="0004-larger-word.html">0004</a> found that they use the paragraph style for headers and footers. This experiment types into a header and a footer to see which records the text goes to, and how those records are tied to the page.</p>
+<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Pages</td><td>15.4 (build <code>M15.4-7051.0.79-2</code>), with a Norwegian (nb) user interface and default autocorrection</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-09</td></tr><tr><td>Baseline</td><td>Experiment <a href="0002-one-word.html">0002</a></td></tr></tbody></table></div>
+<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section">#</a></h2>
+<ol><li>AppleScript makes a new document and sets its body text to <code>body</code>.</li><li>In the Pages window, choose View → Show Layout (<em>Vis → Vis layout</em>). The header and footer then appear as three boxes each, left, centre and right. Without it, clicks in the header area did nothing.</li><li>Click the left header box and type <code>head</code>. Click the right footer box and type <code>foot</code>.</li><li>Pages capitalised <code>head</code>, and offered <code>Foot</code> in a suggestion that blocked AppleScript until it was dismissed with its close button (as in <a href="0014-lists.html">0014</a>).</li><li>AppleScript saves the document as <code>header.pages</code>.</li></ol>
+<p>The Document tab of the sidebar showed the header and footer turned on, 1.25 cm and 1.5 cm from the edges. These are the defaults of the Blank template.</p>
+<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section">#</a></h2>
+<h3 id="where-the-text-went">Where the text went<a class="anchor" href="#where-the-text-went" aria-label="Link to this section">#</a></h3>
+<p>Of the 19 type-2001 records in <code>Document.iwa</code>, three have a field 3:</p>
+<pre><code>1732539  &quot;body&quot;    (the body, as since 0002)
+1732234  &quot;Head&quot;
+1732492  &quot;foot&quot;</code></pre>
+<p>Both header and footer records use the header-and-footer paragraph style (1731520), as all 18 did in 0004.</p>
+<h3 id="header-and-footer-sets">Header and footer sets<a class="anchor" href="#header-and-footer-sets" aria-label="Link to this section">#</a></h3>
+<p>One record refers to both: object 1732544, type 10143.</p>
+<pre><code>1: { 1: 1732234 }      ← &quot;Head&quot;
+1: { 1: 1732385 }
+1: { 1: 1732428 }
+2: { 1: 1732501 }
+2: { 1: 1732440 }
+2: { 1: 1732492 }      ← &quot;foot&quot;</code></pre>
+<p><code>Document.iwa</code> has three records of type 10143: 1732380, 1732482 and 1732544. Each lists three type-2001 records in field 1 and three in field 2, which together are the 18 non-body records.</p>
+<h3 id="the-section">The section<a class="anchor" href="#the-section" aria-label="Link to this section">#</a></h3>
+<p>All three type-10143 records are named by object 1732296, type 10011. That's the object that the body's field 17 has pointed at since 0002:</p>
+<pre><code>17: varint 1
+18: varint 0
+19: varint 0
+20: varint 0
+21: varint 0
+22: varint 1
+23: { 1: 1732380 }
+24: { 1: 1732482 }
+25: { 1: 1732544 }     ← the set the text went into
+26: text &quot;Blank&quot;
+28: varint 0
+29: { 1: 1732233 }</code></pre>
+<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section">#</a></h2>
+<p>A header or footer is a text record of type 2001, like the body. The page links to it through two levels:</p>
+<ul><li>A type-10011 record is probably a section. The body's field-17 run table points ranges of the body at it.</li><li>The section's fields 23, 24 and 25 each name a set of headers and footers (type 10143). Field 1 of a set is the header and field 2 the footer, each as three text records in the order left, centre, right.</li></ul>
+<p>The set that a plain document uses is the one in field 25. The other two are probably the variants Pages offers for a different first page and for left and right pages. Fields 18 to 21 of the section, all 0 here, are candidates for the switches that turn those variants on. Field 26 is the name of the template the section came from.</p>
+<p>A reader that wants the visible header of a simple document follows the body's field 17 to the section, then field 25 to a set, then field 1 to the three text records.</p>
+<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section">#</a></h2>
+<p><em>Likely</em>:</p>
+<ul><li>Headers and footers are type-2001 records listed by type-10143 sets, with field 1 for the header and field 2 for the footer, each in left, centre, right order.</li><li>The section (type 10011) names three such sets, and a plain document uses the one in field 25.</li><li>Body field 17 holds section runs.</li></ul>
+<p><em>Unknown</em>:</p>
+<ul><li>Which pages the sets in fields 23 and 24 belong to, and what fields 17–22, 28 and 29 of the section mean. Follow-up: turn on a different first page (Document tab → Section → <em>Ulik første side</em>, "different first page"), type in the first page's header, and see whether field 23 or 24 is used and which flag changes.</li></ul>
+<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Last built from <a href="https://github.com/alehel/iwork-format">alehel/iwork-format</a>.</p></footer>
+</main>
+
+</div>
+</body>
+</html>

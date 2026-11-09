@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0244: A media placeholder · iWork file format specification</title>
+<meta name="description" content="iWork file format specification">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
+<div class="layout">
+<nav class="side" aria-label="Contents"><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="../guides/anatomy.html">Reading a Pages document</a></li><li><a href="../guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="../guides/writing.html">Writing a document</a></li><li><a href="../guides/samples.html">Sample files</a></li><li class="group">Specification</li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2–5. Text, styles, objects, layout</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li class="group">Evidence</li><li><a href="index.html">All experiments</a></li></ul></nav>
+<main>
+<h1 id="0244-a-media-placeholder">0244: A media placeholder<a class="anchor" href="#0244-a-media-placeholder" aria-label="Link to this section">#</a></h1>
+<p><strong>Status:</strong> run</p>
+<p>Templates use images as placeholders that the user replaces by dropping in a picture. Pages can turn any image into one (Format → Advanced → Define as Media Placeholder). This experiment does that, to see how a placeholder image differs from an ordinary one.</p>
+<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Pages</td><td>15.4 (build <code>M15.4-7051.0.79-2</code>), in Norwegian</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-09</td></tr><tr><td>Baseline</td><td><code>samples/0228/caption.pages</code>, the same image, with a caption</td></tr></tbody></table></div>
+<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section">#</a></h2>
+<pre class="lang-bash"><code>mkdir -p samples/0244
+osascript recipes/0244-pages-image.applescript &quot;$PWD/samples/0023/red-8x4.png&quot;</code></pre>
+<p>Then choose Format → Advanced → Define as Media Placeholder (<em>Format → Avansert → Definer som medieplassholder</em>) and save as <code>samples/0244/media-placeholder.pages</code>.</p>
+<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section">#</a></h2>
+<p>Apart from IDs and the caption, the image record (type 3005) differs from the baseline in one top-level field:</p>
+<pre><code>7: 0 → 1</code></pre>
+<p>The image data is still stored, and the image's drawable is unchanged.</p>
+<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section">#</a></h2>
+<p>Field 7 of an image record is 1 when the image is a media placeholder. The picture it holds is shown until the user replaces it, so a reader can draw it like any image. Only an editor needs the flag.</p>
+<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section">#</a></h2>
+<p><em>Likely</em>: image field 7 marks a media placeholder.</p>
+<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Last built from <a href="https://github.com/alehel/iwork-format">alehel/iwork-format</a>.</p></footer>
+</main>
+
+</div>
+</body>
+</html>

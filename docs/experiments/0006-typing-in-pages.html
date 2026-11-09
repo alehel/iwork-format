@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0006: Typing in Pages · iWork file format specification</title>
+<meta name="description" content="iWork file format specification">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
+<div class="layout">
+<nav class="side" aria-label="Contents"><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="../guides/anatomy.html">Reading a Pages document</a></li><li><a href="../guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="../guides/writing.html">Writing a document</a></li><li><a href="../guides/samples.html">Sample files</a></li><li class="group">Specification</li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2–5. Text, styles, objects, layout</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li class="group">Evidence</li><li><a href="index.html">All experiments</a></li></ul></nav>
+<main>
+<h1 id="0006-typing-in-pages">0006: Typing in Pages<a class="anchor" href="#0006-typing-in-pages" aria-label="Link to this section">#</a></h1>
+<p><strong>Status:</strong> run</p>
+<p>Experiment <a href="0005-paragraphs.html">0005</a> set paragraphs through AppleScript, so it couldn't say what Pages writes when someone types. This experiment types in the Pages window instead. It covers pressing Return, pressing Shift-Return, and giving the second paragraph a different paragraph style.</p>
+<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Pages</td><td>15.4 (build <code>M15.4-7051.0.79-2</code>), with a Norwegian (nb) user interface</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-09</td></tr><tr><td>Baseline</td><td>Experiment <a href="0005-paragraphs.html">0005</a>, <code>two-lf.pages</code></td></tr></tbody></table></div>
+<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section">#</a></h2>
+<p>This experiment has no AppleScript recipe, because its point is the steps AppleScript can't take. Each document was made like this:</p>
+<ol><li>Make a new document with AppleScript: <code>tell application &quot;Pages&quot; to make new document</code>.</li><li>In the Pages window, click in the body and type the keys below.</li><li>Save it with AppleScript, <code>save front document in POSIX file &quot;…&quot;</code>, then close it.</li></ol>
+<div class="table"><table><thead><tr><th>File</th><th>Keys typed</th><th>Then</th></tr></thead><tbody><tr><td><code>return-ui.pages</code></td><td><code>one</code>, Return, <code>two</code></td><td>—</td></tr><tr><td><code>line-break-ui.pages</code></td><td><code>one</code>, Shift-Return, <code>two</code></td><td>—</td></tr><tr><td><code>heading-ui.pages</code></td><td><code>one</code>, Return, <code>two</code></td><td>With the cursor in the second paragraph, choose <em>Overskrift</em> (Heading) in the paragraph style menu of the Format sidebar</td></tr></tbody></table></div>
+<p>Pages capitalised some of the words as they were typed, as its autocorrection does at the start of a sentence. The text that ended up in each file is shown below.</p>
+<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section">#</a></h2>
+<h3 id="return-and-shift-return">Return and Shift-Return<a class="anchor" href="#return-and-shift-return" aria-label="Link to this section">#</a></h3>
+<p>The body's type-2001 record (object 1732539):</p>
+<pre><code>return-ui.pages      3: text (7 bytes) &quot;One\nTwo&quot;
+line-break-ui.pages  3: text (9 bytes) &quot;One\u{2028}two&quot;     4f 6e 65 e2 80 a8 74 77 6f</code></pre>
+<p>Return wrote U+000A (line feed). Shift-Return wrote U+2028 (line separator), which is three bytes in UTF-8.</p>
+<p>With Return, the paragraph-style runs (field 5) have a second entry at 4, as in 0005. With Shift-Return, field 5 keeps its single entry at 0.</p>
+<h3 id="a-second-paragraph-style">A second paragraph style<a class="anchor" href="#a-second-paragraph-style" aria-label="Link to this section">#</a></h3>
+<p>In <code>heading-ui.pages</code>, field 5 is:</p>
+<pre><code>5: message (20 bytes)
+  1: message (8 bytes)
+    1: varint 0
+    2: message (4 bytes)
+      1: varint 1731511      ← &quot;Brødtekst&quot;, text-20-paragraphstyle-Body 1
+  1: message (8 bytes)
+    1: varint 4
+    2: message (4 bytes)
+      1: varint 1731502      ← &quot;Overskrift&quot;, text-11-paragraphstyle-Heading 1</code></pre>
+<p>Object 1731502 is of type 2022 in <code>DocumentStylesheet.iwa</code>. Choosing the style created no new object, and no record other than 2001 changed apart from save-to-save changes. The list-style runs (field 7) keep their single entry.</p>
+<h3 id="two-run-tables-that-typing-adds">Two run tables that typing adds<a class="anchor" href="#two-run-tables-that-typing-adds" aria-label="Link to this section">#</a></h3>
+<p>Every document typed in the window has two fields in record 2001 that no document set through AppleScript has had. From <code>return-ui.pages</code>:</p>
+<pre><code>19: message (8 bytes)
+  1: message (6 bytes)
+    1: varint 0
+    2: text (2 bytes) &quot;nb&quot;
+20: message (88 bytes)
+  1: message (40 bytes)
+    1: varint 0
+    2: text (36 bytes) &quot;40F91214-FB92-4870-9744-CA22B49B4EB1&quot;
+  1: message (2 bytes)
+    1: varint 3
+  1: message (40 bytes)
+    1: varint 4
+    2: text (36 bytes) &quot;C8C6D8C1-B294-4C8C-ADC9-84117C3AFF2E&quot;</code></pre>
+<p>Field 19 has one entry: position 0 and the text <code>nb</code>, the language of the user interface.</p>
+<p>Field 20 has the same run-table shape, but its field 2 is a UUID as text instead of an object reference. Its entries line up with the words Pages capitalised:</p>
+<div class="table"><table><thead><tr><th>File</th><th>Text</th><th>Capitalised</th><th>Field 20 entries</th></tr></thead><tbody><tr><td><code>return-ui</code></td><td><code>One\nTwo</code></td><td><code>One</code>, <code>Two</code></td><td>0 → UUID, 3 → none, 4 → UUID</td></tr><tr><td><code>line-break-ui</code></td><td><code>One\u{2028}two</code></td><td><code>One</code></td><td>0 → UUID, 3 → none</td></tr><tr><td><code>heading-ui</code></td><td><code>One\ntwo</code></td><td><code>One</code></td><td>0 → UUID, 3 → none</td></tr></tbody></table></div>
+<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section">#</a></h2>
+<p>Pressing Return writes U+000A and starts a paragraph, as a line feed did in 0005. Pressing Shift-Return writes U+2028 and doesn't: it is a line break within a paragraph.</p>
+<p>The paragraph-style runs name a paragraph style wherever one begins, so field 5 is a run table like field 8. In 0005 every entry after the first had no field 2, and all paragraphs used the same style, so an entry without field 2 most likely keeps the previous style. Here, the paragraph with a different style named it.</p>
+<p>Field 19 is probably a table of language runs.</p>
+<p>Field 20 looks like a record of autocorrections. Each capitalised word is covered by a run with its own UUID, and a run with no UUID follows it. This would let Pages offer to undo a correction later. It is a hypothesis from three documents.</p>
+<p>AppleScript and typing don't produce the same file for the same text: typing adds fields 19 and 20, and typing triggers autocorrection. Later experiments that type in the window should say so and keep that in mind when comparing with documents made through AppleScript.</p>
+<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section">#</a></h2>
+<p><em>Likely</em>:</p>
+<ul><li>Return writes U+000A, and Shift-Return writes U+2028 without starting a paragraph.</li><li>Field 5 entries name a paragraph style (type 2022) where it changes.</li><li>Field 19 holds language runs.</li></ul>
+<p><em>Unknown</em>:</p>
+<ul><li>That field 20 records autocorrections. Follow-up: type with autocorrection turned off in Pages' settings, and type a word that autocorrection changes in the middle of a sentence.</li><li>Whether an entry with no field 2 in field 5 always means "same style as before". Follow-up: three paragraphs where only the middle one has a different style.</li></ul>
+<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Last built from <a href="https://github.com/alehel/iwork-format">alehel/iwork-format</a>.</p></footer>
+</main>
+
+</div>
+</body>
+</html>

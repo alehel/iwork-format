@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0029: From Numbers&#x27; root to a table · iWork file format specification</title>
+<meta name="description" content="iWork file format specification">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
+<div class="layout">
+<nav class="side" aria-label="Contents"><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="../guides/anatomy.html">Reading a Pages document</a></li><li><a href="../guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="../guides/writing.html">Writing a document</a></li><li><a href="../guides/samples.html">Sample files</a></li><li class="group">Specification</li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2–5. Text, styles, objects, layout</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li class="group">Evidence</li><li><a href="index.html">All experiments</a></li></ul></nav>
+<main>
+<h1 id="0029-from-numbers-root-to-a-table">0029: From Numbers' root to a table<a class="anchor" href="#0029-from-numbers-root-to-a-table" aria-label="Link to this section">#</a></h1>
+<p><strong>Status:</strong> run</p>
+<p><a href="0027-document-roots.html">0027</a> followed Keynote's root down to a slide's text. This experiment does the same for Numbers, from the root down to the tile that holds the cells written in <a href="0026-numbers-cells.html">0026</a>. It also checks how the table model points at its tile in both Numbers and Pages. It saves no new documents.</p>
+<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Apps</td><td>Numbers and Pages 15.4 (build <code>M15.4-7051.0.79-2</code>)</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-09</td></tr><tr><td>Documents</td><td><code>samples/0026/cells.numbers</code>, <code>samples/0021/cells.pages</code></td></tr></tbody></table></div>
+<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section">#</a></h2>
+<p>A breadth-first walk over <code>iwork-probe refs</code> output finds the path of header references from object 1 to the tile (<code>Index/Tables/Tile.iwa</code>). Each record along it was printed with <code>iwork-probe proto --decoded</code>.</p>
+<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section">#</a></h2>
+<h3 id="the-path">The path<a class="anchor" href="#the-path" aria-label="Link to this section">#</a></h3>
+<div class="table"><table><thead><tr><th>Object</th><th>Type</th><th>Part</th><th>What it holds</th></tr></thead><tbody><tr><td>1</td><td>1</td><td><code>Document.iwa</code></td><td>the shared document-properties block, the paper size</td></tr><tr><td>904532</td><td>2</td><td><code>Document.iwa</code></td><td>1: <code>&quot;Ark 1&quot;</code> (Norwegian for "Sheet 1"); 2: <code>{ 1: 904769 }</code>; and more, see below</td></tr><tr><td>904769</td><td>6000</td><td><code>CalculationEngine.iwa</code></td><td>the table's drawable, as in <a href="0020-a-table.html">0020</a></td></tr><tr><td>904595</td><td>6001</td><td><code>CalculationEngine.iwa</code></td><td>1: a UUID; 8: <code>&quot;Tabell 1&quot;</code></td></tr><tr><td>904547</td><td>6002</td><td><code>Tables/Tile.iwa</code></td><td>the cells, as in <a href="0026-numbers-cells.html">0026</a></td></tr></tbody></table></div>
+<p>The sheet's other fields include 10: four floats (54, 36, 54, 36), 13 and 14: 20.0 each, and 17: a reference to 904606.</p>
+<h3 id="how-the-table-model-reaches-its-tile">How the table model reaches its tile<a class="anchor" href="#how-the-table-model-reaches-its-tile" aria-label="Link to this section">#</a></h3>
+<p>The start of field 4 of the type-6001 model:</p>
+<pre><code>4:
+  1: { 1: 1, 2: { 1: 904914 } }     ← HeaderStorageBucket-904914
+  2: { 1: 904958 }                  ← HeaderStorageBucket-904958
+  3: { 1: { 1: 0, 2: { 1: 904547 } }, 2: 256 }     ← the tile
+  …</code></pre>
+<p>Pages' model (0021) has field 4 laid out the same way, with field 4.3.1.2 naming its tile (1732696) and 4.2 naming a header storage bucket (1732917).</p>
+<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section">#</a></h2>
+<p>A Numbers document goes root (type 1) → sheet (type 2, with its name in field 1 and its first drawable in field 2) → the table's drawable (type 6000) → the table model (type 6001). From the model, field 4 holds the table's storage:</p>
+<ul><li>4.1 and 4.2 name header storage buckets (type 6006, in <code>Tables/HeaderStorageBucket-N.iwa</code>)</li><li>4.3 lists the tiles, each entry giving a tile index (4.3.1.1) and the tile record (4.3.1.2)</li></ul>
+<p>Field 4.3.2, 256, is probably the number of rows a tile covers. That would explain why a small table has a single tile, index 0.</p>
+<p>Pages lays out the table model's field 4 the same way, so a table reader can be shared. Only the route to the drawable differs: through the sheet in Numbers, and through a text attachment (U+FFFC and a type-2003 record) in Pages.</p>
+<p>Type 2 is the sheet in Numbers but, from <a href="0027-document-roots.html">0027</a>, the presentation in Keynote. Like type 1, it is a type number that means different things in different apps.</p>
+<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section">#</a></h2>
+<p><em>Likely</em>:</p>
+<ul><li>Numbers' chain is root → sheet (type 2) → drawable (6000) → table model (6001) → tile (6002).</li><li>Table model field 4.3 lists the tiles, and 4.1 and 4.2 name header storage.</li></ul>
+<p><em>Unknown</em>:</p>
+<ul><li>Whether a tile covers 256 rows. Follow-up: put a value in row 300 of a Numbers table, and look for a second tile with index 1.</li><li>What the header storage buckets hold.</li></ul>
+<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Last built from <a href="https://github.com/alehel/iwork-format">alehel/iwork-format</a>.</p></footer>
+</main>
+
+</div>
+</body>
+</html>

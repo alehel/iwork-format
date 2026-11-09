@@ -1,0 +1,15 @@
+1: varint 0
+2: varint 0
+3: varint 0
+4: varint 5
+5: message (1108 bytes)
+  1: varint 0
+  2: varint 2
+  3: bytes (24) 04 00 00 00 00 00 00 00 00 00 00 00 04 00 00 00 00 00 00 00 00 00 00 00
+  4: bytes (510) 00 00 0c 00 ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff …
+  5: varint 5
+  6: bytes (48) 05 03 00 00 00 00 00 00 08 10 02 00 01 00 00 00 05 00 00 00 01 00 00 00 05 03 00 00 00 00 00 00 …
+  7: bytes (510) 00 00 18 00 ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff …
+5: message (1120 bytes)
+  1: varint 1
+…

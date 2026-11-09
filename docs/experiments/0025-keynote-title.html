@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0025: Text on a Keynote slide · iWork file format specification</title>
+<meta name="description" content="iWork file format specification">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
+<div class="layout">
+<nav class="side" aria-label="Contents"><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="../guides/anatomy.html">Reading a Pages document</a></li><li><a href="../guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="../guides/writing.html">Writing a document</a></li><li><a href="../guides/samples.html">Sample files</a></li><li class="group">Specification</li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2–5. Text, styles, objects, layout</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li class="group">Evidence</li><li><a href="index.html">All experiments</a></li></ul></nav>
+<main>
+<h1 id="0025-text-on-a-keynote-slide">0025: Text on a Keynote slide<a class="anchor" href="#0025-text-on-a-keynote-slide" aria-label="Link to this section">#</a></h1>
+<p><strong>Status:</strong> run</p>
+<p><a href="0024-keynote-and-numbers.html">0024</a> found that Keynote shares Pages' container, but left open whether the record types inside mean the same thing in both apps. This experiment puts a word in the title of a Keynote slide and checks whether it lands in the same kind of text record as Pages' body text (<a href="0002-one-word.html">0002</a>).</p>
+<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Keynote</td><td>15.4 (build <code>M15.4-7051.0.79-2</code>), with a Norwegian (nb) user interface</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-09</td></tr><tr><td>Baseline</td><td>Experiment <a href="0024-keynote-and-numbers.html">0024</a>, <code>empty-a.key</code>, copied as <code>samples/0025/empty.key</code></td></tr></tbody></table></div>
+<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section">#</a></h2>
+<pre class="lang-bash"><code>mkdir -p samples/0025
+osascript recipes/0025-keynote-title.applescript &quot;$PWD/samples/0025/hello.key&quot;
+osascript recipes/0025-keynote-title.applescript &quot;$PWD/samples/0025/hullo.key&quot; hullo
+cp samples/0024/empty-a.key samples/0025/empty.key</code></pre>
+<p>The recipe makes a new presentation with the default theme and sets the <code>object text</code> of the first slide's default title item.</p>
+<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section">#</a></h2>
+<p>Searching every record of <code>hello.key</code> for the text <code>hello</code> finds one: object 2652192, of type 2001, in <code>Index/Slide-2652175.iwa</code>.</p>
+<pre><code>2:  { 1: 2652414 }                     ← type 401 in DocumentStylesheet.iwa
+3:  text &quot;hello&quot;
+5:  { 1: { 1: 0, 2: { 1: 2651125 } } }  ← type 2022 &quot;Tittel&quot;, text-0-paragraphstyle-Title
+6:  { 1: { 1: 0, 2: 0, 3: 0 } }
+7:  { 1: { 1: 0, 2: { 1: 2651120 } } }  ← type 2023 &quot;Ingen&quot;, text-0-liststyle-None
+10: 1
+14: { 1: { 1: 0, 2: 0, 3: 0 } }
+24: { 1: { 1: 0, 2: 0, 3: 0 } }
+28: { 1: { 1: 0 } }</code></pre>
+<p>In <code>empty.key</code> the same record has no field 3, and is otherwise the same. Between <code>hello.key</code> and <code>hullo.key</code>, field 3 is the only difference in the record.</p>
+<p>Compared with Pages' body record, fields 1, 12 and 17 are absent. Field 17 holds the section runs in Pages.</p>
+<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section">#</a></h2>
+<p>Keynote stores a title's text in a type-2001 record laid out exactly like Pages' body text:</p>
+<ul><li>the text in field 3, absent when empty</li><li>the stylesheet in field 2</li><li>paragraph styles, list levels and list styles in fields 5, 6 and 7, as run tables</li></ul>
+<p>The objects it refers to are a stylesheet (type 401), a paragraph style (type 2022) and a list style (type 2023), with the same kinds of names as in Pages. So these type numbers mean the same thing in Pages and Keynote, and the text layer of the spec applies to Keynote text too.</p>
+<p>A slide has no sections, and its text record has no section runs (field 17), and no fields 1 or 12.</p>
+<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section">#</a></h2>
+<p><em>Likely</em>:</p>
+<ul><li>Keynote text is a type-2001 record laid out as in <a href="../spec/text.html">spec/text.md</a>.</li><li>Type numbers 2001, 401, 2022 and 2023 mean the same thing in Pages and Keynote.</li></ul>
+<p><em>Unknown</em>:</p>
+<ul><li>What links a slide's title record to the slide.</li><li>Whether Keynote's type 1 (the document root) means the same as Numbers' type 1.</li></ul>
+<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Last built from <a href="https://github.com/alehel/iwork-format">alehel/iwork-format</a>.</p></footer>
+</main>
+
+</div>
+</body>
+</html>

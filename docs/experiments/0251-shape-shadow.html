@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0251: A shadow on a shape · iWork file format specification</title>
+<meta name="description" content="iWork file format specification">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
+<div class="layout">
+<nav class="side" aria-label="Contents"><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="../guides/anatomy.html">Reading a Pages document</a></li><li><a href="../guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="../guides/writing.html">Writing a document</a></li><li><a href="../guides/samples.html">Sample files</a></li><li class="group">Specification</li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2–5. Text, styles, objects, layout</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li class="group">Evidence</li><li><a href="index.html">All experiments</a></li></ul></nav>
+<main>
+<h1 id="0251-a-shadow-on-a-shape">0251: A shadow on a shape<a class="anchor" href="#0251-a-shadow-on-a-shape" aria-label="Link to this section">#</a></h1>
+<p><strong>Status:</strong> run</p>
+<p><a href="0250-shape-border.html">0250</a> found a shape's border in field 1.11.2 of its style. This experiment adds a drop shadow through the sidebar's pop-up menu, to find the shadow's fields.</p>
+<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Pages</td><td>15.4 (build <code>M15.4-7051.0.79-2</code>), in Norwegian</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-09</td></tr><tr><td>Baseline</td><td><code>samples/0213/plain-shape.pages</code></td></tr></tbody></table></div>
+<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section">#</a></h2>
+<pre class="lang-bash"><code>mkdir -p samples/0251
+osascript recipes/0213-pages-shape.applescript 1</code></pre>
+<p>The new shape is left selected. Then, with Pages in front:</p>
+<ol><li>In the Format sidebar's Style tab, open Shadow (<em>Skygge</em>) and choose Drop Shadow (<em>Skygge</em>) from the pop-up. The sidebar shows its settings: blur 5 pt, offset 2 pt, opacity 50%, angle 270°, black.</li><li>Save as <code>samples/0251/shadow.pages</code>.</li></ol>
+<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section">#</a></h2>
+<p>The shape's style reference names a new unnamed type-2025 style whose parent is <code>shape-0-shapestyle</code>. Its only property is in 1.11.4:</p>
+<pre><code>1: black, alpha 1   ← colour
+2: 90.0
+3: 2.0
+4: 5                ← a varint
+5: 0.5
+6: 1
+7: 0</code></pre>
+<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section">#</a></h2>
+<p>Field 1.11.4 of a shape style is its shadow:</p>
+<div class="table"><table><thead><tr><th>Field</th><th>Setting</th></tr></thead><tbody><tr><td>1</td><td>Colour</td></tr><tr><td>2</td><td>Angle in degrees</td></tr><tr><td>3</td><td>Offset in points</td></tr><tr><td>4</td><td>Blur in points, as a whole number</td></tr><tr><td>5</td><td>Opacity, 0–1</td></tr><tr><td>6</td><td>Shown (1)</td></tr><tr><td>7</td><td>Kind, probably 0 for a drop shadow (the pop-up also offers contact and curved shadows)</td></tr></tbody></table></div>
+<p>The angle is stored as 90 while the sidebar shows 270°. The two differ by 180°: the sidebar probably gives the direction the light comes from, and the file the direction the shadow falls. With y pointing down on the page, 90° puts the shadow 2 points below the shape.</p>
+<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section">#</a></h2>
+<p><em>Likely</em>: field 1.11.4 is the shadow, with colour, angle, offset, blur, opacity and visibility in fields 1–6.</p>
+<p><em>Unknown</em>: field 7, and the direction the angle is measured in. Follow-up: set the angle to 0° in the sidebar.</p>
+<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Last built from <a href="https://github.com/alehel/iwork-format">alehel/iwork-format</a>.</p></footer>
+</main>
+
+</div>
+</body>
+</html>

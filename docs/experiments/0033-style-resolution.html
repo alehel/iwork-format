@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0033: How styles combine · iWork file format specification</title>
+<meta name="description" content="iWork file format specification">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
+<div class="layout">
+<nav class="side" aria-label="Contents"><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="../guides/anatomy.html">Reading a Pages document</a></li><li><a href="../guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="../guides/writing.html">Writing a document</a></li><li><a href="../guides/samples.html">Sample files</a></li><li class="group">Specification</li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2–5. Text, styles, objects, layout</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li class="group">Evidence</li><li><a href="index.html">All experiments</a></li></ul></nav>
+<main>
+<h1 id="0033-how-styles-combine">0033: How styles combine<a class="anchor" href="#0033-how-styles-combine" aria-label="Link to this section">#</a></h1>
+<p><strong>Status:</strong> run</p>
+<p>Experiments 0004–0012 found character styles, paragraph styles and their parents (field 1.3), but not how they combine into the formatting a reader should show. <a href="0008-runs-and-shared-styles.html">0008</a> suggested an order without testing it. This experiment states a rule and checks its predictions against what Pages itself reports for each word, in eight earlier samples.</p>
+<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Pages</td><td>15.4 (build <code>M15.4-7051.0.79-2</code>)</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-09</td></tr><tr><td>Documents</td><td><code>samples/0004/large.pages</code>, <code>0006/heading-ui</code>, <code>0007/bold</code>, <code>0007/italic</code>, <code>0007/bold-italic</code>, <code>0008/middle</code>, <code>0008/two-words</code>, <code>0008/unbold-middle</code></td></tr></tbody></table></div>
+<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section">#</a></h2>
+<p><strong>What Pages shows.</strong> Each document was opened in Pages through AppleScript, and for each word of the body text, <code>font</code> and <code>size</code> were read. The font name carries the bold and italic, for example <code>HelveticaNeue-BoldItalic</code>. The documents were closed without saving.</p>
+<p><strong>What the file predicts.</strong> A throwaway script read the same documents with <code>iwork-probe</code> only, and applied this rule to each word:</p>
+<ol><li>Find the word's character style from the character-style runs (field 8 of the text record). An entry without a style means none.</li><li>Find its paragraph style from the paragraph-style runs (field 5). An entry without a style keeps the previous paragraph's style.</li><li>For each property (bold 11.1, italic 11.2, size 11.3, font 11.5), take the value from the first style that sets it. Look first in the character style, then its parent (field 1.3), then that style's parent, and so on. If none of those sets it, do the same with the paragraph style and its parents.</li><li>Name the font as Pages does: the font in 11.5, with <code>-Bold</code>, <code>-Italic</code> or <code>-BoldItalic</code> added unless the name already ends that way.</li></ol>
+<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th>Document</th><th>Word</th><th>Pages reports</th><th>Predicted</th></tr></thead><tbody><tr><td>0004/large</td><td>hello</td><td>HelveticaNeue, 11</td><td>same</td></tr><tr><td></td><td>world</td><td>HelveticaNeue, 24</td><td>same</td></tr><tr><td>0006/heading-ui</td><td>One</td><td>HelveticaNeue, 11</td><td>same</td></tr><tr><td></td><td>two</td><td>HelveticaNeue-Bold, 18</td><td>same</td></tr><tr><td>0007/bold</td><td>world</td><td>HelveticaNeue-Bold, 11</td><td>same</td></tr><tr><td>0007/italic</td><td>world</td><td>HelveticaNeue-Italic, 11</td><td>same</td></tr><tr><td>0007/bold-italic</td><td>world</td><td>HelveticaNeue-BoldItalic, 11</td><td>same</td></tr><tr><td>0008/middle</td><td>one, two, three</td><td>regular, bold, regular, 11</td><td>same</td></tr><tr><td>0008/two-words</td><td>one, two, three</td><td>bold, regular, bold, 11</td><td>same</td></tr><tr><td>0008/unbold-middle</td><td>one, two, three</td><td>bold, regular, bold, 11</td><td>same</td></tr></tbody></table></div>
+<p>The words not shown (<code>hello</code> in 0007) were regular 11 in Pages and in the prediction. All 19 words in the 8 documents matched.</p>
+<p>The first version of the script mispredicted <code>two</code> in 0006 as <code>HelveticaNeue-Bold-Bold</code>. The Heading style's font (11.5) is <code>HelveticaNeue-Bold</code>, with bold also set in 11.1, and the script's naming added <code>-Bold</code> a second time. Bold and size had been predicted correctly. Step 4 above is the corrected naming.</p>
+<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section">#</a></h2>
+<p>The rule held for every word, and the samples exercise each of its parts:</p>
+<ul><li><strong>A character style wins over the paragraph style.</strong> In <code>unbold-middle</code>, <code>two</code> has a character style with bold = 0 inside a paragraph whose style sets bold = 1, and Pages shows it regular.</li><li><strong>Properties a style doesn't set come from its parent.</strong> The unnamed paragraph style in <code>unbold-middle</code> sets only bold, and size and font come from its parent, Body. The unnamed character styles of 0004 and 0007 set one property each.</li><li><strong>When the character chain sets nothing, the paragraph chain decides.</strong> Every character style seen so far ends at the null character style, which sets no properties.</li><li><strong>Named styles set their properties directly.</strong> Heading sets its own font, bold and size.</li></ul>
+<p>A Heading style can name a bold font (<code>HelveticaNeue-Bold</code>) and also set bold. So a reader should treat 11.5 as a font name that may already carry a weight.</p>
+<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section">#</a></h2>
+<p><em>Likely</em>: the rule above, for bold, italic, size and font. It held for all 19 words in 8 documents. It hasn't yet been tested with a named character style, or with differing paragraph styles where a paragraph's entry has no style.</p>
+<p><em>Unknown</em>: whether other properties, such as colour, underline and alignment, follow the same order. Underline and colour don't show in the font name, so checking them needs a different readback, such as the <code>color</code> property in AppleScript.</p>
+<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Last built from <a href="https://github.com/alehel/iwork-format">alehel/iwork-format</a>.</p></footer>
+</main>
+
+</div>
+</body>
+</html>

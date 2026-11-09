@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0188: Media in Pages and Numbers · iWork file format specification</title>
+<meta name="description" content="iWork file format specification">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
+<div class="layout">
+<nav class="side" aria-label="Contents"><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="../guides/anatomy.html">Reading a Pages document</a></li><li><a href="../guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="../guides/writing.html">Writing a document</a></li><li><a href="../guides/samples.html">Sample files</a></li><li class="group">Specification</li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2–5. Text, styles, objects, layout</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li class="group">Evidence</li><li><a href="index.html">All experiments</a></li></ul></nav>
+<main>
+<h1 id="0188-media-in-pages-and-numbers">0188: Media in Pages and Numbers<a class="anchor" href="#0188-media-in-pages-and-numbers" aria-label="Link to this section">#</a></h1>
+<p><strong>Status:</strong> run</p>
+<p><a href="0185-keynote-audio.html">0185</a> to <a href="0187-keynote-movie.html">0187</a> found that Keynote stores sounds and movies as type-3007 records. This experiment adds a movie to a Pages document and a sound to a Numbers sheet, to see whether the other apps store them the same way.</p>
+<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Pages, Numbers</td><td>15.4</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-09</td></tr><tr><td>Baseline</td><td>Experiments <a href="0185-keynote-audio.html">0185</a> and <a href="0187-keynote-movie.html">0187</a></td></tr></tbody></table></div>
+<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section">#</a></h2>
+<pre class="lang-bash"><code>mkdir -p samples/0188
+osascript recipes/0188-pages-movie.applescript &quot;$PWD/samples/0188&quot; &quot;$PWD/samples/0185/clip.mov&quot; &quot;$PWD/samples/0185/tone.m4a&quot;</code></pre>
+<p>The recipe puts <code>clip.mov</code> from 0187 on page 1 of a Pages document with the body text <code>one</code>, and <code>tone.m4a</code> from 0185 on sheet 1 of a new spreadsheet. Both go through <code>make new image</code>, as in Keynote.</p>
+<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section">#</a></h2>
+<p><code>movie.pages</code> holds <code>Data/clip-24.mov</code> and <code>Data/posterImage-25.png</code>, and <code>Document.iwa</code> has one type-3007 record. Its fields match Keynote's movie: 14 <code>{ 1: 24 }</code>, 15 <code>{ 1: 25 }</code>, 9 = 0, 23 = 1, a natural size of 64 × 48 in 20 and 21, and <code>vide</code> in 29.1.1. Its drawable has no field 1.2, like other objects placed on a Pages page.</p>
+<p><code>sound.numbers</code> holds <code>Data/tone-16.m4a</code>, and <code>Document.iwa</code> has one type-3007 record. Its fields match Keynote's sound: 14 <code>{ 1: 16 }</code>, 9 = 1, 23 = 0, sizes of 0 × 0 and <code>soun</code> in 29.1.1. Its drawable's field 1.2 names the sheet (904532), as a slide's objects name the slide.</p>
+<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section">#</a></h2>
+<p>All three apps store sounds and movies as the same type-3007 record. A reader can handle media once for every app: find the file by the data ID in field 14, and the poster image, if any, in field 15.</p>
+<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section">#</a></h2>
+<p><em>Confirmed</em>, with 0185 and 0187: sounds and movies are type 3007, naming their file in field 14, in all three apps.</p>
+<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Last built from <a href="https://github.com/alehel/iwork-format">alehel/iwork-format</a>.</p></footer>
+</main>
+
+</div>
+</body>
+</html>

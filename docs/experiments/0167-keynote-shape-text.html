@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0167: A shape with text on a slide · iWork file format specification</title>
+<meta name="description" content="iWork file format specification">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
+<div class="layout">
+<nav class="side" aria-label="Contents"><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="../guides/anatomy.html">Reading a Pages document</a></li><li><a href="../guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="../guides/writing.html">Writing a document</a></li><li><a href="../guides/samples.html">Sample files</a></li><li class="group">Specification</li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2–5. Text, styles, objects, layout</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li class="group">Evidence</li><li><a href="index.html">All experiments</a></li></ul></nav>
+<main>
+<h1 id="0167-a-shape-with-text-on-a-slide">0167: A shape with text on a slide<a class="anchor" href="#0167-a-shape-with-text-on-a-slide" aria-label="Link to this section">#</a></h1>
+<p><strong>Status:</strong> run</p>
+<p>This experiment places a default shape with text on a slide, to compare it with Pages' shape (<a href="0050-shape.html">0050</a>).</p>
+<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Keynote</td><td>15.4 (build <code>M15.4-7051.0.79-2</code>)</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-09</td></tr><tr><td>Baseline</td><td>Experiment <a href="0050-shape.html">0050</a></td></tr></tbody></table></div>
+<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section">#</a></h2>
+<pre class="lang-bash"><code>mkdir -p samples/0167
+osascript recipes/0159-keynote-slides.applescript shapetext &quot;$PWD/samples/0167/shapetext.key&quot;</code></pre>
+<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section">#</a></h2>
+<p>The slide gained the same records as for the line in <a href="0166-keynote-line.html">0166</a>. The shape is type 2011 with style <code>shape-0-shapestyle</code>, size 100 × 100 at (910, 490), the centre of the 1920 × 1080 slide. Fields 2 and 4 name its text, <code>shape</code>. Field 6 is 0; it was 1 for Pages' text box in <a href="0049-text-box.html">0049</a>.</p>
+<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section">#</a></h2>
+<p>Shapes are the same type with the same style identifier in Keynote and Pages. A new shape is centred on the slide. Field 6 differs between the apps; its meaning is unknown.</p>
+<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section">#</a></h2>
+<p><em>Confirmed</em>: shapes with text are type 2011, with fields 2 and 4 naming the text (<a href="0049-text-box.html">0049</a>, <a href="0050-shape.html">0050</a> and this experiment).</p>
+<p><em>Unknown</em>: field 6.</p>
+<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Last built from <a href="https://github.com/alehel/iwork-format">alehel/iwork-format</a>.</p></footer>
+</main>
+
+</div>
+</body>
+</html>

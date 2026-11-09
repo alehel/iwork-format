@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0196: Every transition effect · iWork file format specification</title>
+<meta name="description" content="iWork file format specification">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
+<div class="layout">
+<nav class="side" aria-label="Contents"><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="../guides/anatomy.html">Reading a Pages document</a></li><li><a href="../guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="../guides/writing.html">Writing a document</a></li><li><a href="../guides/samples.html">Sample files</a></li><li class="group">Specification</li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2–5. Text, styles, objects, layout</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li class="group">Evidence</li><li><a href="index.html">All experiments</a></li></ul></nav>
+<main>
+<h1 id="0196-every-transition-effect">0196: Every transition effect<a class="anchor" href="#0196-every-transition-effect" aria-label="Link to this section">#</a></h1>
+<p><strong>Status:</strong> run</p>
+<p><a href="0091-move-in-transition.html">0091</a> to <a href="0095-magic-move.html">0095</a> found that a slide's transition is named by an identifier in field 4.2.8.2, and mapped six effects. This experiment maps the other 38 that Keynote's AppleScript offers.</p>
+<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Keynote</td><td>15.4</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-09</td></tr><tr><td>Baseline</td><td>Experiments <a href="0091-move-in-transition.html">0091</a>–<a href="0095-magic-move.html">0095</a></td></tr></tbody></table></div>
+<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section">#</a></h2>
+<pre class="lang-bash"><code>mkdir -p samples/0196
+osascript recipes/0196-keynote-all-transitions.applescript &quot;$PWD/samples/0196/all.key&quot;</code></pre>
+<p>The recipe makes a presentation with 38 slides. Each slide's title is the AppleScript name of an effect, and its transition is that effect.</p>
+<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section">#</a></h2>
+<p>Each slide record (type 5) has the effect's identifier in field 4.2.8.2:</p>
+<div class="table"><table><thead><tr><th>AppleScript effect</th><th>Identifier</th></tr></thead><tbody><tr><td><code>blinds</code></td><td><code>com.apple.iWork.Keynote.BLTBlinds</code></td></tr><tr><td><code>clothesline</code></td><td><code>apple:ClotheslinePush</code></td></tr><tr><td><code>color planes</code></td><td><code>com.apple.iWork.Keynote.KLNColorPlanes</code></td></tr><tr><td><code>confetti</code></td><td><code>com.apple.iWork.Keynote.KLNConfetti</code></td></tr><tr><td><code>doorway</code></td><td><code>apple:doorway</code></td></tr><tr><td><code>drop</code></td><td><code>apple:bounce</code></td></tr><tr><td><code>droplet</code></td><td><code>apple:droplet</code></td></tr><tr><td><code>fade and move</code></td><td><code>apple:fade-and-move</code></td></tr><tr><td><code>fade through color</code></td><td><code>com.apple.iWork.Keynote.BLTFadeThruColor</code></td></tr><tr><td><code>fall</code></td><td><code>apple:fall</code></td></tr><tr><td><code>flip</code></td><td><code>apple:revolve</code></td></tr><tr><td><code>flop</code></td><td><code>com.apple.iWork.Keynote.BUKFlop</code></td></tr><tr><td><code>grid</code></td><td><code>apple:apple-grid</code></td></tr><tr><td><code>iris</code></td><td><code>apple:wipe-iris</code></td></tr><tr><td><code>mosaic</code></td><td><code>com.apple.iWork.Keynote.BLTMosaicFlip</code></td></tr><tr><td><code>object cube</code></td><td><code>apple:ca-cube</code></td></tr><tr><td><code>object flip</code></td><td><code>apple:ca-dissolve-and-flip</code></td></tr><tr><td><code>object pop</code></td><td><code>apple:ca-pop</code></td></tr><tr><td><code>object push</code></td><td><code>apple:ca-push</code></td></tr><tr><td><code>object revolve</code></td><td><code>apple:ca-revolve</code></td></tr><tr><td><code>object zoom</code></td><td><code>apple:ca-zoom</code></td></tr><tr><td><code>page flip</code></td><td><code>apple:pageflip</code></td></tr><tr><td><code>perspective</code></td><td><code>apple:ca-isometric</code></td></tr><tr><td><code>pivot</code></td><td><code>apple:pivot</code></td></tr><tr><td><code>radial wipe</code></td><td><code>apple:radial wipe</code></td></tr><tr><td><code>reflection</code></td><td><code>com.apple.iWork.Keynote.BLTReflection</code></td></tr><tr><td><code>reveal</code></td><td><code>apple:reveal</code></td></tr><tr><td><code>revolving door</code></td><td><code>com.apple.iWork.Keynote.BLTRevolvingDoor</code></td></tr><tr><td><code>scale</code></td><td><code>apple:scale</code></td></tr><tr><td><code>shimmer</code></td><td><code>apple:ca-text-shimmer</code></td></tr><tr><td><code>sparkle</code></td><td><code>apple:ca-text-sparkle</code></td></tr><tr><td><code>swap</code></td><td><code>com.apple.iWork.Keynote.KLNSwap</code></td></tr><tr><td><code>swing</code></td><td><code>apple:ca-swing</code></td></tr><tr><td><code>switch</code></td><td><code>apple:FlipThrough</code></td></tr><tr><td><code>swoosh</code></td><td><code>com.apple.iWork.Keynote.BLTSwoosh</code></td></tr><tr><td><code>twirl</code></td><td><code>apple:twirl</code></td></tr><tr><td><code>twist</code></td><td><code>com.apple.iWork.Keynote.BUKTwist</code></td></tr><tr><td><code>wipe</code></td><td><code>apple:wipe</code></td></tr></tbody></table></div>
+<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section">#</a></h2>
+<p>Effect identifiers come in two forms:</p>
+<ul><li><code>apple:</code> followed by a name, as in 0091–0095.</li><li>A reverse-DNS class name under <code>com.apple.iWork.Keynote.</code>, whose prefixes (<code>BLT</code>, <code>KLN</code>, <code>BUK</code>) probably name the internal plug-in the effect comes from.</li></ul>
+<p>The identifiers often differ from the names Keynote shows. For example, <code>drop</code> is <code>apple:bounce</code>, <code>flip</code> is <code>apple:revolve</code> and <code>switch</code> is <code>apple:FlipThrough</code>. One identifier contains a space (<code>apple:radial wipe</code>). Effects whose AppleScript names start with <code>object</code>, plus <code>perspective</code>, <code>shimmer</code>, <code>sparkle</code> and <code>swing</code>, use a <code>ca-</code> prefix. These are probably Keynote's object-level (Magic Move style) effects.</p>
+<p>A reader that only needs to know whether a slide has a transition can treat any identifier other than <code>none</code> as one. A reader that converts to another format needs this table.</p>
+<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section">#</a></h2>
+<p><em>Likely</em>: the identifiers in the table, from one sample each.</p>
+<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Last built from <a href="https://github.com/alehel/iwork-format">alehel/iwork-format</a>.</p></footer>
+</main>
+
+</div>
+</body>
+</html>

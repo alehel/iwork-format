@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0186: A looping sound at half volume · iWork file format specification</title>
+<meta name="description" content="iWork file format specification">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
+<div class="layout">
+<nav class="side" aria-label="Contents"><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="../guides/anatomy.html">Reading a Pages document</a></li><li><a href="../guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="../guides/writing.html">Writing a document</a></li><li><a href="../guides/samples.html">Sample files</a></li><li class="group">Specification</li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2–5. Text, styles, objects, layout</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li class="group">Evidence</li><li><a href="index.html">All experiments</a></li></ul></nav>
+<main>
+<h1 id="0186-a-looping-sound-at-half-volume">0186: A looping sound at half volume<a class="anchor" href="#0186-a-looping-sound-at-half-volume" aria-label="Link to this section">#</a></h1>
+<p><strong>Status:</strong> run</p>
+<p>AppleScript can set an audio clip's volume and whether it repeats. This experiment changes both, to find their fields in the type-3007 record from <a href="0185-keynote-audio.html">0185</a>.</p>
+<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Keynote</td><td>15.4</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-09</td></tr><tr><td>Baseline</td><td>Experiment <a href="0185-keynote-audio.html">0185</a>, <code>audio.key</code></td></tr></tbody></table></div>
+<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section">#</a></h2>
+<pre class="lang-bash"><code>osascript recipes/0185-keynote-media.applescript loop &quot;$PWD/samples/0185/loop.key&quot; &quot;$PWD/samples/0185/tone.m4a&quot;</code></pre>
+<p>The recipe adds the sound from 0185, then sets its <code>repetition method</code> to <code>loop</code> and its <code>clip volume</code> to 50.</p>
+<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section">#</a></h2>
+<p>Apart from IDs, the type-3007 record differs from 0185's in two fields:</p>
+<div class="table"><table><thead><tr><th>Field</th><th>0185</th><th>Looping, volume 50</th></tr></thead><tbody><tr><td>7</td><td>1.0</td><td>0.5</td></tr><tr><td>24</td><td>0</td><td>1</td></tr></tbody></table></div>
+<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section">#</a></h2>
+<p>Field 7 is the volume, as a fraction of full volume: AppleScript's 0–100 scale divided by 100. Field 24 is the repetition: 0 for none and 1 for loop. Loop back and forth is probably 2.</p>
+<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section">#</a></h2>
+<p><em>Likely</em>: field 7 is the volume and field 24 the repetition.</p>
+<p><em>Unknown</em>: the value for loop back and forth.</p>
+<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Last built from <a href="https://github.com/alehel/iwork-format">alehel/iwork-format</a>.</p></footer>
+</main>
+
+</div>
+</body>
+</html>

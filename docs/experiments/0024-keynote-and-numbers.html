@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0024: Keynote and Numbers · iWork file format specification</title>
+<meta name="description" content="iWork file format specification">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
+<div class="layout">
+<nav class="side" aria-label="Contents"><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="../guides/anatomy.html">Reading a Pages document</a></li><li><a href="../guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="../guides/writing.html">Writing a document</a></li><li><a href="../guides/samples.html">Sample files</a></li><li class="group">Specification</li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2–5. Text, styles, objects, layout</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li class="group">Evidence</li><li><a href="index.html">All experiments</a></li></ul></nav>
+<main>
+<h1 id="0024-keynote-and-numbers">0024: Keynote and Numbers<a class="anchor" href="#0024-keynote-and-numbers" aria-label="Link to this section">#</a></h1>
+<p><strong>Status:</strong> run</p>
+<p>The README has said since the start that Keynote and Numbers documents appear to share a container with Pages. This experiment checks it. It saves new, empty documents from both apps and runs every container finding so far over them: the package, chunks, records, header references and roots.</p>
+<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Keynote</td><td>15.4 (build <code>M15.4-7051.0.79-2</code>)</td></tr><tr><td>Numbers</td><td>15.4 (build <code>M15.4-7051.0.79-2</code>)</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-09</td></tr><tr><td>Baseline</td><td>Experiment <a href="0001-empty-document.html">0001</a>, <code>empty-a.pages</code></td></tr></tbody></table></div>
+<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section">#</a></h2>
+<pre class="lang-bash"><code>mkdir -p samples/0024
+R=recipes/0024-empty-iwork-document.applescript
+osascript $R Keynote &quot;$PWD/samples/0024/empty-a.key&quot;
+osascript $R Numbers &quot;$PWD/samples/0024/empty-a.numbers&quot;
+osascript $R Keynote &quot;$PWD/samples/0024/empty-b.key&quot;
+osascript $R Numbers &quot;$PWD/samples/0024/empty-b.numbers&quot;</code></pre>
+<p>The recipe makes a new document in the named app with the app's defaults and saves it. Keynote used the theme <em>Basic White</em> (<code>21_BasicWhite</code>), and Numbers the <em>Blank</em> template. Every <code>.iwa</code> part was then checked with <code>iwork-probe chunks</code>, <code>records</code> and <code>refs</code>, as in <a href="0022-header-references.html">0022</a>.</p>
+<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section">#</a></h2>
+<h3 id="the-package">The package<a class="anchor" href="#the-package" aria-label="Link to this section">#</a></h3>
+<div class="table"><table><thead><tr><th></th><th>Pages (0001)</th><th>Keynote</th><th>Numbers</th></tr></thead><tbody><tr><td>Package</td><td>ZIP, 13 parts</td><td>ZIP, 54 parts</td><td>ZIP, 43 parts</td></tr><tr><td>Parts stored with ZIP compression</td><td>0</td><td>0</td><td>0</td></tr><tr><td><code>Metadata/</code> and <code>preview*.jpg</code></td><td>yes</td><td>yes</td><td>yes</td></tr><tr><td><code>fileFormatVersion</code> in <code>Properties.plist</code></td><td><code>26.4.0</code></td><td><code>26.4.0</code></td><td><code>26.4.0</code></td></tr><tr><td>Template in <code>BuildVersionHistory.plist</code></td><td><code>Blank</code></td><td><code>21_BasicWhite</code></td><td><code>Blank</code></td></tr></tbody></table></div>
+<p>Part names under <code>Index/</code>:</p>
+<ul><li><strong>Keynote:</strong> <code>AnnotationAuthorStorage</code>, <code>CalculationEngine</code>, <code>Document</code>, <code>DocumentMetadata</code>, <code>DocumentStylesheet</code>, <code>Metadata</code>, <code>ViewState</code>, one <code>Slide-N</code> and 17 <code>TemplateSlide-N</code>.</li><li><strong>Numbers:</strong> the seven shared names, plus 30 parts under <code>Index/Tables/</code>, named as in <a href="0020-a-table.html">0020</a>. A new Numbers document already holds an empty table.</li></ul>
+<p>Unlike in Pages, <code>AnnotationAuthorStorage</code> and <code>CalculationEngine</code> have no number in their names here.</p>
+<p>The Keynote file also has 23 images under <code>Data/</code>, the theme's pictures for the template slides. Pages' Blank template had none.</p>
+<p>Two empty saves from the same app had the same part names.</p>
+<h3 id="chunks-records-and-references">Chunks, records and references<a class="anchor" href="#chunks-records-and-references" aria-label="Link to this section">#</a></h3>
+<div class="table"><table><thead><tr><th></th><th>Keynote</th><th>Numbers</th></tr></thead><tbody><tr><td><code>.iwa</code> parts</td><td>26</td><td>37</td></tr><tr><td>Parts where the chunk and record layout failed</td><td>0</td><td>0</td></tr><tr><td>Chunks with a type other than 0</td><td>0</td><td>0</td></tr><tr><td>Objects</td><td>962</td><td>627</td></tr><tr><td>Reached from objects 1, 2 and 71 through header references</td><td>962</td><td>627</td></tr><tr><td>Header references to objects that don't exist</td><td>0</td><td>0</td></tr></tbody></table></div>
+<h3 id="the-roots">The roots<a class="anchor" href="#the-roots" aria-label="Link to this section">#</a></h3>
+<div class="table"><table><thead><tr><th>Root</th><th>Part</th><th>Pages</th><th>Keynote</th><th>Numbers</th></tr></thead><tbody><tr><td>1</td><td><code>Document.iwa</code></td><td>type 10000</td><td>type 1</td><td>type 1</td></tr><tr><td>2</td><td><code>Metadata.iwa</code></td><td>type 11006</td><td>type 11006</td><td>type 11006</td></tr><tr><td>71</td><td><code>DocumentMetadata.iwa</code></td><td>type 11011</td><td>type 11011</td><td>type 11011</td></tr></tbody></table></div>
+<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section">#</a></h2>
+<p>Keynote and Numbers 15.4 write the same container as Pages 15.4. They use ZIP files without compression, the same metadata files, and <code>.iwa</code> parts with the same chunk and record layout. Header references reach every object from the same three roots, and the metadata roots (2 and 71) have the same types. So the container layer of the spec applies to all three apps. A reader can decode any of them up to the level of records and references.</p>
+<p>The apps differ in their document root, object 1. In Pages it is type 10000, and in both Keynote and Numbers it is type 1. Whether Keynote's and Numbers' type 1 is the same kind of object, or whether type numbers are only unique within one app, is still open. The parts each app adds also differ: slides for Keynote, tables for Numbers. Those, and what lies below object 1, are where each app needs its own layers.</p>
+<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section">#</a></h2>
+<p><em>Confirmed</em> for all three apps: the ZIP package, the chunk and record layout, and header references. Each was already confirmed for Pages and held without exception here.</p>
+<p><em>Likely</em>:</p>
+<ul><li>Every object in a Keynote or Numbers document can be reached from objects 1, 2 and 71.</li><li>The metadata objects 2 and 71 are shared between the apps.</li></ul>
+<p><em>Unknown</em>: whether type numbers mean the same thing across apps. Follow-up: compare the payload of type 1 in Keynote with type 1 in Numbers.</p>
+<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Last built from <a href="https://github.com/alehel/iwork-format">alehel/iwork-format</a>.</p></footer>
+</main>
+
+</div>
+</body>
+</html>

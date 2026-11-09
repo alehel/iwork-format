@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0046: A slide&#x27;s layout · iWork file format specification</title>
+<meta name="description" content="iWork file format specification">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
+<div class="layout">
+<nav class="side" aria-label="Contents"><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="../guides/anatomy.html">Reading a Pages document</a></li><li><a href="../guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="../guides/writing.html">Writing a document</a></li><li><a href="../guides/samples.html">Sample files</a></li><li class="group">Specification</li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2–5. Text, styles, objects, layout</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li class="group">Evidence</li><li><a href="index.html">All experiments</a></li></ul></nav>
+<main>
+<h1 id="0046-a-slides-layout">0046: A slide's layout<a class="anchor" href="#0046-a-slides-layout" aria-label="Link to this section">#</a></h1>
+<p><strong>Status:</strong> run</p>
+<p>Each Keynote theme comes with layouts, which Keynote's AppleScript calls master slides. A new presentation has 17 <code>TemplateSlide-N.iwa</code> parts, one per layout (<a href="0024-keynote-and-numbers.html">0024</a>). This experiment switches a slide to a different layout, to see how a slide names its layout.</p>
+<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Keynote</td><td>15.4 (build <code>M15.4-7051.0.79-2</code>), with a Norwegian (nb) user interface</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-09</td></tr><tr><td>Baseline</td><td>Experiment <a href="0025-keynote-title.html">0025</a>, <code>empty.key</code> (slide 1 on the layout <em>Tittel</em>, Title)</td></tr></tbody></table></div>
+<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section">#</a></h2>
+<pre class="lang-bash"><code>mkdir -p samples/0046
+osascript recipes/0046-keynote-layout.applescript &quot;$PWD/samples/0046/blank-layout.key&quot; &quot;Tom&quot;</code></pre>
+<p>The theme's layouts, as AppleScript lists them, are:</p>
+<blockquote><p>Tittel, Tittel og bilde, Tittel og bilde alt., Tittel og punkttegn, Punkttegn, Tittel, punkttegn og bilde, Tittel, punkttegn og direktevideo – liten, Tittel, punkttegn og direktevideo – stor, Inndeling, Kun tittel, Dagsorden, Melding, Fakta, stor, Sitat, Bilde – 3 per side, Bilde, Tom</p></blockquote>
+<p>The recipe sets slide 1's <code>base slide</code> to the layout <em>Tom</em> (Blank).</p>
+<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th>Slide field</th><th><code>empty.key</code> (Title)</th><th><code>blank-layout.key</code> (Blank)</th></tr></thead><tbody><tr><td>1</td><td><code>{ 1: 2651744 }</code></td><td><code>{ 1: 2652159 }</code></td></tr><tr><td>17</td><td><code>{ 1: 2651742 }</code></td><td><code>{ 1: 2652157 }</code></td></tr><tr><td>19</td><td>1</td><td>1</td></tr><tr><td>20</td><td><code>{ 1: 2652224 }</code></td><td><code>{ 1: 2652224 }</code></td></tr></tbody></table></div>
+<p>The slide's header references also lost 2652180 and kept the title shape (2652199) and the notes (2652227).</p>
+<p>Records 2651742 and 2652157 are both of type 5 and are the first records of <code>TemplateSlide-2651742.iwa</code> and <code>TemplateSlide-2652157.iwa</code>. Their field 10 is <code>Tittel</code> and <code>Tom</code>, and both hold the texts <code>Transition</code> and <code>none</code>.</p>
+<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section">#</a></h2>
+<p>A slide's field 17 names its layout: a template slide, which is itself a slide (type 5) in its own <code>TemplateSlide-N.iwa</code> part, named in its field 10. Field 1 changes along with it, so it is probably the slide's style, taken from the layout. A reader can show a slide by drawing its layout's template slide first and then the slide's own shapes on top. That drawing order isn't tested.</p>
+<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section">#</a></h2>
+<p><em>Likely</em>:</p>
+<ul><li>Slide field 17 names its layout (a type-5 template slide).</li><li>A template slide's field 10 is its name.</li></ul>
+<p><em>Unknown</em>:</p>
+<ul><li>Slide field 1, and why the slide stopped referring to 2652180.</li><li>How a slide's shapes relate to its layout's placeholders.</li></ul>
+<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Last built from <a href="https://github.com/alehel/iwork-format">alehel/iwork-format</a>.</p></footer>
+</main>
+
+</div>
+</body>
+</html>

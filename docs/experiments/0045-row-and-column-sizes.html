@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0045: Row and column sizes · iWork file format specification</title>
+<meta name="description" content="iWork file format specification">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
+<div class="layout">
+<nav class="side" aria-label="Contents"><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="../guides/anatomy.html">Reading a Pages document</a></li><li><a href="../guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="../guides/writing.html">Writing a document</a></li><li><a href="../guides/samples.html">Sample files</a></li><li class="group">Specification</li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2–5. Text, styles, objects, layout</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li class="group">Evidence</li><li><a href="index.html">All experiments</a></li></ul></nav>
+<main>
+<h1 id="0045-row-and-column-sizes">0045: Row and column sizes<a class="anchor" href="#0045-row-and-column-sizes" aria-label="Link to this section">#</a></h1>
+<p><strong>Status:</strong> run</p>
+<p><a href="0029-numbers-root-to-table.html">0029</a> found that a table model's field 4.1 and 4.2 name two header storage buckets (type 6006), and <a href="0021-table-cells.html">0021</a> saw floats of 120.4 in one of them, but neither said what they hold. This experiment changes one column's width and one row's height.</p>
+<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Numbers</td><td>15.4 (build <code>M15.4-7051.0.79-2</code>)</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-09</td></tr><tr><td>Baseline</td><td>Experiment <a href="0024-keynote-and-numbers.html">0024</a>, <code>empty-a.numbers</code></td></tr></tbody></table></div>
+<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section">#</a></h2>
+<pre class="lang-bash"><code>mkdir -p samples/0045
+osascript recipes/0045-numbers-sizes.applescript &quot;$PWD/samples/0045/sizes.numbers&quot;</code></pre>
+<p>The recipe sets the <code>width</code> of column 2 (B) to 200 and the <code>height</code> of row 3 to 50.</p>
+<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section">#</a></h2>
+<p>Apart from <code>Metadata.iwa</code>, <code>ViewState.iwa</code> and the previews, only the two header storage buckets changed:</p>
+<pre><code>HeaderStorageBucket-904914-2.iwa (model field 4.1.2)
+  empty:  1: 1
+  sizes:  1: 1
+          2: { 1: 2, 2: 50.0, 3: 0, 4: 0 }
+
+HeaderStorageBucket-904958-2.iwa (model field 4.2)
+  empty:  1: 1
+          2: { 1: 5, 2: 98.0, 3: 0, 4: 0 }
+          2: { 1: 6, 2: 98.0, 3: 0, 4: 0 }
+  sizes:  1: 1
+          2: { 1: 1, 2: 200.0, 3: 0, 4: 0 }
+          2: { 1: 5, 2: 98.0, 3: 0, 4: 0 }
+          2: { 1: 6, 2: 98.0, 3: 0, 4: 0 }</code></pre>
+<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section">#</a></h2>
+<p>Table model field 4.1 names the row headers and field 4.2 the column headers. Each header storage bucket (type 6006) lists, in its repeated field 2, the rows or columns that have their own settings. Field 1 is the row or column index, counted from 0, and field 2 is its height or width in points. Only rows and columns with a non-default size appear. A new Numbers table already lists columns 5 and 6 at 98 points, so its default width must be something else. In Pages' table of <a href="0021-table-cells.html">0021</a>, the four columns were listed at 120.4 points each.</p>
+<p>A reader needs the default row height and column width, which this experiment doesn't show. They are probably in the table model or its style.</p>
+<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section">#</a></h2>
+<p><em>Likely</em>: header storage buckets list rows (model 4.1) and columns (model 4.2) by index with their size in field 2, in points.</p>
+<p><em>Unknown</em>:</p>
+<ul><li>The default row height and column width.</li><li>Header fields 3 and 4, which were 0 throughout.</li></ul>
+<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Last built from <a href="https://github.com/alehel/iwork-format">alehel/iwork-format</a>.</p></footer>
+</main>
+
+</div>
+</body>
+</html>

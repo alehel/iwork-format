@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0274: A dashed border · iWork file format specification</title>
+<meta name="description" content="iWork file format specification">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
+<div class="layout">
+<nav class="side" aria-label="Contents"><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="../guides/anatomy.html">Reading a Pages document</a></li><li><a href="../guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="../guides/writing.html">Writing a document</a></li><li><a href="../guides/samples.html">Sample files</a></li><li class="group">Specification</li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2–5. Text, styles, objects, layout</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li class="group">Evidence</li><li><a href="index.html">All experiments</a></li></ul></nav>
+<main>
+<h1 id="0274-a-dashed-border">0274: A dashed border<a class="anchor" href="#0274-a-dashed-border" aria-label="Link to this section">#</a></h1>
+<p><strong>Status:</strong> run</p>
+<p><a href="0250-shape-border.html">0250</a> found that a stroke's pattern kind, in field 6.1, is 1 for a solid line and 2 for none. The rest of field 6, a value and six zeroes, was unexplained. This experiment picks a dashed line, to read the pattern.</p>
+<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Pages</td><td>15.4 (build <code>M15.4-7051.0.79-2</code>), in Norwegian</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-09</td></tr><tr><td>Baseline</td><td>Experiment <a href="0250-shape-border.html">0250</a>, a solid 5-point border</td></tr></tbody></table></div>
+<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section">#</a></h2>
+<pre class="lang-bash"><code>mkdir -p samples/0274
+osascript recipes/0213-pages-shape.applescript 1</code></pre>
+<p>The new shape is left selected. Then, with Pages in front:</p>
+<ol><li>Choose Line (<em>Linje</em>) from the Border pop-up, as in 0250.</li><li>From the line style pop-up beside the colour, choose the second style, short dashes. The shape gets a dashed 5-point border.</li><li>Save as <code>samples/0274/dashed.pages</code>.</li></ol>
+<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section">#</a></h2>
+<p>The stroke (style field 1.11.2) matches 0250's in colour and width (5.0). Its field 6 is now:</p>
+<pre><code>1: 0
+2: 0.0
+3: 2
+4: 1.0, 1.0, 0.0, 0.0, 0.0, 0.0</code></pre>
+<p>In the solid border of 0250 it was <code>{ 1: 1, 2: 0.0, 3: 0, 4: six zeroes }</code>.</p>
+<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section">#</a></h2>
+<p>Stroke field 6 is the line's pattern:</p>
+<ul><li><strong>Field 1:</strong> the kind. 0 means a dash pattern, 1 a solid line and 2 no line.</li><li><strong>Field 3:</strong> how many of the six lengths in field 4 are used (2).</li><li><strong>Field 4:</strong> the lengths, alternating dash and gap: 1 and 1 here. They are probably multiples of the line width, since this 5-point line's dashes look about 5 points long.</li><li><strong>Field 2:</strong> probably the phase, where the pattern starts.</li></ul>
+<p>A reader draws a dashed line by repeating the used lengths, scaled by the width.</p>
+<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section">#</a></h2>
+<p><em>Likely</em>: stroke pattern kind 0 is a dash pattern whose lengths are in field 4, with their count in field 3.</p>
+<p><em>Unknown</em>: the unit of the lengths, and field 2.</p>
+<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Last built from <a href="https://github.com/alehel/iwork-format">alehel/iwork-format</a>.</p></footer>
+</main>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0169: An unchecked checkbox · iWork file format specification</title>
+<meta name="description" content="iWork file format specification">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
+<div class="layout">
+<nav class="side" aria-label="Contents"><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="../guides/anatomy.html">Reading a Pages document</a></li><li><a href="../guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="../guides/writing.html">Writing a document</a></li><li><a href="../guides/samples.html">Sample files</a></li><li class="group">Specification</li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2–5. Text, styles, objects, layout</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li class="group">Evidence</li><li><a href="index.html">All experiments</a></li></ul></nav>
+<main>
+<h1 id="0169-an-unchecked-checkbox">0169: An unchecked checkbox<a class="anchor" href="#0169-an-unchecked-checkbox" aria-label="Link to this section">#</a></h1>
+<p><strong>Status:</strong> run</p>
+<p><a href="0036-more-cell-formats.html">0036</a> stored a ticked checkbox as a double 1.0. This experiment stores an unticked one.</p>
+<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Numbers</td><td>15.4 (build <code>M15.4-7051.0.79-2</code>)</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-09</td></tr><tr><td>Baseline</td><td>Experiment <a href="0036-more-cell-formats.html">0036</a>, <code>formats.numbers</code></td></tr></tbody></table></div>
+<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section">#</a></h2>
+<pre class="lang-bash"><code>mkdir -p samples/0169
+osascript recipes/0169-numbers-controls.applescript checkfalse &quot;$PWD/samples/0169/checkfalse.numbers&quot;</code></pre>
+<p>Cell B2 of table 1 is decoded from <code>Index/Tables/Tile.iwa</code> as in <a href="0036-more-cell-formats.html">0036</a>.</p>
+<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section">#</a></h2>
+<p>Cell B2's bytes:</p>
+<pre><code>05 06 00 00 00 00 20 00 02 14 04 00  00 00 00 00 00 00 00 00  01 00 00 00 06 00 00 00 01 00 00 00</code></pre>
+<p>Type 6 (boolean) with the same flags as the ticked checkbox, 0x00041402, and the double 0.0. The cell-control list (list type 12) has one entry, whose 12.1 is 8; the format list's entry is 263 (checkbox). Numbers reads the cell back as <code>false</code>.</p>
+<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section">#</a></h2>
+<p>An unticked checkbox is a boolean cell with the value 0.0, not an empty cell. The cell-control entry's kind 8 is a checkbox.</p>
+<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section">#</a></h2>
+<p><em>Confirmed</em>: booleans are doubles, 1.0 true and 0.0 false (<a href="0036-more-cell-formats.html">0036</a> and this experiment).</p>
+<p><em>Likely</em>: cell-control kind 8 is a checkbox.</p>
+<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Last built from <a href="https://github.com/alehel/iwork-format">alehel/iwork-format</a>.</p></footer>
+</main>
+
+</div>
+</body>
+</html>

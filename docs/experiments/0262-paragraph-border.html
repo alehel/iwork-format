@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0262: A paragraph border · iWork file format specification</title>
+<meta name="description" content="iWork file format specification">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
+<div class="layout">
+<nav class="side" aria-label="Contents"><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="../guides/anatomy.html">Reading a Pages document</a></li><li><a href="../guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="../guides/writing.html">Writing a document</a></li><li><a href="../guides/samples.html">Sample files</a></li><li class="group">Specification</li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2–5. Text, styles, objects, layout</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li class="group">Evidence</li><li><a href="index.html">All experiments</a></li></ul></nav>
+<main>
+<h1 id="0262-a-paragraph-border">0262: A paragraph border<a class="anchor" href="#0262-a-paragraph-border" aria-label="Link to this section">#</a></h1>
+<p><strong>Status:</strong> run</p>
+<p>The Layout tab can draw lines around a paragraph. The line style is chosen from a pop-up that needs Pages in front. <a href="0250-shape-border.html">0250</a> found that a shape's border is a stroke with a colour, width and pattern. This experiment adds a paragraph border, to see whether it uses the same form.</p>
+<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Pages</td><td>15.4 (build <code>M15.4-7051.0.79-2</code>), in Norwegian</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-09</td></tr><tr><td>Baseline</td><td><code>samples/0236/plain.pages</code></td></tr></tbody></table></div>
+<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section">#</a></h2>
+<ol><li>Make a document with the body text <code>One</code>: ``<code>bash osascript -e &#x27;tell application &quot;Pages&quot; to set body text of (make new document) to &quot;One&quot;&#x27; </code><code></code></li><li>With Pages in front, click in <code>One</code>, open the Layout tab, and choose the first solid line from the Paragraph Borders (<em>Avsnittskantlinjer</em>) pop-up. Pages draws a black 1-point line above the paragraph, with an offset of 6 pt, and selects the top-edge button.</li><li>Save it as <code>samples/0262/border.pages</code>.</li></ol>
+<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section">#</a></h2>
+<p>The paragraph runs point at a new paragraph style whose properties, in field 12, are:</p>
+<pre><code>15: 1
+32: { 1: black, alpha 1,  2: 1.0,  3: 1,  4: 1,  5: 4.0,  6: { 1: 1, … } }
+45: 1</code></pre>
+<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section">#</a></h2>
+<p>Paragraph property 32 is the border's stroke. It has the same layout as a shape's stroke (field 1.11.2, <a href="0250-shape-border.html">0250</a>): colour in 1, width in points in 2, and the pattern kind in 6.1 (1, solid). Fields 3 and 4 are 1 here and 0 in a shape's stroke, so they are probably the line cap and join. One of properties 15 and 45 most likely says which edges get the line (the top here), and the other turns the border on. The 6-point offset isn't stored, so it is probably the default.</p>
+<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section">#</a></h2>
+<p><em>Likely</em>: paragraph property 32 is the border stroke, in the shape stroke's layout.</p>
+<p><em>Unknown</em>: properties 15 and 45. Follow-up: choose a different edge, such as the bottom.</p>
+<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Last built from <a href="https://github.com/alehel/iwork-format">alehel/iwork-format</a>.</p></footer>
+</main>
+
+</div>
+</body>
+</html>

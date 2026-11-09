@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0004: A larger word · iWork file format specification</title>
+<meta name="description" content="iWork file format specification">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
+<div class="layout">
+<nav class="side" aria-label="Contents"><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="../guides/anatomy.html">Reading a Pages document</a></li><li><a href="../guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="../guides/writing.html">Writing a document</a></li><li><a href="../guides/samples.html">Sample files</a></li><li class="group">Specification</li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2–5. Text, styles, objects, layout</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li class="group">Evidence</li><li><a href="index.html">All experiments</a></li></ul></nav>
+<main>
+<h1 id="0004-a-larger-word">0004: A larger word<a class="anchor" href="#0004-a-larger-word" aria-label="Link to this section">#</a></h1>
+<p><strong>Status:</strong> run</p>
+<p>The first style change. One word of two is set in a larger size, so the text has two runs, and a run table should show where the second starts. With an emoji in the text, the boundaries also show how the document itself counts positions.</p>
+<p>The AppleScript dictionary has no bold, but it can set the size, font and colour of a range of text. Size was used because it changes one value and nothing else.</p>
+<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Pages</td><td>15.4 (build <code>M15.4-7051.0.79-2</code>)</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-09</td></tr><tr><td>Baseline</td><td>The same text with no size change, saved by the same recipe (<code>plain.pages</code>, <code>emoji-plain.pages</code>)</td></tr></tbody></table></div>
+<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section">#</a></h2>
+<pre class="lang-bash"><code>mkdir -p samples/0004
+R=recipes/0004-larger-word.applescript
+osascript $R &quot;$PWD/samples/0004/plain.pages&quot; &quot;hello world&quot; 0
+osascript $R &quot;$PWD/samples/0004/large.pages&quot; &quot;hello world&quot;
+osascript $R &quot;$PWD/samples/0004/emoji-plain.pages&quot; &quot;hi🙂 world&quot; 0
+osascript $R &quot;$PWD/samples/0004/emoji-large.pages&quot; &quot;hi🙂 world&quot;</code></pre>
+<p>The recipe sets the body text, then sets the size of word 2 to 24 points. The body's default is 11 points. Pages splits <code>hi🙂 world</code> into three words, <code>hi</code>, <code>🙂</code> and <code>world</code>, so word 2 there is the emoji:</p>
+<div class="table"><table><thead><tr><th>Text</th><th>Word 2</th><th>Starts at (UTF-16 / code points / bytes)</th><th>Ends at (UTF-16 / code points / bytes)</th></tr></thead><tbody><tr><td><code>hello world</code></td><td><code>world</code></td><td>6 / 6 / 6</td><td>11 / 11 / 11</td></tr><tr><td><code>hi🙂 world</code></td><td><code>🙂</code></td><td>2 / 2 / 2</td><td>4 / 3 / 6</td></tr></tbody></table></div>
+<p>Records were paired by position within each part and compared as <code>iwork-probe proto --decoded</code> trees, as in 0002.</p>
+<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section">#</a></h2>
+<h3 id="a-run-table-in-the-bodys-type-2001-record">A run table in the body's type-2001 record<a class="anchor" href="#a-run-table-in-the-bodys-type-2001-record" aria-label="Link to this section">#</a></h3>
+<p>The body's type-2001 record (object 1732539) gains a field 8 that the plain documents don't have. For <code>hello world</code>:</p>
+<pre><code>8: message (14 bytes)
+  1: message (2 bytes)
+    1: varint 0
+  1: message (8 bytes)
+    1: varint 6
+    2: message (4 bytes)
+      1: varint 1732647</code></pre>
+<p>For <code>hi🙂 world</code>:</p>
+<pre><code>8: message (18 bytes)
+  1: message (2 bytes)
+    1: varint 0
+  1: message (8 bytes)
+    1: varint 2
+    2: message (4 bytes)
+      1: varint 1732647
+  1: message (2 bytes)
+    1: varint 4</code></pre>
+<p>Each entry is a start position and, optionally, an object. In <code>hello world</code> the larger word runs to the end of the text, so there's no entry after it. In <code>hi🙂 world</code> the run ends at 4, and an entry with no object starts there. Nothing else in record 2001 changed, including the text.</p>
+<h3 id="the-new-object">The new object<a class="anchor" href="#the-new-object" aria-label="Link to this section">#</a></h3>
+<p>Both documents with a larger word have one record more in <code>DocumentStylesheet.iwa</code>: object 1732647, type 2021, 25 bytes:</p>
+<pre><code>1: message (14 bytes)
+  3: message (4 bytes)
+    1: varint 1731539
+  4: varint 1
+  5: message (4 bytes)
+    1: varint 1732613
+10: varint 1
+11: message (5 bytes)
+  3: fixed32 1103101952 (as float 24)</code></pre>
+<p>Object 1731539 is also of type 2021, and its payload holds the texts <code>Ingen</code> (Norwegian for "None") and <code>character-style-null</code>. Object 1732613 is the type-401 object that record 2001 names in its field 2. That object grew by 20 bytes, and <code>Metadata.iwa</code> record 2 gained entries naming 1732647.</p>
+<h3 id="what-the-other-lists-point-at">What the other lists point at<a class="anchor" href="#what-the-other-lists-point-at" aria-label="Link to this section">#</a></h3>
+<p>The objects named by the body's other lists, from 0002, hold these texts:</p>
+<div class="table"><table><thead><tr><th>Field of 2001</th><th>Object</th><th>Type</th><th>Texts in it</th></tr></thead><tbody><tr><td>5</td><td>1731511</td><td>2022</td><td><code>Brødtekst</code>, <code>text-20-paragraphstyle-Body 1</code>, <code>HelveticaNeue</code></td></tr><tr><td>7</td><td>1731481</td><td>2023</td><td><code>Ingen</code>, <code>text-0-liststyle-None</code></td></tr><tr><td>12</td><td>1732607</td><td>2024</td><td>(none)</td></tr></tbody></table></div>
+<p>The 18 other type-2001 records name object 1731520 in field 5. It is of type 2022 and holds <code>Topptekst og bunntekst</code> (Norwegian for "Header and footer") and <code>text-29-paragraphstyle-Header &amp; Footer</code>.</p>
+<p><code>DocumentStylesheet.iwa</code> holds 242 records of type 2022, 9 of type 2021 and 9 of type 2023.</p>
+<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section">#</a></h2>
+<p>Field 8 of a type-2001 record is a table of character-style runs. Each entry starts a run at a position in the text, and its field 2 names the style for that run. An entry without field 2 means no character style. A run lasts until the next entry, or to the end of the text.</p>
+<p>Setting a size made Pages create a new, unnamed character style (type 2021). It holds the size and inherits from the null character style. So type 2021 is a character style, 2022 a paragraph style and 2023 a list style, going by the identifiers and names they carry. Type 401, which holds them, is probably the stylesheet. Fields 5 and 7 of record 2001 are then likely the paragraph-style and list-style runs. They have one entry each, since the text has one paragraph.</p>
+<p>The boundaries in <code>hi🙂 world</code> are 2 and 4, and the emoji is the only character between them. As code points that range would be 2 to 3, and as bytes 2 to 6. So positions in the text count UTF-16 code units, which agrees with what <code>ViewState.iwa</code> showed in 0003.</p>
+<p>The 18 type-2001 records that use the header-and-footer paragraph style are probably the text of the document's headers and footers. They are empty in a new document.</p>
+<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section">#</a></h2>
+<p><em>Confirmed</em>: positions in the text count UTF-16 code units (0003 and this experiment).</p>
+<p><em>Likely</em>: field 8 of type 2001 is the character-style run table, with entries as described. Type 2021 is a character style, and its field 11.3 is the font size as a float. Types 2022 and 2023 are paragraph and list styles, and fields 5 and 7 of type 2001 are their run tables. Follow-ups:</p>
+<ul><li>Change the size of the middle of three words, then of two separate words. That should show whether the table always closes a run with an entry, and whether two runs share one style object.</li><li>Use two paragraphs with different paragraph styles, which should add a second entry to field 5.</li></ul>
+<p><em>Unknown</em>: what type 2024 is and what field 12 of type 2001 means. The same goes for fields 6, 14, 17, 24 and 28, and the other fields of a character style.</p>
+<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Last built from <a href="https://github.com/alehel/iwork-format">alehel/iwork-format</a>.</p></footer>
+</main>
+
+</div>
+</body>
+</html>

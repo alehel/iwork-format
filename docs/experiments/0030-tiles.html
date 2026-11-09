@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0030: A second tile · iWork file format specification</title>
+<meta name="description" content="iWork file format specification">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
+<div class="layout">
+<nav class="side" aria-label="Contents"><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="../guides/anatomy.html">Reading a Pages document</a></li><li><a href="../guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="../guides/writing.html">Writing a document</a></li><li><a href="../guides/samples.html">Sample files</a></li><li class="group">Specification</li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2–5. Text, styles, objects, layout</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li class="group">Evidence</li><li><a href="index.html">All experiments</a></li></ul></nav>
+<main>
+<h1 id="0030-a-second-tile">0030: A second tile<a class="anchor" href="#0030-a-second-tile" aria-label="Link to this section">#</a></h1>
+<p><strong>Status:</strong> run</p>
+<p><a href="0029-numbers-root-to-table.html">0029</a> found that a table model lists its tiles in field 4.3, next to the value 256, and guessed that a tile covers 256 rows. This experiment fills row 300 of a Numbers table to see whether a second tile appears.</p>
+<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Numbers</td><td>15.4 (build <code>M15.4-7051.0.79-2</code>)</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-09</td></tr><tr><td>Baseline</td><td>Experiment <a href="0026-numbers-cells.html">0026</a>, <code>cells.numbers</code></td></tr></tbody></table></div>
+<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section">#</a></h2>
+<pre class="lang-bash"><code>mkdir -p samples/0030
+osascript recipes/0030-numbers-row-300.applescript &quot;$PWD/samples/0030/row-300.numbers&quot;</code></pre>
+<p>The recipe makes a new spreadsheet, sets the first table's row count to 300, and puts 42 in B2 and 7 in B300.</p>
+<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section">#</a></h2>
+<p>The table model (type 6001) now has 300 rows (field 6) and lists two tiles in field 4.3:</p>
+<pre><code>3:
+  1: { 1: 0, 2: { 1: 904547 } }      ← Tables/Tile.iwa
+  1: { 1: 1, 2: { 1: 905237 } }      ← Tables/Tile-905237.iwa
+  2: 256</code></pre>
+<p>The two tiles:</p>
+<div class="table"><table><thead><tr><th>Tile</th><th>Index</th><th>Field 4</th><th>Row entries (field 5.1)</th></tr></thead><tbody><tr><td>904547</td><td>0</td><td>1</td><td>1</td></tr><tr><td>905237</td><td>1</td><td>1</td><td>43</td></tr></tbody></table></div>
+<p>Row 43 of tile 1 is row 256 + 43 = 299 counted from 0, which is row 300.</p>
+<p>The file has a third tile, <code>Tables/Tile-905022-2.iwa</code>, with no rows (field 4 is 0). It is reached from the sheet through the drawable and a type-6316 record, not through the table model. <code>samples/0026/cells.numbers</code> already had it, along with three <code>HeaderStorageBucket-N-2.iwa</code> parts.</p>
+<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section">#</a></h2>
+<p>A table's rows are split into tiles of 256 rows each. The model lists them in field 4.3, with the tile index in 4.3.1.1, and the tile size in 4.3.2. Row numbers inside a tile (field 5.1) are local to the tile. A cell's row in the table is the tile index × 256 + the local row. A tile's field 4 counts the rows in it that have content.</p>
+<p>Numbers, like Pages, names some table parts with a <code>-2</code> ending: an empty tile and three header storage buckets in both <code>cells.numbers</code> and <code>row-300.numbers</code>. The <a href="0026-numbers-cells.html">0026</a> write-up said Numbers doesn't use the ending. That was wrong, because the comparison there collapsed part names, and it has been corrected. What the ending means is still unknown.</p>
+<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section">#</a></h2>
+<p><em>Likely</em>:</p>
+<ul><li>Tiles cover 256 rows each, as given by model field 4.3.2.</li><li>Row numbers in a tile are local.</li><li>Tile field 4 counts the rows with content.</li></ul>
+<p><em>Unknown</em>:</p>
+<ul><li>The <code>-2</code> ending of part names.</li><li>The type-6316 record that leads to the empty tile.</li></ul>
+<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Last built from <a href="https://github.com/alehel/iwork-format">alehel/iwork-format</a>.</p></footer>
+</main>
+
+</div>
+</body>
+</html>

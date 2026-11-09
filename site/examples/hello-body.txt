@@ -1,0 +1,17 @@
+1: varint 0
+2: message (4 bytes)
+  1: varint 1732613
+3: text (5 bytes) "hello"
+5: message (10 bytes)
+  1: message (8 bytes)
+    1: varint 0
+    2: message (4 bytes)
+      1: varint 1731511
+6: message (8 bytes)
+  1: message (6 bytes)
+    1: varint 0
+    2: varint 0
+    3: varint 0
+7: message (10 bytes)
+  1: message (8 bytes)
+…

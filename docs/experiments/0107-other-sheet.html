@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0107: A reference to another sheet · iWork file format specification</title>
+<meta name="description" content="iWork file format specification">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
+<div class="layout">
+<nav class="side" aria-label="Contents"><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="../guides/anatomy.html">Reading a Pages document</a></li><li><a href="../guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="../guides/writing.html">Writing a document</a></li><li><a href="../guides/samples.html">Sample files</a></li><li class="group">Specification</li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2–5. Text, styles, objects, layout</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li class="group">Evidence</li><li><a href="index.html">All experiments</a></li></ul></nav>
+<main>
+<h1 id="0107-a-reference-to-another-sheet">0107: A reference to another sheet<a class="anchor" href="#0107-a-reference-to-another-sheet" aria-label="Link to this section">#</a></h1>
+<p><strong>Status:</strong> run</p>
+<p><a href="0031-cell-kinds.html">0031</a>, <a href="0035-formula-references.html">0035</a>, <a href="0064-operators-and-functions.html">0064</a> and <a href="0066-comparisons-and-if.html">0066</a> decoded formula nodes for numbers, references, ranges, operators and a few functions. This experiment, one of ten (0103–0112) that each write one formula, asks: how is a reference to a table on another sheet stored? <a href="0065-cross-table-reference.html">0065</a> found a table's UUID in references to another table on the same sheet.</p>
+<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Numbers</td><td>15.4 (build <code>M15.4-7051.0.79-2</code>), with a Norwegian (nb) user interface</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-09</td></tr><tr><td>Baseline</td><td>Experiment <a href="0064-operators-and-functions.html">0064</a></td></tr></tbody></table></div>
+<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section">#</a></h2>
+<pre class="lang-bash"><code>mkdir -p samples/0107
+osascript recipes/0103-numbers-formula.applescript &quot;$PWD/samples/0107/other-sheet.numbers&quot; &#x27;=Andre::Tabell 1::B2&#x27; Andre</code></pre>
+<p>The recipe sets B2 to 4 and C2 to 2, and writes <code>=Andre::Tabell 1::B2</code> in E2. It first adds a sheet named <code>Andre</code> (Norwegian for "Other"), whose table has 9 in B2.</p>
+<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section">#</a></h2>
+<p>The formula is one node:</p>
+<pre><code>36  26: {1: 5, 2: 0}  27: {1: 0, 2: 0}  28: {1: {2: 3398054789, 3: 3343495759, 4: 2618425731, 5: 1596672360}}</code></pre>
+<p>The cell holds 9.</p>
+<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section">#</a></h2>
+<p>A reference to a table on another sheet is stored exactly like a reference to another table on the same sheet (<a href="0065-cross-table-reference.html">0065</a>): by the table's UUID in field 28, with no mention of the sheet. Table UUIDs are unique in the document, so the sheet isn't needed.</p>
+<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section">#</a></h2>
+<p><em>Likely</em>: references name the target table by UUID only, whichever sheet it is on.</p>
+<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Last built from <a href="https://github.com/alehel/iwork-format">alehel/iwork-format</a>.</p></footer>
+</main>
+
+</div>
+</body>
+</html>

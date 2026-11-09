@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0275: A radial gradient · iWork file format specification</title>
+<meta name="description" content="iWork file format specification">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
+<div class="layout">
+<nav class="side" aria-label="Contents"><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="../guides/anatomy.html">Reading a Pages document</a></li><li><a href="../guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="../guides/writing.html">Writing a document</a></li><li><a href="../guides/samples.html">Sample files</a></li><li class="group">Specification</li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2–5. Text, styles, objects, layout</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li class="group">Evidence</li><li><a href="index.html">All experiments</a></li></ul></nav>
+<main>
+<h1 id="0275-a-radial-gradient">0275: A radial gradient<a class="anchor" href="#0275-a-radial-gradient" aria-label="Link to this section">#</a></h1>
+<p><strong>Status:</strong> run</p>
+<p><a href="0260-gradient-fill.html">0260</a> read a linear gradient fill, with its kind in field 1 (0) and an unexplained field 4 (0). The Fill pop-up's Advanced Gradient Fill can also be radial. This experiment makes one.</p>
+<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Pages</td><td>15.4 (build <code>M15.4-7051.0.79-2</code>), in Norwegian</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-09</td></tr><tr><td>Baseline</td><td>Experiment <a href="0260-gradient-fill.html">0260</a>, a linear gradient at 270°</td></tr></tbody></table></div>
+<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section">#</a></h2>
+<pre class="lang-bash"><code>mkdir -p samples/0275
+osascript recipes/0213-pages-shape.applescript 1</code></pre>
+<p>The new shape is left selected. Then, with Pages in front:</p>
+<ol><li>Choose Advanced Gradient Fill (<em>Avansert forløpningsfyll</em>) from the Fill pop-up.</li><li>Click the radial button beside the angle. The sidebar shows 315°, and the gradient now spreads from the shape's centre.</li><li>Save as <code>samples/0275/radial.pages</code>.</li></ol>
+<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section">#</a></h2>
+<p>The fill's gradient (style field 1.11.1.2) has the same two blue stops as 0260 and differs in:</p>
+<div class="table"><table><thead><tr><th>Field</th><th>Linear (0260)</th><th>Radial</th></tr></thead><tbody><tr><td>1</td><td>0</td><td>1</td></tr><tr><td>4</td><td>0</td><td>1</td></tr><tr><td>5.2</td><td>4.712389 (270°)</td><td>5.497787 (315°)</td></tr></tbody></table></div>
+<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section">#</a></h2>
+<p>Gradient field 1 is the kind: 0 linear, 1 radial. Field 4 is 1 for a gradient made with the advanced editor, which lets stops be added and moved, and 0 for the simple two-colour one. For a radial gradient the angle (field 5.2, in radians) probably sets the direction from the centre to the handle the sidebar draws, here towards the bottom-right corner, which marks the outer edge of the gradient.</p>
+<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section">#</a></h2>
+<p><em>Likely</em>: gradient field 1 is 0 for linear and 1 for radial.</p>
+<p><em>Unknown</em>: whether field 4 marks the advanced editor, and how a radial gradient's centre and radius are set. Follow-up: an advanced linear gradient.</p>
+<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Last built from <a href="https://github.com/alehel/iwork-format">alehel/iwork-format</a>.</p></footer>
+</main>
+
+</div>
+</body>
+</html>

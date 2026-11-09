@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0156: The page layout template · iWork file format specification</title>
+<meta name="description" content="iWork file format specification">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
+<div class="layout">
+<nav class="side" aria-label="Contents"><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="../guides/anatomy.html">Reading a Pages document</a></li><li><a href="../guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="../guides/writing.html">Writing a document</a></li><li><a href="../guides/samples.html">Sample files</a></li><li class="group">Specification</li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2–5. Text, styles, objects, layout</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li class="group">Evidence</li><li><a href="index.html">All experiments</a></li></ul></nav>
+<main>
+<h1 id="0156-the-page-layout-template">0156: The page layout template<a class="anchor" href="#0156-the-page-layout-template" aria-label="Link to this section">#</a></h1>
+<p><strong>Status:</strong> run</p>
+<p>Pages makes word-processing and page-layout documents. This experiment makes a document from the blank page layout template, to see what tells them apart.</p>
+<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Pages</td><td>15.4 (build <code>M15.4-7051.0.79-2</code>)</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-09</td></tr><tr><td>Baseline</td><td><code>samples/0020/plain.pages</code> (the body text <code>one</code>)</td></tr></tbody></table></div>
+<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section">#</a></h2>
+<pre class="lang-bash"><code>mkdir -p samples/0156
+osascript recipes/0149-pages-text.applescript layout &quot;$PWD/samples/0156/layout.pages&quot;</code></pre>
+<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section">#</a></h2>
+<p>The document root has the usual fields, and its field 4 still names a type-2001 text record, but that record has no text (no field 3). Field 15.9 is <code>Application/21_Blank_Layout/ISO</code>.</p>
+<p>The root also has a field 48, absent from word-processing documents, which names a record of type 10017. That record has the name <code>Tom</code> (the app's word for Blank) in field 1, and field 7 names an empty record of type 3047. Pages reports <code>document body</code> as false for the document.</p>
+<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section">#</a></h2>
+<p>A page-layout document still has a body text record, but it's empty, and the document has no body to flow text into. What marks the document as page layout is probably root field 48, which names a page template (type 10017). A reader should take a page-layout document's content from the objects on its pages.</p>
+<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section">#</a></h2>
+<p><em>Likely</em>: root field 48 is present only in page-layout documents and names a page template (type 10017).</p>
+<p><em>Unknown</em>: whether any other flag marks the document type.</p>
+<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Last built from <a href="https://github.com/alehel/iwork-format">alehel/iwork-format</a>.</p></footer>
+</main>
+
+</div>
+</body>
+</html>

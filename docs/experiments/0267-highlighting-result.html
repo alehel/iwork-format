@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0267: Where the highlighting result is kept · iWork file format specification</title>
+<meta name="description" content="iWork file format specification">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
+<div class="layout">
+<nav class="side" aria-label="Contents"><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="../guides/anatomy.html">Reading a Pages document</a></li><li><a href="../guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="../guides/writing.html">Writing a document</a></li><li><a href="../guides/samples.html">Sample files</a></li><li class="group">Specification</li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2–5. Text, styles, objects, layout</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li class="group">Evidence</li><li><a href="index.html">All experiments</a></li></ul></nav>
+<main>
+<h1 id="0267-where-the-highlighting-result-is-kept">0267: Where the highlighting result is kept<a class="anchor" href="#0267-where-the-highlighting-result-is-kept" aria-label="Link to this section">#</a></h1>
+<p><strong>Status:</strong> run</p>
+<p><a href="0259-conditional-highlighting.html">0259</a> found that cells under a conditional highlighting rule gain flag bits 0x80 and 0x100, each followed by a key. It concluded that the match isn't cached, but compared only the flags, not the keys of matching and non-matching cells. This experiment compares the keys, using the sample from 0259.</p>
+<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Numbers</td><td>15.4, in Norwegian</td></tr><tr><td>Date</td><td>2026-11-09</td></tr><tr><td>Sample</td><td><code>samples/0259/highlight.numbers</code>: n = 1, 2, 3, 4 in B2–B5, highlighted where greater than 2</td></tr></tbody></table></div>
+<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section">#</a></h2>
+<p>Each cell of column B in <code>Index/Tables/Tile.iwa</code> was split as in <a href="0031-cell-kinds.html">0031</a>, and the 32-bit keys after the decimal value were read in the order of their flag bits.</p>
+<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section">#</a></h2>
+<p>All four cells have the flags 0x3181 and four keys:</p>
+<div class="table"><table><thead><tr><th>Cell</th><th>Value</th><th>Matches</th><th>Key for 0x80</th><th>Key for 0x100</th><th>0x1000</th><th>0x2000</th></tr></thead><tbody><tr><td>B2</td><td>1</td><td>no</td><td>1</td><td>15</td><td>1</td><td>2</td></tr><tr><td>B3</td><td>2</td><td>no</td><td>1</td><td>15</td><td>1</td><td>2</td></tr><tr><td>B4</td><td>3</td><td>yes</td><td>1</td><td>0</td><td>1</td><td>2</td></tr><tr><td>B5</td><td>4</td><td>yes</td><td>1</td><td>0</td><td>1</td><td>2</td></tr></tbody></table></div>
+<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section">#</a></h2>
+<p>The key for flag 0x80 is the cell's entry in the conditional-format list (type 9), here entry 1, shared by all four cells. The key for flag 0x100 records the result: 0 where the cell matches, and 15 where it doesn't. 0 is most likely the index of the first rule that matched, and 15 a value meaning none. So Numbers does cache which rule applies to each cell, and a reader can show the highlighting without evaluating the rule. This corrects the conclusion of 0259.</p>
+<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section">#</a></h2>
+<p><em>Likely</em>:</p>
+<ul><li>Flag 0x80's key is the cell's conditional-format entry.</li><li>Flag 0x100's key is the matching rule, 15 for none.</li></ul>
+<p><em>Unknown</em>: the value for a second rule. Follow-up: two rules matching different cells.</p>
+<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Last built from <a href="https://github.com/alehel/iwork-format">alehel/iwork-format</a>.</p></footer>
+</main>
+
+</div>
+</body>
+</html>

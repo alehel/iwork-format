@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0284: Image adjustments · iWork file format specification</title>
+<meta name="description" content="iWork file format specification">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
+<div class="layout">
+<nav class="side" aria-label="Contents"><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="../guides/anatomy.html">Reading a Pages document</a></li><li><a href="../guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="../guides/writing.html">Writing a document</a></li><li><a href="../guides/samples.html">Sample files</a></li><li class="group">Specification</li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2–5. Text, styles, objects, layout</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li class="group">Evidence</li><li><a href="index.html">All experiments</a></li></ul></nav>
+<main>
+<h1 id="0284-image-adjustments">0284: Image adjustments<a class="anchor" href="#0284-image-adjustments" aria-label="Link to this section">#</a></h1>
+<p><strong>Status:</strong> run</p>
+<p>Pages can adjust an image's exposure and saturation in the Image tab, without changing the original file. This experiment sets both, to see whether Pages stores the settings, an adjusted copy, or both.</p>
+<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Pages</td><td>15.4 (build <code>M15.4-7051.0.79-2</code>), in Norwegian</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-09</td></tr><tr><td>Baseline</td><td><code>samples/0244/media-placeholder.pages</code>, the same image, unadjusted</td></tr></tbody></table></div>
+<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section">#</a></h2>
+<pre class="lang-bash"><code>mkdir -p samples/0284
+osascript recipes/0244-pages-image.applescript &quot;$PWD/samples/0023/red-8x4.png&quot;</code></pre>
+<p>The new image is left selected. Then, with Pages in front, open the Image tab (<em>Bilde</em>), type 30 into Exposure (<em>Eksponering</em>) and −40 into Saturation (<em>Metning</em>), and save as <code>samples/0284/adjusted.pages</code>. The red image turns a paler pink.</p>
+<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section">#</a></h2>
+<p>The package holds the original <code>Data/red-8x4-24.png</code> and a new <code>Data/red-8x4-filtered-26.jpeg</code> (787 bytes). The image record (type 3005) gains:</p>
+<pre><code>14: { 1: 0.3, 2: -0.4, 13: 0, 14: 0 }
+15: { 1: 26 }       ← the data ID of the filtered JPEG</code></pre>
+<p>(Its field 7 differs from the baseline only because the baseline is a media placeholder.)</p>
+<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section">#</a></h2>
+<p>Adjustments are stored twice:</p>
+<ul><li><strong>As settings, in image field 14:</strong> exposure in 14.1 and saturation in 14.2, as fractions (30% is 0.3 and −40% is −0.4).</li><li><strong>As a rendered copy:</strong> a JPEG named <code>…-filtered-N</code>, which field 15 points at.</li></ul>
+<p>The original image is kept, so the adjustments can be undone. A reader that can't apply filters should draw the filtered copy named in field 15, which is what Pages shows. The other adjustments the sidebar can reveal are probably further fields of 14.</p>
+<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section">#</a></h2>
+<p><em>Likely</em>:</p>
+<ul><li>Image field 14 holds the adjustments as fractions.</li><li>Field 15 names a pre-rendered filtered copy.</li></ul>
+<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Last built from <a href="https://github.com/alehel/iwork-format">alehel/iwork-format</a>.</p></footer>
+</main>
+
+</div>
+</body>
+</html>

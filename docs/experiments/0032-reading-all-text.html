@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0032: Reading the text of every sample · iWork file format specification</title>
+<meta name="description" content="iWork file format specification">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
+<div class="layout">
+<nav class="side" aria-label="Contents"><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="../guides/anatomy.html">Reading a Pages document</a></li><li><a href="../guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="../guides/writing.html">Writing a document</a></li><li><a href="../guides/samples.html">Sample files</a></li><li class="group">Specification</li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2–5. Text, styles, objects, layout</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li class="group">Evidence</li><li><a href="index.html">All experiments</a></li></ul></nav>
+<main>
+<h1 id="0032-reading-the-text-of-every-sample">0032: Reading the text of every sample<a class="anchor" href="#0032-reading-the-text-of-every-sample" aria-label="Link to this section">#</a></h1>
+<p><strong>Status:</strong> run</p>
+<p>A check of the text layer against everything saved so far. <code>iwork-probe</code> gained a <code>text</code> command built only on <a href="../spec/text.html">spec/text.md</a>: it prints field 3 of every type-2001 record, with field 1's value. If the spec is right, it should print exactly the text each earlier experiment put in its documents.</p>
+<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Apps</td><td>Pages, Keynote and Numbers 15.4 (build <code>M15.4-7051.0.79-2</code>)</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-09</td></tr><tr><td>Documents</td><td>All 61 samples from experiments 0001–0031</td></tr></tbody></table></div>
+<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section">#</a></h2>
+<pre class="lang-bash"><code>cargo run --release -- text samples/0016/header.pages
+for f in samples/*/*.pages samples/*/*.key samples/*/*.numbers; do cargo run --release -q -- text &quot;$f&quot;; done</code></pre>
+<p><code>text</code> shows breaks as new lines, a page break (U+0005) as <code>[page break]</code> and an anchored object (U+FFFC) as <code>[object]</code>.</p>
+<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section">#</a></h2>
+<p><code>text</code> read all 61 documents without an error.</p>
+<h3 id="pages">Pages<a class="anchor" href="#pages" aria-label="Link to this section">#</a></h3>
+<p>For every Pages sample, the text matched what its experiment recorded:</p>
+<ul><li>the body text, with its paragraphs, line breaks and page breaks (<code>one [page break] Two</code> in 0018 and 0019)</li><li><code>[object]</code> where a table was inserted (0020, 0021)</li><li>the header and footer texts of 0016, 0018 and 0019, each in its own record with field 1 = 1</li></ul>
+<p>Empty documents (0001) printed nothing.</p>
+<h3 id="numbers">Numbers<a class="anchor" href="#numbers" aria-label="Link to this section">#</a></h3>
+<p>Every Numbers sample has one text record, in <code>Document.iwa</code>, with field 1 = 1 and the text U+FFFC alone. In <code>samples/0026/cells.numbers</code> it is object 904667. Header references lead to it from the root through the sheet: 1 (type 1) → 904532 (type 2, the sheet) → 904667 (type 2001).</p>
+<p>Its field 9 has one entry, at position 0, like a Pages attachment run. But it points at object 904995, which isn't a type-2003 attachment. It is type 2043 with only these fields:</p>
+<pre><code>1: { 2: 0 }
+2: 0
+4: text &quot;decimal&quot;</code></pre>
+<p>It lists no references. The table itself is reached from the sheet's field 2, not from this text (<a href="0029-numbers-root-to-table.html">0029</a>).</p>
+<h3 id="keynote">Keynote<a class="anchor" href="#keynote" aria-label="Link to this section">#</a></h3>
+<p>Besides the slide title of 0025, each Keynote sample has text records in the slide part and in the 17 template slide parts, with no field 1. The template slides hold the theme's placeholder texts in Norwegian, such as <code>Presentasjonstittel</code> (Presentation title) and <code>Brødtekst nivå én</code> (Body level one). Some contain U+00AD (soft hyphen), as in <code>Present\u{ad}asjons\u{ad}tittel</code>.</p>
+<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section">#</a></h2>
+<p>The text layer holds for every document saved so far: a reader that knows only type 2001 and field 3 gets all the text of a Pages document. That includes its headers and footers and the positions of anchored objects.</p>
+<p>Field 1 of a text record doesn't mean the same thing in every app. In Pages, 0 is the body and 1 a header or footer. In Numbers, a sheet owns a text record with field 1 = 1 whose only character is U+FFFC. Keynote leaves field 1 out. <code>iwork-probe text</code> therefore reports field 1's value rather than naming it.</p>
+<p><em>Note after <a href="0048-page-number.html">0048</a>:</em> the type-2043 record is a page number field, with <code>decimal</code> as its number format. So the sheet's text holds a page number. What the Numbers sheet's text is for isn't clear. Its single U+FFFC has a field-9 entry like an anchored object's, but the entry points at a type-2043 record holding the word <code>decimal</code>, not at the table. So field 9 entries can point at more than one kind of record. The table is not anchored through this text.</p>
+<p>A Keynote theme's placeholder texts are stored in the template slides. Texts can contain U+00AD, so a reader that displays text should treat it as a soft hyphen.</p>
+<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section">#</a></h2>
+<p><em>Confirmed</em>: field 3 of every type-2001 record is the text, in Pages, Keynote and Numbers. This holds over 61 documents with no exception.</p>
+<p><em>Likely</em>: field 1 = 1 doesn't mean "header or footer" outside Pages.</p>
+<p><em>Unknown</em>:</p>
+<ul><li>What the Numbers sheet's text and its type-2043 field-9 target (<code>decimal</code>) are for. Follow-up: add a second table or a text box to a Numbers sheet, and see whether this text gains characters.</li><li>Whether field 9 targets other than type 2003 occur in Pages.</li></ul>
+<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Last built from <a href="https://github.com/alehel/iwork-format">alehel/iwork-format</a>.</p></footer>
+</main>
+
+</div>
+</body>
+</html>

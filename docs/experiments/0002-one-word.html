@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0002: One word · iWork file format specification</title>
+<meta name="description" content="iWork file format specification">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
+<div class="layout">
+<nav class="side" aria-label="Contents"><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="../guides/anatomy.html">Reading a Pages document</a></li><li><a href="../guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="../guides/writing.html">Writing a document</a></li><li><a href="../guides/samples.html">Sample files</a></li><li class="group">Specification</li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2–5. Text, styles, objects, layout</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li class="group">Evidence</li><li><a href="index.html">All experiments</a></li></ul></nav>
+<main>
+<h1 id="0002-one-word">0002: One word<a class="anchor" href="#0002-one-word" aria-label="Link to this section">#</a></h1>
+<p><strong>Status:</strong> run</p>
+<p>The first change from the baseline: a document whose body text is a single word. It asks where Pages stores the body text, and how.</p>
+<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Pages</td><td>15.4 (build <code>M15.4-7051.0.79-2</code>)</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-09</td></tr><tr><td>Baseline</td><td>Experiment <a href="0001-empty-document.html">0001</a>, <code>empty-a.pages</code></td></tr></tbody></table></div>
+<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section">#</a></h2>
+<pre class="lang-bash"><code>mkdir -p samples/0002
+osascript recipes/0002-one-word.applescript &quot;$PWD/samples/0002/hello.pages&quot;
+osascript recipes/0002-one-word.applescript &quot;$PWD/samples/0002/hullo.pages&quot; hullo
+cargo run --release -- records samples/0002/hello.pages Index/Document.iwa</code></pre>
+<p>The recipe makes a new document, sets its body text through AppleScript and saves it. <code>hullo</code> differs from <code>hello</code> by one letter, so comparing the two separates the text from everything else that changes when there is text at all.</p>
+<p>The records were paired by position within each part, since the type sequence of every part matched between files. Each pair's payload was then compared as <code>iwork-probe proto --decoded</code> trees.</p>
+<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section">#</a></h2>
+<p>Both files hold the same 13 parts as in 0001. The chunk and record layout from 0001 held for every byte of all 14 <code>.iwa</code> parts, every chunk had type 0, and every part had the same number of records, in the same type order, as the baseline.</p>
+<p>Sizes that changed from the empty document: <code>Document.iwa</code> (7,683 → 7,690 bytes stored, 14,148 → 14,155 decoded), <code>CalculationEngine-1732610.iwa</code>, and the three previews.</p>
+<h3 id="where-the-word-is">Where the word is<a class="anchor" href="#where-the-word-is" aria-label="Link to this section">#</a></h3>
+<p>One record carries the text: <code>Document.iwa</code>, object 1732539, type 2001. (<code>Document.iwa</code> holds 19 records of type 2001; this is the only one that changed. See <a href="0003-non-ascii-word.html">0003</a>.) In the empty document its payload is 97 bytes. With <code>hello</code> it is 104 bytes, and the only difference is one new field:</p>
+<pre><code> 1: varint 0
+ 2: message (4 bytes)
+   1: varint 1732613
++3: text (5 bytes) &quot;hello&quot;
+ 5: message (10 bytes)</code></pre>
+<p>The empty document has no field 3 at all, not an empty one. The word is stored as its five bytes with no terminator, no length prefix beyond the field's own, and no trailing paragraph break.</p>
+<p>Comparing <code>hello</code> with <code>hullo</code>, the same field is the only part of any record that changed, apart from the save-to-save changes listed below. Unlike in 0001, the IDs of objects made at save time came out the same in both files.</p>
+<pre><code>## Document id 1732539 type 2001 len 104-&gt;104
+-3: text (5 bytes) &quot;hello&quot;
++3: text (5 bytes) &quot;hullo&quot;</code></pre>
+<h3 id="the-rest-of-record-2001">The rest of record 2001<a class="anchor" href="#the-rest-of-record-2001" aria-label="Link to this section">#</a></h3>
+<p>The other fields are identical in the empty and one-word documents. Several share one shape: a message holding a list of entries, each a number (0 in every entry here) and a message whose field 1 is an object ID:</p>
+<div class="table"><table><thead><tr><th>Field</th><th>Entry</th><th>Object it names</th></tr></thead><tbody><tr><td>2</td><td>(no list)</td><td>1732613: <code>DocumentStylesheet.iwa</code>, type 401, 19,816 bytes</td></tr><tr><td>5</td><td>0 → 1731511</td><td><code>DocumentStylesheet.iwa</code>, type 2022</td></tr><tr><td>7</td><td>0 → 1731481</td><td><code>DocumentStylesheet.iwa</code>, type 2023</td></tr><tr><td>12</td><td>0 → 1732607</td><td><code>DocumentStylesheet.iwa</code>, type 2024</td></tr><tr><td>17</td><td>0 → 1732296</td><td><code>Document.iwa</code>, type 10011</td></tr></tbody></table></div>
+<p>Fields 6, 14 and 24 each hold an entry of three zeros, field 28 an entry of one zero, and field 10 is the varint 1. A single-entry list starting at 0 is what a table of runs over the text would look like when one run covers everything, but nothing here shows the runs yet.</p>
+<h3 id="what-else-changed">What else changed<a class="anchor" href="#what-else-changed" aria-label="Link to this section">#</a></h3>
+<p><em>Corrected after <a href="0003-non-ascii-word.html">0003</a>:</em> two records in <code>ViewState.iwa</code> also hold the text's length (5 here, 0 in the empty document), and some floats in them change. The first version of this write-up missed both.</p>
+<p>Everything else that differs from the baseline also differed between the two empty documents in 0001: the UUIDs, the creation time in record type 10012, the IDs of objects made at save time and the references to them, and a list in <code>Metadata.iwa</code> record 2 whose entries come in a different order. That reordering turns up between <code>empty-a</code> and <code>empty-b</code> as well, so it is noise.</p>
+<p><code>CalculationEngine-1732610.iwa</code> record type 4000 holds a fixed64 that reads as a double of seconds since 2001-01-01 (815,918,420 → 2026-11-09), next to the text <code>Europe/Oslo</code>. It and several 128-bit-looking values (four varints in a message) change on every save, empty or not.</p>
+<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section">#</a></h2>
+<p>The body text of a Pages document is stored as UTF-8 (at least for ASCII) in field 3 of one of the type-2001 records in <code>Document.iwa</code>. An empty body leaves the field out. Nothing else in the file changes when only the text's letters change, so a reader can find the text without understanding any other record.</p>
+<p>Record 2001 also points at the stylesheet (field 2) and at four other objects through lists that start at 0. Those look like the run tables that attach styles to ranges of the text, but this experiment can't tell, because a single word has only one run.</p>
+<p>The chunk and record layout from 0001 held again, so it is now <em>confirmed</em> and written up in <a href="../spec/container.html">spec/container.md</a>.</p>
+<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section">#</a></h2>
+<p><em>Confirmed</em>: the chunk and record layout (agrees with 0001).</p>
+<p><em>Likely</em>: body text is field 3 of the type-2001 record in <code>Document.iwa</code>, as bytes with no terminator. Two documents agree, but from one experiment. Follow-up: 0003 with a non-ASCII word, which also shows whether the text is UTF-8 and whether any offsets count bytes or characters.</p>
+<p><em>Unknown</em>: what types 401, 2022, 2023, 2024 and 10011 are, and what the lists in fields 5 to 28 mean. Follow-up: an experiment that makes part of the text bold, which should add a second entry to one of the lists.</p>
+<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Last built from <a href="https://github.com/alehel/iwork-format">alehel/iwork-format</a>.</p></footer>
+</main>
+
+</div>
+</body>
+</html>

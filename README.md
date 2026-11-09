@@ -45,6 +45,8 @@ The clean-room rules are in [CONTRIBUTING.md](CONTRIBUTING.md). Every contributo
 | [`recipes/`](recipes/) | AppleScript that reproduces each experiment's documents |
 | [`tool/`](tool/) | `iwork-probe`, the Rust tool for inspecting files |
 | `samples/` | Gitignored. Files Pages wrote, kept on your own machine only |
+| [`site/`](site/) | The spec site's guides, stylesheet and builder. `python3 -I site/examples.py` makes its excerpts, renders and sample files from `samples/`; `python3 -I site/build.py` writes the site |
+| [`docs/`](docs/) | The built site, plain HTML and CSS, for GitHub Pages. Don't edit it by hand |
 
 ## Using iwork-probe
 

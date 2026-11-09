@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0042: Colour and the style rule · iWork file format specification</title>
+<meta name="description" content="iWork file format specification">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
+<div class="layout">
+<nav class="side" aria-label="Contents"><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="../guides/anatomy.html">Reading a Pages document</a></li><li><a href="../guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="../guides/writing.html">Writing a document</a></li><li><a href="../guides/samples.html">Sample files</a></li><li class="group">Specification</li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2–5. Text, styles, objects, layout</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li class="group">Evidence</li><li><a href="index.html">All experiments</a></li></ul></nav>
+<main>
+<h1 id="0042-colour-and-the-style-rule">0042: Colour and the style rule<a class="anchor" href="#0042-colour-and-the-style-rule" aria-label="Link to this section">#</a></h1>
+<p><strong>Status:</strong> run</p>
+<p>The style rule of <a href="0033-style-resolution.html">0033</a> was tested for bold, italic, size and font, which Pages reports through the font name. This experiment checks the same rule for text colour (field 11.7, <a href="0013-text-colour.html">0013</a>), using the <code>color</code> that Pages reports for each word.</p>
+<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Pages</td><td>15.4 (build <code>M15.4-7051.0.79-2</code>)</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-09</td></tr><tr><td>Documents</td><td><code>samples/0013/red.pages</code>, <code>0013/blue</code>, <code>0013/mixed</code>, <code>0008/unbold-middle</code>, <code>0006/heading-ui</code></td></tr></tbody></table></div>
+<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section">#</a></h2>
+<p>Each document was opened in Pages through AppleScript. For each word of the body, <code>color</code> was read as three 16-bit components, and the document was closed without saving.</p>
+<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th>Document</th><th>Word</th><th>Colour Pages reports</th><th>Colour set in 0013</th></tr></thead><tbody><tr><td>0013/red</td><td>one, three</td><td>0, 0, 0</td><td>—</td></tr><tr><td></td><td>two</td><td>64633, 466, 1797</td><td>65535, 0, 0</td></tr><tr><td>0013/blue</td><td>one, three</td><td>0, 0, 0</td><td>—</td></tr><tr><td></td><td>two</td><td>7, 114, 65418</td><td>0, 0, 65535</td></tr><tr><td>0013/mixed</td><td>one, three</td><td>0, 0, 0</td><td>—</td></tr><tr><td></td><td>two</td><td>32767, 16381, 652</td><td>32768, 16384, 0</td></tr><tr><td>0008/unbold-middle</td><td>one, two, three</td><td>0, 0, 0</td><td>—</td></tr><tr><td>0006/heading-ui</td><td>One, two</td><td>0, 0, 0</td><td>—</td></tr></tbody></table></div>
+<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section">#</a></h2>
+<p>The rule of 0033 predicts these colours. Only the words whose character style sets field 11.7 have a colour, and every other word gets black from the Body or Heading paragraph style. That includes the bold paragraph of <code>unbold-middle</code>, whose unnamed paragraph style sets no colour and inherits Body's.</p>
+<p>The colour values don't survive a round trip through AppleScript: pure red comes back as 64633, 466, 1797. The file stores red as (1.0, 0.149, 0.0) (<a href="0013-text-colour.html">0013</a>). So Pages converts colours both when AppleScript sets them and when it reads them, and the stored components are in a different colour space from AppleScript's. Which one is still unknown.</p>
+<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section">#</a></h2>
+<p><em>Likely</em>: text colour follows the style rule of 0033.</p>
+<p><em>Unknown</em>: the colour space of stored colours. Follow-up: set a colour by its hex value in the Pages colour panel, with full-screen control, or by hand.</p>
+<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Last built from <a href="https://github.com/alehel/iwork-format">alehel/iwork-format</a>.</p></footer>
+</main>
+
+</div>
+</body>
+</html>

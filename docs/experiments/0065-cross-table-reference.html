@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0065: A reference to another table · iWork file format specification</title>
+<meta name="description" content="iWork file format specification">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
+<div class="layout">
+<nav class="side" aria-label="Contents"><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="../guides/anatomy.html">Reading a Pages document</a></li><li><a href="../guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="../guides/writing.html">Writing a document</a></li><li><a href="../guides/samples.html">Sample files</a></li><li class="group">Specification</li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2–5. Text, styles, objects, layout</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li class="group">Evidence</li><li><a href="index.html">All experiments</a></li></ul></nav>
+<main>
+<h1 id="0065-a-reference-to-another-table">0065: A reference to another table<a class="anchor" href="#0065-a-reference-to-another-table" aria-label="Link to this section">#</a></h1>
+<p><strong>Status:</strong> run</p>
+<p><a href="0035-formula-references.html">0035</a> decoded references to cells in the same table. <a href="0044-merged-cells.html">0044</a> saw a range node with a field 28 that looked like a UUID. This experiment writes a formula that refers to a cell in another table.</p>
+<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Numbers</td><td>15.4 (build <code>M15.4-7051.0.79-2</code>)</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-09</td></tr><tr><td>Baseline</td><td>Experiment <a href="0035-formula-references.html">0035</a></td></tr></tbody></table></div>
+<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section">#</a></h2>
+<pre class="lang-bash"><code>mkdir -p samples/0065
+osascript recipes/0065-numbers-cross-table.applescript &quot;$PWD/samples/0065/cross.numbers&quot;</code></pre>
+<p>The recipe adds a table named <code>Other</code> to the first sheet, sets its B2 to 9, and writes <code>=Other::B2</code> in E2 of the first table. Numbers shows 9 in E2.</p>
+<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section">#</a></h2>
+<p>The formula is a single cell reference node:</p>
+<pre><code>1: 36
+26: { 1: 5, 2: 0 }            column: zigzag −3, relative (E → B)
+27: { 1: 0, 2: 0 }            row: 0, relative
+28: { 1: { 2: 1367643781, 3: 2940280568, 4: 4033881747, 5: 2041614833 } }</code></pre>
+<p>The table <code>Other</code> has the UUID <code>85968451-F81E-41AF-9326-70F0F191B079</code> in its model's field 1. The four numbers in field 28, written as little-endian 32-bit words, give its bytes in order. For example, 1367643781 = 0x51849685 → <code>85 96 84 51</code>, and 2940280568 = 0xAF411EF8 → <code>f8 1e 41 af</code>.</p>
+<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section">#</a></h2>
+<p>A reference to another table carries that table's UUID in field 28.1, as four 32-bit numbers (fields 2–5) whose little-endian bytes make up the UUID. A reader matches it against field 1 of the table models. The column and row stay relative to the formula's cell, as within a table. The range node of a merge (<a href="0044-merged-cells.html">0044</a>) had the same field 28, so it names its table the same way.</p>
+<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section">#</a></h2>
+<p><em>Likely</em>: field 28 of a reference or range node names the table by its UUID, stored as four little-endian 32-bit words.</p>
+<p><em>Unknown</em>: references to another sheet's table.</p>
+<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Last built from <a href="https://github.com/alehel/iwork-format">alehel/iwork-format</a>.</p></footer>
+</main>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Writing a document · iWork file format specification</title>
+<meta name="description" content="iWork file format specification">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
+<div class="layout">
+<nav class="side" aria-label="Contents"><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="anatomy.html">Reading a Pages document</a></li><li><a href="numbers-table.html">Reading a Numbers table</a></li><li><a class="current" href="writing.html">Writing a document</a></li><li><a href="samples.html">Sample files</a></li><li class="group">Specification</li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2–5. Text, styles, objects, layout</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li class="group">Evidence</li><li><a href="../experiments/index.html">All experiments</a></li></ul></nav>
+<main>
+<h1 id="writing-a-document">Writing a document<a class="anchor" href="#writing-a-document" aria-label="Link to this section">#</a></h1>
+<p>A specification is tested best by writing from it. Experiments <a href="../experiments/0287-rewriting-a-document.html">0287</a> to <a href="../experiments/0290-writing-a-cell.html">0290</a> wrote documents with a small Python program built only from what the spec says, and opened the results in the apps. The program, [<code>recipes/0287-iwa-writer.py</code>](../../recipes/0287-iwa-writer.py), uses only the Python standard library.</p>
+<h2 id="re-encoding-every-part">Re-encoding every part<a class="anchor" href="#re-encoding-every-part" aria-label="Link to this section">#</a></h2>
+<p>The writer reads each <code>.iwa</code> part, decodes its chunks and records, and encodes them again:</p>
+<ol><li>Parse each record: the header length varint, the header, and the payloads whose lengths header field 2.3 gives.</li><li>Serialise each record again, recomputing field 2.3 from the payload's actual length.</li><li>Split the result into pieces of at most 65,536 bytes. Encode each as a raw Snappy block of literals only, without compression, and prefix it with a chunk header: <code>00</code> and the block's length as 24 bits, little-endian.</li><li>Write a ZIP with every entry stored.</li></ol>
+<p>A Snappy block of literals is a varint of the decoded length, then for each run a tag byte and the bytes themselves. A run longer than 60 bytes uses tag 60, 61 or 62 with a 1-, 2- or 3-byte length after it:</p>
+<pre class="lang-python"><code>def snappy_encode_literals(data):
+    out = bytearray(write_varint(len(data)))
+    for i in range(0, len(data), 65536):
+        piece = data[i:i + 65536]
+        n = len(piece) - 1
+        if n &lt; 60:
+            out.append(n &lt;&lt; 2)
+        elif n &lt; 1 &lt;&lt; 8:
+            out += bytes([60 &lt;&lt; 2]) + n.to_bytes(1, &quot;little&quot;)
+        elif n &lt; 1 &lt;&lt; 16:
+            out += bytes([61 &lt;&lt; 2]) + n.to_bytes(2, &quot;little&quot;)
+        else:
+            out += bytes([62 &lt;&lt; 2]) + n.to_bytes(3, &quot;little&quot;)
+        out += piece
+    return bytes(out)</code></pre>
+<p>Pages opened the re-encoded document, more than four times the size of the original (395 KB against 90), without a warning, and saved it normally. A writer doesn't need to compress (<a href="../experiments/0287-rewriting-a-document.html">0287</a>).</p>
+<h2 id="new-text">New text<a class="anchor" href="#new-text" aria-label="Link to this section">#</a></h2>
+<p>Setting field 3 of the body's type-2001 record to new text, and re-encoding, is enough for a one-paragraph body. Pages opened <a href="../files/written-by-script.pages">written-by-script.pages</a>, written without previews, and kept the record exactly as written when it saved it again (<a href="../experiments/0288-writing-new-text.html">0288</a>).</p>
+<figure><img src="../files/written-by-script.png" alt="written-by-script.pages, written by the Python writer, as Pages prints it" loading="lazy"><figcaption>written-by-script.pages, written by the Python writer, as Pages prints it</figcaption></figure>
+<h2 id="paragraphs-need-run-entries">Paragraphs need run entries<a class="anchor" href="#paragraphs-need-run-entries" aria-label="Link to this section">#</a></h2>
+<p>The run tables list positions in the text. When the text gains a paragraph, the paragraph run table (field 5) needs an entry at its start. Without it, Pages rebuilds the table on opening and gives every paragraph the stylesheet's default style, <code>paragraph-style-default</code>, instead of the style the writer named (<a href="../experiments/0289-writing-two-paragraphs.html">0289</a>). So writing <code>One</code> U+000A <code>Two</code> takes:</p>
+<div class="table"><table><thead><tr><th>Field</th><th>Written</th></tr></thead><tbody><tr><td>3</td><td><code>One\nTwo</code></td></tr><tr><td>5</td><td><code>{ 1: 0, 2: { 1: &lt;Body style ID&gt; } }</code>, <code>{ 1: 4 }</code></td></tr></tbody></table></div>
+<p>The second entry has no style; it continues the one before it.</p>
+<h2 id="a-new-cell-value">A new cell value<a class="anchor" href="#a-new-cell-value" aria-label="Link to this section">#</a></h2>
+<p>In Numbers, replacing the 16 bytes of a cell's decimal128 with another number is enough: Numbers opened <a href="../files/written-cell.numbers">written-cell.numbers</a> and showed 42 where the original held 1. Nothing else in the file caches the value (<a href="../experiments/0290-writing-a-cell.html">0290</a>).</p>
+<pre class="lang-python"><code>old = (1).to_bytes(14, &quot;little&quot;) + bytes([0x40, 0x30])   # 1 × 10⁰
+new = (42).to_bytes(14, &quot;little&quot;) + bytes([0x40, 0x30])  # 42 × 10⁰</code></pre>
+<figure><img src="../files/written-cell.png" alt="written-cell.numbers as Numbers prints it" loading="lazy"><figcaption>written-cell.numbers as Numbers prints it</figcaption></figure>
+<h2 id="what-a-writer-still-has-to-get-right">What a writer still has to get right<a class="anchor" href="#what-a-writer-still-has-to-get-right" aria-label="Link to this section">#</a></h2>
+<ul><li>Any change that adds objects needs new IDs that are unique in the document, and every reference listed in the record header (fields 2.4 and 2.5).</li><li>Run tables must cover the new text: positions are in UTF-16 code units.</li><li>Cells that add strings need string table entries, with use counts.</li><li>The previews are optional; Pages makes new ones when it next saves.</li></ul>
+<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Last built from <a href="https://github.com/alehel/iwork-format">alehel/iwork-format</a>.</p></footer>
+</main>
+<nav class="toc" aria-label="On this page"><p>On this page</p><ul><li><a href="#re-encoding-every-part">Re-encoding every part</a></li><li><a href="#new-text">New text</a></li><li><a href="#paragraphs-need-run-entries">Paragraphs need run entries</a></li><li><a href="#a-new-cell-value">A new cell value</a></li><li><a href="#what-a-writer-still-has-to-get-right">What a writer still has to get right</a></li></ul></nav>
+</div>
+</body>
+</html>

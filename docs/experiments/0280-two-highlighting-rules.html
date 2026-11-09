@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0280: Two highlighting rules · iWork file format specification</title>
+<meta name="description" content="iWork file format specification">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
+<div class="layout">
+<nav class="side" aria-label="Contents"><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="../guides/anatomy.html">Reading a Pages document</a></li><li><a href="../guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="../guides/writing.html">Writing a document</a></li><li><a href="../guides/samples.html">Sample files</a></li><li class="group">Specification</li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2–5. Text, styles, objects, layout</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li class="group">Evidence</li><li><a href="index.html">All experiments</a></li></ul></nav>
+<main>
+<h1 id="0280-two-highlighting-rules">0280: Two highlighting rules<a class="anchor" href="#0280-two-highlighting-rules" aria-label="Link to this section">#</a></h1>
+<p><strong>Status:</strong> run</p>
+<p><a href="0267-highlighting-result.html">0267</a> found that each highlighted cell caches its result in the key of flag 0x100: 0 where the single rule matched and 15 where it didn't. It guessed that 0 is the index of the matching rule. This experiment adds a second rule, to test that.</p>
+<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Numbers</td><td>15.4, in Norwegian</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-09</td></tr><tr><td>Baseline</td><td>Experiments <a href="0259-conditional-highlighting.html">0259</a> and <a href="0267-highlighting-result.html">0267</a></td></tr></tbody></table></div>
+<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section">#</a></h2>
+<pre class="lang-bash"><code>mkdir -p samples/0280
+osascript recipes/0226-numbers-grouping-data.applescript B2:B5</code></pre>
+<p>Then, with Numbers in front, open Format → Conditional Highlighting and add two Number rules to B2:B5:</p>
+<ol><li>Greater Than 2, with the default Green Fill.</li><li>Less Than 2, which gets the default Red Fill.</li></ol>
+<p>The cell holding 1 turns red, 3 and 4 turn green, and 2 stays plain. Save as <code>samples/0280/two-rules.numbers</code>.</p>
+<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th>Cell</th><th>Value</th><th>Rule matched</th><th>Key for 0x80</th><th>Key for 0x100</th></tr></thead><tbody><tr><td>B2</td><td>1</td><td>second (&lt; 2)</td><td>2</td><td>1</td></tr><tr><td>B3</td><td>2</td><td>none</td><td>2</td><td>15</td></tr><tr><td>B4</td><td>3</td><td>first (&gt; 2)</td><td>2</td><td>0</td></tr><tr><td>B5</td><td>4</td><td>first (&gt; 2)</td><td>2</td><td>0</td></tr></tbody></table></div>
+<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section">#</a></h2>
+<p>Flag 0x100's key is the index, from 0, of the first rule a cell matches, or 15 when it matches none. So a reader can apply the highlighting from the cells alone: look up the cell's entry in the conditional-format list (flag 0x80's key, here 2), then take that entry's rule at the cached index and apply its style. 15 is probably a "none" value rather than a limit, but more than 15 rules weren't tested.</p>
+<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section">#</a></h2>
+<p><em>Confirmed</em>, with 0267: flag 0x100's key caches which rule matched, by index, with 15 for none.</p>
+<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Last built from <a href="https://github.com/alehel/iwork-format">alehel/iwork-format</a>.</p></footer>
+</main>
+
+</div>
+</body>
+</html>

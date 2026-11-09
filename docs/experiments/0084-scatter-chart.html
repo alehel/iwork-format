@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0084: Scatter chart · iWork file format specification</title>
+<meta name="description" content="iWork file format specification">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
+<div class="layout">
+<nav class="side" aria-label="Contents"><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="../guides/anatomy.html">Reading a Pages document</a></li><li><a href="../guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="../guides/writing.html">Writing a document</a></li><li><a href="../guides/samples.html">Sample files</a></li><li class="group">Specification</li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2–5. Text, styles, objects, layout</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li class="group">Evidence</li><li><a href="index.html">All experiments</a></li></ul></nav>
+<main>
+<h1 id="0084-scatter-chart">0084: Scatter chart<a class="anchor" href="#0084-scatter-chart" aria-label="Link to this section">#</a></h1>
+<p><strong>Status:</strong> run</p>
+<p><a href="0067-chart.html">0067</a> found a chart's data in field 10000.7 of its record (type 5021), but with only one chart, a vertical bar chart grouped by row, the other fields of 10000 couldn't be told apart. This experiment is one of eight (0079–0086) that each change one thing about the chart: here, the type, to scatter.</p>
+<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Keynote</td><td>15.4 (build <code>M15.4-7051.0.79-2</code>)</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-09</td></tr><tr><td>Baseline</td><td>Experiment <a href="0067-chart.html">0067</a>, <code>chart.key</code> (vertical_bar_2d, grouped by row)</td></tr></tbody></table></div>
+<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section">#</a></h2>
+<pre class="lang-bash"><code>mkdir -p samples/0084
+osascript recipes/0079-keynote-chart-type.applescript &quot;$PWD/samples/0084/scatterplot_2d-row.key&quot; scatterplot_2d row</code></pre>
+<p>The recipe adds the same 2 × 3 chart as 0067 to slide 1, with the type <code>scatterplot_2d</code>, grouped by chart row.</p>
+<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section">#</a></h2>
+<p>Compared with the vertical bar chart of 0067, the chart record (type 5021) differs only in field 10000.1, which is <strong>9</strong> here and 1 there. Fields 10000.2 (2), 10000.5 (1) and the other scalar fields of 10000 are unchanged. So are the data grid in 10000.7 (rows <code>r1</code>, <code>r2</code>, columns <code>a</code>, <code>b</code>, <code>c</code>, values {1, 2, 3} and {4, 5, 6}) and the counts of the repeated fields 13, 14, 17 and 20.</p>
+<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section">#</a></h2>
+<p>Field 10000.1 of a chart is its type, and 9 is a scatter chart. The data is stored the same way whatever the type, so a reader can always get the numbers and labels from 10000.7, even for a type it can't draw. The values of 10000.1 found so far:</p>
+<div class="table"><table><thead><tr><th>Type (AppleScript)</th><th>10000.1</th><th>Experiment</th></tr></thead><tbody><tr><td>vertical_bar_2d</td><td>1</td><td><a href="0067-chart.html">0067</a></td></tr><tr><td>horizontal_bar_2d</td><td>2</td><td><a href="0080-horizontal-bar-chart.html">0080</a></td></tr><tr><td>line_2d</td><td>3</td><td><a href="0082-line-chart.html">0082</a></td></tr><tr><td>area_2d</td><td>4</td><td><a href="0083-area-chart.html">0083</a></td></tr><tr><td>pie_2d</td><td>5</td><td><a href="0079-pie-chart.html">0079</a></td></tr><tr><td>stacked_vertical_bar_2d</td><td>6</td><td><a href="0081-stacked-vertical-bar-chart.html">0081</a></td></tr><tr><td>scatterplot_2d</td><td>9</td><td><a href="0084-scatter-chart.html">0084</a></td></tr><tr><td>vertical_bar_3d</td><td>12</td><td><a href="0085-3d-vertical-bar-chart.html">0085</a></td></tr></tbody></table></div>
+<p>The numbers skip some values (7, 8, 10, 11), presumably for the stacked, 3D and other types not tried here.</p>
+<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section">#</a></h2>
+<p><em>Likely</em>: chart field 10000.1 = 9 is a scatter chart.</p>
+<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Last built from <a href="https://github.com/alehel/iwork-format">alehel/iwork-format</a>.</p></footer>
+</main>
+
+</div>
+</body>
+</html>

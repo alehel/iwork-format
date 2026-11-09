@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0063: Tiles for a sparse table · iWork file format specification</title>
+<meta name="description" content="iWork file format specification">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
+<div class="layout">
+<nav class="side" aria-label="Contents"><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="../guides/anatomy.html">Reading a Pages document</a></li><li><a href="../guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="../guides/writing.html">Writing a document</a></li><li><a href="../guides/samples.html">Sample files</a></li><li class="group">Specification</li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2–5. Text, styles, objects, layout</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li class="group">Evidence</li><li><a href="index.html">All experiments</a></li></ul></nav>
+<main>
+<h1 id="0063-tiles-for-a-sparse-table">0063: Tiles for a sparse table<a class="anchor" href="#0063-tiles-for-a-sparse-table" aria-label="Link to this section">#</a></h1>
+<p><strong>Status:</strong> run</p>
+<p><a href="0030-tiles.html">0030</a> found that a table's rows are split into tiles of 256, but its two tiles were the first two. This experiment fills three far-apart rows of a 1000-row table, to see whether empty tiles are stored and whether the local row numbers hold up.</p>
+<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Numbers</td><td>15.4 (build <code>M15.4-7051.0.79-2</code>)</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-09</td></tr><tr><td>Baseline</td><td>Experiment <a href="0030-tiles.html">0030</a></td></tr></tbody></table></div>
+<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section">#</a></h2>
+<pre class="lang-bash"><code>mkdir -p samples/0063
+osascript recipes/0063-numbers-sparse-rows.applescript &quot;$PWD/samples/0063/sparse.numbers&quot;</code></pre>
+<p>The recipe sets the first table's row count to 1000 and puts 1 in B2, 2 in B600 and 3 in B1000. Counted from 0, those are rows 1, 599 and 999.</p>
+<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section">#</a></h2>
+<p>The table model's tile list (field 4.3):</p>
+<div class="table"><table><thead><tr><th>Tile index (4.3.1.1)</th><th>Tile</th><th>Row entries (5.1)</th><th>Field 4</th></tr></thead><tbody><tr><td>0</td><td>904547, <code>Tables/Tile.iwa</code></td><td>1</td><td>1</td></tr><tr><td>2</td><td>905237, <code>Tables/Tile-905237.iwa</code></td><td>87</td><td>1</td></tr><tr><td>3</td><td>905241, <code>Tables/Tile-905241.iwa</code></td><td>231</td><td>1</td></tr></tbody></table></div>
+<p>Field 4.3.2 is 256. There is no tile with index 1. The empty tile <code>Tile-905022-2.iwa</code> from <a href="0030-tiles.html">0030</a> is also present.</p>
+<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section">#</a></h2>
+<p>Only tiles with content are stored, and the tile list skips the others: index 1, for rows 256–511, is missing. The rule from 0030 holds for every stored row: tile index × 256 + local row = 2 × 256 + 87 = 599 and 3 × 256 + 231 = 999. A reader has to use each entry's tile index, not its position in the list.</p>
+<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section">#</a></h2>
+<p><em>Confirmed</em>: a cell's row is tile index × 256 + its local row (<a href="0030-tiles.html">0030</a> and this experiment).</p>
+<p><em>Likely</em>: tiles without content are left out of the tile list.</p>
+<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Last built from <a href="https://github.com/alehel/iwork-format">alehel/iwork-format</a>.</p></footer>
+</main>
+
+</div>
+</body>
+</html>

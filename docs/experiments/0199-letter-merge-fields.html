@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0199: Merge fields in a letter · iWork file format specification</title>
+<meta name="description" content="iWork file format specification">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
+<div class="layout">
+<nav class="side" aria-label="Contents"><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="../guides/anatomy.html">Reading a Pages document</a></li><li><a href="../guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="../guides/writing.html">Writing a document</a></li><li><a href="../guides/samples.html">Sample files</a></li><li class="group">Specification</li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2–5. Text, styles, objects, layout</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li class="group">Evidence</li><li><a href="index.html">All experiments</a></li></ul></nav>
+<main>
+<h1 id="0199-merge-fields-in-a-letter">0199: Merge fields in a letter<a class="anchor" href="#0199-merge-fields-in-a-letter" aria-label="Link to this section">#</a></h1>
+<p><strong>Status:</strong> run</p>
+<p><a href="0158-essay-template.html">0158</a> found one merge field (type 2036) in the Essay template, for the author's name. The Classic Letter template has many, for both sender and recipient. This experiment reads them, together with the tags AppleScript reports for each placeholder.</p>
+<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Pages</td><td>15.4 (build <code>M15.4-7051.0.79-2</code>), in Norwegian</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-09</td></tr><tr><td>Baseline</td><td>Experiment <a href="0158-essay-template.html">0158</a></td></tr></tbody></table></div>
+<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section">#</a></h2>
+<pre class="lang-bash"><code>mkdir -p samples/0199
+osascript recipes/0199-pages-placeholder-tag.applescript &quot;$PWD/samples/0199&quot;</code></pre>
+<p>The recipe makes a document from <code>Application/23_Classic_Letter/ISO</code> (<em>Klassisk brev</em>), lists the <code>tag</code> of each of its <code>placeholder texts</code>, and saves it as <code>letter.pages</code>. Setting a tag fails with error −10000, so the recipe only reads them.</p>
+<p>Pages fills the sender fields from the macOS user's contact card, so the sample holds personal details and shouldn't be shared.</p>
+<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section">#</a></h2>
+<p>AppleScript reports 12 placeholders. Eight tags are contact properties: <code>TPMailMerge_FullNamePseudoProperty</code> (four times), <code>postalAddresses</code> (twice), <code>phoneNumbers</code> and <code>emailAddresses</code>. The other four tags are the placeholder's own prompt text, such as the greeting <code>Kjære</code>.</p>
+<p><code>Document.iwa</code> holds eight type-2036 records and four type-2031 records, matching those 12. A type-2036 record:</p>
+<div class="table"><table><thead><tr><th>Field</th><th>Holds</th><th>Values seen</th></tr></thead><tbody><tr><td>1</td><td><code>{ 1: UUID, 2: 1 }</code></td><td></td></tr><tr><td>2</td><td>The contact property</td><td><code>TPMailMerge_FullNamePseudoProperty</code>, <code>postalAddresses</code>, <code>phoneNumbers</code>, <code>emailAddresses</code></td></tr><tr><td>3</td><td>How to format it, for addresses</td><td><code>TPMailMerge_PostalAddressMultiLinePseudoKey</code></td></tr><tr><td>4</td><td>Which of the contact's values, by label</td><td><code>_$!&lt;Home&gt;!$_</code>, <code>_$!&lt;Work&gt;!$_</code>, <code>_$!&lt;Mobile&gt;!$_</code></td></tr><tr><td>5</td><td>Whose contact</td><td>0 for the four fields in the sender block and the signature, 1 for the recipient's name and address and the name after the greeting</td></tr><tr><td>6</td><td></td><td>0</td></tr><tr><td>8</td><td>A second UUID</td><td></td></tr><tr><td>11</td><td></td><td>1</td></tr></tbody></table></div>
+<p>A type-2031 placeholder holds only <code>{ 1: { 1: UUID }, 2: 1 }</code>. Its prompt is the text its run covers in the body.</p>
+<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section">#</a></h2>
+<p>A merge field names a property of a contact, as in the macOS Contacts framework: the property key in field 2, the label of the value in field 4 (in Contacts' <code>_$!&lt;…&gt;!$_</code> form), and a formatting key in field 3 where needed. Field 5 says whose contact it draws from: 0 the sender (the document's author) and 1 the recipient. The text the field shows now is in the body, so a reader can show the letter as it stands without resolving any contact.</p>
+<p>A placeholder (type 2031) carries no text of its own. AppleScript's <code>tag</code> reports a merge field's property key, or a plain placeholder's prompt text.</p>
+<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section">#</a></h2>
+<p><em>Likely</em>: merge field fields 2, 3, 4 and 5 as described.</p>
+<p><em>Unknown</em>: fields 6, 8 and 11 of type 2036, and field 2 of type 2031.</p>
+<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Last built from <a href="https://github.com/alehel/iwork-format">alehel/iwork-format</a>.</p></footer>
+</main>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,16 @@
+1: varint 2
+2: varint 3
+3: message (9 bytes)
+  1: varint 1
+  2: varint 6
+  6: message (3 bytes)
+    1: varint 260
+3: message (16 bytes)
+  1: varint 2
+  2: varint 4
+  6: message (10 bytes)
+    1: varint 256
+    2: varint 253
+    4: varint 0
+    5: varint 0
+5: varint 1

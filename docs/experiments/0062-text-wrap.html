@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0062: Text wrap in a cell · iWork file format specification</title>
+<meta name="description" content="iWork file format specification">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
+<div class="layout">
+<nav class="side" aria-label="Contents"><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="../guides/anatomy.html">Reading a Pages document</a></li><li><a href="../guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="../guides/writing.html">Writing a document</a></li><li><a href="../guides/samples.html">Sample files</a></li><li class="group">Specification</li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2–5. Text, styles, objects, layout</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li class="group">Evidence</li><li><a href="index.html">All experiments</a></li></ul></nav>
+<main>
+<h1 id="0062-text-wrap-in-a-cell">0062: Text wrap in a cell<a class="anchor" href="#0062-text-wrap-in-a-cell" aria-label="Link to this section">#</a></h1>
+<p><strong>Status:</strong> run</p>
+<p><a href="0043-cell-styles.html">0043</a> found that a cell's background is kept in a cell style (type 6004). This experiment changes a cell's vertical alignment and text wrap, to find more of the cell style's fields.</p>
+<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Numbers</td><td>15.4 (build <code>M15.4-7051.0.79-2</code>)</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-09</td></tr><tr><td>Baseline</td><td>Experiment <a href="0043-cell-styles.html">0043</a></td></tr></tbody></table></div>
+<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section">#</a></h2>
+<pre class="lang-bash"><code>mkdir -p samples/0062
+osascript recipes/0061-numbers-alignment.applescript &quot;$PWD/samples/0062/top-nowrap.numbers&quot; top-nowrap</code></pre>
+<p>The recipe sets B2 to <code>abc</code>, its <code>vertical alignment</code> to <code>top</code> and its <code>text wrap</code> to false. Reading a fresh cell through AppleScript showed that <code>top</code> and wrapping are the defaults, so only the wrap setting changed anything.</p>
+<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section">#</a></h2>
+<p>The cell's flags are 0x00021028: 0x8 (string), 0x20 (cell style), 0x1000 and 0x20000. Its cell style key names record 905247, of type 6004:</p>
+<pre><code>10: 1
+11: { 3: 0 }</code></pre>
+<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section">#</a></h2>
+<p>Field 11.3 of a cell style is text wrap, and 0 turns it off. Setting top alignment, already the default, added nothing to the style, so Numbers only stores what differs from its parent. Field 10 is 1, which agrees with it counting the properties a style sets. The background colour is field 11.1 (<a href="0043-cell-styles.html">0043</a>).</p>
+<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section">#</a></h2>
+<p><em>Likely</em>: cell style field 11.3 is text wrap, with 0 for off.</p>
+<p><em>Unknown</em>: where vertical alignment is stored. Follow-up: set it to bottom.</p>
+<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Last built from <a href="https://github.com/alehel/iwork-format">alehel/iwork-format</a>.</p></footer>
+</main>
+
+</div>
+</body>
+</html>

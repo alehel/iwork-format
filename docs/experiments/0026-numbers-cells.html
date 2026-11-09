@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0026: Cells in Numbers · iWork file format specification</title>
+<meta name="description" content="iWork file format specification">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
+<div class="layout">
+<nav class="side" aria-label="Contents"><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="../guides/anatomy.html">Reading a Pages document</a></li><li><a href="../guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="../guides/writing.html">Writing a document</a></li><li><a href="../guides/samples.html">Sample files</a></li><li class="group">Specification</li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2–5. Text, styles, objects, layout</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li class="group">Evidence</li><li><a href="index.html">All experiments</a></li></ul></nav>
+<main>
+<h1 id="0026-cells-in-numbers">0026: Cells in Numbers<a class="anchor" href="#0026-cells-in-numbers" aria-label="Link to this section">#</a></h1>
+<p><strong>Status:</strong> run</p>
+<p><a href="0021-table-cells.html">0021</a> decoded how a Pages table stores a number and a text cell, from one experiment. This experiment puts the same values in the same cells of a Numbers table, through Numbers' AppleScript, to check that reading and whether Numbers stores cells the same way.</p>
+<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Numbers</td><td>15.4 (build <code>M15.4-7051.0.79-2</code>)</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-09</td></tr><tr><td>Baseline</td><td>Experiment <a href="0024-keynote-and-numbers.html">0024</a>, <code>empty-a.numbers</code>, copied as <code>samples/0026/empty.numbers</code>; and experiment <a href="0021-table-cells.html">0021</a>, <code>cells.pages</code></td></tr></tbody></table></div>
+<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section">#</a></h2>
+<pre class="lang-bash"><code>mkdir -p samples/0026
+osascript recipes/0026-numbers-cells.applescript &quot;$PWD/samples/0026/cells.numbers&quot;
+cp samples/0024/empty-a.numbers samples/0026/empty.numbers</code></pre>
+<p>The recipe makes a new spreadsheet, sets cell B2 of the first table to the number 42 and cell C3 to the text <code>abc</code>, and saves it. AppleScript doesn't trigger autocorrection, so the text stays lowercase. In 0021, Pages changed it to <code>Abc</code>.</p>
+<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section">#</a></h2>
+<p>Compared with <code>empty.numbers</code>, the same parts changed in the same way as in 0021: <code>Tables/Tile.iwa</code> grew from 44 to 230 bytes, and one data list grew from 27 to 38 bytes and another from 29 to 58.</p>
+<p>The string table:</p>
+<pre><code>cells.pages (0021)   Index/Tables/DataList.iwa          1: 1  2: 2  3: { 1: 1, 2: 1, 3: &quot;Abc&quot; }
+cells.numbers        Index/Tables/DataList-904552.iwa   1: 1  2: 2  3: { 1: 1, 2: 1, 3: &quot;abc&quot; }</code></pre>
+<p>The decoded tile record (type 6002) of <code>cells.numbers</code> is byte-for-byte the same as that of <code>cells.pages</code>. Both have the SHA-1 <code>67e56451ad5e2eb0bd743e273f6a66a70f399843</code> over the decoded payload. That includes both rows' offset tables and cell bytes, with the type bytes 2 and 3, the decimal128 42, and the string key 1.</p>
+<p>Numbers names most of its table parts <code>DataList-N.iwa</code>, <code>HeaderStorageBucket-N.iwa</code> and <code>Tile.iwa</code>. <em>Corrected after <a href="0030-tiles.html">0030</a>:</em> the first version of this write-up said Numbers never uses Pages' <code>-2</code> ending. In fact this file also has <code>Tile-905022-2.iwa</code> and three <code>HeaderStorageBucket-N-2.iwa</code> parts, which a comparison that collapsed part names had hidden.</p>
+<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section">#</a></h2>
+<p>Numbers stores cells exactly as Pages does. The same values in the same cells give an identical tile, even though one table was filled by typing in Pages and the other through Numbers' AppleScript. This confirms the reading of <a href="0021-table-cells.html">0021</a>:</p>
+<ul><li>Cells are kept per row in the tile.</li><li>A cell has a version byte and a type byte, with 2 for a number and 3 for text.</li><li>A number is stored as a decimal128.</li><li>A text cell holds a key into the string table.</li></ul>
+<p>The string table's entry for a text cell doesn't depend on the string's content: the key and count were the same for <code>Abc</code> and <code>abc</code>.</p>
+<p>Both apps use the <code>-2</code> ending for some table parts (see the correction above).</p>
+<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section">#</a></h2>
+<p><em>Confirmed</em>:</p>
+<ul><li>Cells are stored per row in the tile, with the type byte and value encodings for numbers and text described in 0021. That experiment and this one agree byte for byte.</li><li>Numbers and Pages share the table format.</li></ul>
+<p><em>Unknown</em>: the remaining cell bytes (flags and trailing keys), as in 0021.</p>
+<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Last built from <a href="https://github.com/alehel/iwork-format">alehel/iwork-format</a>.</p></footer>
+</main>
+
+</div>
+</body>
+</html>

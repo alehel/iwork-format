@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0226: A category · iWork file format specification</title>
+<meta name="description" content="iWork file format specification">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
+<div class="layout">
+<nav class="side" aria-label="Contents"><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="../guides/anatomy.html">Reading a Pages document</a></li><li><a href="../guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="../guides/writing.html">Writing a document</a></li><li><a href="../guides/samples.html">Sample files</a></li><li class="group">Specification</li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2–5. Text, styles, objects, layout</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li class="group">Evidence</li><li><a href="index.html">All experiments</a></li></ul></nav>
+<main>
+<h1 id="0226-a-category">0226: A category<a class="anchor" href="#0226-a-category" aria-label="Link to this section">#</a></h1>
+<p><strong>Status:</strong> run</p>
+<p>Numbers can group a table's rows by the values in one column (Organise → Add Category). The rows appear under a summary row for each value, without being copied. This experiment groups a small table, to see what is stored.</p>
+<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Numbers</td><td>15.4, in Norwegian</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-09</td></tr><tr><td>Baseline</td><td><code>samples/0226/plain.numbers</code>, the same table ungrouped</td></tr></tbody></table></div>
+<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section">#</a></h2>
+<pre class="lang-bash"><code>mkdir -p samples/0226
+osascript recipes/0226-numbers-grouping-data.applescript A2</code></pre>
+<p>The recipe fills table 1 with a column <code>kind</code> (a, b, a, b in A2:A5) and a column <code>n</code> (1, 2, 3, 4) and selects A2. Then:</p>
+<ol><li>Choose Organise → Add Category for "kind" (<em>Organiser → Legg til kategori for «kind»</em>). Numbers shows three groups, <code>a</code> (rows 1 and 3), <code>b</code> (rows 2 and 4) and <code>(empty)</code> for the remaining empty rows. The inspector now reports 25 rows and 8 columns.</li><li>Save it as <code>samples/0226/category.numbers</code>.</li></ol>
+<p>For the baseline, run the recipe again and save it without grouping.</p>
+<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section">#</a></h2>
+<p>The table model (type 6001) still has 22 rows and 7 columns in fields 6 and 7, so the summary rows and the extra column the inspector counts aren't real rows. Its field 81.2 grows from 86 to 1,933 bytes. Field 81.2.6 changes from 0 to 1, and fields 81.2.2 and 81.2.15 appear. Field 49, naming a type-6305 record, is dropped.</p>
+<p><code>CalculationEngine.iwa</code> gains three records of type 6383. With the one already there, they form a tree:</p>
+<div class="table"><table><thead><tr><th>Record</th><th>Field 6, the group's value</th><th>Field 9, its rows</th><th>Field 10, its children</th></tr></thead><tbody><tr><td>904758, the root</td><td>empty</td><td><code>{ 1: 1, 2: 21 }</code></td><td>905559, 905560, 905561</td></tr><tr><td>905559, <code>(empty)</code></td><td>none</td><td><code>{ 1: 5, 2: 21 }</code></td><td></td></tr><tr><td>905560, <code>a</code></td><td><code>{ 1: 5, 5: { 1: &quot;a&quot;, 2: { 1: 260 } … } }</code></td><td>rows 1 and 3</td><td></td></tr><tr><td>905561, <code>b</code></td><td><code>{ 1: 5, 5: { 1: &quot;b&quot;, 2: { 1: 260 } … } }</code></td><td>rows 2 and 4</td><td></td></tr></tbody></table></div>
+<p>Each group also has a 128-bit ID in field 1. A new type-6267 record lists eight 128-bit IDs together with two permutations of 0–7.</p>
+<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section">#</a></h2>
+<p>Categories don't move any cells. The table keeps its rows in their stored order, and a tree of type-6383 group records says which rows belong to each group. Each group holds its value as a typed cell value (type 5 with the text in 5.1 and the text format 260) and its rows as single row numbers, <code>{ 1: n }</code>, or as a range, <code>{ 1: first, 2: last }</code>. The summary rows Numbers shows are derived, not stored. Table model field 81.2.6 is probably the switch that turns categories on, and 81.2.2 names the column grouped by.</p>
+<p>A reader that ignores categories still reads every cell correctly. Showing the groups needs the 6383 tree.</p>
+<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section">#</a></h2>
+<p><em>Likely</em>: categories are a tree of type-6383 records naming rows by number, and they don't change the cells.</p>
+<p><em>Unknown</em>: the type-6267 permutations, field 81.2.15, and how the column grouped by is named.</p>
+<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Last built from <a href="https://github.com/alehel/iwork-format">alehel/iwork-format</a>.</p></footer>
+</main>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0261: A drop cap · iWork file format specification</title>
+<meta name="description" content="iWork file format specification">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
+<div class="layout">
+<nav class="side" aria-label="Contents"><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="../guides/anatomy.html">Reading a Pages document</a></li><li><a href="../guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="../guides/writing.html">Writing a document</a></li><li><a href="../guides/samples.html">Sample files</a></li><li class="group">Specification</li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2–5. Text, styles, objects, layout</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li class="group">Evidence</li><li><a href="index.html">All experiments</a></li></ul></nav>
+<main>
+<h1 id="0261-a-drop-cap">0261: A drop cap<a class="anchor" href="#0261-a-drop-cap" aria-label="Link to this section">#</a></h1>
+<p><strong>Status:</strong> run</p>
+<p>The Format sidebar can turn a paragraph's first letter into a drop cap. Every body text has had a run table 28 with a single empty entry. This experiment turns on a drop cap, to see whether that table holds it.</p>
+<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Pages</td><td>15.4 (build <code>M15.4-7051.0.79-2</code>), in Norwegian</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-09</td></tr><tr><td>Baseline</td><td><code>samples/0236/plain.pages</code></td></tr></tbody></table></div>
+<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section">#</a></h2>
+<ol><li>Make a document with the body text <code>One</code>: ``<code>bash osascript -e &#x27;tell application &quot;Pages&quot; to set body text of (make new document) to &quot;One&quot;&#x27; </code><code></code></li><li>With Pages in front, click in <code>One</code> and tick Drop Cap (<em>Innfelt forbokstav</em>) in the Style tab. Pages draws a large <code>O</code> three lines high, and the sidebar shows 3 lines and 1 character.</li><li>Save it as <code>samples/0261/drop-cap.pages</code>.</li></ol>
+<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section">#</a></h2>
+<p>The text and the paragraph style are unchanged. The body's run table 28 changes from one entry with no value to:</p>
+<pre><code>28: { 1: { 1: 0, 2: { 1: 1732137 } } }</code></pre>
+<p>Record 1732137 is a type-10024 style in the stylesheet, named <code>dropcap-style-0</code>:</p>
+<pre><code>12.1: { 1: 0, 2: 3, 3: 0, 6: 0, 7: 0, 10: 1, 11: 0.0, 12: 0.0, 13: 0.2, 14: 0.8 }</code></pre>
+<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section">#</a></h2>
+<p>Run table 28 holds drop caps. Each entry points at a type-10024 drop-cap style, or at nothing for no drop cap. The style's field 12.1.2 is the number of lines the letter spans (3). The number of characters (1) is probably field 12.1.1, counted from 0, or field 10. The other fields are probably spacing and the letter's padding. As with other styles, the stylesheet holds named defaults (<code>dropcap-style-0</code>), and a paragraph points at one.</p>
+<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section">#</a></h2>
+<p><em>Likely</em>: run table 28 holds drop caps, pointing at type-10024 styles whose field 12.1.2 is the number of lines.</p>
+<p><em>Unknown</em>: the field for the number of characters, and fields 13 and 14.</p>
+<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Last built from <a href="https://github.com/alehel/iwork-format">alehel/iwork-format</a>.</p></footer>
+</main>
+
+</div>
+</body>
+</html>

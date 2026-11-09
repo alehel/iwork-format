@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0193: A tracked insertion · iWork file format specification</title>
+<meta name="description" content="iWork file format specification">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
+<div class="layout">
+<nav class="side" aria-label="Contents"><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="../guides/anatomy.html">Reading a Pages document</a></li><li><a href="../guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="../guides/writing.html">Writing a document</a></li><li><a href="../guides/samples.html">Sample files</a></li><li class="group">Specification</li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2–5. Text, styles, objects, layout</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li class="group">Evidence</li><li><a href="index.html">All experiments</a></li></ul></nav>
+<main>
+<h1 id="0193-a-tracked-insertion">0193: A tracked insertion<a class="anchor" href="#0193-a-tracked-insertion" aria-label="Link to this section">#</a></h1>
+<p><strong>Status:</strong> run</p>
+<p>With change tracking on, Pages keeps a record of each edit until it's accepted or rejected. This experiment types a word with tracking on, to see how an insertion and its author are stored.</p>
+<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Pages</td><td>15.4 (build <code>M15.4-7051.0.79-2</code>), in Norwegian</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-09</td></tr><tr><td>Baseline</td><td>A new document with the body text <code>One</code></td></tr></tbody></table></div>
+<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section">#</a></h2>
+<ol><li>Make a document with the body text <code>One</code>: ``<code>bash osascript -e &#x27;tell application &quot;Pages&quot; to set body text of (make new document) to &quot;One&quot;&#x27; </code><code></code></li><li>Choose Edit → Track Changes (<em>Rediger → Spor endringer</em>).</li><li>Click after <code>One</code> and type <code> two</code>.</li><li>Save it as <code>samples/0193/tracked.pages</code>.</li></ol>
+<p>A first attempt with the body text <code>one</code> was spoiled by Pages capitalising it while I typed, so the text starts with a capital.</p>
+<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section">#</a></h2>
+<p>The body text (field 3) is <code>One two</code>. It gains two run tables:</p>
+<ul><li><strong>Field 19, language:</strong> <code>nb</code> from position 3, from typing.</li><li><strong>Field 21:</strong> no entry at 0, then at 3 a type-2060 record:</li></ul>
+<pre><code>type 2060:  1: 1
+            2: { 1: 1732723 }        ← type 2062
+            3: { 1: 815942390.33 }   ← seconds since 2001-01-01: 2026-11-09 18:39:50 UTC
+            4: &quot;77F4A2EA-B91F-458A-9C39-04EDB6FF11E2&quot;
+type 2062:  1: 1
+            2: { 1: 1732727 }        ← type 212, in AnnotationAuthorStorage
+            3: { 1: 815942390.19 }</code></pre>
+<p>Record 1732727, of type 212, is in the <code>AnnotationAuthorStorage</code> part, next to its type-213 root. Its field 1 is the author's name, taken from the macOS user's contact card. Its field 2 holds the author's colour as RGBA floats (0.98, 0.94, 0.35, 1), the yellow Pages shows the change in.</p>
+<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section">#</a></h2>
+<p>A tracked insertion is a type-2060 change record, applied to the inserted text through run table 21. The record's field 1 is the kind of change (1 here), field 3 its time and field 4 a UUID. Field 2 points at a type-2062 record, probably the editing session, which names the author. Authors are type-212 records in <code>AnnotationAuthorStorage</code>, each with a name and a colour.</p>
+<p>The inserted text is already in the body, so a reader that ignores tracking shows the document as if the change were accepted.</p>
+<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section">#</a></h2>
+<p><em>Likely</em>: tracked insertions are type-2060 records in run table 21, with kind 1, a time, and an author through type 2062.</p>
+<p><em>Unknown</em>: field 1 of type 2062.</p>
+<p>A document with tracked changes stores its author's name. Samples made this way should not be shared.</p>
+<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Last built from <a href="https://github.com/alehel/iwork-format">alehel/iwork-format</a>.</p></footer>
+</main>
+
+</div>
+</body>
+</html>

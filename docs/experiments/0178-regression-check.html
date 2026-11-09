@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0178: Checking every sample · iWork file format specification</title>
+<meta name="description" content="iWork file format specification">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
+<div class="layout">
+<nav class="side" aria-label="Contents"><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="../guides/anatomy.html">Reading a Pages document</a></li><li><a href="../guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="../guides/writing.html">Writing a document</a></li><li><a href="../guides/samples.html">Sample files</a></li><li class="group">Specification</li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2–5. Text, styles, objects, layout</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li class="group">Evidence</li><li><a href="index.html">All experiments</a></li></ul></nav>
+<main>
+<h1 id="0178-checking-every-sample">0178: Checking every sample<a class="anchor" href="#0178-checking-every-sample" aria-label="Link to this section">#</a></h1>
+<p><strong>Status:</strong> run</p>
+<p>After 177 experiments, this experiment checks that every sample saved so far can be framed, walked and read with what the spec says.</p>
+<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Pages, Keynote, Numbers</td><td>15.4 (build <code>M15.4-7051.0.79-2</code>)</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-09</td></tr><tr><td>Documents</td><td>All 203 documents in <code>samples/</code>, from experiments 0001–0177</td></tr></tbody></table></div>
+<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section">#</a></h2>
+<p>Three checks were run over every document in <code>samples/</code> with <code>iwork-probe</code> and a throwaway script:</p>
+<pre class="lang-bash"><code>for f in samples/*/*.pages samples/*/*.key samples/*/*.numbers; do
+  for p in $(target/release/iwork-probe list &quot;$f&quot; | awk &#x27;{print $NF}&#x27; | grep &#x27;\.iwa$&#x27;); do
+    target/release/iwork-probe records &quot;$f&quot; &quot;$p&quot; &gt; /dev/null || echo &quot;framing failed: $f $p&quot;
+  done
+  target/release/iwork-probe text &quot;$f&quot; &gt; /dev/null || echo &quot;text failed: $f&quot;
+done</code></pre>
+<ol><li><strong>Framing.</strong> Split every <code>.iwa</code> part into chunks and records, as in <a href="../spec/container.html">container.md</a>.</li><li><strong>Reachability.</strong> Start at objects 1, 2 and 71, and at 61 in documents with a chart, and follow only the IDs listed in record headers (fields 2.5 and 2.4.4). Count which objects are reached and which listed IDs don't exist.</li><li><strong>Text.</strong> Extract every text record.</li></ol>
+<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Documents</td><td>203: 89 Pages, 55 Keynote, 59 Numbers, 3 of them folder packages</td></tr><tr><td><code>.iwa</code> parts</td><td>4,692, all framed without error</td></tr><tr><td>Objects</td><td>142,258, all reached from the roots</td></tr><tr><td>References to missing objects</td><td>none</td></tr><tr><td>Text extraction</td><td>no errors</td></tr></tbody></table></div>
+<p>The only listed ID that didn't exist was root 61, in the documents without a chart.</p>
+<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section">#</a></h2>
+<p>Everything the spec says about the container holds for every document saved so far, from all three apps and in both the ZIP and folder forms: chunk framing, record headers, reference lists, the four roots, data files and UTF-8 entry names. No part or object is left that a reader following the spec couldn't reach.</p>
+<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section">#</a></h2>
+<p><em>Confirmed</em>: the container layer (<a href="../spec/container.html">container.md</a>) holds for all 203 samples.</p>
+<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Last built from <a href="https://github.com/alehel/iwork-format">alehel/iwork-format</a>.</p></footer>
+</main>
+
+</div>
+</body>
+</html>

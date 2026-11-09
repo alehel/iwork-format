@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0018: A page break and a left-page header · iWork file format specification</title>
+<meta name="description" content="iWork file format specification">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
+<div class="layout">
+<nav class="side" aria-label="Contents"><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="../guides/anatomy.html">Reading a Pages document</a></li><li><a href="../guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="../guides/writing.html">Writing a document</a></li><li><a href="../guides/samples.html">Sample files</a></li><li class="group">Specification</li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2–5. Text, styles, objects, layout</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li class="group">Evidence</li><li><a href="index.html">All experiments</a></li></ul></nav>
+<main>
+<h1 id="0018-a-page-break-and-a-left-page-header">0018: A page break and a left-page header<a class="anchor" href="#0018-a-page-break-and-a-left-page-header" aria-label="Link to this section">#</a></h1>
+<p><strong>Status:</strong> run</p>
+<p><a href="0017-section-switches.html">0017</a> found the <em>Facing pages</em> switch but couldn't say what a section's other two header-and-footer sets (fields 23 and 24) are for. This experiment turns facing pages on and adds a second page, which is a left-hand page. Then it types into that page's header, to see whether a left page uses a set of its own. Adding the page also shows how a page break is stored.</p>
+<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Pages</td><td>15.4 (build <code>M15.4-7051.0.79-2</code>), with a Norwegian (nb) user interface and default autocorrection</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-09</td></tr><tr><td>Baseline</td><td>Experiment <a href="0016-header-and-footer.html">0016</a>, <code>header.pages</code> (text in the left header of a one-page document)</td></tr></tbody></table></div>
+<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section">#</a></h2>
+<ol><li>AppleScript makes a new document and sets its body text to <code>one</code>.</li><li>In the Pages window, Document tab of the sidebar: turn on <em>Motstående sider</em> (Facing pages).</li><li>Click at the end of <code>one</code>, then choose Insert → Page Break (<em>Sett inn → Sideskift</em>) and type <code>two</code>. Pages capitalised it to <code>Two</code> on the new page.</li><li>View → Show Layout, then click the left box of the second page's header and type <code>left</code>.</li><li>Pages offered <code>Left</code> in a suggestion that blocked AppleScript. It was dismissed with its close button. It appeared only once the save had started, so it can't be cleared beforehand.</li><li>AppleScript saves the document as <code>left-page-header.pages</code>.</li></ol>
+<p>With facing pages on, Pages showed the first page on the right of a spread and the second page as the left page of the next spread.</p>
+<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section">#</a></h2>
+<h3 id="the-page-break">The page break<a class="anchor" href="#the-page-break" aria-label="Link to this section">#</a></h3>
+<p>The body's text:</p>
+<pre><code>3: bytes (7) 6f 6e 65 05 54 77 6f        &quot;one&quot;, U+0005, &quot;Two&quot;</code></pre>
+<p>The page break is the single character U+0005. <code>iwork-probe</code> shows the field as bytes, not text, because it treats control characters that way.</p>
+<p>The paragraph-style runs (field 5) have a second entry at 4, the position after U+0005. The section runs (field 17) still have one entry, pointing at section 1732296.</p>
+<h3 id="the-left-pages-header">The left page's header<a class="anchor" href="#the-left-pages-header" aria-label="Link to this section">#</a></h3>
+<p>The text <code>left</code> went into record 1732234. That is the same record that took the left header text on the single page in 0016, and it's in the header-and-footer set the section names in field 25. The section and its three sets are unchanged:</p>
+<pre><code>section 1732296: 17: 1, 18–21: 0, 22: 1, 23 → 1732380, 24 → 1732482, 25 → 1732544, 28: 0
+set 1732544: header 1732234 (&quot;left&quot;), 1732385, 1732428; footer 1732501, 1732440, 1732492</code></pre>
+<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section">#</a></h2>
+<p>A page break is the character U+0005 in the text, and it also ends a paragraph: the paragraph after it gets its own entry in the paragraph-style runs.</p>
+<p>Facing pages on its own doesn't give left pages their own headers. The left page used the same header text record as the right page, from the set in section field 25. So the sets in fields 23 and 24 belong to some option that is still off. Pages has a switch for different left and right pages in other versions. If 15.4 has one, it may only show in the Section tab once facing pages is on, and this experiment didn't look there.</p>
+<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section">#</a></h2>
+<p><em>Likely</em>:</p>
+<ul><li>A page break is U+0005 and also starts a paragraph.</li><li>With facing pages on and no other switch, left and right pages share the set in section field 25.</li></ul>
+<p><em>Unknown</em>: what the sets in fields 23 and 24 are for. Follow-up: with facing pages on, look in the Section tab for a left-and-right-pages switch, turn it on, and type into a left page's header.</p>
+<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Last built from <a href="https://github.com/alehel/iwork-format">alehel/iwork-format</a>.</p></footer>
+</main>
+
+</div>
+</body>
+</html>

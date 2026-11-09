@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0017: Section switches · iWork file format specification</title>
+<meta name="description" content="iWork file format specification">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
+<div class="layout">
+<nav class="side" aria-label="Contents"><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="../guides/anatomy.html">Reading a Pages document</a></li><li><a href="../guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="../guides/writing.html">Writing a document</a></li><li><a href="../guides/samples.html">Sample files</a></li><li class="group">Specification</li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2–5. Text, styles, objects, layout</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li class="group">Evidence</li><li><a href="index.html">All experiments</a></li></ul></nav>
+<main>
+<h1 id="0017-section-switches">0017: Section switches<a class="anchor" href="#0017-section-switches" aria-label="Link to this section">#</a></h1>
+<p><strong>Status:</strong> run</p>
+<p><a href="0016-header-and-footer.html">0016</a> found that a section (type 10011) names three header-and-footer sets. A plain document uses the one in field 25, and fields 17 to 22 and 28 of the section were unexplained. This experiment turns on, one at a time, the header and footer switches Pages offers. The aim is to see which fields they set, and whether they bring the other two sets into use.</p>
+<p>Pages 15.4 doesn't offer a "different first page" switch for headers. The Section tab of the Document sidebar has <em>Skjul på første side i inndelingen</em> (Hide on first page of section) and <em>Som forrige inndeling</em> (Same as previous section). The Document tab has <em>Motstående sider</em> (Facing pages).</p>
+<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Pages</td><td>15.4 (build <code>M15.4-7051.0.79-2</code>), with a Norwegian (nb) user interface</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-09</td></tr><tr><td>Baseline</td><td>Experiment <a href="0002-one-word.html">0002</a>, <code>hello.pages</code> (a plain document, with all switches at their defaults)</td></tr></tbody></table></div>
+<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section">#</a></h2>
+<p>AppleScript makes a new document and sets its body text to <code>body</code>. One checkbox is clicked in the Document sidebar, and AppleScript saves the document. Nothing is typed into a header.</p>
+<div class="table"><table><thead><tr><th>File</th><th>Change</th></tr></thead><tbody><tr><td><code>hide-first.pages</code></td><td>Section tab: turn on <em>Hide on first page of section</em></td></tr><tr><td><code>not-same-as-previous.pages</code></td><td>Section tab: turn off <em>Same as previous section</em> (on by default)</td></tr><tr><td><code>facing-pages.pages</code></td><td>Document tab: turn on <em>Facing pages</em></td></tr></tbody></table></div>
+<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section">#</a></h2>
+<p>Compared with <code>hello.pages</code>, each file has one field changed, apart from the body text and the save-to-save changes:</p>
+<div class="table"><table><thead><tr><th>File</th><th>Record</th><th>Field</th><th>Before → after</th></tr></thead><tbody><tr><td><code>hide-first.pages</code></td><td>1732296, the section (type 10011)</td><td>28</td><td>0 → 1</td></tr><tr><td><code>not-same-as-previous.pages</code></td><td>1732296, the section (type 10011)</td><td>17</td><td>1 → 0</td></tr><tr><td><code>facing-pages.pages</code></td><td>1732614 (type 10012)</td><td>34</td><td>0 → 1</td></tr></tbody></table></div>
+<p>Record 1732614 is the one that holds the document's creation time, language and template name (see <a href="0001-empty-document.html">0001</a>, <a href="0002-one-word.html">0002</a>).</p>
+<p>No other record changed. In particular, the three header-and-footer sets of the section, and which set is in field 25, stayed the same.</p>
+<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section">#</a></h2>
+<p>The two section-level switches map to fields of the section:</p>
+<div class="table"><table><thead><tr><th>Field</th><th>Switch</th><th>Values</th></tr></thead><tbody><tr><td>17</td><td>Same as previous section</td><td>1 on (default), 0 off</td></tr><tr><td>28</td><td>Hide header and footer on the section's first page</td><td>0 off (default), 1 on</td></tr></tbody></table></div>
+<p><em>Facing pages</em> is a document-wide setting stored in field 34 of the type-10012 record, so type 10012 is probably the document's settings. With it on, a reader should expect left and right pages to differ, for example in their headers.</p>
+<p>None of these switches put the sets in fields 23 and 24 to use, so their purpose is still open. With facing pages on, the left page and right page may each use their own set. That would need a two-page document with header text on the second page.</p>
+<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section">#</a></h2>
+<p><em>Likely</em>:</p>
+<ul><li>Section field 17 is <em>Same as previous section</em>, and field 28 is <em>Hide on first page of section</em>.</li><li>Field 34 of the type-10012 record is <em>Facing pages</em>.</li></ul>
+<p><em>Unknown</em>:</p>
+<ul><li>What the sets in section fields 23 and 24 are for. Follow-up: with facing pages on, add a page break, type into the second page's header, and save.</li><li>Section fields 18–22 and 29.</li></ul>
+<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Last built from <a href="https://github.com/alehel/iwork-format">alehel/iwork-format</a>.</p></footer>
+</main>
+
+</div>
+</body>
+</html>

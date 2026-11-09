@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0073: A table in Keynote · iWork file format specification</title>
+<meta name="description" content="iWork file format specification">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
+<div class="layout">
+<nav class="side" aria-label="Contents"><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="../guides/anatomy.html">Reading a Pages document</a></li><li><a href="../guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="../guides/writing.html">Writing a document</a></li><li><a href="../guides/samples.html">Sample files</a></li><li class="group">Specification</li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2–5. Text, styles, objects, layout</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li class="group">Evidence</li><li><a href="index.html">All experiments</a></li></ul></nav>
+<main>
+<h1 id="0073-a-table-in-keynote">0073: A table in Keynote<a class="anchor" href="#0073-a-table-in-keynote" aria-label="Link to this section">#</a></h1>
+<p><strong>Status:</strong> run</p>
+<p>This experiment adds a table to a Keynote slide, to compare it with the tables of Pages and Numbers.</p>
+<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Keynote</td><td>15.4 (build <code>M15.4-7051.0.79-2</code>)</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-09</td></tr><tr><td>Baseline</td><td>Experiment <a href="0025-keynote-title.html">0025</a>, <code>empty.key</code>; experiment <a href="0052-floating-table.html">0052</a></td></tr></tbody></table></div>
+<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section">#</a></h2>
+<pre class="lang-bash"><code>mkdir -p samples/0073
+osascript recipes/0068-keynote-variants.applescript &quot;$PWD/samples/0073/table.key&quot; table</code></pre>
+<p>The recipe makes a 3 × 3 table on slide 1.</p>
+<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section">#</a></h2>
+<p><code>CalculationEngine.iwa</code> gained a drawable (type 6000) with the position (95, 215), the size 1730 × 650, and field 1.2 naming the slide. It also gained a table model (type 6001) and the same kinds of supporting records as in Pages and Numbers (types 4004, 4008, 4009 and 6204). The package gained table parts under <code>Index/Tables/</code>.</p>
+<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section">#</a></h2>
+<p>Keynote's tables are the same as Pages' and Numbers': a drawable (type 6000) and a model (type 6001) in <code>CalculationEngine.iwa</code>, with cells in table parts. As with other Keynote drawables, field 1.2 names the slide. A table reader can therefore be shared by all three apps. Only the route to the drawable differs: text attachment or page in Pages, sheet in Numbers, slide in Keynote.</p>
+<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section">#</a></h2>
+<p><em>Likely</em>: Keynote tables use types 6000 and 6001, as in the other apps.</p>
+<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Last built from <a href="https://github.com/alehel/iwork-format">alehel/iwork-format</a>.</p></footer>
+</main>
+
+</div>
+</body>
+</html>

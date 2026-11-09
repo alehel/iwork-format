@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0187: A movie in Keynote · iWork file format specification</title>
+<meta name="description" content="iWork file format specification">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
+<div class="layout">
+<nav class="side" aria-label="Contents"><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="../guides/anatomy.html">Reading a Pages document</a></li><li><a href="../guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="../guides/writing.html">Writing a document</a></li><li><a href="../guides/samples.html">Sample files</a></li><li class="group">Specification</li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2–5. Text, styles, objects, layout</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li class="group">Evidence</li><li><a href="index.html">All experiments</a></li></ul></nav>
+<main>
+<h1 id="0187-a-movie-in-keynote">0187: A movie in Keynote<a class="anchor" href="#0187-a-movie-in-keynote" aria-label="Link to this section">#</a></h1>
+<p><strong>Status:</strong> run</p>
+<p><a href="0185-keynote-audio.html">0185</a> found that a sound is a type-3007 record. This experiment adds a movie, to see how pictures change it.</p>
+<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Keynote</td><td>15.4</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-09</td></tr><tr><td>Baseline</td><td>Experiment <a href="0185-keynote-audio.html">0185</a>, <code>audio.key</code></td></tr></tbody></table></div>
+<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section">#</a></h2>
+<pre class="lang-bash"><code>cd samples/0185
+ffmpeg -f lavfi -i color=c=red:s=64x48:d=1 -c:v libx264 -pix_fmt yuv420p clip.mov
+cd ../..
+osascript recipes/0185-keynote-media.applescript movie &quot;$PWD/samples/0185/movie.key&quot; &quot;$PWD/samples/0185/clip.mov&quot;</code></pre>
+<p><code>clip.mov</code> is a one-second, 64 × 48 red H.264 movie. As with the sound, the recipe adds it through <code>make new image</code>.</p>
+<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section">#</a></h2>
+<p>The package gains <code>Data/clip-9076.mov</code>, the movie unchanged, and <code>Data/posterImage-9077.png</code>, a 64 × 48 PNG. The slide's part has one type-3007 record, which differs from the sound's in:</p>
+<div class="table"><table><thead><tr><th>Field</th><th>Sound (0185)</th><th>Movie</th></tr></thead><tbody><tr><td>1.1, geometry</td><td>(960, 540), 0 × 0</td><td>(928, 516), 64 × 48</td></tr><tr><td>9</td><td>1</td><td>0</td></tr><tr><td>15</td><td>absent</td><td><code>{ 1: 9077 }</code>, the poster image</td></tr><tr><td>20, 21</td><td>0 × 0</td><td>64 × 48</td></tr><tr><td>23</td><td>0</td><td>1</td></tr><tr><td>29.1.1</td><td><code>soun</code></td><td><code>vide</code></td></tr><tr><td>29.1.8, 29.1.9</td><td>8000</td><td>1000</td></tr></tbody></table></div>
+<p>The movie's position, (928, 516), puts its centre at (960, 540), the middle of the 1920 × 1080 slide.</p>
+<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section">#</a></h2>
+<p>A movie is the same type-3007 record as a sound. Field 14 names the movie file and field 15 a poster image that Keynote makes from its first frame. A reader that can't play the movie can show that image instead. Fields 20 and 21 are the movie's natural size; field 23 is 1 when it has pictures, and field 9 is 1 when it has only sound. Field 29 describes the first track, here <code>vide</code> with a time scale of 1000.</p>
+<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section">#</a></h2>
+<p><em>Likely</em>:</p>
+<ul><li>A movie is type 3007, with its file in field 14 and its poster image in field 15.</li><li>Fields 9 and 23 tell sound from pictures, and 20 and 21 hold the natural size.</li></ul>
+<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Last built from <a href="https://github.com/alehel/iwork-format">alehel/iwork-format</a>.</p></footer>
+</main>
+
+</div>
+</body>
+</html>

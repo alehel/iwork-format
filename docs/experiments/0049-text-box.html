@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0049: A text box · iWork file format specification</title>
+<meta name="description" content="iWork file format specification">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
+<div class="layout">
+<nav class="side" aria-label="Contents"><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="../guides/anatomy.html">Reading a Pages document</a></li><li><a href="../guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="../guides/writing.html">Writing a document</a></li><li><a href="../guides/samples.html">Sample files</a></li><li class="group">Specification</li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2–5. Text, styles, objects, layout</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li class="group">Evidence</li><li><a href="index.html">All experiments</a></li></ul></nav>
+<main>
+<h1 id="0049-a-text-box">0049: A text box<a class="anchor" href="#0049-a-text-box" aria-label="Link to this section">#</a></h1>
+<p><strong>Status:</strong> run</p>
+<p><a href="0025-keynote-title.html">0025</a> found that a Keynote shape (type 7) owns a text record in its fields 2 and 4. This experiment places a text box on a Pages page, to see how Pages stores a shape with text.</p>
+<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Pages</td><td>15.4 (build <code>M15.4-7051.0.79-2</code>)</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-09</td></tr><tr><td>Baseline</td><td><code>samples/0020/plain.pages</code> (the body text <code>one</code>)</td></tr></tbody></table></div>
+<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section">#</a></h2>
+<pre class="lang-bash"><code>mkdir -p samples/0049
+osascript recipes/0049-pages-text-box.applescript &quot;$PWD/samples/0049/text-box.pages&quot;</code></pre>
+<p>The recipe makes a document with the body text <code>one</code>, then a <code>text item</code> on page 1 with the <code>object text</code> <code>box</code>.</p>
+<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section">#</a></h2>
+<p><code>Document.iwa</code> gained a record of type 2011 (1732647), a type-2001 text record (1732650), and two empty records of type 3097. <code>ViewState.iwa</code> gained one record each of types 2002 and 3061.</p>
+<p>Record 1732647, type 2011:</p>
+<pre><code>1.1.1: x 165.8, y 335.6            (fixed32 floats in fields 1 and 2)
+1.1.2: width 250.0, height 128.0
+1.2:   { 1: 1731559 }              ← an object in the stylesheet
+1.3:   a path: the 250 × 128 rectangle
+2:     { 1: 1732650 }              ← the text
+4:     { 1: 1732650 }
+6:     1</code></pre>
+<p>The text record has <code>box</code> in field 3, no field 1, and the same run tables as a body with one paragraph. Header references lead to the box as 1 (type 10000) → 1732364 (type 10015) → 1732647 (type 2011) → 1732650 (type 2001).</p>
+<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section">#</a></h2>
+<p>A Pages text box is a shape of type 2011. Its position and size are in field 1.1, in points, as for an image (<a href="0023-an-image.html">0023</a>) or a table's drawable (<a href="0020-a-table.html">0020</a>). Its outline is a path in 1.3 and its style in 1.2. Fields 2 and 4 name its text, as with Keynote's type-7 shapes. The text has no field 1, like Keynote's shape text.</p>
+<p>A box placed on the page is listed by the page-level record of type 10015 next to the body, like an image.</p>
+<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section">#</a></h2>
+<p><em>Likely</em>:</p>
+<ul><li>A Pages text box is type 2011, with its text in fields 2 and 4 and its geometry in 1.1.</li><li>The text of a shape has no field 1.</li></ul>
+<p><em>Unknown</em>: why the text is named twice (fields 2 and 4), and what type 3097 is.</p>
+<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Last built from <a href="https://github.com/alehel/iwork-format">alehel/iwork-format</a>.</p></footer>
+</main>
+
+</div>
+</body>
+</html>

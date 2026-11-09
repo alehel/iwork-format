@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0192: A link to a bookmark · iWork file format specification</title>
+<meta name="description" content="iWork file format specification">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
+<div class="layout">
+<nav class="side" aria-label="Contents"><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="../guides/anatomy.html">Reading a Pages document</a></li><li><a href="../guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="../guides/writing.html">Writing a document</a></li><li><a href="../guides/samples.html">Sample files</a></li><li class="group">Specification</li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2–5. Text, styles, objects, layout</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li class="group">Evidence</li><li><a href="index.html">All experiments</a></li></ul></nav>
+<main>
+<h1 id="0192-a-link-to-a-bookmark">0192: A link to a bookmark<a class="anchor" href="#0192-a-link-to-a-bookmark" aria-label="Link to this section">#</a></h1>
+<p><strong>Status:</strong> run</p>
+<p><a href="0191-bookmark.html">0191</a> found that a bookmark is a type-2035 record with a UUID. This experiment links one word to a bookmark on another, to see how the link names its target.</p>
+<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Pages</td><td>15.4 (build <code>M15.4-7051.0.79-2</code>), in Norwegian</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-09</td></tr><tr><td>Baseline</td><td>Experiments <a href="0189-web-link.html">0189</a> and <a href="0191-bookmark.html">0191</a></td></tr></tbody></table></div>
+<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section">#</a></h2>
+<ol><li>Make a document with the body text <code>one two</code>: ``<code>bash osascript -e &#x27;tell application &quot;Pages&quot; to set body text of (make new document) to &quot;one two&quot;&#x27; </code><code></code></li><li>Double-click <code>two</code>, then choose Insert → Bookmark.</li><li>Double-click <code>one</code>, then choose Format → Add Link → Bookmark (<em>Bokmerke</em>). Pages links to the only bookmark.</li><li>Save it as <code>samples/0192/bookmark-link.pages</code>.</li></ol>
+<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section">#</a></h2>
+<p><code>Document.iwa</code> gains a type-2035 bookmark and a type-2039 record:</p>
+<pre><code>type 2035:  1: { 1: &quot;B3EA9C7C-BDCF-41C7-9E6B-E441FE2FEF95&quot; }, 3: 1, 4: 0
+type 2039:  1: { 1: { 1: &quot;2DE95AE6-29F8-4AD4-B266-29B4A1CF7737&quot; } }
+            2: &quot;#B3EA9C7C-BDCF-41C7-9E6B-E441FE2FEF95&quot;</code></pre>
+<p>The body's run tables:</p>
+<div class="table"><table><thead><tr><th>Field</th><th>Entries</th></tr></thead><tbody><tr><td>8, character styles</td><td>0 → <code>Lenke</code>; 3 → none</td></tr><tr><td>11, smart fields</td><td>0 → the type-2039 link; 3 → none</td></tr><tr><td>15, bookmarks</td><td>0 → none; 4 → the type-2035 bookmark</td></tr></tbody></table></div>
+<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section">#</a></h2>
+<p>A link to a bookmark is a type-2039 smart field. Its field 2 is <code>#</code> followed by the UUID of the bookmark (field 1.1 of the type-2035 record), like a fragment in a web address. Its UUID sits one message deeper than a type-2032 link's (1.1.1 rather than 1.1), so type 2039 probably extends the type-2032 record. A reader can follow the link by finding the bookmark with that UUID, then the bookmark's run in field 15.</p>
+<p>Both run tables end the link at position 3, and the bookmark covers <code>two</code> from position 4.</p>
+<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section">#</a></h2>
+<p><em>Likely</em>: a link to a bookmark is type 2039, naming the bookmark by <code>#</code> and its UUID in field 2.</p>
+<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Last built from <a href="https://github.com/alehel/iwork-format">alehel/iwork-format</a>.</p></footer>
+</main>
+
+</div>
+</body>
+</html>

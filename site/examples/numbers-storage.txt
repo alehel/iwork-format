@@ -1,0 +1,15 @@
+4: message (126 bytes)
+  1: message (8 bytes)
+    1: varint 1
+    2: message (4 bytes)
+      1: varint 904914
+  2: message (4 bytes)
+    1: varint 904958
+  3: message (13 bytes)
+    1: message (8 bytes)
+      1: varint 0
+      2: bytes (4) 08 e3 9a 37
+    2: varint 256
+  4: message (4 bytes)
+    1: varint 904552
+  …

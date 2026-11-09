@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0271: A dynamic background · iWork file format specification</title>
+<meta name="description" content="iWork file format specification">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
+<div class="layout">
+<nav class="side" aria-label="Contents"><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="../guides/anatomy.html">Reading a Pages document</a></li><li><a href="../guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="../guides/writing.html">Writing a document</a></li><li><a href="../guides/samples.html">Sample files</a></li><li class="group">Specification</li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2–5. Text, styles, objects, layout</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li class="group">Evidence</li><li><a href="index.html">All experiments</a></li></ul></nav>
+<main>
+<h1 id="0271-a-dynamic-background">0271: A dynamic background<a class="anchor" href="#0271-a-dynamic-background" aria-label="Link to this section">#</a></h1>
+<p><strong>Status:</strong> run</p>
+<p>Keynote can give a slide a moving, generated background (<em>Dynamiske</em> in the Slide tab). This experiment turns one on, to see whether the motion is stored as a video, an image or parameters.</p>
+<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Keynote</td><td>15.4, in Norwegian</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-09</td></tr><tr><td>Baseline</td><td><code>samples/0271/plain.key</code>, a new presentation</td></tr></tbody></table></div>
+<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section">#</a></h2>
+<ol><li>Make a new presentation: ``<code>bash osascript -e &#x27;tell application &quot;Keynote&quot; to make new document&#x27; </code><code></code></li><li>In the Format sidebar's Slide tab, click Dynamic (<em>Dynamiske</em>) under Background (<em>Bakgrunn</em>). Keynote applies its first preset, a shifting rainbow gradient. The sidebar shows an angle of 352.7°, a scale of 1.40 and a speed of 41.67.</li><li>Save it as <code>samples/0271/dynamic.key</code>.</li></ol>
+<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section">#</a></h2>
+<p>The package gains <code>Data/motionBackground-9091.jpeg</code>, a 36-kilobyte still of the background.</p>
+<p>The slide's style reference (field 1) names a new slide style (type 9) whose property 11.1 is a fill with field 3, an image fill:</p>
+<pre><code>3: { 2: 3,  4: 1920 × 1080,  6: { 1: 9091 },  8: 0,  9: a colour }
+200: { 1: { 1: 2651723 } }</code></pre>
+<p>Record 2651723 is a type-26 style in the stylesheet:</p>
+<pre><code>1:  { 1: &quot;Rainbow&quot;, 2: &quot;motionBackground-0-motionBackgroundStyle&quot; }
+11: { 1: &quot;KNGradientLinearBase&quot;,
+      3: { 2: { … six stops at 0, 0.2, 0.4, 0.6, 0.8, 1, each a colour, a position and 0.5 … } },
+      11: 128.0,  30: 0.0,  32: 0.857,  44: 0.5,  64: 1.4205,  70: 41.57,
+      86: 33.7,  91: 0.973,  92: 1.5,  95: 1.5 }
+12: { 1: 9091 }</code></pre>
+<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section">#</a></h2>
+<p>A dynamic background has two parts:</p>
+<ul><li><strong>A still image (field 3 of the slide's fill):</strong> the data file <code>motionBackground-…</code>, stretched to the slide's 1920 × 1080. A reader that can't animate shows this image, so the slide looks right.</li><li><strong>The generator (field 200 of the fill):</strong> it names a type-26 motion background style. That style holds the generator's name (<code>KNGradientLinearBase</code>), its colour stops in the same layout as a gradient fill (<a href="0260-gradient-fill.html">0260</a>), and parameters as doubles. Field 64 (1.42) is the scale and field 70 (41.6) the speed the sidebar shows, rounded. The stored values differ slightly from the sidebar's, so the sidebar probably rounds them. The angle of 352.7° isn't among the stored values as given. It is probably derived from another value, or stored in radians or as a fraction of a turn.</li></ul>
+<p>Named presets such as <code>Rainbow</code> are styles in the stylesheet, like shape and text styles. The still is the key fact for readers: the animation is generated by Keynote and isn't stored as video.</p>
+<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section">#</a></h2>
+<p><em>Likely</em>:</p>
+<ul><li>A dynamic background is a slide fill holding both a pre-rendered still and a type-26 generator style.</li><li>Fields 64 and 70 are the scale and speed.</li></ul>
+<p><em>Unknown</em>: the other parameters, including the angle.</p>
+<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Last built from <a href="https://github.com/alehel/iwork-format">alehel/iwork-format</a>.</p></footer>
+</main>
+
+</div>
+</body>
+</html>

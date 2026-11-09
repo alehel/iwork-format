@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0038: A second slide · iWork file format specification</title>
+<meta name="description" content="iWork file format specification">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
+<div class="layout">
+<nav class="side" aria-label="Contents"><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="../guides/anatomy.html">Reading a Pages document</a></li><li><a href="../guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="../guides/writing.html">Writing a document</a></li><li><a href="../guides/samples.html">Sample files</a></li><li class="group">Specification</li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2–5. Text, styles, objects, layout</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li class="group">Evidence</li><li><a href="index.html">All experiments</a></li></ul></nav>
+<main>
+<h1 id="0038-a-second-slide">0038: A second slide<a class="anchor" href="#0038-a-second-slide" aria-label="Link to this section">#</a></h1>
+<p><strong>Status:</strong> run</p>
+<p><a href="0027-document-roots.html">0027</a> followed Keynote's root through a presentation (type 2) and a slide node (type 4) to a slide (type 5) in its own part. With one slide, it couldn't show how slides are listed. This experiment adds a second slide.</p>
+<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Keynote</td><td>15.4 (build <code>M15.4-7051.0.79-2</code>)</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-09</td></tr><tr><td>Baseline</td><td>Experiment <a href="0025-keynote-title.html">0025</a>, <code>hello.key</code></td></tr></tbody></table></div>
+<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section">#</a></h2>
+<pre class="lang-bash"><code>mkdir -p samples/0038
+osascript recipes/0038-keynote-two-slides.applescript &quot;$PWD/samples/0038/two-slides.key&quot;</code></pre>
+<p>The recipe sets slide 1's title to <code>first</code>, adds a slide with <code>make new slide</code>, and sets its title to <code>second</code>. Opening the saved file in Keynote through AppleScript reports 2 slides, the second titled <code>second</code>.</p>
+<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section">#</a></h2>
+<p>The presentation (object 2652410, type 2):</p>
+<pre><code>2: { 1: 2651112 }
+3: { 2: { 1: 2652174 }, 2: { 1: 2652533 } }     ← two slide nodes
+4: { 1: 1920.0, 2: 1080.0 }
+5: { 1: 2652414 }                               ← the stylesheet (type 401)</code></pre>
+<div class="table"><table><thead><tr><th></th><th>Slide 1</th><th>Slide 2</th></tr></thead><tbody><tr><td>Slide node (type 4)</td><td>2652174</td><td>2652533</td></tr><tr><td>Node field 2: the slide</td><td>2652175</td><td>2652493</td></tr><tr><td>Node fields 10 and 16: thumbnail size and data ID</td><td>356 × 200, 9058</td><td>absent</td></tr><tr><td>Part holding the slide</td><td><code>Index/Slide-2652175.iwa</code></td><td><code>Index/Slide.iwa</code></td></tr><tr><td>Title text record</td><td>2652192, <code>first</code></td><td>2652492, <code>second</code></td></tr></tbody></table></div>
+<p><code>Document.iwa</code> also holds 17 more slide nodes (type 4), one for each template slide. Each has a thumbnail size and data ID like slide 1's, and points at a slide in a <code>TemplateSlide-N.iwa</code> part.</p>
+<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section">#</a></h2>
+<p>The presentation's field 3 lists the slide nodes in show order, in its repeated field 2. Its field 4 is the slide size in points: 1920 × 1080 for this Wide theme. To list a presentation's slides, a reader goes:</p>
+<ul><li>root → presentation</li><li>field 3.2 → slide nodes</li><li>each node's field 2 → a slide</li></ul>
+<p>Slides live in parts named like other one-record parts (<a href="../spec/container.html">container.md</a>): <code>Slide-N.iwa</code>, or <code>Slide.iwa</code> without a number. A reader should find a slide by its ID, not by the part name.</p>
+<p>A slide added through AppleScript had no thumbnail when saved: its node has no fields 10 and 16. A reader can't rely on every slide having a thumbnail.</p>
+<p>The template slides' nodes aren't listed in field 3.2. Whatever lists them is still to be found.</p>
+<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section">#</a></h2>
+<p><em>Likely</em>:</p>
+<ul><li>Presentation field 3.2 is the ordered list of slide nodes, and field 4 is the slide size.</li><li>Slide parts may be named without a number.</li><li>A slide node's thumbnail is optional.</li></ul>
+<p><em>Unknown</em>:</p>
+<ul><li>Where the template slides are listed.</li><li>Presentation field 2 (object 2651112).</li></ul>
+<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Last built from <a href="https://github.com/alehel/iwork-format">alehel/iwork-format</a>.</p></footer>
+</main>
+
+</div>
+</body>
+</html>

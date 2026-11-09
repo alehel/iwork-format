@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0162: Ten slides · iWork file format specification</title>
+<meta name="description" content="iWork file format specification">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
+<div class="layout">
+<nav class="side" aria-label="Contents"><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="../guides/anatomy.html">Reading a Pages document</a></li><li><a href="../guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="../guides/writing.html">Writing a document</a></li><li><a href="../guides/samples.html">Sample files</a></li><li class="group">Specification</li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2–5. Text, styles, objects, layout</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li class="group">Evidence</li><li><a href="index.html">All experiments</a></li></ul></nav>
+<main>
+<h1 id="0162-ten-slides">0162: Ten slides<a class="anchor" href="#0162-ten-slides" aria-label="Link to this section">#</a></h1>
+<p><strong>Status:</strong> run</p>
+<p>This experiment saves ten slides, to see how the slide parts are named as their number grows.</p>
+<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Keynote</td><td>15.4 (build <code>M15.4-7051.0.79-2</code>)</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-09</td></tr><tr><td>Baseline</td><td>Experiment <a href="0038-second-slide.html">0038</a>, <code>two-slides.key</code></td></tr></tbody></table></div>
+<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section">#</a></h2>
+<pre class="lang-bash"><code>mkdir -p samples/0162
+osascript recipes/0159-keynote-slides.applescript ten &quot;$PWD/samples/0162/ten.key&quot;</code></pre>
+<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section">#</a></h2>
+<p>Field 3.2 lists ten nodes, in order, each naming a slide in its own part. The parts are named:</p>
+<div class="table"><table><thead><tr><th>Slide</th><th>Part</th><th>Slide ID</th></tr></thead><tbody><tr><td>1</td><td><code>Slide-2652175.iwa</code></td><td>2652175</td></tr><tr><td>2</td><td><code>Slide.iwa</code></td><td>2652480</td></tr><tr><td>3–9</td><td><code>Slide-2652603-2.iwa</code> … <code>Slide-2653342-2.iwa</code></td><td>2652603 … 2653342</td></tr><tr><td>10</td><td><code>Slide-2653677.iwa</code></td><td>2653677</td></tr></tbody></table></div>
+<p>Slides 2 to 10 use layout 2651826, and slide 1 uses 2651742.</p>
+<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section">#</a></h2>
+<p>A slide's part name isn't a stable rule. The number in it, when there is one, is the ID of the slide inside, but one part has no number and others end in <code>-2</code>. A reader should list the parts and find each slide by its ID, as <a href="0139-resave.html">0139</a> found for Pages.</p>
+<p>New slides after the first get a different default layout from the first slide's.</p>
+<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section">#</a></h2>
+<p><em>Likely</em>: part names hold the slide's ID, but not always, and sometimes with a suffix such as <code>-2</code>.</p>
+<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Last built from <a href="https://github.com/alehel/iwork-format">alehel/iwork-format</a>.</p></footer>
+</main>
+
+</div>
+</body>
+</html>

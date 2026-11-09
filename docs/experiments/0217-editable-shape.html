@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0217: An editable shape · iWork file format specification</title>
+<meta name="description" content="iWork file format specification">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
+<div class="layout">
+<nav class="side" aria-label="Contents"><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="../guides/anatomy.html">Reading a Pages document</a></li><li><a href="../guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="../guides/writing.html">Writing a document</a></li><li><a href="../guides/samples.html">Sample files</a></li><li class="group">Specification</li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2–5. Text, styles, objects, layout</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li class="group">Evidence</li><li><a href="index.html">All experiments</a></li></ul></nav>
+<main>
+<h1 id="0217-an-editable-shape">0217: An editable shape<a class="anchor" href="#0217-an-editable-shape" aria-label="Link to this section">#</a></h1>
+<p><strong>Status:</strong> run</p>
+<p>A shape's outline is in field 1.3 of its drawable (<a href="0049-text-box.html">0049</a>), but its contents haven't been read. Pages can turn a shape into an editable path (Format → Shapes and Lines → Make Editable). This experiment compares the outline before and after, to read both forms.</p>
+<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Pages</td><td>15.4 (build <code>M15.4-7051.0.79-2</code>), in Norwegian</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-09</td></tr><tr><td>Baseline</td><td><code>samples/0213/plain-shape.pages</code>, a 100 × 100 shape</td></tr></tbody></table></div>
+<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section">#</a></h2>
+<pre class="lang-bash"><code>mkdir -p samples/0217
+osascript recipes/0213-pages-shape.applescript 1</code></pre>
+<p>Then choose Format → Shapes and Lines → Make Editable (<em>Format → Figurer og linjer → Gjør redigerbar</em>) and save as <code>samples/0217/editable.pages</code>.</p>
+<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section">#</a></h2>
+<p>In the baseline, field 1.3 of the shape (type 2011) is:</p>
+<pre><code>1: 0,  2: 0
+5: { 2: 100 × 100,                         ← the path&#x27;s natural size
+     3: { 1: { 1: 1, 2: (0, 0) }           ← move to
+          1: { 1: 2, 2: (100, 0) }         ← line to
+          1: { 1: 2, 2: (100, 100) }
+          1: { 1: 2, 2: (0, 100) }
+          1: { 1: 5 }                      ← close
+          1: { 1: 1, 2: (0, 0) } } }       ← move to</code></pre>
+<p>After Make Editable, field 5 is gone and field 8 holds the outline instead:</p>
+<pre><code>8: { 1: { 1: { 1: (0, 0),     2: (0, 0),     3: (0, 0),     4: 1 }
+          1: { 1: (100, 0),   2: (100, 0),   3: (100, 0),   4: 1 }
+          1: { 1: (100, 100), 2: (100, 100), 3: (100, 100), 4: 1 }
+          1: { 1: (0, 100),   2: (0, 100),   3: (0, 100),   4: 1 }
+          2: 1 },
+     2: 100 × 100 }</code></pre>
+<p>Nothing else in the record changes.</p>
+<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section">#</a></h2>
+<p>A shape's outline has two forms:</p>
+<ul><li><strong>Field 1.3.5, a path:</strong> a natural size (5.2) and a list of elements (5.3.1), each with a kind in field 1 and a point in field 2. The kinds are 1 move to, 2 line to and 5 close the path. Curves are probably 3 and 4.</li><li><strong>Field 1.3.8, an editable path:</strong> a list of nodes (8.1.1), each with three points, then a flag in field 4, plus a flag in 8.1.2 and the natural size in 8.2. The three points are probably the incoming control point, the node and the outgoing control point. For a sharp corner all three are equal. Field 4 is probably the kind of node (1 sharp), and 8.1.2 = 1 says the outline is closed.</li></ul>
+<p>Both are in the shape's own units, here the same as its size. A reader probably scales them from the natural size to the size in 1.1.2.</p>
+<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section">#</a></h2>
+<p><em>Likely</em>: the two path forms and the element kinds 1, 2 and 5.</p>
+<p><em>Unknown</em>: the node flags, and how curves are stored. Follow-up: a shape with a curved edge.</p>
+<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Last built from <a href="https://github.com/alehel/iwork-format">alehel/iwork-format</a>.</p></footer>
+</main>
+
+</div>
+</body>
+</html>

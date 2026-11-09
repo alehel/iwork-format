@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0222: A chart in Pages · iWork file format specification</title>
+<meta name="description" content="iWork file format specification">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
+<div class="layout">
+<nav class="side" aria-label="Contents"><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="../guides/anatomy.html">Reading a Pages document</a></li><li><a href="../guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="../guides/writing.html">Writing a document</a></li><li><a href="../guides/samples.html">Sample files</a></li><li class="group">Specification</li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2–5. Text, styles, objects, layout</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li class="group">Evidence</li><li><a href="index.html">All experiments</a></li></ul></nav>
+<main>
+<h1 id="0222-a-chart-in-pages">0222: A chart in Pages<a class="anchor" href="#0222-a-chart-in-pages" aria-label="Link to this section">#</a></h1>
+<p><strong>Status:</strong> run</p>
+<p>Keynote charts are type-5021 drawables with their data in field 10000.7 (<a href="0067-chart.html">0067</a>). AppleScript can only add charts in Keynote. This experiment inserts one in Pages through the menus, to see whether Pages stores it the same way.</p>
+<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Pages</td><td>15.4 (build <code>M15.4-7051.0.79-2</code>), in Norwegian</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-09</td></tr><tr><td>Baseline</td><td>Experiment <a href="0067-chart.html">0067</a></td></tr></tbody></table></div>
+<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section">#</a></h2>
+<ol><li>Make a document with the body text <code>One</code>: ``<code>bash osascript -e &#x27;tell application &quot;Pages&quot; to set body text of (make new document) to &quot;One&quot;&#x27; </code><code></code></li><li>Choose Insert → Chart → 2D Column (<em>Sett inn → Diagram → 2D-søyle</em>). Pages inserts a chart with its sample data.</li><li>Save it as <code>samples/0222/column.pages</code>.</li></ol>
+<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section">#</a></h2>
+<p>The chart goes into the text: the body becomes <code>One</code> and U+FFFC, and <code>Document.iwa</code> holds one type-5021 record whose drawable field 1.2 names the body. Its field 10000 has:</p>
+<ul><li><strong>10000.1:</strong> 1, a vertical bar (column) chart, as in Keynote.</li><li><strong>10000.5:</strong> 1, grouped by row.</li><li><strong>10000.7:</strong> the sample data, in Keynote's layout:
+<ul><li>row names in 7.1: <code>Område 1</code>, <code>Område 2</code></li><li>column names in 7.2: <code>April</code>, <code>Mai</code>, <code>Juni</code>, <code>Juli</code></li><li>one 7.3 per row, each value a double: 17, 26, 53, 96 and 55, 43, 70, 58</li><li>UUIDs in 7.4</li></ul></li></ul>
+<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section">#</a></h2>
+<p>Pages stores a chart exactly as Keynote does: a type-5021 drawable with its type in 10000.1 and its own copy of the data in 10000.7. The sample data's labels are in the app's language. A chart inserted from the menu sits in the text, like shapes and tables inserted that way.</p>
+<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section">#</a></h2>
+<p><em>Confirmed</em>, with 0067: charts are type-5021 drawables whose data is in 10000.7, in Pages as in Keynote.</p>
+<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Last built from <a href="https://github.com/alehel/iwork-format">alehel/iwork-format</a>.</p></footer>
+</main>
+
+</div>
+</body>
+</html>

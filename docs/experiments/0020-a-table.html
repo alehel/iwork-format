@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0020: A table · iWork file format specification</title>
+<meta name="description" content="iWork file format specification">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
+<div class="layout">
+<nav class="side" aria-label="Contents"><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="../guides/anatomy.html">Reading a Pages document</a></li><li><a href="../guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="../guides/writing.html">Writing a document</a></li><li><a href="../guides/samples.html">Sample files</a></li><li class="group">Specification</li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2–5. Text, styles, objects, layout</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li class="group">Evidence</li><li><a href="index.html">All experiments</a></li></ul></nav>
+<main>
+<h1 id="0020-a-table">0020: A table<a class="anchor" href="#0020-a-table" aria-label="Link to this section">#</a></h1>
+<p><strong>Status:</strong> run</p>
+<p>The first object other than text. This experiment inserts Pages' default <em>Basic</em> table after a word and looks at the new parts, at how the text refers to the table, and at where the table's size is stored. The cells stay empty.</p>
+<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Pages</td><td>15.4 (build <code>M15.4-7051.0.79-2</code>), with a Norwegian (nb) user interface</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-09</td></tr><tr><td>Baseline</td><td><code>plain.pages</code>: the body text <code>one</code>, made by the <a href="0002-one-word.html">0002</a> recipe</td></tr></tbody></table></div>
+<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section">#</a></h2>
+<pre class="lang-bash"><code>mkdir -p samples/0020
+osascript recipes/0002-one-word.applescript &quot;$PWD/samples/0020/plain.pages&quot; one</code></pre>
+<p>For <code>table.pages</code>, AppleScript makes a new document and sets its body text to <code>one</code>. In the Pages window, click at the end of <code>one</code>, then choose Insert → Table → Basic (<em>Sett inn → Tabell → Enkel</em>). Pages inserted a table of 5 rows and 4 columns, with one header row, below the text. AppleScript saves the document.</p>
+<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section">#</a></h2>
+<h3 id="new-parts">New parts<a class="anchor" href="#new-parts" aria-label="Link to this section">#</a></h3>
+<p><code>table.pages</code> has the same 13 parts as <code>plain.pages</code>, plus 30 parts in a new folder, <code>Index/Tables/</code>:</p>
+<div class="table"><table><thead><tr><th>Parts</th><th>Count</th><th>Record type in each</th></tr></thead><tbody><tr><td><code>Index/Tables/DataList.iwa</code>, <code>Index/Tables/DataList-N-2.iwa</code></td><td>1 + 23</td><td>6005</td></tr><tr><td><code>Index/Tables/HeaderStorageBucket.iwa</code>, <code>Index/Tables/HeaderStorageBucket-N-2.iwa</code></td><td>1 + 3</td><td>6006</td></tr><tr><td><code>Index/Tables/Tile.iwa</code>, <code>Index/Tables/Tile-N-2.iwa</code></td><td>1 + 1</td><td>6002</td></tr></tbody></table></div>
+<p>Each of these parts holds exactly one record. In a part named <code>…-N-2.iwa</code>, the record's ID is N. A part without a number holds the lowest ID of its kind. The chunk and record layout of <a href="../spec/container.html">spec/container.md</a> held for all 43 parts.</p>
+<p><code>CalculationEngine-1732610.iwa</code> grew from 8 records to 40, among them one of type 6000 and one of type 6001. <code>Document.iwa</code> gained one record, of type 2003. <code>ViewState.iwa</code> gained one, of type 3061.</p>
+<h3 id="the-text">The text<a class="anchor" href="#the-text" aria-label="Link to this section">#</a></h3>
+<p>The body's text gained one character, U+FFFC (OBJECT REPLACEMENT CHARACTER), after <code>one</code>:</p>
+<pre><code>3: text (6 bytes) &quot;one\u{fffc}&quot;            6f 6e 65 ef bf bc</code></pre>
+<p>The body's type-2001 record gained a field 9, which is a run table with one entry at position 3, the U+FFFC:</p>
+<pre><code>9: { 1: { 1: 3, 2: { 1: 1732897 } } }</code></pre>
+<h3 id="from-the-character-to-the-table">From the character to the table<a class="anchor" href="#from-the-character-to-the-table" aria-label="Link to this section">#</a></h3>
+<pre><code>body 2001, field 9 at 3  →  1732897, type 2003 (Document.iwa)
+                               1: { 1: 1732720 }
+                               2–5: zeros
+                         →  1732720, type 6000 (CalculationEngine)
+                               1.1.1: { 1: 100.14, 2: 70.69 }     (floats)
+                               1.1.2: { 1: 481.89, 2: 114.0 }
+                               1.2:   { 1: 1732539 }              ← the body
+                               2:     { 1: 1732723 }
+                         →  1732723, type 6001 (CalculationEngine, 884 bytes)
+                               1: &quot;59BC6969-543E-4D8C-AB80-E93B6A5855AB&quot;
+                               6: 5
+                               7: 4
+                               8: &quot;Tabell 1&quot;
+                               (and about 50 references to other objects)</code></pre>
+<p>The table's default size is 4 columns of 4.25 cm and 5 rows of 0.8 cm, as the sidebar showed. That is 481.9 × 113.4 points. Field 1.1.2 of the type-6000 record is 481.89 × 114.</p>
+<h3 id="headers-that-list-references">Headers that list references<a class="anchor" href="#headers-that-list-references" aria-label="Link to this section">#</a></h3>
+<p>The header of record 1732723 is 478 bytes, against about 20 for most records. It repeats header field 2.4 27 times, and each entry looks like this:</p>
+<pre><code>4: { 1: &quot;F&quot;,  2: 3,  3: 0,  4: bytes b2 e2 69 b3 e2 69 }</code></pre>
+<p>Read as packed varints, 2.4.4 here is 1732914 and 1732915, two IDs of objects in the same part. The one-byte texts in 2.4.1 (<code>V</code>, <code>U</code>, <code>R</code>, <code>F</code>, <code>P</code> …) could be field numbers (86, 85, 82, 70, 80) that happen to be printable.</p>
+<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section">#</a></h2>
+<p>A table sits in the text as one U+FFFC character. A run table in field 9 of the text record points that position at a type-2003 record. A reader can use field 9 to find the objects anchored in the text.</p>
+<p>The type-2003 record points at a type-6000 record, which looks like the table's drawable. It holds a position and a size in points, and refers back to the text it is anchored in. The drawable points at the table model, type 6001, which holds the number of rows (field 6) and columns (field 7) and the table's name (field 8).</p>
+<p>The table's cell data lives in the many small parts under <code>Index/Tables/</code>, which hold data lists (type 6005), header storage (type 6006) and tiles (type 6002). Pages names these parts after the ID of the record they hold, with a <code>-2</code> ending this experiment doesn't explain.</p>
+<p>Header field 2.4 seems to list a record's references to other objects, grouped by the field that holds them. If so, a reader could find every object a record depends on without understanding the payload. That needs checking against records whose references are known.</p>
+<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section">#</a></h2>
+<p><em>Likely</em>:</p>
+<ul><li>A table is anchored by U+FFFC, with field 9 of the text record as the run table of attachments.</li><li>A type-2003 record points at the table's type-6000 drawable, which holds the position and size and points at the type-6001 model.</li><li>Fields 6, 7 and 8 of type 6001 are the rows, columns and name.</li></ul>
+<p><em>Unknown</em>:</p>
+<ul><li>How cells are stored in the <code>Index/Tables/</code> parts.</li><li>Why there are two tiles, and what the <code>-2</code> in the part names means.</li><li>Whether header field 2.4 lists references. Follow-up: compare 2.4 with the references in the body's type-2001 record, which are known.</li></ul>
+<p>Follow-up for the cells: type a word into one cell and compare (0021).</p>
+<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Last built from <a href="https://github.com/alehel/iwork-format">alehel/iwork-format</a>.</p></footer>
+</main>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0257: A build · iWork file format specification</title>
+<meta name="description" content="iWork file format specification">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
+<div class="layout">
+<nav class="side" aria-label="Contents"><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="../guides/anatomy.html">Reading a Pages document</a></li><li><a href="../guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="../guides/writing.html">Writing a document</a></li><li><a href="../guides/samples.html">Sample files</a></li><li class="group">Specification</li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2–5. Text, styles, objects, layout</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li class="group">Evidence</li><li><a href="index.html">All experiments</a></li></ul></nav>
+<main>
+<h1 id="0257-a-build">0257: A build<a class="anchor" href="#0257-a-build" aria-label="Link to this section">#</a></h1>
+<p><strong>Status:</strong> run</p>
+<p>Keynote can animate an object onto a slide (a build). Builds are added in the Animate sidebar, which needs Keynote in front. This experiment adds a Dissolve build-in to a slide's title.</p>
+<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Keynote</td><td>15.4, in Norwegian</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-09</td></tr><tr><td>Baseline</td><td><code>samples/0257/plain.key</code>, the same slide without a build</td></tr></tbody></table></div>
+<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section">#</a></h2>
+<ol><li>Make a presentation whose first slide's title is <code>One</code>: ``<code>bash osascript -e &#x27;tell application &quot;Keynote&quot;&#x27; -e &#x27;set d to make new document&#x27; \ -e &#x27;set object text of default title item of slide 1 of d to &quot;One&quot;&#x27; -e &#x27;end tell&#x27; </code><code></code></li><li>With Keynote in front, click the title once to select its box, open the Animate sidebar, and choose Add an Effect → Dissolve (<em>Legg til en effekt → Overtoning</em>) on the Build In tab. The sidebar shows a duration of 1 s and delivery All at Once (<em>Alt samtidig</em>).</li><li>Save it as <code>samples/0257/build.key</code>. For the baseline, make the same presentation and save it without a build.</li></ol>
+<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section">#</a></h2>
+<p>The slide's part gains a type-8 record and a type-153 record. The slide record (type 5) gains field 2, naming the type-8 record, and field 43, naming the type-153 record.</p>
+<p>The type-8 record:</p>
+<pre><code>1: { 1: 2652199 }                 ← the title placeholder
+2: &quot;All at Once&quot;
+3: 0.0
+4: { 4: 1, 17: 60.0,
+     18: { 1: &quot;In&quot;, 2: &quot;apple:dissolve character&quot;, 3: 1.0, 5: 0.0, … },
+     20: 1, 21: 1 }
+5: 1</code></pre>
+<p>The type-153 record names the type-8 record in field 1, and holds 1.0 in field 4 and a 128-bit ID.</p>
+<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section">#</a></h2>
+<p>A build is a type-8 record listed by the slide in field 2:</p>
+<ul><li><strong>Field 1:</strong> the object it animates.</li><li><strong>Field 2:</strong> its delivery, as an English name.</li><li><strong>Field 4.18:</strong> the effect. Field 1 is <code>In</code> for a build-in, field 2 the effect's identifier, and field 3 its duration in seconds.</li></ul>
+<p>Effect identifiers use the <code>apple:</code> form of transition names (<a href="0196-every-transition.html">0196</a>). Here it is <code>apple:dissolve character</code>, not <code>apple:dissolve</code>. Slide field 43 lists type-153 records, probably the build order shown in the Build Order window, each naming a build. A reader that only shows slides can ignore builds and draw every object.</p>
+<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section">#</a></h2>
+<p><em>Likely</em>: builds are type-8 records in slide field 2, with their target in field 1 and their effect in 4.18.</p>
+<p><em>Unknown</em>:</p>
+<ul><li>The type-153 records beyond naming a build.</li><li>Fields 3, 4.4, 4.17, 4.20, 4.21 and 5.</li></ul>
+<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Last built from <a href="https://github.com/alehel/iwork-format">alehel/iwork-format</a>.</p></footer>
+</main>
+
+</div>
+</body>
+</html>

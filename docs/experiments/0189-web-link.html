@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0189: A web link · iWork file format specification</title>
+<meta name="description" content="iWork file format specification">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
+<div class="layout">
+<nav class="side" aria-label="Contents"><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="../guides/anatomy.html">Reading a Pages document</a></li><li><a href="../guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="../guides/writing.html">Writing a document</a></li><li><a href="../guides/samples.html">Sample files</a></li><li class="group">Specification</li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2–5. Text, styles, objects, layout</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li class="group">Evidence</li><li><a href="index.html">All experiments</a></li></ul></nav>
+<main>
+<h1 id="0189-a-web-link">0189: A web link<a class="anchor" href="#0189-a-web-link" aria-label="Link to this section">#</a></h1>
+<p><strong>Status:</strong> run</p>
+<p>AppleScript can't add links, so this experiment adds one through the Pages menus, to see where a link is stored.</p>
+<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Pages</td><td>15.4 (build <code>M15.4-7051.0.79-2</code>), in Norwegian</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-09</td></tr><tr><td>Baseline</td><td><code>samples/0179/plain.pages</code>, the body text <code>one</code></td></tr></tbody></table></div>
+<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section">#</a></h2>
+<ol><li>Make a document with the body text <code>one</code>: ``<code>bash osascript -e &#x27;tell application &quot;Pages&quot; to set body text of (make new document) to &quot;one&quot;&#x27; </code><code></code></li><li>Double-click <code>one</code>, then choose Format → Add Link → Webpage (<em>Format → Legg til lenke → Nettside</em>).</li><li>Save it as <code>samples/0189/link.pages</code>, without changing the link.</li></ol>
+<p>Pages fills in its own default address, <code>http://www.apple.com/no</code>, and underlines the word.</p>
+<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section">#</a></h2>
+<p><code>Document.iwa</code> gains one record, of type 2032:</p>
+<pre><code>1: { 1: &quot;67599FAE-72B7-417E-A752-154797023373&quot; }
+2: &quot;http://www.apple.com/no&quot;</code></pre>
+<p>The body text (type 2001) gains two run tables, each with one entry at position 0:</p>
+<ul><li><strong>Field 8, character styles:</strong> 1731540, the stylesheet's type-2021 style named <code>Lenke</code>, with the identifier <code>character-style-hyperlink</code>.</li><li><strong>Field 11, smart fields:</strong> 1732708, the type-2032 record.</li></ul>
+<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section">#</a></h2>
+<p>A link is a smart field of type 2032, held in the same run table (field 11) as the placeholder, date and merge fields of <a href="0158-essay-template.html">0158</a>. Its field 2 is the address and field 1 a UUID. The run covers the linked text. The link's look comes separately, from the built-in character style <code>character-style-hyperlink</code>. A reader finds links by the type-2032 entries in field 11.</p>
+<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section">#</a></h2>
+<p><em>Likely</em>: a link is a type-2032 smart field with the address in field 2, run over the linked text in field 11.</p>
+<p><em>Unknown</em>: what the UUID in field 1 is used for.</p>
+<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Last built from <a href="https://github.com/alehel/iwork-format">alehel/iwork-format</a>.</p></footer>
+</main>
+
+</div>
+</body>
+</html>

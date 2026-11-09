@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0022: References in record headers · iWork file format specification</title>
+<meta name="description" content="iWork file format specification">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
+<div class="layout">
+<nav class="side" aria-label="Contents"><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="../guides/anatomy.html">Reading a Pages document</a></li><li><a href="../guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="../guides/writing.html">Writing a document</a></li><li><a href="../guides/samples.html">Sample files</a></li><li class="group">Specification</li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2–5. Text, styles, objects, layout</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li class="group">Evidence</li><li><a href="index.html">All experiments</a></li></ul></nav>
+<main>
+<h1 id="0022-references-in-record-headers">0022: References in record headers<a class="anchor" href="#0022-references-in-record-headers" aria-label="Link to this section">#</a></h1>
+<p><strong>Status:</strong> run</p>
+<p><a href="0020-a-table.html">0020</a> noticed that the header of a table record repeats field 2.4, and that a field inside each entry reads as object IDs. <a href="../spec/container.html">Container</a> also lists header fields 2.4, 2.5 and 2.6 as unknown. This experiment checks, across every record of several documents, whether those fields list the objects a record's payload refers to. It saves no new documents; it reads the samples of earlier experiments.</p>
+<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Pages</td><td>15.4 (build <code>M15.4-7051.0.79-2</code>)</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-09</td></tr><tr><td>Documents</td><td><code>samples/0001/empty-a.pages</code>, <code>samples/0004/large.pages</code>, <code>samples/0019/left-right.pages</code>, <code>samples/0021/cells.pages</code></td></tr></tbody></table></div>
+<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section">#</a></h2>
+<p><code>iwork-probe</code> gained a <code>refs</code> command for this. It prints, for each record, the IDs packed in header field 2.5 and in field 4 of each header field 2.4 entry:</p>
+<pre class="lang-bash"><code>cargo run --release -- refs samples/0004/large.pages Index/Document.iwa</code></pre>
+<p>Two checks were then made with throwaway scripts over the <code>iwork-probe</code> output:</p>
+<ol><li><strong>Header against payload.</strong> For every record, collect the payload's references, meaning every message whose only field is <code>1: varint N</code>, where N is the ID of a record in the document and at least 1000. The lower bound avoids small numbers that are values, not IDs. Then compare them with the IDs the header lists, grouped by the type of the record and the field path that holds the reference.</li><li><strong>Reachability.</strong> Start at object 1 and follow only header-listed IDs. Count which objects are reached.</li></ol>
+<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section">#</a></h2>
+<p>The body record from 0004, as <code>refs</code> shows it:</p>
+<pre><code>   1732539    2001  1731511 1731481 1732647 1732607 1732296</code></pre>
+<p>These are the paragraph style, list style, character style, the type-2024 object and the section: the targets of its run tables (fields 5, 7, 8, 12 and 17). The stylesheet, which field 2 names, isn't listed.</p>
+<h3 id="header-against-payload">Header against payload<a class="anchor" href="#header-against-payload" aria-label="Link to this section">#</a></h3>
+<div class="table"><table><thead><tr><th>Document</th><th>Header IDs that the payload doesn't refer to</th><th>Field paths whose references are always listed</th><th>Never listed</th><th>Mixed</th></tr></thead><tbody><tr><td><code>0004/large</code></td><td>0</td><td>112</td><td>19</td><td>1</td></tr><tr><td><code>0019/left-right</code></td><td>0</td><td>110</td><td>20</td><td>1</td></tr><tr><td><code>0021/cells</code></td><td>0</td><td>194</td><td>25</td><td>1</td></tr></tbody></table></div>
+<p>The field paths never listed include:</p>
+<ul><li>field 1.5 of every style type (2021, 2022, 2023, 2024, 3016, 5022–5030, 6003, 6004 …), which points at the stylesheet</li><li>field 2 of the text record (2001), which also points at the stylesheet</li><li>field 1.2 of the table's drawable (6000), which points at the text it sits in</li></ul>
+<p>The one mixed path is field 1 of the stylesheet (type 401).</p>
+<h3 id="reachability">Reachability<a class="anchor" href="#reachability" aria-label="Link to this section">#</a></h3>
+<div class="table"><table><thead><tr><th>Document</th><th>Objects</th><th>Reached from 1</th><th>Not reached</th><th>Reached from 1, 2 and 71</th></tr></thead><tbody><tr><td><code>0001/empty-a</code></td><td>571</td><td>564</td><td>7</td><td>571</td></tr><tr><td><code>0004/large</code></td><td>572</td><td>565</td><td>7</td><td>—</td></tr><tr><td><code>0019/left-right</code></td><td>573</td><td>566</td><td>7</td><td>—</td></tr><tr><td><code>0021/cells</code></td><td>634</td><td>627</td><td>7</td><td>634</td></tr></tbody></table></div>
+<p>The 7 not reached from 1 are always:</p>
+<ul><li>objects 2 (type 11006) and 1732655 (type 11015), plus four objects of type 11014, in <code>Metadata.iwa</code></li><li>object 71 (type 11011), in <code>DocumentMetadata.iwa</code></li></ul>
+<p>No header-listed ID was missing from any document.</p>
+<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section">#</a></h2>
+<p>A record's header lists the objects its payload refers to, in field 2.5 and in field 4 of the entries of field 2.4, as packed varints. It lists references that lead down the object tree. It doesn't list references that lead back up to an owner or to the shared stylesheet. Whether a reference is listed depends on the field that holds it, not on the value. The entries of field 2.4 group references by the field that holds them. Their field 1 is probably a field path.</p>
+<p>So a reader can find every object in a document without understanding any payload. It starts at the three roots, object 1 (<code>Document.iwa</code>), object 2 (<code>Metadata.iwa</code>) and object 71 (<code>DocumentMetadata.iwa</code>), and follows the IDs in the headers. The header lists alone also say which objects a record depends on, which helps when deciding what to decode first.</p>
+<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section">#</a></h2>
+<p><em>Confirmed</em>: header IDs are always references found in the payload. This holds in four documents from different experiments, with no exception.</p>
+<p><em>Likely</em>:</p>
+<ul><li>Upward references aren't listed.</li><li>Every object is reachable from 1, 2 and 71.</li></ul>
+<p><em>Unknown</em>:</p>
+<ul><li>What fields 2.4.1, 2.4.2 and 2.4.3 mean. Field 2.4.1 is probably a field path.</li><li>Header field 2.6.</li></ul>
+<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Last built from <a href="https://github.com/alehel/iwork-format">alehel/iwork-format</a>.</p></footer>
+</main>
+
+</div>
+</body>
+</html>

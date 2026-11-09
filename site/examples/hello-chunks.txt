@@ -1,0 +1,3 @@
+Index/Document.iwa: 1 chunk, 7690 stored bytes, 14155 decoded bytes
+    offset  type     stored    decoded decoded at
+         0     0       7686      14155          0

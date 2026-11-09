@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0031: Kinds of cell · iWork file format specification</title>
+<meta name="description" content="iWork file format specification">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
+<div class="layout">
+<nav class="side" aria-label="Contents"><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="../guides/anatomy.html">Reading a Pages document</a></li><li><a href="../guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="../guides/writing.html">Writing a document</a></li><li><a href="../guides/samples.html">Sample files</a></li><li class="group">Specification</li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2–5. Text, styles, objects, layout</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li class="group">Evidence</li><li><a href="index.html">All experiments</a></li></ul></nav>
+<main>
+<h1 id="0031-kinds-of-cell">0031: Kinds of cell<a class="anchor" href="#0031-kinds-of-cell" aria-label="Link to this section">#</a></h1>
+<p><strong>Status:</strong> run</p>
+<p><a href="0021-table-cells.html">0021</a> and <a href="0026-numbers-cells.html">0026</a> decoded a plain number and a text cell, but left the flag bytes and the keys after the value open. This experiment fills one row of a Numbers table with a currency, a percentage, a boolean, a date, a formula and a plain number, and decodes each cell.</p>
+<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Numbers</td><td>15.4 (build <code>M15.4-7051.0.79-2</code>), with a Norwegian (nb) user interface</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-09</td></tr><tr><td>Baseline</td><td>Experiment <a href="0026-numbers-cells.html">0026</a></td></tr></tbody></table></div>
+<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section">#</a></h2>
+<pre class="lang-bash"><code>mkdir -p samples/0031
+osascript recipes/0031-numbers-cell-kinds.applescript &quot;$PWD/samples/0031/kinds.numbers&quot;</code></pre>
+<div class="table"><table><thead><tr><th>Cell</th><th>Set to</th><th>Numbers then showed</th></tr></thead><tbody><tr><td>B2</td><td>42, format currency</td><td><code>42,00 kr</code></td></tr><tr><td>C2</td><td>0.25, format percent</td><td><code>25 %</code></td></tr><tr><td>D2</td><td><code>true</code></td><td><code>1</code>, format automatic. AppleScript's true became a number, not a checkbox.</td></tr><tr><td>E2</td><td>2026-01-02 12:00</td><td><code>02.01.2026 12:00</code></td></tr><tr><td>F2</td><td><code>=B2*2</code></td><td><code>84,00 kr</code></td></tr><tr><td>G2</td><td>42</td><td><code>42</code></td></tr></tbody></table></div>
+<p>The shown values and formats were read back by opening the file in Numbers through AppleScript (<code>formatted value</code> and <code>format</code> of each cell).</p>
+<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section">#</a></h2>
+<h3 id="splitting-the-row-into-cells">Splitting the row into cells<a class="anchor" href="#splitting-the-row-into-cells" aria-label="Link to this section">#</a></h3>
+<p>The row's two offset tables, fields 5.4 and 5.7 of the tile, differ once a row has more than one cell:</p>
+<pre><code>5.4: column 1 → 0, 2 → 12, 3 → 24, 4 → 36, 5 → 48, 6 → 60
+5.7: column 1 → 0, 2 → 36, 3 → 72, 4 → 108, 5 → 136, 6 → 176</code></pre>
+<p>Only 5.7 splits the cell bytes so that every cell starts with the version byte <code>05</code>. So 5.7 holds byte offsets, and 5.4 something else that grows by 12 per cell.</p>
+<h3 id="the-cells">The cells<a class="anchor" href="#the-cells" aria-label="Link to this section">#</a></h3>
+<div class="table"><table><thead><tr><th>Cell</th><th>Bytes 0–1</th><th>Bytes 8–11 (flags)</th><th>Then</th></tr></thead><tbody><tr><td>G2</td><td><code>05 02</code></td><td><code>01 30 00 00</code> = 0x3001</td><td>decimal128 42; keys 1, 1</td></tr><tr><td>C2</td><td><code>05 02</code></td><td>0x3001</td><td>decimal128 <code>19 00 … 3c 30</code> = 25 × 10⁻² = 0.25; keys 1, 3</td></tr><tr><td>D2</td><td><code>05 02</code></td><td>0x3001</td><td>decimal128 1; keys 1, 1</td></tr><tr><td>B2</td><td><code>05 0a</code></td><td><code>01 50 00 00</code> = 0x5001</td><td>decimal128 42; keys 2, 2</td></tr><tr><td>E2</td><td><code>05 05</code></td><td><code>04 90 00 00</code> = 0x9004</td><td>8 bytes <code>00 00 00 60 f5 83 c7 41</code>; keys 3, 4</td></tr><tr><td>F2</td><td><code>05 0a</code></td><td><code>01 52 00 00</code> = 0x5201</td><td>decimal128 84; keys 1, 2, 2</td></tr></tbody></table></div>
+<p>B2's bytes 4–7 are <code>00 00 02 08</code>, and C2's are <code>00 00 01 00</code>. The other cells have zeros there.</p>
+<p>E2's 8 bytes, read as a little-endian double, are 789,048,000. That is the number of seconds from 2001-01-01 00:00 to 2026-01-02 12:00, counting both as UTC. The clock time shown in the cell, 12:00, is stored as-is, with no conversion from the Mac's time zone (Oslo, UTC+1).</p>
+<h3 id="the-lists-the-keys-point-into">The lists the keys point into<a class="anchor" href="#the-lists-the-keys-point-into" aria-label="Link to this section">#</a></h3>
+<p>The table model's field 4.22 names data list 904541 (type 6005, list type 2). It has four entries:</p>
+<div class="table"><table><thead><tr><th>Key</th><th>Count</th><th>Entry</th></tr></thead><tbody><tr><td>1</td><td>2</td><td><code>{ 1: 256, 2: 253 }</code></td></tr><tr><td>2</td><td>2</td><td><code>{ 1: 257, 2: 2, 3: &quot;NOK&quot; }</code></td></tr><tr><td>3</td><td>1</td><td><code>{ 1: 258, 2: 253 }</code></td></tr><tr><td>4</td><td>1</td><td><code>{ 1: 261, 14: &quot;dd.MM.y HH:mm&quot; }</code></td></tr></tbody></table></div>
+<p>Model field 4.6 names data list 904540 (list type 3), with one entry, key 1:</p>
+<pre><code>5: { 1: { 1: 36, 26: {…}, 27: {…} },     ← node type 36
+          { 1: 17, 4: 2.0 },              ← node type 17, the number 2
+          { 1: 3 } }                      ← node type 3</code></pre>
+<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section">#</a></h2>
+<p>A cell's bytes:</p>
+<div class="table"><table><thead><tr><th>Bytes</th><th>Holds</th></tr></thead><tbody><tr><td>0</td><td>Version, 5</td></tr><tr><td>1</td><td>Type: 2 number, 3 text (<a href="0021-table-cells.html">0021</a>), 5 date, 10 currency</td></tr><tr><td>2–7</td><td>Mostly zero; B2 and C2 had something in 4–7</td></tr><tr><td>8–11</td><td>Flags (little-endian), saying which values and keys follow, in order of their bits</td></tr><tr><td>then</td><td>The values and keys the flags name</td></tr></tbody></table></div>
+<p>The flag bits:</p>
+<div class="table"><table><thead><tr><th>Bit</th><th>What follows</th></tr></thead><tbody><tr><td>0x0001</td><td>A decimal128 number</td></tr><tr><td>0x0004</td><td>A date: a double, seconds since 2001-01-01 00:00, with the cell's clock time counted as UTC</td></tr><tr><td>0x0200</td><td>A formula: a key into the formula list (model field 4.6)</td></tr><tr><td>0x1000</td><td>A key into a list not identified yet</td></tr><tr><td>0x2000</td><td>A number format: a key into the format list (model field 4.22)</td></tr><tr><td>0x4000</td><td>A currency format: a key into the format list</td></tr><tr><td>0x8000</td><td>A date format: a key into the format list</td></tr></tbody></table></div>
+<p>Text cells (type 3) carry their string key the same way, but their flags in 0021 (<code>08 10 02 00</code>) haven't been decoded bit by bit yet.</p>
+<p>In the format list, field 1 of each entry is the format kind: 256 number, 257 currency, 258 percent and 261 date. A currency entry gives its currency code (<code>NOK</code>). A date entry gives its pattern (<code>dd.MM.y HH:mm</code>). Field 2 is probably the number of decimals, with 253 meaning automatic. A percentage is stored as the fraction (0.25) with a percent format, not as 25.</p>
+<p>A formula cell keeps its last result as a value (84) next to the key of its formula. Formulas are stored as a list of nodes in postfix order: here a cell reference (type 36), the number 2 (type 17) and the multiplication (type 3), for <code>B2*2</code>. It also took B2's currency format.</p>
+<p>AppleScript's <code>true</code> became the number 1. A real checkbox cell will need the Numbers window.</p>
+<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section">#</a></h2>
+<p><em>Likely</em>:</p>
+<ul><li>The cell layout and flag bits listed above, except 0x1000.</li><li>Field 5.7 of a tile row holds byte offsets.</li><li>Format list entries are as described.</li><li>Formula entries are lists of postfix nodes.</li></ul>
+<p><em>Unknown</em>:</p>
+<ul><li>Bit 0x1000 and its list.</li><li>Bytes 4–7 of a cell.</li><li>What field 5.4 counts.</li><li>The fields of the cell-reference node (26 and 27).</li></ul>
+<p>Follow-ups:</p>
+<ul><li>A formula that references a different cell, to decode node 36.</li><li>A checkbox cell made in the Numbers window.</li></ul>
+<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Last built from <a href="https://github.com/alehel/iwork-format">alehel/iwork-format</a>.</p></footer>
+</main>
+
+</div>
+</body>
+</html>

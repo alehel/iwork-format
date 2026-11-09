@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0012: Underline and strikethrough · iWork file format specification</title>
+<meta name="description" content="iWork file format specification">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
+<div class="layout">
+<nav class="side" aria-label="Contents"><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="../guides/anatomy.html">Reading a Pages document</a></li><li><a href="../guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="../guides/writing.html">Writing a document</a></li><li><a href="../guides/samples.html">Sample files</a></li><li class="group">Specification</li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2–5. Text, styles, objects, layout</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li class="group">Evidence</li><li><a href="index.html">All experiments</a></li></ul></nav>
+<main>
+<h1 id="0012-underline-and-strikethrough">0012: Underline and strikethrough<a class="anchor" href="#0012-underline-and-strikethrough" aria-label="Link to this section">#</a></h1>
+<p><strong>Status:</strong> run</p>
+<p><a href="0007-bold-and-italic.html">0007</a> mapped the Bold and Italic buttons to fields 11.1 and 11.2 of a character style. This experiment does the same for the other two buttons in the row, Underline and Strikethrough.</p>
+<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Pages</td><td>15.4 (build <code>M15.4-7051.0.79-2</code>), with a Norwegian (nb) user interface</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-09</td></tr><tr><td>Baseline</td><td>Experiment <a href="0008-runs-and-shared-styles.html">0008</a>, <code>middle.pages</code> (the same word made bold)</td></tr></tbody></table></div>
+<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section">#</a></h2>
+<p>As in 0008: AppleScript makes a new document and sets its body text to <code>one two three</code>. In the Pages window, double-click <code>two</code>, then click one button in the Style tab of the Format sidebar. AppleScript saves the document.</p>
+<div class="table"><table><thead><tr><th>File</th><th>Button</th></tr></thead><tbody><tr><td><code>underline.pages</code></td><td>Underline (<em>understreking</em>)</td></tr><tr><td><code>strikethrough.pages</code></td><td>Strikethrough (<em>gjennomstreket</em>)</td></tr></tbody></table></div>
+<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section">#</a></h2>
+<p>Both files have the same character-style runs as <code>middle.pages</code> in 0008: no style from 0, a new style from 4, and no style from 7. The new type-2021 styles differ from 0008's bold style only in field 11:</p>
+<pre><code>underline.pages       10: varint 1   11: { 11: varint 1 }
+strikethrough.pages   10: varint 1   11: { 12: varint 1 }</code></pre>
+<p>The Body paragraph style (see <a href="0010-alignment.html">0010</a>) sets both fields to 0.</p>
+<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section">#</a></h2>
+<p>Field 11.11 of a style is underline and 11.12 is strikethrough. In both, 1 is what the sidebar button sets and 0 is off.</p>
+<p>The format may allow other values, such as for double underlines, which the sidebar buttons don't make. A reader that meets a value other than 0 or 1 should treat it as "on" until an experiment says more.</p>
+<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section">#</a></h2>
+<p><em>Likely</em>: field 11.11 is underline and 11.12 is strikethrough, with 0 off and 1 for the default line.</p>
+<p><em>Unknown</em>: other values. Follow-up: choose a double underline in Pages' Font panel (Format → Font → Show Fonts).</p>
+<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Last built from <a href="https://github.com/alehel/iwork-format">alehel/iwork-format</a>.</p></footer>
+</main>
+
+</div>
+</body>
+</html>

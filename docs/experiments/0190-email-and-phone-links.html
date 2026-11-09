@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0190: Email and phone links · iWork file format specification</title>
+<meta name="description" content="iWork file format specification">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
+<div class="layout">
+<nav class="side" aria-label="Contents"><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="../guides/anatomy.html">Reading a Pages document</a></li><li><a href="../guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="../guides/writing.html">Writing a document</a></li><li><a href="../guides/samples.html">Sample files</a></li><li class="group">Specification</li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2–5. Text, styles, objects, layout</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li class="group">Evidence</li><li><a href="index.html">All experiments</a></li></ul></nav>
+<main>
+<h1 id="0190-email-and-phone-links">0190: Email and phone links<a class="anchor" href="#0190-email-and-phone-links" aria-label="Link to this section">#</a></h1>
+<p><strong>Status:</strong> run</p>
+<p><a href="0189-web-link.html">0189</a> found that a web link is a type-2032 smart field. Pages also offers email and phone number links. This experiment adds one of each, to see whether they use the same record.</p>
+<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Pages</td><td>15.4 (build <code>M15.4-7051.0.79-2</code>), in Norwegian</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-09</td></tr><tr><td>Baseline</td><td>Experiment <a href="0189-web-link.html">0189</a></td></tr></tbody></table></div>
+<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section">#</a></h2>
+<p>As in 0189, but choosing Format → Add Link → Email (<em>E-post</em>) for <code>samples/0190/email.pages</code> and Format → Add Link → Phone Number (<em>Telefonnummer</em>) for <code>samples/0190/phone.pages</code>. Each link keeps the address Pages fills in.</p>
+<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section">#</a></h2>
+<p>Each document gains one type-2032 record, with the same run tables as in 0189: field 8 sets the <code>Lenke</code> character style and field 11 points at the record, both from position 0.</p>
+<div class="table"><table><thead><tr><th>Document</th><th>Field 2</th></tr></thead><tbody><tr><td><code>email.pages</code></td><td><code>mailto:no_reply@apple.com</code></td></tr><tr><td><code>phone.pages</code></td><td><code>tel:%2012%2034%2056%2078</code></td></tr></tbody></table></div>
+<p>Field 1 holds a new UUID each time.</p>
+<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section">#</a></h2>
+<p>Web, email and phone links are all type-2032 smart fields. The kind of link is given only by the scheme of the address in field 2: <code>http:</code>, <code>mailto:</code> or <code>tel:</code>. The phone number is stored percent-encoded, with each space as <code>%20</code>, so a reader should decode the address before showing it.</p>
+<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section">#</a></h2>
+<p><em>Confirmed</em>, with 0189: links are type-2032 smart fields with the address in field 2.</p>
+<p><em>Likely</em>: the kind of link is given by the address's scheme alone.</p>
+<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Last built from <a href="https://github.com/alehel/iwork-format">alehel/iwork-format</a>.</p></footer>
+</main>
+
+</div>
+</body>
+</html>

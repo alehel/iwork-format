@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0007: Bold and italic · iWork file format specification</title>
+<meta name="description" content="iWork file format specification">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
+<div class="layout">
+<nav class="side" aria-label="Contents"><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="../guides/anatomy.html">Reading a Pages document</a></li><li><a href="../guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="../guides/writing.html">Writing a document</a></li><li><a href="../guides/samples.html">Sample files</a></li><li class="group">Specification</li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2–5. Text, styles, objects, layout</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li class="group">Evidence</li><li><a href="index.html">All experiments</a></li></ul></nav>
+<main>
+<h1 id="0007-bold-and-italic">0007: Bold and italic<a class="anchor" href="#0007-bold-and-italic" aria-label="Link to this section">#</a></h1>
+<p><strong>Status:</strong> run</p>
+<p>Experiment <a href="0004-larger-word.html">0004</a> changed one word's size and found a character-style run pointing at a new, unnamed style. AppleScript can't make text bold or italic, so this experiment uses the Bold and Italic buttons in the Pages window, to see how those are stored.</p>
+<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Pages</td><td>15.4 (build <code>M15.4-7051.0.79-2</code>), with a Norwegian (nb) user interface</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-09</td></tr><tr><td>Baseline</td><td>Experiment <a href="0004-larger-word.html">0004</a>: <code>plain.pages</code>, and <code>large.pages</code> for the same change with a size</td></tr></tbody></table></div>
+<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section">#</a></h2>
+<p>The text was set through AppleScript, so it is the same as in 0004 and Pages doesn't autocorrect it (see <a href="0006-typing-in-pages.html">0006</a>). Each document was made like this:</p>
+<ol><li>With AppleScript, make a new document and set its body text to <code>hello world</code>: ``<code>applescript tell application &quot;Pages&quot; set d to make new document set body text of d to &quot;hello world&quot; end tell </code><code></code></li><li>In the Pages window, double-click <code>world</code> to select it, then click buttons in the Style tab of the Format sidebar:</li></ol>
+<p>| File | Buttons | | --- | --- | | <code>bold.pages</code> | Bold | | <code>italic.pages</code> | Italic | | <code>bold-italic.pages</code> | Bold, then Italic |</p>
+<ol><li>Save with AppleScript, <code>save front document in POSIX file &quot;…&quot;</code>, and close.</li></ol>
+<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section">#</a></h2>
+<h3 id="the-run-table">The run table<a class="anchor" href="#the-run-table" aria-label="Link to this section">#</a></h3>
+<p>In all three files the body's type-2001 record has a field 8 just like the one in 0004's <code>large.pages</code>. It has an entry at 0 with no style, and an entry at 6 naming a new object. Compared with <code>large.pages</code>, the only difference in record 2001 is the ID of that object. Fields 19 and 20 from 0006 are absent, as expected for text set through AppleScript.</p>
+<h3 id="the-new-character-style">The new character style<a class="anchor" href="#the-new-character-style" aria-label="Link to this section">#</a></h3>
+<p>Each file has one more record in <code>DocumentStylesheet.iwa</code> than <code>plain.pages</code>: an unnamed type-2021 character style. Its parent (field 1.3) is the null character style 1731539, as in 0004. Fields 10 and 11 differ:</p>
+<pre><code>bold.pages            10: varint 1   11: { 1: varint 1 }
+italic.pages          10: varint 1   11: { 2: varint 1 }
+bold-italic.pages     10: varint 2   11: { 1: varint 1, 2: varint 1 }
+0004 large.pages      10: varint 1   11: { 3: fixed32 24.0 }</code></pre>
+<p>Everything else in these records is the same as in 0004's style.</p>
+<h3 id="other-changes">Other changes<a class="anchor" href="#other-changes" aria-label="Link to this section">#</a></h3>
+<p>The other changes from <code>large.pages</code> are the save-to-save changes from 0001 and 0002, plus <code>ViewState.iwa</code> record type 10132. That record grew from 24 to 28 bytes, probably because <code>world</code> was still selected when the file was saved.</p>
+<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section">#</a></h2>
+<p>Bold and italic are stored the same way as a size. They go in a new, unnamed character style that inherits from the null character style, and the run table points the range at it. Field 11 of a character style holds its properties:</p>
+<div class="table"><table><thead><tr><th>Field 11.n</th><th>Property</th><th>Seen as</th></tr></thead><tbody><tr><td>1</td><td>Bold</td><td>varint 1</td></tr><tr><td>2</td><td>Italic</td><td>varint 1</td></tr><tr><td>3</td><td>Size in points</td><td>float</td></tr></tbody></table></div>
+<p>Field 10 of a character style was 1 when the style set one property and 2 when it set two. It may count the properties, or the edits that made the style. This experiment can't tell those apart.</p>
+<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section">#</a></h2>
+<p><em>Likely</em>:</p>
+<ul><li>Field 11.1 of a character style is bold, 11.2 is italic and 11.3 is the size.</li><li>Each change to part of the text makes an unnamed character style. Follow-up: make two separate words bold, and see whether they share one style.</li></ul>
+<p><em>Unknown</em>:</p>
+<ul><li>What field 10 counts. Follow-up: set bold and size together with a single change, which is one edit setting two properties.</li><li>How "not bold" is stored, for example in a bold heading where one word is made regular.</li></ul>
+<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Last built from <a href="https://github.com/alehel/iwork-format">alehel/iwork-format</a>.</p></footer>
+</main>
+
+</div>
+</body>
+</html>

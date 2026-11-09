@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0048: A page number field · iWork file format specification</title>
+<meta name="description" content="iWork file format specification">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
+<div class="layout">
+<nav class="side" aria-label="Contents"><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="../guides/anatomy.html">Reading a Pages document</a></li><li><a href="../guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="../guides/writing.html">Writing a document</a></li><li><a href="../guides/samples.html">Sample files</a></li><li class="group">Specification</li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2–5. Text, styles, objects, layout</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li class="group">Evidence</li><li><a href="index.html">All experiments</a></li></ul></nav>
+<main>
+<h1 id="0048-a-page-number-field">0048: A page number field<a class="anchor" href="#0048-a-page-number-field" aria-label="Link to this section">#</a></h1>
+<p><strong>Status:</strong> run</p>
+<p>This experiment inserts Pages' page number field into the body text. It also tests a guess from <a href="0032-reading-all-text.html">0032</a>, where a Numbers sheet's text held a single U+FFFC anchored to a type-2043 record containing the word <code>decimal</code>.</p>
+<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Pages</td><td>15.4 (build <code>M15.4-7051.0.79-2</code>), with a Norwegian (nb) user interface</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-09</td></tr><tr><td>Baseline</td><td>Experiment <a href="0020-a-table.html">0020</a> (an object anchored in the text)</td></tr></tbody></table></div>
+<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section">#</a></h2>
+<ol><li>AppleScript makes a new document with the body text <code>page</code>.</li><li>In the Pages window, click at the end of the text, type a space, and choose Insert → Page Number (<em>Sett inn → Sidetall</em>). Pages showed <code>Page 1</code>, capitalising the word.</li><li>AppleScript saves the document as <code>samples/0048/page-number.pages</code>.</li></ol>
+<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section">#</a></h2>
+<p>The body text is <code>Page </code>, then U+FFFC:</p>
+<pre><code>3: text (8 bytes) &quot;Page \u{fffc}&quot;          50 61 67 65 20 ef bf bc</code></pre>
+<p>The body's field 9 has one entry at 5, the U+FFFC:</p>
+<pre><code>9: { 1: { 1: 5, 2: { 1: 1732717 } } }</code></pre>
+<p>Object 1732717 is of type 2043, lists no references, and holds:</p>
+<pre><code>1: { 2: 0 }
+2: 0
+4: text &quot;decimal&quot;</code></pre>
+<p>That is the same content as the type-2043 record under the Numbers sheet's text in 0032.</p>
+<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section">#</a></h2>
+<p>A page number field is a U+FFFC in the text, anchored through field 9 to a type-2043 record. Field 4 of that record is the number format, <code>decimal</code>. Unlike a table, the field-9 entry points at the field itself, not at a type-2003 attachment. So field-9 targets come in at least two kinds: attachments (type 2003) for objects and fields (type 2043) for computed text. A reader shows the current page number in its place.</p>
+<p>This explains 0032: a Numbers sheet's text holds a page number field, probably for printing the sheet.</p>
+<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section">#</a></h2>
+<p><em>Likely</em>:</p>
+<ul><li>A page number field is U+FFFC anchored to a type-2043 record, with its number format in field 4.</li><li>The Numbers sheet's text holds one.</li></ul>
+<p><em>Unknown</em>:</p>
+<ul><li>Fields 1 and 2 of type 2043.</li><li>The other number formats. Follow-up: page numbers in roman numerals.</li><li>How <em>Page Count</em> (<em>Sideantall</em>) is stored.</li></ul>
+<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Last built from <a href="https://github.com/alehel/iwork-format">alehel/iwork-format</a>.</p></footer>
+</main>
+
+</div>
+</body>
+</html>

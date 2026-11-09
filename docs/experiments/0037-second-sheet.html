@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0037: A second sheet · iWork file format specification</title>
+<meta name="description" content="iWork file format specification">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
+<div class="layout">
+<nav class="side" aria-label="Contents"><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="../guides/anatomy.html">Reading a Pages document</a></li><li><a href="../guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="../guides/writing.html">Writing a document</a></li><li><a href="../guides/samples.html">Sample files</a></li><li class="group">Specification</li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2–5. Text, styles, objects, layout</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li class="group">Evidence</li><li><a href="index.html">All experiments</a></li></ul></nav>
+<main>
+<h1 id="0037-a-second-sheet">0037: A second sheet<a class="anchor" href="#0037-a-second-sheet" aria-label="Link to this section">#</a></h1>
+<p><strong>Status:</strong> run</p>
+<p><a href="0029-numbers-root-to-table.html">0029</a> followed a Numbers document from its root through one sheet to a table. This experiment adds a second sheet, to see how the root lists sheets.</p>
+<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Numbers</td><td>15.4 (build <code>M15.4-7051.0.79-2</code>)</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-09</td></tr><tr><td>Baseline</td><td>Experiment <a href="0024-keynote-and-numbers.html">0024</a>, <code>empty-a.numbers</code></td></tr></tbody></table></div>
+<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section">#</a></h2>
+<pre class="lang-bash"><code>mkdir -p samples/0037
+osascript recipes/0037-numbers-second-sheet.applescript &quot;$PWD/samples/0037/two-sheets.numbers&quot;</code></pre>
+<p>The recipe makes a new spreadsheet and adds a sheet named <code>Second</code> with <code>make new sheet with properties {name:&quot;Second&quot;}</code>. A first version that made the sheet <code>at end of sheets</code> failed with error −10000.</p>
+<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section">#</a></h2>
+<p>The root (object 1, type 1) has two entries in field 1, where an empty spreadsheet has one. <code>Document.iwa</code> has two records of type 2:</p>
+<div class="table"><table><thead><tr><th>Sheet</th><th>Field 1</th><th>References listed in its header</th></tr></thead><tbody><tr><td>904532</td><td><code>Ark 1</code></td><td>904769 903871 904606 904900 904801 904721 904579 904667 904976</td></tr><tr><td>905230</td><td><code>Second</code></td><td>905262 903871 905231 905235 905236 905237 905232 905233 905234</td></tr></tbody></table></div>
+<p>Both sheets refer to object 903871. The new sheet came with a table of its own. The package gained a full set of table parts: 23 <code>DataList-N-N.iwa</code>, one more <code>DataList.iwa</code>, four <code>HeaderStorageBucket-N.iwa</code> and two <code>Tile-N.iwa</code>.</p>
+<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section">#</a></h2>
+<p>Field 1 of Numbers' root lists the sheets in order, one reference per sheet. Each sheet (type 2) has its name in field 1 and refers to its own drawables, such as a table, which have their own table parts. A reader lists a document's sheets by reading root field 1.</p>
+<p>The object both sheets share (903871) is probably a stylesheet or another document-wide object. It isn't identified here.</p>
+<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section">#</a></h2>
+<p><em>Likely</em>: Numbers' root field 1 lists the sheets in order, and each new sheet brings its own table with its own parts.</p>
+<p><em>Unknown</em>: object 903871.</p>
+<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Last built from <a href="https://github.com/alehel/iwork-format">alehel/iwork-format</a>.</p></footer>
+</main>
+
+</div>
+</body>
+</html>

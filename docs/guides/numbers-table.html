@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Reading a Numbers table · iWork file format specification</title>
+<meta name="description" content="iWork file format specification">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
+<div class="layout">
+<nav class="side" aria-label="Contents"><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="anatomy.html">Reading a Pages document</a></li><li><a class="current" href="numbers-table.html">Reading a Numbers table</a></li><li><a href="writing.html">Writing a document</a></li><li><a href="samples.html">Sample files</a></li><li class="group">Specification</li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2–5. Text, styles, objects, layout</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li class="group">Evidence</li><li><a href="../experiments/index.html">All experiments</a></li></ul></nav>
+<main>
+<h1 id="reading-a-numbers-table">Reading a Numbers table<a class="anchor" href="#reading-a-numbers-table" aria-label="Link to this section">#</a></h1>
+<p>This page decodes the cells of a small spreadsheet. It assumes the container layer from <a href="anatomy.html">Reading a Pages document</a>: parts, chunks, records and references are the same in all three apps.</p>
+<p>The file is <a href="../files/kinds-and-numbers.numbers">kinds-and-numbers.numbers</a>, from experiment <a href="../experiments/0226-category.html">0226</a>: a new spreadsheet whose first table has a header row <code>kind</code>, <code>n</code> and four rows below it.</p>
+<figure><img src="../files/kinds-and-numbers.png" alt="kinds-and-numbers.numbers as Numbers prints it: a header row, then a, 1; b, 2; a, 3; b, 4" loading="lazy"><figcaption>kinds-and-numbers.numbers as Numbers prints it: a header row, then a, 1; b, 2; a, 3; b, 4</figcaption></figure>
+<h2 id="from-the-root-to-the-table">From the root to the table<a class="anchor" href="#from-the-root-to-the-table" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th>Step</th><th>Record</th><th>Where</th></tr></thead><tbody><tr><td>The document root, type 1. Field 1 lists the sheets.</td><td>object 1</td><td><code>Document.iwa</code></td></tr><tr><td>A sheet, type 2. Field 2 lists its drawables: tables, text boxes, shapes.</td><td></td><td><code>Document.iwa</code></td></tr><tr><td>A table's drawable, type 6000: position and size, and in field 2 the table model</td><td>904769</td><td><code>CalculationEngine.iwa</code></td></tr><tr><td>The table model, type 6001</td><td>904595</td><td><code>CalculationEngine.iwa</code></td></tr><tr><td>A tile, type 6002: the cells</td><td></td><td><code>Tables/Tile.iwa</code></td></tr></tbody></table></div>
+<p>See <a href="../spec/numbers.html#from-the-root-to-a-tables-cells">numbers.md</a> for the full chain.</p>
+<h2 id="the-table-model">The table model<a class="anchor" href="#the-table-model" aria-label="Link to this section">#</a></h2>
+<p>Some top-level fields of the model:</p>
+<pre class="excerpt"><code>1: text (36 bytes) &quot;68B384C7-9E7F-4B90-A1F5-067B81524A6A&quot;
+6: varint 22
+7: varint 7
+8: text (8 bytes) &quot;Tabell 1&quot;
+9: varint 1
+10: varint 1
+12: varint 1
+13: varint 1
+22: varint 1</code></pre>
+<div class="table"><table><thead><tr><th>Field</th><th>Value</th><th>Meaning</th></tr></thead><tbody><tr><td>1</td><td>UUID</td><td>The table's identity, used by formulas that refer to another table</td></tr><tr><td>6, 7</td><td>22, 7</td><td>Rows and columns: a new table's size, whatever is filled in</td></tr><tr><td>8</td><td><code>Tabell 1</code></td><td>The table's name (Numbers was set to Norwegian)</td></tr><tr><td>9, 10</td><td>1, 1</td><td>One header row and one header column</td></tr><tr><td>12, 13</td><td>1, 1</td><td>Header rows and columns are frozen</td></tr><tr><td>22</td><td>1</td><td>The name is shown above the table</td></tr></tbody></table></div>
+<p>Field 4 is the table's storage. It names the lists that cells refer to by key:</p>
+<pre class="excerpt"><code>4: message (126 bytes)
+  1: message (8 bytes)
+    1: varint 1
+    2: message (4 bytes)
+      1: varint 904914
+  2: message (4 bytes)
+    1: varint 904958
+  3: message (13 bytes)
+    1: message (8 bytes)
+      1: varint 0
+      2: bytes (4) 08 e3 9a 37
+    2: varint 256
+  4: message (4 bytes)
+    1: varint 904552
+  …</code></pre>
+<div class="table"><table><thead><tr><th>Field</th><th>Meaning</th></tr></thead><tbody><tr><td>4.1, 4.2</td><td>The row and column header storage: sizes of rows and columns that aren't the default</td></tr><tr><td>4.3</td><td>The tiles. Each entry gives a tile index (4.3.1.1) and the tile (4.3.1.2, here a reference to object 904547). A tile holds 256 rows (4.3.2).</td></tr><tr><td>4.4</td><td>The string table, object 904552</td></tr><tr><td>4.22</td><td>The format list</td></tr></tbody></table></div>
+<h2 id="a-tiles-rows">A tile's rows<a class="anchor" href="#a-tiles-rows" aria-label="Link to this section">#</a></h2>
+<p>A tile (type 6002) has one field-5 entry per row with content. Each entry gives the row index (5.1), a table of 16-bit little-endian offsets, one per column, with <code>ffff</code> for an empty cell (5.7, or 5.4 in a row with a single cell), and the cell bytes (5.6) (<a href="../spec/text.html#objects-in-the-text">text.md</a>). Here are the five rows, split into cells using the offsets:</p>
+<pre class="excerpt"><code>row 0: offsets 0, 24, then ffff
+  column 0: 05 03 00 00 00 00 00 00 08 10 02 00 01 00 00 00 05 00 00 00 01 00 00 00
+  column 1: 05 03 00 00 00 00 00 00 08 10 02 00 02 00 00 00 05 00 00 00 01 00 00 00
+row 1: offsets 0, 24, then ffff
+  column 0: 05 03 00 00 00 00 00 00 08 10 02 00 03 00 00 00 05 00 00 00 01 00 00 00
+  column 1: 05 02 00 00 00 00 00 00 01 30 00 00 01 00 00 00 00 00 00 00 00 00 00 00 00 00 40 30 01 00 00 00 02 00 00 00
+row 2: offsets 0, 24, then ffff
+  column 0: 05 03 00 00 00 00 00 00 08 10 02 00 04 00 00 00 05 00 00 00 01 00 00 00
+  column 1: 05 02 00 00 00 00 00 00 01 30 00 00 02 00 00 00 00 00 00 00 00 00 00 00 00 00 40 30 01 00 00 00 02 00 00 00
+row 3: offsets 0, 24, then ffff
+  column 0: 05 03 00 00 00 00 00 00 08 10 02 00 03 00 00 00 05 00 00 00 01 00 00 00
+  column 1: 05 02 00 00 00 00 00 00 01 30 00 00 03 00 00 00 00 00 00 00 00 00 00 00 00 00 40 30 01 00 00 00 02 00 00 00
+row 4: offsets 0, 24, then ffff
+  column 0: 05 03 00 00 00 00 00 00 08 10 02 00 04 00 00 00 05 00 00 00 01 00 00 00
+  column 1: 05 02 00 00 00 00 00 00 01 30 00 00 04 00 00 00 00 00 00 00 00 00 00 00 00 00 40 30 01 00 00 00 02 00 00 00</code></pre>
+<p>Every cell starts with an 8-byte prefix and 4 bytes of flags. What follows depends on the flags.</p>
+<h2 id="a-number-cell">A number cell<a class="anchor" href="#a-number-cell" aria-label="Link to this section">#</a></h2>
+<p>Row 1, column 1 holds the number 1:</p>
+<pre><code>05 02 00 00 00 00 00 00   01 30 00 00   01 00 00 00 00 00 00 00 00 00 00 00 00 00 40 30   01 00 00 00   02 00 00 00
+└ version, type 2 ┘       └ flags ┘     └ decimal128: 1 ──────────────────────────────┘   └ key 1 ┘     └ key 2 ┘</code></pre>
+<div class="table"><table><thead><tr><th>Bytes</th><th>Meaning</th></tr></thead><tbody><tr><td><code>05</code></td><td>Version 5</td></tr><tr><td><code>02</code></td><td>Cell type 2, a number</td></tr><tr><td><code>01 30 00 00</code></td><td>Flags 0x3001: bit 0x0001 (a decimal128 follows), 0x1000 (a key into a list not yet identified) and 0x2000 (a key into the format list, for a number format)</td></tr><tr><td>16 bytes</td><td>The value, an IEEE 754 decimal128, little-endian. The coefficient is in the low bits, here 1. The top two bytes <code>40 30</code> read as 0x3040 hold the sign (0) and the exponent 0x3040 &gt;&gt; 1 = 6176, which is the bias, so the exponent is 0. The value is 1 × 10⁰.</td></tr><tr><td><code>01 00 00 00</code></td><td>The key for flag 0x1000</td></tr><tr><td><code>02 00 00 00</code></td><td>The key for flag 0x2000: format 2</td></tr></tbody></table></div>
+<p>The values and keys follow in the order of their flag bits. The flag table in <a href="../spec/text.html#objects-in-the-text">text.md</a> lists the bits found so far.</p>
+<h2 id="a-text-cell">A text cell<a class="anchor" href="#a-text-cell" aria-label="Link to this section">#</a></h2>
+<p>Row 1, column 0 holds <code>a</code>:</p>
+<pre><code>05 03 00 00 00 00 00 00   08 10 02 00   03 00 00 00   05 00 00 00   01 00 00 00</code></pre>
+<div class="table"><table><thead><tr><th>Bytes</th><th>Meaning</th></tr></thead><tbody><tr><td><code>05 03</code></td><td>Version 5, cell type 3, text</td></tr><tr><td><code>08 10 02 00</code></td><td>Flags 0x21008: 0x0008 (a string key), 0x1000, and 0x20000 (a key into the format list, for a text format)</td></tr><tr><td><code>03 00 00 00</code></td><td>String key 3</td></tr><tr><td><code>05 00 00 00</code></td><td>The key for flag 0x1000</td></tr><tr><td><code>01 00 00 00</code></td><td>Format 1</td></tr></tbody></table></div>
+<p>The text isn't in the cell. String key 3 is an entry in the string table, a type-6005 record in <code>Index/Tables/DataList-904552.iwa</code>:</p>
+<pre class="excerpt"><code>1: varint 1
+2: varint 5
+3: message (10 bytes)
+  1: varint 1
+  2: varint 1
+  3: text (4 bytes) &quot;kind&quot;
+3: message (7 bytes)
+  1: varint 2
+  2: varint 1
+  3: text (1 bytes) &quot;n&quot;
+3: message (7 bytes)
+  1: varint 3
+  2: varint 2
+  3: text (1 bytes) &quot;a&quot;
+3: message (7 bytes)
+  1: varint 4
+  2: varint 2
+  3: text (1 bytes) &quot;b&quot;</code></pre>
+<p>Each entry in field 3 has its key (3.1), the number of cells using it (3.2) and the string as UTF-8 (3.3). <code>a</code> and <code>b</code> are each used by two cells, so equal texts share an entry. Rows 2 and 4 refer to key 4, <code>b</code>.</p>
+<p>The two format keys lead to the format list, another type-6005 record, here in <code>DataList-904541.iwa</code>:</p>
+<pre class="excerpt"><code>1: varint 2
+2: varint 3
+3: message (9 bytes)
+  1: varint 1
+  2: varint 6
+  6: message (3 bytes)
+    1: varint 260
+3: message (16 bytes)
+  1: varint 2
+  2: varint 4
+  6: message (10 bytes)
+    1: varint 256
+    2: varint 253
+    4: varint 0
+    5: varint 0
+5: varint 1</code></pre>
+<p>Key 1 is format kind 260, text, used by 6 cells: the two headers and the four letters. Key 2 is kind 256, a number, used by the four numbers (<a href="../spec/text.html#objects-in-the-text">text.md</a>).</p>
+<h2 id="a-readers-steps">A reader's steps<a class="anchor" href="#a-readers-steps" aria-label="Link to this section">#</a></h2>
+<ol><li>From the model, read the rows and columns (6, 7) and the tiles (4.3).</li><li>For each tile, for each row entry: the table row is the tile index × 256 + the row index.</li><li>For each column whose offset isn't <code>ffff</code>, read the cell: type byte, flags, then the values and keys in flag order.</li><li>Look up strings in the string table (4.4) and formats in the format list (4.22).</li></ol>
+<p>Pages and Keynote tables are stored the same way, byte for byte (<a href="../experiments/0131-pages-table-cells.html">0131</a>).</p>
+<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Last built from <a href="https://github.com/alehel/iwork-format">alehel/iwork-format</a>.</p></footer>
+</main>
+<nav class="toc" aria-label="On this page"><p>On this page</p><ul><li><a href="#from-the-root-to-the-table">From the root to the table</a></li><li><a href="#the-table-model">The table model</a></li><li><a href="#a-tiles-rows">A tile&#x27;s rows</a></li><li><a href="#a-number-cell">A number cell</a></li><li><a href="#a-text-cell">A text cell</a></li><li><a href="#a-readers-steps">A reader&#x27;s steps</a></li></ul></nav>
+</div>
+</body>
+</html>

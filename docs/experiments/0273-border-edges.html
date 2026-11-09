@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0273: Which edges a paragraph border is on · iWork file format specification</title>
+<meta name="description" content="iWork file format specification">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
+<div class="layout">
+<nav class="side" aria-label="Contents"><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="../guides/anatomy.html">Reading a Pages document</a></li><li><a href="../guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="../guides/writing.html">Writing a document</a></li><li><a href="../guides/samples.html">Sample files</a></li><li class="group">Specification</li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2–5. Text, styles, objects, layout</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li class="group">Evidence</li><li><a href="index.html">All experiments</a></li></ul></nav>
+<main>
+<h1 id="0273-which-edges-a-paragraph-border-is-on">0273: Which edges a paragraph border is on<a class="anchor" href="#0273-which-edges-a-paragraph-border-is-on" aria-label="Link to this section">#</a></h1>
+<p><strong>Status:</strong> run</p>
+<p><a href="0262-paragraph-border.html">0262</a> found that a paragraph border on the top edge sets properties 15 and 45 to 1, alongside the stroke in property 32. This experiment moves the border to the bottom edge, then to all four, to tell the two properties apart.</p>
+<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Pages</td><td>15.4 (build <code>M15.4-7051.0.79-2</code>), in Norwegian</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-09</td></tr><tr><td>Baseline</td><td>Experiment <a href="0262-paragraph-border.html">0262</a>, a border on the top edge</td></tr></tbody></table></div>
+<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section">#</a></h2>
+<ol><li>With Pages in front, add a solid paragraph border to <code>One</code> as in 0262. It starts on the top edge.</li><li>In the Layout tab's edge buttons, turn on the bottom edge and turn off the top edge. Save as <code>samples/0273/bottom-border.pages</code>.</li><li>Click the box button, which puts the border on all four edges. Save as <code>samples/0273/all-edges.pages</code>.</li></ol>
+<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th>Edges</th><th>Property 15</th><th>Property 45</th></tr></thead><tbody><tr><td>Top (0262)</td><td>1</td><td>1</td></tr><tr><td>Bottom</td><td>2</td><td>2</td></tr><tr><td>All four</td><td>4</td><td>15</td></tr></tbody></table></div>
+<p>The stroke (property 32) is the same in all three.</p>
+<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section">#</a></h2>
+<p>Property 45 is a bit set of edges: 1 top and 2 bottom. The value 15 for all four edges means 4 and 8 are the left and right edges, in an order not yet tested. Property 15 is a single choice rather than a bit set: 1 top, 2 bottom, 4 all edges. It is probably an older setting that Pages still writes alongside 45 for older readers. A reader should use property 45 and fall back on 15.</p>
+<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section">#</a></h2>
+<p><em>Likely</em>:</p>
+<ul><li>Property 45 is the border's edges as bits (1 top, 2 bottom, 15 all).</li><li>Property 15 is an older single-valued form.</li></ul>
+<p><em>Unknown</em>: which of 4 and 8 is the left edge.</p>
+<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Last built from <a href="https://github.com/alehel/iwork-format">alehel/iwork-format</a>.</p></footer>
+</main>
+
+</div>
+</body>
+</html>

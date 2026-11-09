@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0052: A floating table · iWork file format specification</title>
+<meta name="description" content="iWork file format specification">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
+<div class="layout">
+<nav class="side" aria-label="Contents"><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="../guides/anatomy.html">Reading a Pages document</a></li><li><a href="../guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="../guides/writing.html">Writing a document</a></li><li><a href="../guides/samples.html">Sample files</a></li><li class="group">Specification</li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2–5. Text, styles, objects, layout</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li class="group">Evidence</li><li><a href="index.html">All experiments</a></li></ul></nav>
+<main>
+<h1 id="0052-a-floating-table">0052: A floating table<a class="anchor" href="#0052-a-floating-table" aria-label="Link to this section">#</a></h1>
+<p><strong>Status:</strong> run</p>
+<p>In <a href="0020-a-table.html">0020</a>, a table inserted from the menu sat in the text as U+FFFC, attached through a type-2003 record. This experiment makes a table on the page through AppleScript instead, and compares how the two are held.</p>
+<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Pages</td><td>15.4 (build <code>M15.4-7051.0.79-2</code>)</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-09</td></tr><tr><td>Baseline</td><td>Experiment <a href="0020-a-table.html">0020</a>, <code>table.pages</code> (a table in the text)</td></tr></tbody></table></div>
+<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section">#</a></h2>
+<pre class="lang-bash"><code>mkdir -p samples/0052
+osascript recipes/0052-pages-floating-table.applescript &quot;$PWD/samples/0052/table.pages&quot;</code></pre>
+<p>The recipe makes a document with the body text <code>one</code>, then a table of 3 rows and 3 columns on page 1.</p>
+<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section">#</a></h2>
+<p>The body text is still <code>one</code>, with no U+FFFC, and <code>Document.iwa</code> has no type-2003 record. Header references reach the table's drawable straight from the page-level record:</p>
+<pre><code>1 (type 10000) → 1732364 (type 10015) → 1732671 (type 6000)</code></pre>
+<p>The two drawables (type 6000) differ in field 1:</p>
+<div class="table"><table><thead><tr><th></th><th>In the text (0020)</th><th>On the page</th></tr></thead><tbody><tr><td>1.1.1, position</td><td>100.1, 70.7</td><td>92.8, 342.6</td></tr><tr><td>1.1.2, size</td><td>481.9 × 114</td><td>392 × 110</td></tr><tr><td>1.2</td><td><code>{ 1: 1732539 }</code>, the body</td><td>absent</td></tr></tbody></table></div>
+<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section">#</a></h2>
+<p>Pages has two ways of placing an object:</p>
+<ul><li><strong>In the text:</strong> a U+FFFC with an attachment (type 2003), as in 0020. The drawable's field 1.2 names the text it sits in.</li><li><strong>On the page:</strong> listed by the page-level record (type 10015), with no field 1.2. Images (<a href="0023-an-image.html">0023</a>) and text boxes (<a href="0049-text-box.html">0049</a>) placed through AppleScript were also on the page.</li></ul>
+<p>Field 1.2 of a drawable's geometry block is therefore its parent text, when it has one. For an object on the page, the position in 1.1.1 is relative to the page. For an object in the text, it is probably filled in by Pages' layout and can't be relied on without laying out the text.</p>
+<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section">#</a></h2>
+<p><em>Likely</em>:</p>
+<ul><li>Drawables on the page are listed by type 10015 and have no field 1.2.</li><li>Drawables in the text name their text in field 1.2.</li></ul>
+<p><em>Unknown</em>: whether the position of an object in the text is kept up to date.</p>
+<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Last built from <a href="https://github.com/alehel/iwork-format">alehel/iwork-format</a>.</p></footer>
+</main>
+
+</div>
+</body>
+</html>

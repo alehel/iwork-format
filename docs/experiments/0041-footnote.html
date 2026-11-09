@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0041: A footnote · iWork file format specification</title>
+<meta name="description" content="iWork file format specification">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
+<div class="layout">
+<nav class="side" aria-label="Contents"><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="../guides/anatomy.html">Reading a Pages document</a></li><li><a href="../guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="../guides/writing.html">Writing a document</a></li><li><a href="../guides/samples.html">Sample files</a></li><li class="group">Specification</li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2–5. Text, styles, objects, layout</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li class="group">Evidence</li><li><a href="index.html">All experiments</a></li></ul></nav>
+<main>
+<h1 id="0041-a-footnote">0041: A footnote<a class="anchor" href="#0041-a-footnote" aria-label="Link to this section">#</a></h1>
+<p><strong>Status:</strong> run</p>
+<p>This experiment inserts a footnote after a word, to see how a footnote's mark sits in the text and where the footnote's own text is kept.</p>
+<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Pages</td><td>15.4 (build <code>M15.4-7051.0.79-2</code>), with a Norwegian (nb) user interface</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-09</td></tr><tr><td>Baseline</td><td><code>samples/0020/plain.pages</code> (the body text <code>one</code>)</td></tr></tbody></table></div>
+<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section">#</a></h2>
+<ol><li>AppleScript makes a new document with the body text <code>one</code>.</li><li>In the Pages window, click at the end of <code>one</code>, choose Insert → Footnote (<em>Sett inn → Fotnote</em>), and type <code>note</code>. Pages put the cursor in the footnote at the foot of the page.</li><li>AppleScript saves the document as <code>samples/0041/footnote.pages</code>.</li></ol>
+<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section">#</a></h2>
+<p>The body text gained one character, U+000E, after <code>one</code>:</p>
+<pre><code>3: bytes (4) 6f 6e 65 0e</code></pre>
+<p>The body gained a field 16 with one entry at 3, the U+000E, and a field 8, the character-style runs:</p>
+<pre><code>16: { 1: { 1: 3, 2: { 1: 1732722 } } }</code></pre>
+<div class="table"><table><thead><tr><th>Object</th><th>Type</th><th>Holds</th></tr></thead><tbody><tr><td>1732722</td><td>2008</td><td><code>1: bytes (0)</code>, <code>2: { 1: 1732708 }</code></td></tr><tr><td>1732708</td><td>2001</td><td>a text record with field 1 = 2, text U+FFFC, space, <code>note</code></td></tr><tr><td>1732723</td><td>2004</td><td>the target of the footnote text's field-9 entry at 0, its U+FFFC</td></tr></tbody></table></div>
+<p>Following header references, the path is: 1 (type 10000) → 1732539 (the body) → 1732722 (type 2008) → 1732708 (the footnote's text).</p>
+<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section">#</a></h2>
+<p>A footnote's mark is the character U+000E in the text. Field 16 of the text record is a run table of footnotes. Its entry at the mark points at a type-2008 footnote record, whose field 2 names the footnote's text. That text is a type-2001 record with field 1 = 2, another value for field 1 alongside 0 (body), 1 (header or footer) and 4 (presenter notes, <a href="0039-presenter-notes.html">0039</a>).</p>
+<p>The footnote's text starts with U+FFFC, which its own field 9 anchors to a type-2004 record. That is probably the footnote number, which Pages draws at the start of the note and works out itself. So a reader should number footnotes in order rather than look for the number as text.</p>
+<p>The body's new character-style run is most likely the superscript style of the mark. Superscript hasn't been decoded.</p>
+<p><code>iwork-probe text</code> now shows U+000E as <code>[footnote]</code>.</p>
+<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section">#</a></h2>
+<p><em>Likely</em>:</p>
+<ul><li>A footnote mark is U+000E.</li><li>Body field 16 holds footnote runs pointing at type-2008 records, which name the footnote text (field 1 = 2).</li><li>The footnote text starts with an anchored number (type 2004).</li></ul>
+<p><em>Unknown</em>:</p>
+<ul><li>Type 2004.</li><li>The superscript style of the mark.</li></ul>
+<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Last built from <a href="https://github.com/alehel/iwork-format">alehel/iwork-format</a>.</p></footer>
+</main>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0289: Writing two paragraphs · iWork file format specification</title>
+<meta name="description" content="iWork file format specification">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
+<div class="layout">
+<nav class="side" aria-label="Contents"><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="../guides/anatomy.html">Reading a Pages document</a></li><li><a href="../guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="../guides/writing.html">Writing a document</a></li><li><a href="../guides/samples.html">Sample files</a></li><li class="group">Specification</li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2–5. Text, styles, objects, layout</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li class="group">Evidence</li><li><a href="index.html">All experiments</a></li></ul></nav>
+<main>
+<h1 id="0289-writing-two-paragraphs">0289: Writing two paragraphs<a class="anchor" href="#0289-writing-two-paragraphs" aria-label="Link to this section">#</a></h1>
+<p><strong>Status:</strong> run</p>
+<p><a href="0288-writing-new-text.html">0288</a> changed a one-paragraph body by rewriting its text alone. The spec says the paragraph run table (field 5) has one entry per paragraph (<a href="0005-paragraphs.html">0005</a>). This experiment writes a two-paragraph body twice, once with a second paragraph entry and once without, to see whether Pages needs the entry.</p>
+<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Pages</td><td>15.4 (build <code>M15.4-7051.0.79-2</code>)</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-09</td></tr><tr><td>Input</td><td><code>samples/0287/original.pages</code>, one paragraph <code>One</code> in the Body style</td></tr><tr><td>Writer</td><td>[<code>recipes/0289-two-paragraphs.py</code>](../recipes/0289-two-paragraphs.py), using the writer of <a href="0287-rewriting-a-document.html">0287</a></td></tr></tbody></table></div>
+<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section">#</a></h2>
+<pre class="lang-bash"><code>mkdir -p samples/0289
+python3 -I recipes/0289-two-paragraphs.py samples/0287/original.pages \
+  samples/0289/with-run.pages samples/0289/without-run.pages</code></pre>
+<p>Both files get the body text <code>One</code> U+000A <code>Two</code>:</p>
+<ul><li><code>with-run.pages</code> also gets a second field-5 entry, <code>{ 1: 4 }</code>, with no style, as Pages wrote two paragraphs in 0005.</li><li><code>without-run.pages</code> keeps the single entry at 0.</li></ul>
+<p>Each file was opened in Pages through AppleScript, its paragraphs counted, and saved with <code>-resaved</code> added to its name.</p>
+<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section">#</a></h2>
+<p>Pages opens both and counts two paragraphs, the second being <code>Two</code>.</p>
+<div class="table"><table><thead><tr><th>Resaved file</th><th>Field 5</th></tr></thead><tbody><tr><td><code>with-run-resaved</code></td><td>0 → 1731511 (Body), 4 → no style: as written</td></tr><tr><td><code>without-run-resaved</code></td><td>0 → 1731490, 4 → no style</td></tr></tbody></table></div>
+<p>Record 1731490 is the paragraph style named <code>Standard</code>, with the identifier <code>paragraph-style-default</code>. AppleScript reports its font size as 12, against Body's 11.</p>
+<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section">#</a></h2>
+<p>The paragraph run table needs one entry per paragraph. When a writer supplies them, Pages keeps them as written. An entry without a style continues the previous paragraph's style, here Body. When one is missing, Pages rebuilds the table on open, putting a run at each paragraph start. It then gives every paragraph the stylesheet's default style rather than the one the writer named, so the written style is lost. A writer must therefore add an entry at the start of every paragraph.</p>
+<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section">#</a></h2>
+<p><em>Likely</em>:</p>
+<ul><li>Field 5 must have an entry per paragraph.</li><li>A missing entry makes Pages fall back on <code>paragraph-style-default</code>.</li><li>An entry with no style continues the previous style.</li></ul>
+<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Last built from <a href="https://github.com/alehel/iwork-format">alehel/iwork-format</a>.</p></footer>
+</main>
+
+</div>
+</body>
+</html>

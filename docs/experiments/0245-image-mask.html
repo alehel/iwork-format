@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0245: An image masked with an oval · iWork file format specification</title>
+<meta name="description" content="iWork file format specification">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
+<div class="layout">
+<nav class="side" aria-label="Contents"><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="../guides/anatomy.html">Reading a Pages document</a></li><li><a href="../guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="../guides/writing.html">Writing a document</a></li><li><a href="../guides/samples.html">Sample files</a></li><li class="group">Specification</li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2–5. Text, styles, objects, layout</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li class="group">Evidence</li><li><a href="index.html">All experiments</a></li></ul></nav>
+<main>
+<h1 id="0245-an-image-masked-with-an-oval">0245: An image masked with an oval<a class="anchor" href="#0245-an-image-masked-with-an-oval" aria-label="Link to this section">#</a></h1>
+<p><strong>Status:</strong> run</p>
+<p>Pages can crop an image to a shape (Format → Image → Mask with Shape). This experiment masks an image with an oval, to see how the mask is stored and whether the image itself is cropped.</p>
+<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Pages</td><td>15.4 (build <code>M15.4-7051.0.79-2</code>), in Norwegian</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-09</td></tr><tr><td>Baseline</td><td><code>samples/0228/caption.pages</code>, the same image</td></tr></tbody></table></div>
+<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section">#</a></h2>
+<pre class="lang-bash"><code>mkdir -p samples/0245
+osascript recipes/0244-pages-image.applescript &quot;$PWD/samples/0023/red-8x4.png&quot;</code></pre>
+<p>Then:</p>
+<ol><li>Choose Format → Image → Mask with Shape → Oval (<em>Format → Bilde → Masker med figur → Oval</em>). Pages shows a 100 × 100 circle in the middle of the 200 × 100 image, with the rest faded, and a Done button.</li><li>Click Done (<em>Ferdig</em>). Only the circle is shown.</li><li>Save it as <code>samples/0245/oval-mask.pages</code>.</li></ol>
+<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section">#</a></h2>
+<p>The image record (type 3005) keeps its geometry: (300, 300), 200 × 100. It gains field 5, naming a new record of type 3006:</p>
+<pre><code>1: drawable: 1.1 geometry (50, 0), 100 × 100; 1.2 { 1: 1732647 }   ← the image
+2: a path: 2.5, natural size 100 × 100, with move, curve … elements   ← an oval, as in 0218</code></pre>
+<p>The stored image file is unchanged.</p>
+<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section">#</a></h2>
+<p>A mask is a type-3006 record named by image field 5. It is a drawable whose parent is the image, positioned relative to the image's corner, with an outline in the path form of shapes (<a href="0217-editable-shape.html">0217</a>, <a href="0218-oval.html">0218</a>). The image itself is not cropped: a reader draws the whole image, clipped to the mask's outline placed at the mask's position. Here the oval sits at x = 50, centred on the 200-point-wide image.</p>
+<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section">#</a></h2>
+<p><em>Likely</em>: image field 5 names a type-3006 mask, positioned relative to the image and holding a shape path.</p>
+<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Last built from <a href="https://github.com/alehel/iwork-format">alehel/iwork-format</a>.</p></footer>
+</main>
+
+</div>
+</body>
+</html>

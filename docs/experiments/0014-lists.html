@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0014: Lists · iWork file format specification</title>
+<meta name="description" content="iWork file format specification">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
+<div class="layout">
+<nav class="side" aria-label="Contents"><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="../guides/anatomy.html">Reading a Pages document</a></li><li><a href="../guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="../guides/writing.html">Writing a document</a></li><li><a href="../guides/samples.html">Sample files</a></li><li class="group">Specification</li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2–5. Text, styles, objects, layout</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li class="group">Evidence</li><li><a href="index.html">All experiments</a></li></ul></nav>
+<main>
+<h1 id="0014-lists">0014: Lists<a class="anchor" href="#0014-lists" aria-label="Link to this section">#</a></h1>
+<p><strong>Status:</strong> run</p>
+<p>Since <a href="0002-one-word.html">0002</a>, field 7 of the body's type-2001 record has pointed at a list style named <em>Ingen</em> (None), <code>text-0-liststyle-None</code>. This experiment makes a dash list and a numbered list, to see how a list is attached to paragraphs and what a list style holds.</p>
+<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Pages</td><td>15.4 (build <code>M15.4-7051.0.79-2</code>), with a Norwegian (nb) user interface and default autocorrection</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-09</td></tr><tr><td>Baseline</td><td>Experiment <a href="0006-typing-in-pages.html">0006</a>, <code>return-ui.pages</code> (typed paragraphs, no list)</td></tr></tbody></table></div>
+<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section">#</a></h2>
+<p>There is no menu command for lists, and the list menu in the sidebar is a pop-up the test couldn't open. Instead, the lists were typed so that Pages' automatic list detection made them. AppleScript made an empty document, the keys were typed in the Pages window, and AppleScript saved the document.</p>
+<div class="table"><table><thead><tr><th>File</th><th>Typed</th></tr></thead><tbody><tr><td><code>dash-list.pages</code></td><td><code>- one</code>, Return, <code>two</code>, Return, <code>three</code></td></tr><tr><td><code>numbered-list.pages</code></td><td><code>1. one</code>, Return, <code>two</code>, Return, <code>three</code></td></tr></tbody></table></div>
+<p>After the first Return, Pages turned the paragraph into a list item. The sidebar then showed the list style as <em>Strek</em> (Dash) and <em>Nummerert</em> (Numbered).</p>
+<p>While making the numbered list, Pages showed an autocorrection suggestion (<code>Three</code>) under the last word. As long as it was shown, Pages didn't answer AppleScript. It was dismissed with its close button, so the last word stayed lowercase in that file.</p>
+<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section">#</a></h2>
+<h3 id="the-text">The text<a class="anchor" href="#the-text" aria-label="Link to this section">#</a></h3>
+<pre><code>dash-list.pages      3: text (13 bytes) &quot;One\nTwo\nThree&quot;
+numbered-list.pages  3: text (13 bytes) &quot;One\nTwo\nthree&quot;</code></pre>
+<p>The <code>- </code> and <code>1. </code> that were typed aren't in the text. The marker is not stored as characters.</p>
+<h3 id="the-bodys-runs">The body's runs<a class="anchor" href="#the-bodys-runs" aria-label="Link to this section">#</a></h3>
+<p>Only field 7 differs from a plain document. In both files it has one entry, at 0, which covers all three paragraphs:</p>
+<pre><code>dash-list.pages      7: { 1: { 1: 0, 2: { 1: 1731488 } } }
+numbered-list.pages  7: { 1: { 1: 0, 2: { 1: 1731486 } } }</code></pre>
+<p>The paragraph-style runs (field 5) have one entry per paragraph, as in 0005. Field 6 keeps its single entry of three zeros.</p>
+<h3 id="the-list-styles">The list styles<a class="anchor" href="#the-list-styles" aria-label="Link to this section">#</a></h3>
+<p>Both list styles were already in the stylesheet, so no record was added. The order of a few records in <code>DocumentStylesheet.iwa</code> changed, but their contents didn't.</p>
+<p>All three list styles are type 2023 and store most properties as nine repeated values:</p>
+<div class="table"><table><thead><tr><th>Field</th><th>None (1731481)</th><th>Dash (1731488)</th><th>Numbered (1731486)</th></tr></thead><tbody><tr><td>1.1, 1.2</td><td><code>Ingen</code>, <code>text-0-liststyle-None</code></td><td><code>Strek</code>, <code>text-7-liststyle-Dash</code></td><td><code>Nummerert</code>, <code>text-5-liststyle-Numbered</code></td></tr><tr><td>10</td><td>4</td><td>5</td><td>6</td></tr><tr><td>11 (×9)</td><td>0</td><td>2</td><td>3</td></tr><tr><td>12 (×9, float)</td><td>−0, then 0</td><td>1.0909091</td><td>1.6363636</td></tr><tr><td>13 (×9, float)</td><td>0, 36, 72 … 288</td><td>0, 12, 24 … 96</td><td>0, 18, 36 … 144</td></tr><tr><td>14 (×9, message)</td><td><code>{1: 1.0, 2: 0, 3: 1}</code></td><td><code>{1: 1.2, 2: 2.0, 3: 1}</code></td><td><code>{1: 1.0, 2: 0, 3: 1}</code></td></tr><tr><td>15 (×9)</td><td>—</td><td>—</td><td>0</td></tr><tr><td>16 (×9, text)</td><td>—</td><td><code>-</code></td><td>—</td></tr><tr><td>25 (×9)</td><td>—</td><td>—</td><td>0</td></tr></tbody></table></div>
+<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section">#</a></h2>
+<p>A list is a list style attached to a range of paragraphs through the list-style runs (field 7). The marker, a dash or a number, is not part of the text. A reader has to draw it from the list style.</p>
+<p>A list style describes nine levels, with each property stored as nine repeated values, one per level:</p>
+<ul><li>Field 11 is the kind of marker: 0 none, 2 a text character, 3 a number.</li><li>Field 16 is the marker text for kind 2.</li><li>Field 15 is probably the number format for kind 3.</li><li>Field 13 increases by a fixed step per level, so it is probably each level's indent in points.</li><li>Field 12 equals the first indent step divided by 11, the Body font size (12 / 11 = 1.0909; 18 / 11 = 1.6364). It may be the same indent expressed relative to the font size.</li></ul>
+<p>Field 10 equals the number of distinct property fields each list style sets (4, 5 and 6). Together with the unnamed styles of 0007–0011, this suggests field 10 counts properties, though in the named paragraph styles of 0010 it was two less than the count.</p>
+<p>Field 6 of record 2001 is unchanged by a single-level list, so it might hold list levels. A nested list would test that.</p>
+<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section">#</a></h2>
+<p><em>Likely</em>:</p>
+<ul><li>Field 7 runs attach list styles (type 2023) to paragraphs.</li><li>List markers aren't stored in the text.</li><li>A list style stores nine per-level values, with 11 as the marker kind and 16 as the marker text.</li></ul>
+<p><em>Unknown</em>:</p>
+<ul><li>Fields 12, 13, 14, 15 and 25 of a list style. Follow-up: number a list with letters, and start numbering at 5.</li><li>Where list levels are stored. Follow-up: indent the second item of a list with Tab.</li></ul>
+<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Last built from <a href="https://github.com/alehel/iwork-format">alehel/iwork-format</a>.</p></footer>
+</main>
+
+</div>
+</body>
+</html>

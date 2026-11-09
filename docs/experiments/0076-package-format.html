@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0076: The package format · iWork file format specification</title>
+<meta name="description" content="iWork file format specification">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
+<div class="layout">
+<nav class="side" aria-label="Contents"><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="../guides/anatomy.html">Reading a Pages document</a></li><li><a href="../guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="../guides/writing.html">Writing a document</a></li><li><a href="../guides/samples.html">Sample files</a></li><li class="group">Specification</li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2–5. Text, styles, objects, layout</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li class="group">Evidence</li><li><a href="index.html">All experiments</a></li></ul></nav>
+<main>
+<h1 id="0076-the-package-format">0076: The package format<a class="anchor" href="#0076-the-package-format" aria-label="Link to this section">#</a></h1>
+<p><strong>Status:</strong> run</p>
+<p>Every document so far was a ZIP file. Pages can also save a document as a package, a folder, under File → Advanced → Change File Type → Package (<em>Fil → Avansert → Endre filtype → Pakke</em>). This experiment saves a document that way and compares the layout.</p>
+<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Pages</td><td>15.4 (build <code>M15.4-7051.0.79-2</code>), with a Norwegian (nb) user interface</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-09</td></tr><tr><td>Baseline</td><td><code>samples/0020/plain.pages</code> (the body text <code>one</code>, as a ZIP)</td></tr></tbody></table></div>
+<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section">#</a></h2>
+<ol><li>AppleScript makes a new document with the body text <code>one</code>.</li><li>In Pages, choose File → Advanced → Change File Type → Package.</li><li>AppleScript saves the document as <code>samples/0076/package.pages</code>.</li></ol>
+<p>The first save still wrote a ZIP file. The file type was then changed again on the saved, reopened document, and AppleScript saved it in place (<code>save front document</code>). That wrote a folder.</p>
+<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section">#</a></h2>
+<p><code>samples/0076/package.pages</code> is a folder:</p>
+<pre><code>Index.zip
+Metadata/BuildVersionHistory.plist
+Metadata/DocumentIdentifier
+Metadata/Properties.plist
+preview-micro.jpg
+preview-web.jpg
+preview.jpg</code></pre>
+<p><code>Index.zip</code> holds the seven <code>.iwa</code> parts under <code>Index/</code>, with the same names as in a ZIP document, all stored without compression. With <code>iwork-probe</code> reading parts inside <code>Index.zip</code> (added for this experiment), the text and all 571 objects are found as in a ZIP document. All objects are reachable from objects 1, 2 and 71.</p>
+<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section">#</a></h2>
+<p>A Pages document can be a folder as well as a ZIP file. In the folder form:</p>
+<ul><li>the metadata files and previews are files in the folder</li><li>the <code>.iwa</code> parts are inside a ZIP file called <code>Index.zip</code>, under the same <code>Index/</code> names, using the same chunk and record layout</li></ul>
+<p>A reader opens either form the same way once it treats <code>Index.zip</code> as part of the folder. A document with images would presumably keep its <code>Data/</code> folder alongside, but that isn't tested.</p>
+<p>AppleScript's <code>save … in</code> writes the first save of a new document as a ZIP, whatever file type is chosen. Only a later save in place followed the setting.</p>
+<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section">#</a></h2>
+<p><em>Likely</em>: the folder form, with <code>.iwa</code> parts inside <code>Index.zip</code>.</p>
+<p><em>Unknown</em>:</p>
+<ul><li>Where data files go in the folder form.</li><li>Whether Keynote and Numbers can save folders too.</li></ul>
+<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Last built from <a href="https://github.com/alehel/iwork-format">alehel/iwork-format</a>.</p></footer>
+</main>
+
+</div>
+</body>
+</html>

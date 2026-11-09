@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0287: Rewriting a document · iWork file format specification</title>
+<meta name="description" content="iWork file format specification">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
+<div class="layout">
+<nav class="side" aria-label="Contents"><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="../guides/anatomy.html">Reading a Pages document</a></li><li><a href="../guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="../guides/writing.html">Writing a document</a></li><li><a href="../guides/samples.html">Sample files</a></li><li class="group">Specification</li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2–5. Text, styles, objects, layout</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li class="group">Evidence</li><li><a href="index.html">All experiments</a></li></ul></nav>
+<main>
+<h1 id="0287-rewriting-a-document">0287: Rewriting a document<a class="anchor" href="#0287-rewriting-a-document" aria-label="Link to this section">#</a></h1>
+<p><strong>Status:</strong> run</p>
+<p>Every finding so far was made by reading what the apps write. A stronger test of the container layer is to write a document from the spec and see whether Pages accepts it. This experiment rewrites every <code>.iwa</code> part of a document with an encoder written only from <a href="../spec/container.html">container.md</a>, with no content changed, and opens the result in Pages.</p>
+<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Pages</td><td>15.4 (build <code>M15.4-7051.0.79-2</code>)</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-09</td></tr><tr><td>Input</td><td><code>samples/0236/plain.pages</code>, a new document with the body text <code>One</code></td></tr><tr><td>Writer</td><td>[<code>recipes/0287-iwa-writer.py</code>](../recipes/0287-iwa-writer.py), standard-library Python</td></tr></tbody></table></div>
+<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section">#</a></h2>
+<pre class="lang-bash"><code>mkdir -p samples/0287
+cp samples/0236/plain.pages samples/0287/original.pages
+python3 -I recipes/0287-iwa-writer.py samples/0287/original.pages samples/0287/rewritten.pages
+osascript -e &#x27;tell application &quot;Pages&quot;&#x27; \
+  -e &quot;set d to open POSIX file \&quot;$PWD/samples/0287/rewritten.pages\&quot;&quot; \
+  -e &#x27;set r to body text of d&#x27; \
+  -e &quot;save d in POSIX file \&quot;$PWD/samples/0287/resaved.pages\&quot;&quot; \
+  -e &#x27;close d saving no&#x27; -e &#x27;return r&#x27; -e &#x27;end tell&#x27;</code></pre>
+<p>For each <code>.iwa</code> part, the writer:</p>
+<ol><li>Decodes the chunks and splits the joined bytes into records.</li><li>Encodes every record again: header length, header (with each payload's length recomputed into field 2.3), payloads.</li><li>Encodes the result as chunks of at most 65,536 decoded bytes. Each chunk is a raw Snappy block of literal runs only, which the public Snappy format allows but Pages never writes.</li></ol>
+<p>Other files are copied as they are. The ZIP is written uncompressed, as Pages writes it.</p>
+<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section">#</a></h2>
+<p><code>rewritten.pages</code> is 395 kilobytes against the original's 90, because literal-only Snappy doesn't compress. Every part decodes to exactly the same bytes as the original's.</p>
+<p>Pages opens it without a warning, reports the body text <code>One</code>, and saves it again as <code>resaved.pages</code>. That file is 90 kilobytes again, compressed by Pages as usual.</p>
+<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section">#</a></h2>
+<p>The chunk and record layers of the spec are complete enough to write: a document whose every <code>.iwa</code> part was framed again by an independent encoder opens and saves normally. Pages doesn't need its own Snappy matches. Any valid raw Snappy block is accepted, including one with no compression at all, so a writer can skip compression entirely.</p>
+<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section">#</a></h2>
+<p><em>Confirmed</em>: re-encoded chunks and records, with header field 2.3 recomputed, are accepted by Pages.</p>
+<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Last built from <a href="https://github.com/alehel/iwork-format">alehel/iwork-format</a>.</p></footer>
+</main>
+
+</div>
+</body>
+</html>

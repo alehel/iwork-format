@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0027: Document roots · iWork file format specification</title>
+<meta name="description" content="iWork file format specification">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
+<div class="layout">
+<nav class="side" aria-label="Contents"><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="../guides/anatomy.html">Reading a Pages document</a></li><li><a href="../guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="../guides/writing.html">Writing a document</a></li><li><a href="../guides/samples.html">Sample files</a></li><li class="group">Specification</li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2–5. Text, styles, objects, layout</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li class="group">Evidence</li><li><a href="index.html">All experiments</a></li></ul></nav>
+<main>
+<h1 id="0027-document-roots">0027: Document roots<a class="anchor" href="#0027-document-roots" aria-label="Link to this section">#</a></h1>
+<p><strong>Status:</strong> run</p>
+<p><a href="0024-keynote-and-numbers.html">0024</a> found that object 1 is type 10000 in Pages and type 1 in both Keynote and Numbers. This experiment looks at what those roots hold. It also asks whether Keynote's and Numbers' type 1 are the same, and follows Keynote's root down to the slide title found in <a href="0025-keynote-title.html">0025</a>. It saves no new documents.</p>
+<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Apps</td><td>Pages, Keynote and Numbers 15.4 (build <code>M15.4-7051.0.79-2</code>)</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-09</td></tr><tr><td>Documents</td><td><code>samples/0002/hello.pages</code>, <code>samples/0025/hello.key</code>, <code>samples/0026/cells.numbers</code></td></tr></tbody></table></div>
+<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section">#</a></h2>
+<pre class="lang-bash"><code>cargo run --release -- records samples/0025/hello.key Index/Document.iwa     # find object 1
+cargo run --release -- proto samples/0025/hello.key Index/Document.iwa --decoded --offset &lt;payload&gt; --len &lt;len&gt; --depth 1
+cargo run --release -- refs samples/0025/hello.key Index/Slide-2652175.iwa</code></pre>
+<p>The same was done for the Pages and Numbers files. The path from object 1 to the title's text record was found with a breadth-first walk over the output of <code>refs</code>.</p>
+<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section">#</a></h2>
+<h3 id="the-roots">The roots<a class="anchor" href="#the-roots" aria-label="Link to this section">#</a></h3>
+<div class="table"><table><thead><tr><th></th><th>Pages (type 10000)</th><th>Keynote (type 1)</th><th>Numbers (type 1)</th></tr></thead><tbody><tr><td>Top-level fields</td><td>2, 3, 4, 6, 7, 15, 20, 30–40, 42–44, 46, 47, 49</td><td>2, 3</td><td>1, 4, 5, 6, 8, 11, 12</td></tr><tr><td>Field holding the shared block</td><td>15</td><td>3</td><td>8</td></tr></tbody></table></div>
+<p>Keynote's and Numbers' type-1 roots share no field layout. But each of the three roots holds one large message with the same inner fields:</p>
+<pre><code>1: bytes (≈1190)  starting 22 05 &quot;nb_NO&quot; …
+3: text &quot;nb&quot;
+4, 5, 6, 12: each a small message naming an object
+8, 14, 15, 16: 0
+9: text &quot;Application/Blank/ISO&quot;            (Pages)
+   text &quot;Application/21_BasicWhite/Wide&quot;  (Keynote)
+   text &quot;Application/Blank/Traditional&quot;   (Numbers)</code></pre>
+<h3 id="page-setup-in-pages-root">Page setup in Pages' root<a class="anchor" href="#page-setup-in-pages-root" aria-label="Link to this section">#</a></h3>
+<div class="table"><table><thead><tr><th>Field</th><th>Value</th><th>Matches</th></tr></thead><tbody><tr><td>30, 31</td><td>595.28, 841.89</td><td>A4 in points</td></tr><tr><td>32–35</td><td>56.69 each</td><td>the 2 cm margins the Document sidebar showed (see <a href="0016-header-and-footer.html">0016</a>)</td></tr><tr><td>36</td><td>35.43</td><td>the header's 1.25 cm</td></tr><tr><td>37</td><td>42.52</td><td>the footer's 1.5 cm</td></tr><tr><td>38</td><td>1.0</td><td></td></tr><tr><td>43</td><td><code>EPSON_XP_760_Series</code></td><td>the printer the sidebar showed</td></tr><tr><td>44</td><td><code>iso-a4</code></td><td>the paper size</td></tr></tbody></table></div>
+<p>Numbers' root also has a paper size: field 11 <code>iso-a4</code>, and field 12 <code>{ 1: 595.0, 2: 842.0 }</code>.</p>
+<h3 id="from-keynotes-root-to-the-title">From Keynote's root to the title<a class="anchor" href="#from-keynotes-root-to-the-title" aria-label="Link to this section">#</a></h3>
+<p>Following header references from object 1 to the title's text record (2652192):</p>
+<div class="table"><table><thead><tr><th>Object</th><th>Type</th><th>Part</th><th>What it holds</th></tr></thead><tbody><tr><td>1</td><td>1</td><td><code>Document.iwa</code></td><td>the shared block, and a reference to 2652410</td></tr><tr><td>2652410</td><td>2</td><td><code>Document.iwa</code></td><td>references to 2652174, the stylesheet 2652414, and two other objects</td></tr><tr><td>2652174</td><td>4</td><td><code>Document.iwa</code></td><td>2: the slide 2652175; 10: <code>{356.0, 200.0}</code>; 16: <code>{ 1: 9058 }</code></td></tr><tr><td>2652175</td><td>5</td><td><code>Slide-2652175.iwa</code></td><td>references to 8 objects, among them 2652199</td></tr><tr><td>2652199</td><td>7</td><td><code>Slide-2652175.iwa</code></td><td>a geometry message, a style (2651745), and 2: and 4: the text 2652192</td></tr><tr><td>2652192</td><td>2001</td><td><code>Slide-2652175.iwa</code></td><td>the text <code>hello</code></td></tr></tbody></table></div>
+<p>Data ID 9058 is the file <code>Data/st-A11B23C4-404B-4AC4-98CB-13188B352B53-9058.jpg</code> in the package (see <a href="0024-keynote-and-numbers.html">0024</a>).</p>
+<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section">#</a></h2>
+<p>Type numbers aren't shared across apps for every type: Keynote's and Numbers' type 1 are different records. But all three apps' roots embed the same block of document properties: the locale (<code>nb_NO</code>, <code>nb</code>), the template it came from, and a few references. A reader can find it as the one large message in the root, and read it the same way for every app.</p>
+<p>Pages keeps its page setup in the root:</p>
+<ul><li>the paper size in points (fields 30 and 31)</li><li>the four margins (32–35)</li><li>the header and footer distances (36 and 37)</li><li>the printer and paper names (43 and 44)</li></ul>
+<p>Keynote's document is a chain:</p>
+<ul><li>the root (type 1) points at a presentation (type 2, probably)</li><li>the presentation points at a slide node (type 4), which holds a thumbnail size and the data ID of the slide's thumbnail image</li><li>the slide node points at the slide (type 5), which has its own part</li><li>the slide holds shapes (type 7), and a shape with text owns a type-2001 text record</li></ul>
+<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section">#</a></h2>
+<p><em>Likely</em>:</p>
+<ul><li>All three roots embed the same document-properties block.</li><li>Fields 30–37, 43 and 44 of Pages' root are page setup, as listed.</li><li>Keynote's chain from root to slide to shape to text is as described, with type 4 holding a thumbnail's data ID.</li></ul>
+<p><em>Unknown</em>:</p>
+<ul><li>Which margin is which among fields 32–35. All four are 2 cm here. Follow-up: set four different margins.</li><li>The fields of the type-2 presentation and type-5 slide.</li></ul>
+<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Last built from <a href="https://github.com/alehel/iwork-format">alehel/iwork-format</a>.</p></footer>
+</main>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,9 @@
+1: text (36 bytes) "68B384C7-9E7F-4B90-A1F5-067B81524A6A"
+6: varint 22
+7: varint 7
+8: text (8 bytes) "Tabell 1"
+9: varint 1
+10: varint 1
+12: varint 1
+13: varint 1
+22: varint 1

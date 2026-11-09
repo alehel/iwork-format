@@ -1,0 +1,9 @@
+1: message (49 bytes)
+  1: text (10 bytes) "Brødtekst"
+  2: text (29 bytes) "text-20-paragraphstyle-Body 1"
+  5: message (4 bytes)
+    1: varint 1732613
+10: varint 57
+11: message (181 bytes)
+  1: varint 0
+…

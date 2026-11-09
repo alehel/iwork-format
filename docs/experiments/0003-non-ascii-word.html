@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0003: A word that isn&#x27;t ASCII · iWork file format specification</title>
+<meta name="description" content="iWork file format specification">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
+<div class="layout">
+<nav class="side" aria-label="Contents"><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="../guides/anatomy.html">Reading a Pages document</a></li><li><a href="../guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="../guides/writing.html">Writing a document</a></li><li><a href="../guides/samples.html">Sample files</a></li><li class="group">Specification</li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2–5. Text, styles, objects, layout</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li class="group">Evidence</li><li><a href="index.html">All experiments</a></li></ul></nav>
+<main>
+<h1 id="0003-a-word-that-isnt-ascii">0003: A word that isn't ASCII<a class="anchor" href="#0003-a-word-that-isnt-ascii" aria-label="Link to this section">#</a></h1>
+<p><strong>Status:</strong> run</p>
+<p>Experiment <a href="0002-one-word.html">0002</a> found the body text in one record, but only for ASCII. This experiment repeats it with letters outside ASCII and with an emoji, to confirm where the text is and to settle how it's encoded.</p>
+<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Pages</td><td>15.4 (build <code>M15.4-7051.0.79-2</code>)</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-09</td></tr><tr><td>Baseline</td><td>Experiment <a href="0002-one-word.html">0002</a>, <code>hello.pages</code>, and experiment <a href="0001-empty-document.html">0001</a>, <code>empty-a.pages</code></td></tr></tbody></table></div>
+<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section">#</a></h2>
+<p>The recipe from 0002, with a different word:</p>
+<pre class="lang-bash"><code>mkdir -p samples/0003
+osascript recipes/0002-one-word.applescript &quot;$PWD/samples/0003/blabaer.pages&quot; &quot;blåbær&quot;
+osascript recipes/0002-one-word.applescript &quot;$PWD/samples/0003/emoji.pages&quot; &quot;hi🙂&quot;
+cargo run --release -- records samples/0003/emoji.pages Index/Document.iwa</code></pre>
+<p>The two words were picked so that their lengths disagree depending on how they're counted:</p>
+<div class="table"><table><thead><tr><th>Word</th><th>Characters (code points)</th><th>UTF-8 bytes</th><th>UTF-16 code units</th></tr></thead><tbody><tr><td><code>hello</code></td><td>5</td><td>5</td><td>5</td></tr><tr><td><code>blåbær</code></td><td>6</td><td>8</td><td>6</td></tr><tr><td><code>hi🙂</code></td><td>3</td><td>6</td><td>4</td></tr></tbody></table></div>
+<p>Records were paired by position within each part and compared as <code>iwork-probe proto --decoded</code> trees, as in 0002.</p>
+<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section">#</a></h2>
+<p>The chunk and record layout held for every <code>.iwa</code> part, and each part had the same records in the same type order as in 0002.</p>
+<h3 id="the-text">The text<a class="anchor" href="#the-text" aria-label="Link to this section">#</a></h3>
+<p>The same record as in 0002, <code>Document.iwa</code> object 1732539, type 2001, carries the word in field 3:</p>
+<pre><code>3: text (8 bytes) &quot;blåbær&quot;     62 6c c3 a5 62 c3 a6 72
+3: text (6 bytes) &quot;hi🙂&quot;        68 69 f0 9f 99 82</code></pre>
+<p>Both are UTF-8: <code>å</code> is <code>c3 a5</code>, <code>æ</code> is <code>c3 a6</code> and 🙂 is the four bytes <code>f0 9f 99 82</code>. As in 0002, there is no terminator, and no other field in the record changed.</p>
+<p><code>Document.iwa</code> holds 19 records of type 2001, not one as the 0002 write-up first said. The other 18 are 65 bytes each in every sample so far. None has a field 3, and their field 1 is 1 where the body's is 0. They also name a different object in field 5 (1731520 instead of 1731511).</p>
+<h3 id="a-text-length-in-viewstateiwa">A text length in <code>ViewState.iwa</code><a class="anchor" href="#a-text-length-in-viewstateiwa" aria-label="Link to this section">#</a></h3>
+<p>Compared with the empty document, two <code>ViewState.iwa</code> records hold a number that was 0 and is now the length of the word in UTF-16 code units: 5 for <code>hello</code>, 6 for <code>blåbær</code> and 4 for <code>hi🙂</code>.</p>
+<p>Record type 10131, for <code>hi🙂</code>:</p>
+<pre><code>5: message (99 bytes)
+  1: message (95 bytes)
+    1: varint 1
+    2: message (66 bytes)
+      3: message (4 bytes)
+        1: varint 0
+        2: varint 4      ← 0 in the empty document
+      4: varint 4        ← 0
+      5: message (4 bytes)
+        1: varint 0
+        2: varint 4      ← 0
+…
+6: varint 4              ← 0</code></pre>
+<p>Record type 10132, for <code>hi🙂</code>:</p>
+<pre><code>2: message (4 bytes)
+  1: varint 4            ← 0
+  2: varint 0
+10: varint 4             ← 0
+12: message (4 bytes)
+  1: varint 4            ← 0
+  2: varint 0</code></pre>
+<p>The same fields hold 5 in <code>hello.pages</code> and 6 in <code>blåbær.pages</code>. None of them holds 8 (the UTF-8 length of <code>blåbær</code>) or 3 (the number of code points in <code>hi🙂</code>).</p>
+<p>The same records also have floats that change between the empty document and every one-word document, but are equal across the three words. They aren't explained.</p>
+<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section">#</a></h2>
+<p>The body text is UTF-8 in field 3 of the body's type-2001 record. That now holds for three words in two experiments.</p>
+<p>Positions in the text seem to be counted in UTF-16 code units, not bytes or code points. The evidence is that every number in <code>ViewState.iwa</code> that tracks the word's length matches its UTF-16 length. A reader that wants to map such a position into the UTF-8 text must convert between the two.</p>
+<p>The pairs <code>{1: 0, 2: n}</code> and <code>{1: n, 2: 0}</code> look like ranges written as a start and a length: the whole word, and an empty range at its end, such as an insertion point. This is a guess.</p>
+<p>The 0002 write-up said that nothing but the known save-to-save noise changed outside record 2001. That missed these <code>ViewState.iwa</code> values, and it has been corrected.</p>
+<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section">#</a></h2>
+<p><em>Confirmed</em>: the body text is field 3 of the body's type-2001 record in <code>Document.iwa</code>, as UTF-8 with no terminator, and an empty body leaves the field out (0002 and this experiment).</p>
+<p><em>Likely</em>: positions in the text count UTF-16 code units. Only <code>ViewState.iwa</code> has shown a position so far, and the values could mean something other than positions. Follow-up: making part of a word that contains <code>🙂</code> bold should put a run boundary in a type-2001 list, and its offset will say how the document itself counts.</p>
+<p><em>Unknown</em>: what the other 18 type-2001 records are for, and what the ranges in <code>ViewState.iwa</code> mean.</p>
+<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Last built from <a href="https://github.com/alehel/iwork-format">alehel/iwork-format</a>.</p></footer>
+</main>
+
+</div>
+</body>
+</html>

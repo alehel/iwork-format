@@ -6,3 +6,10 @@
 
 /target/
 .DS_Store
+# Except the curated, privacy-checked samples the spec site publishes (site/examples.py).
+!/site/files/*.pages
+!/site/files/*.numbers
+!/docs/files/*.pages
+!/docs/files/*.numbers
+
+__pycache__/

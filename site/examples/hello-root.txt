@@ -1,0 +1,19 @@
+2: message (4 bytes)
+  1: varint 1732613
+3: message (4 bytes)
+  1: varint 1732278
+4: message (4 bytes)
+  1: varint 1732539
+6: message (4 bytes)
+  1: varint 1731480
+7: message (4 bytes)
+  1: varint 1732614
+15: message (1251 bytes)
+  1: bytes (1188) 22 05 6e 62 5f 4e 4f 3a 04 08 81 e0 69 4a 05 6e 62 5f 4e 4f 50 01 60 00 78 01 80 01 01 8a 01 80 …
+…
+30: fixed32 1142215148 (as float 595.28)
+31: fixed32 1146255606 (as float 841.89)
+32: fixed32 1113769356 (as float 56.692917)
+33: fixed32 1113769356 (as float 56.692917)
+34: fixed32 1113769356 (as float 56.692917)
+35: fixed32 1113769356 (as float 56.692917)

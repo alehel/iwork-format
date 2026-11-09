@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0270: Paused change tracking · iWork file format specification</title>
+<meta name="description" content="iWork file format specification">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
+<div class="layout">
+<nav class="side" aria-label="Contents"><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="../guides/anatomy.html">Reading a Pages document</a></li><li><a href="../guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="../guides/writing.html">Writing a document</a></li><li><a href="../guides/samples.html">Sample files</a></li><li class="group">Specification</li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2–5. Text, styles, objects, layout</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li class="group">Evidence</li><li><a href="index.html">All experiments</a></li></ul></nav>
+<main>
+<h1 id="0270-paused-change-tracking">0270: Paused change tracking<a class="anchor" href="#0270-paused-change-tracking" aria-label="Link to this section">#</a></h1>
+<p><strong>Status:</strong> run</p>
+<p><a href="0269-rejected-insertion.html">0269</a> found that root field 40 is 1 while change tracking is on. Tracking can also be paused with a switch in the review bar, so that edits go untracked without turning tracking off. This experiment pauses it, to see whether the pause is part of the document.</p>
+<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Pages</td><td>15.4 (build <code>M15.4-7051.0.79-2</code>), in Norwegian</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-09</td></tr><tr><td>Baseline</td><td><code>samples/0270/tracking.pages</code>: tracking on, not paused, no edits</td></tr></tbody></table></div>
+<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section">#</a></h2>
+<ol><li>Make a document with the body text <code>One</code>: ``<code>bash osascript -e &#x27;tell application &quot;Pages&quot; to set body text of (make new document) to &quot;One&quot;&#x27; </code><code></code></li><li>Choose Edit → Track Changes, then click the review bar's tracking switch (<em>Pause / På</em>) to pause it.</li><li>Save it as <code>samples/0270/paused.pages</code>.</li></ol>
+<p>For the baseline, repeat step 1, turn tracking on, and save without pausing.</p>
+<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section">#</a></h2>
+<p><code>Document.iwa</code> doesn't differ between the two, apart from the creation time. Root field 40 is 1 in both. Neither has a type-2062 session record, because nothing was edited.</p>
+<p><code>ViewState.iwa</code> differs in the type-10133 view state (<a href="0241-zoom.html">0241</a>):</p>
+<div class="table"><table><thead><tr><th>Field</th><th>Tracking</th><th>Paused</th></tr></thead><tbody><tr><td>28</td><td>0</td><td>1</td></tr><tr><td>7.2</td><td>799.2</td><td>776.8</td></tr></tbody></table></div>
+<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section">#</a></h2>
+<p>Pausing tracking is a view setting, not a document setting. View state field 28 is 1 while tracking is paused, and the document itself still says tracking is on (root field 40). The visible area is 22.4 points shorter, probably because the review bar grows to show that tracking is paused. A reader can ignore the pause. An editor that honours it should read field 28.</p>
+<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section">#</a></h2>
+<p><em>Likely</em>: view state field 28 is 1 while tracking is paused.</p>
+<p><em>Unknown</em>: why the visible area changes height.</p>
+<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Last built from <a href="https://github.com/alehel/iwork-format">alehel/iwork-format</a>.</p></footer>
+</main>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0023: An image · iWork file format specification</title>
+<meta name="description" content="iWork file format specification">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
+<div class="layout">
+<nav class="side" aria-label="Contents"><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="../guides/anatomy.html">Reading a Pages document</a></li><li><a href="../guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="../guides/writing.html">Writing a document</a></li><li><a href="../guides/samples.html">Sample files</a></li><li class="group">Specification</li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2–5. Text, styles, objects, layout</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li class="group">Evidence</li><li><a href="index.html">All experiments</a></li></ul></nav>
+<main>
+<h1 id="0023-an-image">0023: An image<a class="anchor" href="#0023-an-image" aria-label="Link to this section">#</a></h1>
+<p><strong>Status:</strong> run</p>
+<p>This experiment places a small image of known size and content on a page, to see where Pages keeps the image file and how a record refers to it.</p>
+<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Pages</td><td>15.4 (build <code>M15.4-7051.0.79-2</code>)</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-09</td></tr><tr><td>Baseline</td><td><code>plain.pages</code>: the body text <code>one</code>, made by the <a href="0002-one-word.html">0002</a> recipe</td></tr></tbody></table></div>
+<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section">#</a></h2>
+<pre class="lang-bash"><code>mkdir -p samples/0023
+python3 recipes/0023-image.py &quot;$PWD/samples/0023/red-8x4.png&quot;
+osascript recipes/0023-image.applescript &quot;$PWD/samples/0023/image.pages&quot; &quot;$PWD/samples/0023/red-8x4.png&quot;
+osascript recipes/0002-one-word.applescript &quot;$PWD/samples/0023/plain.pages&quot; one</code></pre>
+<p><code>recipes/0023-image.py</code> writes an 8 × 4 pixel PNG of solid red, 75 bytes, from the public PNG specification. Its SHA-1 is <code>9386b0525252e1123578796d7d71d976c2228023</code>. The AppleScript sets the body text to <code>one</code>, then asks Pages to make an image from the file on page 1. Pages only accepted <code>make new image</code> when told to make it on a page. Asking the document failed with error −2763.</p>
+<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section">#</a></h2>
+<h3 id="the-file">The file<a class="anchor" href="#the-file" aria-label="Link to this section">#</a></h3>
+<p><code>image.pages</code> has one part more than <code>plain.pages</code>: <code>Data/red-8x4-24.png</code>, 75 bytes, byte-for-byte the PNG that was placed. Its name is the original name with <code>-24</code> before the extension.</p>
+<h3 id="the-image-record">The image record<a class="anchor" href="#the-image-record" aria-label="Link to this section">#</a></h3>
+<p><code>Document.iwa</code> gained a record of type 3005 (1732647) and two of type 3097. Record 1732647:</p>
+<pre><code>1.1.1: { 1: 286.8, 2: 397.6 }        position, floats
+1.1.2: { 1: 8.0,   2: 4.0 }          size
+3:     { 1: 1731560 }                an object in the stylesheet
+4:     { 1: 8.0,   2: 4.0 }
+9:     { 1: 8.0,   2: 4.0 }
+11:    { 1: 24 }
+19:    a path: point (0,0), lines to (8,0), (8,4) and (0,4), then an entry with only 1: 5</code></pre>
+<p>Pages placed the image at its pixel size, 8 × 4 points. The 24 in field 11 is the number in the part name.</p>
+<h3 id="the-data-entry">The data entry<a class="anchor" href="#the-data-entry" aria-label="Link to this section">#</a></h3>
+<p><code>Metadata.iwa</code> record 2 (type 11006) gained an entry in its field 4:</p>
+<pre><code>4:
+  1: varint 24
+  2: bytes (20) 93 86 b0 52 52 52 e1 12 35 78 79 6d 7d 71 d9 76 c2 22 80 23
+  3: text &quot;red-8x4.png&quot;
+  4: text &quot;red-8x4-24.png&quot;
+  10: { 100: { 1: { 1: 8.0, 2: 4.0 }, … } }</code></pre>
+<p>Field 2 is the SHA-1 of the file. The other field-4 entries in record 2 name resources of the Blank template, such as <code>ginger/01_theme/hardcover_bullet_black</code>, and none of them has a part in the package.</p>
+<h3 id="what-holds-the-image">What holds the image<a class="anchor" href="#what-holds-the-image" aria-label="Link to this section">#</a></h3>
+<p>Two records list the image (header references, as in <a href="0022-header-references.html">0022</a>):</p>
+<pre><code>1732364, type 10015:  1: { 1: 1732539 }   1: { 1: 1732647 }       ← the body text and the image
+1732278, type 10010:  1: { 1: 0, 4: { 1: { 1: 1732647 } } }</code></pre>
+<p>The body text didn't change. An image placed this way isn't in the text, so there is no U+FFFC and no attachment.</p>
+<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section">#</a></h2>
+<p>An image file is kept as-is under <code>Data/</code>, named after its original file name plus <code>-N</code>, where N is a data ID. Records refer to it by that ID: the image record's field 11.1. <code>Metadata.iwa</code> record 2 maps each data ID (field 4.1) to the stored file name (4.4). It also gives the original name (4.3), the file's SHA-1 (4.2) and, for an image, the pixel size (4.10.100.1). A reader that finds a data ID can look up the file by name in this table rather than guessing it from the part name.</p>
+<p>The image's record, type 3005, holds its position and size on the page in field 1.1, like the table's drawable in <a href="0020-a-table.html">0020</a>. Its natural size is in fields 4 and 9, and its outline as a path in field 19.</p>
+<p>An image placed on the page, rather than in the text, is listed by page-level records (types 10015 and 10010), next to the body text itself.</p>
+<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section">#</a></h2>
+<p><em>Likely</em>:</p>
+<ul><li>Image files are stored unchanged under <code>Data/</code> as <code>name-N.ext</code>.</li><li><code>Metadata.iwa</code> record 2 field 4 maps data IDs to files, with SHA-1, original name and stored name.</li><li>Type 3005 is an image, with its data ID in field 11.1 and its position and size in 1.1.</li></ul>
+<p><em>Unknown</em>:</p>
+<ul><li>What types 10015, 10010 and 3097 are, and what fields 4, 9 and 19 of the image record mean exactly.</li><li>Whether an image placed in the text uses an attachment like a table's. Follow-up: drag the image into a line of text, or insert it at the cursor in the Pages window.</li></ul>
+<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Last built from <a href="https://github.com/alehel/iwork-format">alehel/iwork-format</a>.</p></footer>
+</main>
+
+</div>
+</body>
+</html>

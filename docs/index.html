@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Overview · iWork file format specification</title>
+<meta name="description" content="iWork file format specification">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="top"><a class="brand" href="index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
+<div class="layout">
+<nav class="side" aria-label="Contents"><ul><li><a class="current" href="index.html">Overview</a></li><li class="group">Guides</li><li><a href="guides/anatomy.html">Reading a Pages document</a></li><li><a href="guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="guides/writing.html">Writing a document</a></li><li><a href="guides/samples.html">Sample files</a></li><li class="group">Specification</li><li><a href="spec/index.html">Layers and status</a></li><li><a href="spec/container.html">1. Container</a></li><li><a href="spec/text.html">2–5. Text, styles, objects, layout</a></li><li><a href="spec/keynote.html">Keynote</a></li><li><a href="spec/numbers.html">Numbers</a></li><li class="group">Evidence</li><li><a href="experiments/index.html">All experiments</a></li></ul></nav>
+<main>
+<h1 id="the-iwork-file-formats">The iWork file formats<a class="anchor" href="#the-iwork-file-formats" aria-label="Link to this section">#</a></h1>
+<p>This site specifies the files that Apple's Pages, Keynote and Numbers save: <code>.pages</code>, <code>.key</code> and <code>.numbers</code>. Apple doesn't publish the formats. Everything here was found from the outside, by changing one thing in a document, saving it, and recording what changed in the file. No Apple code was read, disassembled or decompiled.</p>
+<p>Each finding links to the experiments that support it and carries a confidence level:</p>
+<div class="table"><table><thead><tr><th>Level</th><th>Meaning</th></tr></thead><tbody><tr><td><em>Confirmed</em></td><td>At least two experiments agree</td></tr><tr><td><em>Likely</em></td><td>One experiment supports it, and nothing contradicts it</td></tr><tr><td><em>Unknown</em></td><td>Seen in files, but its meaning isn't established yet</td></tr></tbody></table></div>
+<p>The findings come from Pages, Keynote and Numbers 15.4 on macOS 26.5.</p>
+<h2 id="where-to-start">Where to start<a class="anchor" href="#where-to-start" aria-label="Link to this section">#</a></h2>
+<ul><li><strong><a href="guides/anatomy.html">Reading a Pages document</a></strong> takes one small file, a page with the word <code>hello</code>, from its ZIP listing down to the bytes that hold the word. Read it first: every other page assumes it.</li><li><strong><a href="guides/numbers-table.html">Reading a Numbers table</a></strong> follows a spreadsheet's root to its cells and decodes a row byte by byte.</li><li><strong><a href="guides/writing.html">Writing a document</a></strong> shows that the spec is complete enough to write files the apps accept.</li><li><strong><a href="guides/samples.html">Sample files</a></strong> lists the documents used on these pages, for download.</li></ul>
+<h2 id="the-specification">The specification<a class="anchor" href="#the-specification" aria-label="Link to this section">#</a></h2>
+<p>The specification is written in layers, each built on the one before.</p>
+<div class="table"><table><thead><tr><th>Page</th><th>Covers</th></tr></thead><tbody><tr><td><a href="spec/container.html">Container</a></td><td>How a document is packaged: the ZIP, its parts, the chunk and record encoding, references between objects, password protection</td></tr><tr><td><a href="spec/text.html">Text</a></td><td>The text of Pages documents, and the styles, lists, tables, shapes, images and page layout shared with the other apps</td></tr><tr><td><a href="spec/keynote.html">Keynote</a></td><td>Slides, layouts, builds, transitions, charts and media</td></tr><tr><td><a href="spec/numbers.html">Numbers</a></td><td>Sheets, tables, categories, pivot tables, filters and conditional highlighting</td></tr><tr><td><a href="spec/index.html">Layer overview</a></td><td>What each layer covers so far, and the experiments behind it</td></tr></tbody></table></div>
+<h2 id="in-brief">In brief<a class="anchor" href="#in-brief" aria-label="Link to this section">#</a></h2>
+<p>A document is a ZIP file, stored without compression. Most of it is in <code>.iwa</code> parts under <code>Index/</code>. Each part is a series of chunks of <a href="https://github.com/google/snappy/blob/main/format_description.txt">Snappy</a>-compressed data. Once decompressed, a part is a list of records: each is a <a href="https://protobuf.dev/programming-guides/encoding/">Protocol Buffers</a> header, giving the object's ID, type and length, followed by the object itself as a Protocol Buffers message. Objects refer to each other by ID, and every object can be reached from the root objects.</p>
+<pre><code>document.pages (ZIP)
+├── Index/Document.iwa ──► chunks ──► Snappy ──► records ──► objects
+├── Index/DocumentStylesheet.iwa
+├── …
+├── Metadata/Properties.plist
+└── preview.jpg</code></pre>
+<p>There is no schema in the file. Field numbers, types and their meanings are what this specification provides.</p>
+<h2 id="tools">Tools<a class="anchor" href="#tools" aria-label="Link to this section">#</a></h2>
+<p>The repository holds <code>iwork-probe</code>, a command-line tool written from this specification, which lists parts, decodes chunks and records, prints messages and follows references. The excerpts on these pages are its output. A small Python writer, using only the standard library, writes documents back (<a href="experiments/0287-rewriting-a-document.html">0287</a>).</p>
+<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Last built from <a href="https://github.com/alehel/iwork-format">alehel/iwork-format</a>.</p></footer>
+</main>
+<nav class="toc" aria-label="On this page"><p>On this page</p><ul><li><a href="#where-to-start">Where to start</a></li><li><a href="#the-specification">The specification</a></li><li><a href="#in-brief">In brief</a></li><li><a href="#tools">Tools</a></li></ul></nav>
+</div>
+</body>
+</html>

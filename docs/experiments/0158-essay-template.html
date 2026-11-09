@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0158: The Essay template · iWork file format specification</title>
+<meta name="description" content="iWork file format specification">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
+<div class="layout">
+<nav class="side" aria-label="Contents"><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="../guides/anatomy.html">Reading a Pages document</a></li><li><a href="../guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="../guides/writing.html">Writing a document</a></li><li><a href="../guides/samples.html">Sample files</a></li><li class="group">Specification</li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2–5. Text, styles, objects, layout</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li class="group">Evidence</li><li><a href="index.html">All experiments</a></li></ul></nav>
+<main>
+<h1 id="0158-the-essay-template">0158: The Essay template<a class="anchor" href="#0158-the-essay-template" aria-label="Link to this section">#</a></h1>
+<p><strong>Status:</strong> run</p>
+<p>This experiment makes an unchanged document from the Essay template, to see how its placeholder text and automatic fields are stored.</p>
+<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Pages</td><td>15.4 (build <code>M15.4-7051.0.79-2</code>)</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-09</td></tr><tr><td>Baseline</td><td><code>samples/0020/plain.pages</code> (the body text <code>one</code>)</td></tr></tbody></table></div>
+<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section">#</a></h2>
+<pre class="lang-bash"><code>mkdir -p samples/0158
+osascript recipes/0149-pages-text.applescript essay &quot;$PWD/samples/0158/essay.pages&quot;</code></pre>
+<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section">#</a></h2>
+<p>The body text begins with the author's name, <code>Instruktørens navn</code> (Instructor's name), a date, <code>Essaytittel</code> (Essay title), <code>Undertittel</code> (Subtitle), and paragraphs of instructions. The author's name came from the user's own contact card; it isn't quoted here.</p>
+<p>The body record has a field 11 not seen before: a run table whose entries point at objects:</p>
+<div class="table"><table><thead><tr><th>From</th><th>To</th><th>Object type</th><th>Holds</th></tr></thead><tbody><tr><td>0</td><td>19</td><td>2036</td><td>Field 2: <code>TPMailMerge_FullNamePseudoProperty</code></td></tr><tr><td>20</td><td>38</td><td>2031</td><td>A UUID, and 2 = 1</td></tr><tr><td>39</td><td>55</td><td>2034</td><td>Field 2: the date format <code>d. MMMM y</code>, field 3: the locale <code>nb_NO</code></td></tr><tr><td>58</td><td>69</td><td>2031</td><td></td></tr><tr><td>70</td><td>82</td><td>2031</td><td></td></tr><tr><td>83</td><td>…</td><td>2031</td><td></td></tr></tbody></table></div>
+<p>Each range ends at an entry with no field 2. The root has extra fields 2, 3, 4, 6, 7, 20 and 47 compared with blank documents.</p>
+<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section">#</a></h2>
+<p>Field 11 of a text record is a run table of smart fields over ranges of the text:</p>
+<ul><li><strong>Type 2031:</strong> placeholder text, which the user replaces by typing.</li><li><strong>Type 2034:</strong> a date field, with its format and locale.</li><li><strong>Type 2036:</strong> a merge field, here the author's full name.</li></ul>
+<p>The text inside each range is what the field shows now. A reader can show it as plain text and still be right; to update fields, it needs these records.</p>
+<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section">#</a></h2>
+<p><em>Likely</em>: body field 11 marks smart-field ranges, with types 2031 placeholder, 2034 date and 2036 merge field.</p>
+<p><em>Unknown</em>: what fields 4–8 of the date field mean.</p>
+<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Last built from <a href="https://github.com/alehel/iwork-format">alehel/iwork-format</a>.</p></footer>
+</main>
+
+</div>
+</body>
+</html>
