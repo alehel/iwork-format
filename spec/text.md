@@ -76,11 +76,13 @@ A formula's nodes, in postfix order (*likely*, [0031](../experiments/0031-cell-k
 
 | Node type | Meaning | Fields |
 | --- | --- | --- |
-| 36 | Cell reference | 26 column, 27 row. In each, field 1 is the value and field 2 is 1 for an absolute reference. A relative value is the zigzag-encoded offset from the formula's own cell; an absolute one is the zigzag-encoded index. |
+| 36 | Cell reference | 26 column, 27 row, and for another table 28.1: its UUID as four little-endian 32-bit words ([0065](../experiments/0065-cross-table-reference.md)). In each, field 1 is the value and field 2 is 1 for an absolute reference. A relative value is the zigzag-encoded offset from the formula's own cell; an absolute one is the zigzag-encoded index. |
 | 67 | Range | 40.1 first and last column, 40.2 first and last row, as signed offsets from the formula's cell (not zigzag) |
 | 17 | Number | 4: the value as a double |
 | 1–6 | Operators: 1 `+`, 2 `-`, 3 `*`, 4 `/`, 5 `^`, 6 `&` ([0064](../experiments/0064-operators-and-functions.md)) | |
-| 16 | Function call | 2: the function, 3: number of arguments. Functions seen: 15 AVERAGE, 30 COUNT, 84 MAX, 88 MIN, 168 SUM, numbered in alphabetical order ([0064](../experiments/0064-operators-and-functions.md)). A SUM node also ends a merged range ([0044](../experiments/0044-merged-cells.md)). |
+| 7–12 | Comparisons: 7 `>`, 8 `>=`, 9 `<`, 10 `<=`, 11 `=`, 12 `<>` ([0066](../experiments/0066-comparisons-and-if.md)) | |
+| 34, 35 | Bracket an argument that is evaluated only when needed, as IF's second and third ([0066](../experiments/0066-comparisons-and-if.md)) | |
+| 16 | Function call | 2: the function, 3: number of arguments. Functions seen: 15 AVERAGE, 30 COUNT, 62 IF, 84 MAX, 88 MIN, 168 SUM, numbered in alphabetical order ([0064](../experiments/0064-operators-and-functions.md)). A SUM node also ends a merged range ([0044](../experiments/0044-merged-cells.md)). |
 
 Merged cells are recorded in the table model's field 47.2, as ranges in this node form, not in the cells. A merged cell keeps its value in its top-left cell. *Likely* ([0044](../experiments/0044-merged-cells.md))
 
