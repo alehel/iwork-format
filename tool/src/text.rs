@@ -60,14 +60,15 @@ pub fn texts(decoded: &[u8], records: &[Record]) -> Vec<Text> {
 }
 
 /// The text with its special characters made readable: paragraph and line breaks as new lines,
-/// a page break (U+0005) as `[page break]` on its own line, and an object anchored in the text
-/// (U+FFFC) as `[object]`.
+/// a page break (U+0005) as `[page break]` and a section break (U+0004) as `[section break]`, each
+/// on its own line, and an object anchored in the text (U+FFFC) as `[object]`.
 pub fn readable(text: &str) -> String {
     let mut out = String::with_capacity(text.len());
     for c in text.chars() {
         match c {
             '\r' | '\n' | '\u{2028}' => out.push('\n'),
             '\u{5}' => out.push_str("\n[page break]\n"),
+            '\u{4}' => out.push_str("\n[section break]\n"),
             '\u{fffc}' => out.push_str("[object]"),
             other => out.push(other),
         }
@@ -109,6 +110,7 @@ mod tests {
     #[test]
     fn special_characters_are_made_readable() {
         assert_eq!(readable("a\nb\u{2028}c\u{5}d\u{fffc}"), "a\nb\nc\n[page break]\nd[object]");
+        assert_eq!(readable("one\u{4}two"), "one\n[section break]\ntwo");
     }
 
     #[test]

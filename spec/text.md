@@ -90,6 +90,8 @@ Pressing Shift-Return writes U+2028 (line separator), a line break that doesn't 
 
 A page break (Insert → Page Break) is the character U+0005, and it also starts a new paragraph. *Likely* ([0018](../experiments/0018-page-break-and-left-page.md))
 
+A section break (Insert → Section Break) is the character U+0004. It starts a new paragraph and a new section: the section runs (field 17) gain an entry at the next character, pointing at a new section record with its own header-and-footer sets. *Likely* ([0040](../experiments/0040-section-break.md))
+
 ## Positions in the text
 
 Positions in the text count UTF-16 code units, not UTF-8 bytes or code points. So a character outside the Basic Multilingual Plane counts as 2, and a reader has to convert positions before using them on the UTF-8 text. *Confirmed* ([0003](../experiments/0003-non-ascii-word.md), [0004](../experiments/0004-larger-word.md))
