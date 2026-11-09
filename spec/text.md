@@ -108,7 +108,7 @@ Positions in the text count UTF-16 code units, not UTF-8 bytes or code points. S
 
 ## Runs
 
-Several fields of a type-2001 record are run tables: lists of entries that apply something to ranges of the text. Each entry is a message whose field 1 is the position where a run starts. Where the run applies an object, its field 2 is a message whose field 1 is that object's ID. A run lasts until the next entry, or to the end of the text. *Confirmed* ([0004](../experiments/0004-larger-word.md), [0005](../experiments/0005-paragraphs.md), [0008](../experiments/0008-runs-and-shared-styles.md)). Ranges with the same formatting point at the same object. *Likely* ([0008](../experiments/0008-runs-and-shared-styles.md)) What an entry with no field 2 means depends on the table: in field 8 it ends a character style, in field 5 it doesn't.
+Several fields of a type-2001 record are run tables: lists of entries that apply something to ranges of the text. Each entry is a message whose field 1 is the position where a run starts. Where the run applies an object, its field 2 is a message whose field 1 is that object's ID. A run lasts until the next entry, or to the end of the text. *Confirmed* ([0004](../experiments/0004-larger-word.md), [0005](../experiments/0005-paragraphs.md), [0008](../experiments/0008-runs-and-shared-styles.md)). Ranges with the same formatting point at the same object. *Confirmed* ([0008](../experiments/0008-runs-and-shared-styles.md), [0054](../experiments/0054-shared-sizes.md)) What an entry with no field 2 means depends on the table: in field 8 it ends a character style, in field 5 it doesn't.
 
 | Field | Runs of | Confidence |
 | --- | --- | --- |
@@ -143,7 +143,7 @@ Field 11 of a character style or a paragraph style holds the character propertie
 | 11 | Underline | varint: 1 underlined, 0 not |
 | 12 | Strikethrough | varint: 1 struck through, 0 not |
 
-Field 11.5 is *likely* ([0010](../experiments/0010-alignment.md)), and so are 11.7 ([0013](../experiments/0013-text-colour.md)), 11.11 and 11.12 ([0012](../experiments/0012-underline-and-strikethrough.md)); the rest as above.
+Field 11.5 is *confirmed* ([0010](../experiments/0010-alignment.md), [0053](../experiments/0053-font.md)), and so are 11.7 ([0013](../experiments/0013-text-colour.md)), 11.11 and 11.12 ([0012](../experiments/0012-underline-and-strikethrough.md)); the rest as above.
 
 A paragraph style also has a field 12 for paragraph properties. *Likely* ([0008](../experiments/0008-runs-and-shared-styles.md), [0010](../experiments/0010-alignment.md))
 
