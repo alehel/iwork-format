@@ -61,12 +61,12 @@ A paragraph style also has a field 12 for paragraph properties. *Likely* ([0008]
 
 | Field 12.n | Property | Encoding |
 | --- | --- | --- |
-| 1 | Alignment | varint: 1 right, 2 centred, 3 justified; the Body style has 4 and shows as left |
+| 1 | Alignment | varint: 0 left, 1 right, 2 centred, 3 justified, 4 probably natural (the Body style's value, shown as left) |
 
-Field 12.1 is *likely* ([0010](../experiments/0010-alignment.md)). Which value Pages writes when a paragraph is set back to left is *unknown*.
+Values 0 to 3 are *confirmed* ([0010](../experiments/0010-alignment.md), [0011](../experiments/0011-left-alignment.md)); 4 as natural alignment is *likely*.
 
 Named styles such as Body set every property; unnamed ones set only what differs from their parent (field 1.3). *Likely* ([0010](../experiments/0010-alignment.md))
 
-Field 10 is 1 or 2 in unnamed styles and 57 in the named paragraph styles seen so far. It isn't simply the number of properties set. *Unknown*
+Field 10 has equalled the number of properties set in every unnamed style so far, and is 57 in the named paragraph styles, which set 59. It doesn't count edits. *Unknown* ([0010](../experiments/0010-alignment.md), [0011](../experiments/0011-left-alignment.md))
 
 Styles get their own layer once more of them are understood.
