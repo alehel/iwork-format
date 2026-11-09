@@ -15,7 +15,8 @@ A new presentation has the seven `.iwa` parts that Pages documents have, without
 | 1 | The document root, with the shared document-properties block in field 3 (see [container.md](container.md#following-references)) | `Document.iwa` |
 | 2 | The presentation: field 3.2 lists the slide nodes in show order, field 4 is the slide size in points (such as 1920 × 1080), field 5 names the stylesheet ([0038](../experiments/0038-second-slide.md)) | `Document.iwa` |
 | 4 | A slide node: field 2 names the slide; fields 10 (thumbnail size) and 16.1 (data ID of the thumbnail image) are optional | `Document.iwa` |
-| 5 | A slide | `Slide-N.iwa` or `Slide.iwa` |
+| 5 | A slide; field 27 names its presenter notes (type 15) | `Slide-N.iwa` or `Slide.iwa` |
+| 15 | Presenter notes: field 1 names the notes text, a type-2001 record with field 1 = 4. Every slide has one, empty or not ([0039](../experiments/0039-presenter-notes.md)). | `Slide-N.iwa` |
 | 7 | A shape on the slide, such as the title box; fields 2 and 4 name its text record | `Slide-N.iwa` |
 | 2001 | The shape's text, as in [text.md](text.md) | `Slide-N.iwa` |
 

@@ -4,7 +4,7 @@ Where a Pages document keeps its body text, and how the text is encoded. Every f
 
 Observed with Pages 15.4 on macOS 26.5.2. Keynote 15.4 stores slide text in type-2001 records laid out the same way, referring to the same kinds of styles (types 401, 2022, 2023), so this layer applies to Keynote text too. *Likely* ([0025](../experiments/0025-keynote-title.md))
 
-Field 3 of a type-2001 record is its text in all three apps. *Confirmed* over every sample of experiments 0001–0031 ([0032](../experiments/0032-reading-all-text.md)). Field 1 is Pages' marker (0 body, 1 header or footer). Numbers uses 1 for text owned by a sheet, and Keynote leaves it out. Text can contain U+00AD (soft hyphen). *Likely* ([0032](../experiments/0032-reading-all-text.md))
+Field 3 of a type-2001 record is its text in all three apps. *Confirmed* over every sample of experiments 0001–0031 ([0032](../experiments/0032-reading-all-text.md)). Field 1 seems to say what kind of text the record holds: in Pages 0 is the body and 1 a header or footer, Numbers uses 1 for text owned by a sheet, Keynote's presenter notes use 4 ([0039](../experiments/0039-presenter-notes.md)), and Keynote's shape text leaves it out. Text can contain U+00AD (soft hyphen). *Likely* ([0032](../experiments/0032-reading-all-text.md))
 
 ## The body text
 
