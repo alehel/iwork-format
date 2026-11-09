@@ -106,20 +106,15 @@ impl Package {
     pub fn read(&mut self, name: &str) -> Result<Vec<u8>, Error> {
         match self {
             Self::Zip(archive) => {
-                let entry = archive.by_name(name).map_err(|e| match e {
-                    zip::result::ZipError::FileNotFound => Error::NotFound(name.to_string()),
-                    other => Error::Zip(other),
-                })?;
-                read_capped(entry, name)
+                let index = find_entry(archive, name)?.ok_or_else(|| Error::NotFound(name.to_string()))?;
+                read_capped(archive.by_index(index)?, name)
             }
             Self::Folder(root, inner) => {
                 // A part inside Index.zip is read from there; everything else from the folder.
-                if let Some(archive) = inner {
-                    match archive.by_name(name) {
-                        Ok(entry) => return read_capped(entry, name),
-                        Err(zip::result::ZipError::FileNotFound) => {}
-                        Err(other) => return Err(Error::Zip(other)),
-                    }
+                if let Some(archive) = inner
+                    && let Some(index) = find_entry(archive, name)?
+                {
+                    return read_capped(archive.by_index(index)?, name);
                 }
                 let path = join(root, name)?;
                 let meta = fs::symlink_metadata(&path).map_err(|_| Error::NotFound(name.to_string()))?;
@@ -130,6 +125,22 @@ impl Package {
             }
         }
     }
+}
+
+/// An entry name as UTF-8. Pages writes UTF-8 names without setting the ZIP flag that says so
+/// (experiment 0144), so the bytes are read as UTF-8 whatever the flag says.
+fn utf8_name(raw: &[u8]) -> String {
+    String::from_utf8_lossy(raw).into_owned()
+}
+
+/// The index of the entry whose name, read as UTF-8, is `name`.
+fn find_entry(archive: &mut zip::ZipArchive<fs::File>, name: &str) -> Result<Option<usize>, Error> {
+    for i in 0..archive.len() {
+        if utf8_name(archive.by_index_raw(i)?.name_raw()) == name {
+            return Ok(Some(i));
+        }
+    }
+    Ok(None)
 }
 
 /// Add a ZIP archive's file entries to `parts`.
@@ -143,7 +154,7 @@ fn zip_parts(archive: &mut zip::ZipArchive<fs::File>, parts: &mut Vec<Part>) -> 
             continue;
         }
         parts.push(Part {
-            name: entry.name().to_string(),
+            name: utf8_name(entry.name_raw()),
             size: entry.size(),
             stored_size: Some(entry.compressed_size()),
         });
@@ -277,6 +288,24 @@ mod tests {
         assert_eq!(names, vec!["Index.zip", "Index/Document.iwa", "preview.jpg"]);
         assert_eq!(pkg.read("Index/Document.iwa").unwrap(), vec![1, 2, 3]);
         assert_eq!(pkg.read("preview.jpg").unwrap(), vec![9]);
+        fs::remove_dir_all(dir).unwrap();
+    }
+
+    #[test]
+    fn zip_entry_names_are_read_as_utf8_without_the_flag() {
+        let dir = scratch();
+        let path = dir.join("doc.zip");
+        {
+            // A non-ASCII name; the reader must return it as UTF-8 whether or not the flag is set.
+            let mut zip = zip::ZipWriter::new(fs::File::create(&path).unwrap());
+            let opts = zip::write::SimpleFileOptions::default().compression_method(zip::CompressionMethod::Stored);
+            zip.start_file("Data/r\u{f8}d-24.png", opts).unwrap();
+            zip.write_all(&[1]).unwrap();
+            zip.finish().unwrap();
+        }
+        let mut pkg = Package::open(&path).unwrap();
+        assert_eq!(pkg.parts().unwrap()[0].name, "Data/r\u{f8}d-24.png");
+        assert_eq!(pkg.read("Data/r\u{f8}d-24.png").unwrap(), vec![1]);
         fs::remove_dir_all(dir).unwrap();
     }
 
