@@ -46,6 +46,8 @@ An `.iwa` part is a sequence of chunks, with nothing before, between or after th
 | 3 | Length of the data that follows, little-endian |
 | length | A raw Snappy block (the block format, not the Snappy framing format) |
 
+Pages accepts any valid raw Snappy block, including one made only of literal runs, so a writer need not compress: a document whose parts were re-encoded that way opens and saves normally. *Confirmed* ([0287](../experiments/0287-rewriting-a-document.md))
+
 No chunk has decoded to more than 65,536 bytes, and a part that decodes to more is split into chunks of exactly 65,536 decoded bytes, then a shorter last one. *Confirmed* ([0001](../experiments/0001-empty-document.md), [0141](../experiments/0141-large-text.md))
 
 ## Records
