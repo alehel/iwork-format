@@ -71,7 +71,9 @@ Most records have one payload. In a new document, six records in `Document.iwa` 
 
 Every ID in header fields 2.5 and 2.4.4 is a reference in the record's payload. *Confirmed* ([0022](../experiments/0022-header-references.md)). They are the references that lead down the object tree. References back up, such as a style's or a text's link to the stylesheet, or a table drawable's link to its text, aren't listed. *Likely* ([0022](../experiments/0022-header-references.md))
 
-Every object in a document can be reached by starting at objects 1 (in `Document.iwa`), 2 (in `Metadata.iwa`) and 71 (in `DocumentMetadata.iwa`) and following the IDs in record headers. *Likely* ([0022](../experiments/0022-header-references.md))
+Every object in a document can be reached by starting at objects 1 (in `Document.iwa`), 2 (in `Metadata.iwa`) and 71 (in `DocumentMetadata.iwa`) and following the IDs in record headers. *Likely* ([0022](../experiments/0022-header-references.md), [0024](../experiments/0024-keynote-and-numbers.md))
+
+Object 1, the document root, has a different type and layout in each app (type 10000 in Pages, type 1 in Keynote and in Numbers, and those two differ). Each embeds the same block of document properties as one large message (Pages field 15, Keynote field 3, Numbers field 8), holding the locale (field 1 starts with it, field 3 is the language) and the template path (field 9, such as `Application/Blank/ISO`). *Likely* ([0027](../experiments/0027-document-roots.md))
 
 ## IDs and save-to-save changes
 

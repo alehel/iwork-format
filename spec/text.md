@@ -14,6 +14,10 @@ The body text is in `Index/Document.iwa`, in field 3 of a record of type 2001. *
 
 `Document.iwa` holds more than one type-2001 record: 19 in a new document. The body's record has field 1 set to 0, and the other 18 have field 1 set to 1. *Likely* ([0003](../experiments/0003-non-ascii-word.md)). The other 18 hold header and footer text, and use the paragraph style named for headers and footers. *Likely* ([0004](../experiments/0004-larger-word.md), [0016](../experiments/0016-header-and-footer.md))
 
+## Page setup
+
+Pages keeps its page setup in the document root (object 1, type 10000). Fields 30 and 31 are the paper width and height in points, fields 32–35 the four margins and fields 36 and 37 the header and footer distances, in points. Field 43 is the printer name and field 44 the paper name, such as `iso-a4`. *Likely* ([0027](../experiments/0027-document-roots.md)). Which of fields 32–35 is which margin is *unknown*.
+
 ## Headers and footers
 
 Header and footer text is in type-2001 records, like the body. They are reached through the body's section runs (field 17), which point at a section (type 10011). Fields 23, 24 and 25 of a section each name a set of headers and footers (type 10143). In a set, field 1 lists the header and field 2 the footer, each as three text records in the order left, centre, right. A plain document uses the set in field 25. When section field 19 is 1, left-hand pages use the set in field 24 instead. *Likely* ([0016](../experiments/0016-header-and-footer.md), [0018](../experiments/0018-page-break-and-left-page.md), [0019](../experiments/0019-left-and-right-pages.md)). What the set in field 23 is for is *unknown*.
