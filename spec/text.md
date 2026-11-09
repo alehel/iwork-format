@@ -105,7 +105,7 @@ A paragraph break is a character in the text. Pressing Return in Pages writes U+
 
 Pressing Shift-Return writes U+2028 (line separator), a line break that doesn't start a paragraph. *Likely* ([0006](../experiments/0006-typing-in-pages.md))
 
-A page break (Insert → Page Break) is the character U+0005, and it also starts a new paragraph. *Likely* ([0018](../experiments/0018-page-break-and-left-page.md))
+A page break (Insert → Page Break) is the character U+0005, and it also starts a new paragraph. *Likely* ([0018](../experiments/0018-page-break-and-left-page.md)) A column break (Insert → Column Break) is U+000C, and also starts a new paragraph. *Likely* ([0210](../experiments/0210-column-break.md))
 
 A tab (U+0009) and a non-breaking space (U+00A0) are plain characters with no runs of their own. *Likely* ([0058](../experiments/0058-tab-and-nbsp.md))
 
