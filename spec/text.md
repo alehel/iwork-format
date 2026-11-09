@@ -84,13 +84,13 @@ A formula's nodes, in postfix order (*likely*, [0031](../experiments/0031-cell-k
 
 Merged cells are recorded in the table model's field 47.2, as ranges in this node form, not in the cells. A merged cell keeps its value in its top-left cell. *Likely* ([0044](../experiments/0044-merged-cells.md))
 
-An image placed on the page, rather than in the text, is a record of type 3005 in `Document.iwa`, listed next to the body text by page-level records (types 10015 and 10010). It holds its position and size in points in field 1.1, like a table's drawable, and the data ID of its file in field 11.1 (see [container.md](container.md#data-files)). *Likely* ([0023](../experiments/0023-an-image.md))
+An image placed on the page, rather than in the text, is a record of type 3005 in `Document.iwa`, listed next to the body text by page-level records (types 10015 and 10010). It holds its position and size in points in field 1.1, like a table's drawable, and the data ID of its file in field 11.1 (see [container.md](container.md#data-files)). *Likely* ([0023](../experiments/0023-an-image.md)). Field 9 is its natural size and fields 1.1.2 and 4 the size it is drawn at ([0055](../experiments/0055-image-size.md)). Field 3 names its image style (type 3016), whose field 11.2 is the opacity from 0 to 1 ([0057](../experiments/0057-image-opacity.md)).
 
 A text box, a shape and a line are all shapes of type 2011, listed by the same page-level record. A shape's position and size are in field 1.1, its outline path in 1.3 and its style (type 2025, such as `textbox-0-shapestyle`, `shape-0-shapestyle` or `line-0-shapestyle`) in 1.2. Fields 2 and 4 name its text, a type-2001 record with no field 1. *Likely* ([0049](../experiments/0049-text-box.md), [0050](../experiments/0050-shape.md), [0051](../experiments/0051-line.md))
 
 An object is either in the text (a U+FFFC with an attachment, and its drawable's field 1.2 names that text) or on the page (listed by type 10015, with no field 1.2). *Likely* ([0020](../experiments/0020-a-table.md), [0052](../experiments/0052-floating-table.md))
 
-In the geometry of any drawable (field 1.1), 1.1.1 is the position and 1.1.2 the size of the unrotated box, in points, and 1.1.4 its rotation in degrees about its centre. A line is a box of zero height, rotated. *Likely* ([0051](../experiments/0051-line.md))
+In the geometry of any drawable (field 1.1), 1.1.1 is the position and 1.1.2 the size of the unrotated box, in points, and 1.1.4 its rotation in degrees about its centre, counter-clockwise on the page ([0056](../experiments/0056-image-rotation.md)). A line is a box of zero height, rotated. *Likely* ([0051](../experiments/0051-line.md))
 
 ## Paragraphs
 
