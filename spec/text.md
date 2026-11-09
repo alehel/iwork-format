@@ -26,7 +26,7 @@ Positions in the text count UTF-16 code units, not UTF-8 bytes or code points. S
 
 ## Runs
 
-Several fields of a type-2001 record are run tables: lists of entries that apply something to ranges of the text. Each entry is a message whose field 1 is the position where a run starts. Where the run applies an object, its field 2 is a message whose field 1 is that object's ID. A run lasts until the next entry, or to the end of the text. *Likely* ([0004](../experiments/0004-larger-word.md), [0005](../experiments/0005-paragraphs.md)). What an entry with no field 2 means depends on the table: in field 8 it ends a character style, in field 5 it doesn't.
+Several fields of a type-2001 record are run tables: lists of entries that apply something to ranges of the text. Each entry is a message whose field 1 is the position where a run starts. Where the run applies an object, its field 2 is a message whose field 1 is that object's ID. A run lasts until the next entry, or to the end of the text. *Confirmed* ([0004](../experiments/0004-larger-word.md), [0005](../experiments/0005-paragraphs.md), [0008](../experiments/0008-runs-and-shared-styles.md)). Ranges with the same formatting point at the same object. *Likely* ([0008](../experiments/0008-runs-and-shared-styles.md)) What an entry with no field 2 means depends on the table: in field 8 it ends a character style, in field 5 it doesn't.
 
 | Field | Runs of | Confidence |
 | --- | --- | --- |
@@ -42,14 +42,16 @@ Field 2 of the record names the type-401 object that holds the styles, which is 
 
 ## Styles
 
-Changing the size of part of the text, or making it bold or italic, creates a new, unnamed character style (type 2021) in `DocumentStylesheet.iwa`. It inherits (field 1.3) from a character style whose identifier is `character-style-null`. *Likely* ([0004](../experiments/0004-larger-word.md), [0007](../experiments/0007-bold-and-italic.md))
+Changing the size of part of the text, or making it bold or italic, creates a new, unnamed character style (type 2021) in `DocumentStylesheet.iwa`. It inherits (field 1.3) from a character style whose identifier is `character-style-null`. *Confirmed* ([0004](../experiments/0004-larger-word.md), [0007](../experiments/0007-bold-and-italic.md), [0008](../experiments/0008-runs-and-shared-styles.md))
 
-Field 11 of a character style holds the properties it sets. *Likely* ([0004](../experiments/0004-larger-word.md), [0007](../experiments/0007-bold-and-italic.md))
+Formatting a whole paragraph instead creates an unnamed paragraph style (type 2022) that inherits from the paragraph's style and carries the change. *Likely* ([0008](../experiments/0008-runs-and-shared-styles.md))
+
+Field 11 of a character style or a paragraph style holds the character properties it sets. A property that is left out is inherited, and one set to 0 is turned off. *Likely* ([0004](../experiments/0004-larger-word.md), [0007](../experiments/0007-bold-and-italic.md), [0008](../experiments/0008-runs-and-shared-styles.md))
 
 | Field 11.n | Property | Encoding |
 | --- | --- | --- |
-| 1 | Bold | varint, 1 for bold |
-| 2 | Italic | varint, 1 for italic |
+| 1 | Bold | varint: 1 bold, 0 not bold |
+| 2 | Italic | varint: 1 italic |
 | 3 | Size in points | float |
 
 Field 10 was 1 for styles setting one property and 2 for the style setting two. *Unknown*
