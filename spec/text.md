@@ -100,6 +100,8 @@ Pressing Shift-Return writes U+2028 (line separator), a line break that doesn't 
 
 A page break (Insert → Page Break) is the character U+0005, and it also starts a new paragraph. *Likely* ([0018](../experiments/0018-page-break-and-left-page.md))
 
+A tab (U+0009) and a non-breaking space (U+00A0) are plain characters with no runs of their own. *Likely* ([0058](../experiments/0058-tab-and-nbsp.md))
+
 A section break (Insert → Section Break) is the character U+0004. It starts a new paragraph and a new section: the section runs (field 17) gain an entry at the next character, pointing at a new section record with its own header-and-footer sets. *Likely* ([0040](../experiments/0040-section-break.md))
 
 ## Positions in the text
