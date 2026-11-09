@@ -52,5 +52,14 @@ Field 10000.1 is the chart type and 10000.5 the grouping into series (1 by row, 
 | 4 | Area |
 | 5 | Pie |
 | 6 | Stacked vertical bar |
+| 7 | Stacked horizontal bar ([0195](../experiments/0195-remaining-chart-types.md)) |
+| 8 | Stacked area ([0195](../experiments/0195-remaining-chart-types.md)) |
 | 9 | Scatter |
 | 12 | 3D vertical bar |
+| 13 | 3D horizontal bar ([0195](../experiments/0195-remaining-chart-types.md)) |
+| 14 | 3D line ([0195](../experiments/0195-remaining-chart-types.md)) |
+| 15 | 3D area ([0195](../experiments/0195-remaining-chart-types.md)) |
+| 16 | 3D pie ([0195](../experiments/0195-remaining-chart-types.md)) |
+| 17 | 3D stacked vertical bar ([0195](../experiments/0195-remaining-chart-types.md)) |
+| 18 | 3D stacked horizontal bar ([0195](../experiments/0195-remaining-chart-types.md)) |
+| 19 | 3D stacked area ([0195](../experiments/0195-remaining-chart-types.md)) |
