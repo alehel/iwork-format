@@ -39,7 +39,7 @@ Experiments 0004–0012 found character styles, paragraph styles and their paren
 | 0008/two-words | one, two, three | bold, regular, bold, 11 | same |
 | 0008/unbold-middle | one, two, three | bold, regular, bold, 11 | same |
 
-The words not shown (`hello` in 0007) were regular 11 in Pages and in the prediction. All 18 words in the 8 documents matched.
+The words not shown (`hello` in 0007) were regular 11 in Pages and in the prediction. All 19 words in the 8 documents matched.
 
 The first version of the script mispredicted `two` in 0006 as `HelveticaNeue-Bold-Bold`. The Heading style's font (11.5) is `HelveticaNeue-Bold`, with bold also set in 11.1, and the script's naming added `-Bold` a second time. Bold and size had been predicted correctly. Step 4 above is the corrected naming.
 
@@ -56,6 +56,6 @@ A Heading style can name a bold font (`HelveticaNeue-Bold`) and also set bold. S
 
 ## Confidence
 
-*Likely*: the rule above, for bold, italic, size and font. It held for all 18 words in 8 documents. It hasn't yet been tested with a named character style, or with differing paragraph styles where a paragraph's entry has no style.
+*Likely*: the rule above, for bold, italic, size and font. It held for all 19 words in 8 documents. It hasn't yet been tested with a named character style, or with differing paragraph styles where a paragraph's entry has no style.
 
 *Unknown*: whether other properties, such as colour, underline and alignment, follow the same order. Underline and colour don't show in the font name, so checking them needs a different readback, such as the `color` property in AppleScript.
