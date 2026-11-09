@@ -23,3 +23,7 @@ A new spreadsheet has the seven `.iwa` parts that Pages documents have, without 
 ## Categories
 
 Grouping rows by a column's values (Organise → Add Category) moves no cells. The groups are a tree of type-6383 records in `CalculationEngine.iwa`: each group has a 128-bit ID (field 1), its value as a typed cell value (field 6), its rows (field 9, single row numbers `{ 1: n }` or ranges `{ 1: first, 2: last }`) and its child groups (field 10). Table model field 81.2.6 becomes 1. The summary rows Numbers shows aren't stored. *Likely* ([0226](../experiments/0226-category.md))
+
+## Pivot tables
+
+A pivot table is an ordinary table model whose cells hold the current summary, so it reads like any table. Numbers also adds a hidden table model with a copy of the source data, named after the source with ` as Pivot Source Table`, and new record types (6369, 6370, 6374, 6382). Type 6370 names the source table in field 12 and holds the last update time in field 9. *Likely* ([0227](../experiments/0227-pivot-table.md))
