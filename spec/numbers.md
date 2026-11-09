@@ -31,3 +31,7 @@ A pivot table is an ordinary table model whose cells hold the current summary, s
 ## Filters
 
 A filter doesn't change any cells. Its rule is a formula in the node form of cell formulas, comparing the tested cell with a value (`cell > 2` is a reference, the number 2 and comparison node 7), held in type-6220 records. The rows the filter hides are listed by their IDs in table model field 70.2.3, each with field 3 set to 1. *Likely* ([0258](../experiments/0258-filter.md))
+
+## Conditional highlighting
+
+A highlighting rule is a type-6010 record in the table's list of type 9. Its condition is a formula, as for filters, starting with node type 63, which probably stands for the cell being tested. It names a cell style (type 6004) and a text style (type 2022) to apply, both kept in `ObjectContainer.iwa`. Cells under the rule gain flag bits 0x80 and 0x100. *Likely* ([0259](../experiments/0259-conditional-highlighting.md))
