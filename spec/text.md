@@ -50,6 +50,7 @@ Other fields of the type-10012 document settings:
 | Type-10012 field | Setting |
 | --- | --- |
 | 9 | Hyphenate the whole document, 1 on ([0236](../experiments/0236-hyphenation.md)) |
+| 10 | Use ligatures, 1 on (default) ([0237](../experiments/0237-document-ligatures.md)) |
 
 ## Objects in the text
 
