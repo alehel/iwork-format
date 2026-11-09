@@ -137,6 +137,7 @@ Several fields of a type-2001 record are run tables: lists of entries that apply
 | 20 | Autocorrections: each range Pages autocorrected has a UUID as text in field 2, and an entry without one closes it. Absent when nothing was corrected. | *Confirmed* ([0006](../experiments/0006-typing-in-pages.md), [0009](../experiments/0009-autocorrection.md)) |
 | 21 | Tracked insertions: type-2060 change records with field 1 = 1, a time (field 3, seconds since 2001) and a type-2062 record in field 2 that names the author. Authors are type-212 records in `AnnotationAuthorStorage`, with a name (field 1) and a colour (field 2). | *Likely* ([0193](../experiments/0193-tracked-insertion.md)) |
 | 22 | Tracked deletions: type-2060 records with field 1 = 2. The deleted text stays in field 3 until the change is accepted, so a reader showing the edited document leaves these ranges out. That changes are type-2060 records is *confirmed*. | *Likely* ([0194](../experiments/0194-tracked-deletion.md)) |
+| 23 | Highlights (type 2013), each pointing in field 1 at a type-3056 record with text (field 1, empty for a highlight), a time (field 2), an author (field 3, type 212) and a 128-bit ID (field 5) | *Likely* ([0200](../experiments/0200-highlight.md)) |
 
 Field 2 of the record names the type-401 object that holds the styles, which is probably the stylesheet. Fields 14, 24 and 28 hold entries of zeros in every document so far. *Unknown*
 
