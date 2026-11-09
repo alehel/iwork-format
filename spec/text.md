@@ -42,4 +42,16 @@ Field 2 of the record names the type-401 object that holds the styles, which is 
 
 ## Styles
 
-Changing the size of part of the text creates a new, unnamed character style (type 2021) in `DocumentStylesheet.iwa`. It inherits from a character style whose identifier is `character-style-null`, and stores the size as a float in field 11.3. *Likely* ([0004](../experiments/0004-larger-word.md)). Styles get their own layer once more of them are understood.
+Changing the size of part of the text, or making it bold or italic, creates a new, unnamed character style (type 2021) in `DocumentStylesheet.iwa`. It inherits (field 1.3) from a character style whose identifier is `character-style-null`. *Likely* ([0004](../experiments/0004-larger-word.md), [0007](../experiments/0007-bold-and-italic.md))
+
+Field 11 of a character style holds the properties it sets. *Likely* ([0004](../experiments/0004-larger-word.md), [0007](../experiments/0007-bold-and-italic.md))
+
+| Field 11.n | Property | Encoding |
+| --- | --- | --- |
+| 1 | Bold | varint, 1 for bold |
+| 2 | Italic | varint, 1 for italic |
+| 3 | Size in points | float |
+
+Field 10 was 1 for styles setting one property and 2 for the style setting two. *Unknown*
+
+Styles get their own layer once more of them are understood.
