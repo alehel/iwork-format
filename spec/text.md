@@ -185,6 +185,7 @@ A paragraph style also has a field 12 for paragraph properties. *Likely* ([0008]
 | Field 12.n | Property | Encoding |
 | --- | --- | --- |
 | 1 | Alignment | varint: 0 left, 1 right, 2 centred, 3 justified, 4 probably natural (the Body style's value, shown as left) |
+| 13 | Line spacing | message: field 2 is the amount, 2.0 for double ([0252](../experiments/0252-line-spacing.md)) |
 
 Values 0 to 3 are *confirmed* ([0010](../experiments/0010-alignment.md), [0011](../experiments/0011-left-alignment.md)); 4 as natural alignment is *likely*.
 
