@@ -13,7 +13,7 @@ A new spreadsheet has the seven `.iwa` parts that Pages documents have, without 
 | Type | Holds | Part |
 | --- | --- | --- |
 | 1 | The document root: field 1 lists the sheets in order ([0037](../experiments/0037-second-sheet.md)), field 8 holds the shared document-properties block, and fields 11 and 12 the paper name and size | `Document.iwa` |
-| 2 | A sheet: field 1 is its name, and the repeated field 2 lists its drawables, such as tables, in order ([0047](../experiments/0047-second-table.md)). Tables aren't anchored in the sheet's text. | `Document.iwa` |
+| 2 | A sheet: field 1 is its name (*confirmed*, [0124](../experiments/0124-sheet-name.md)), and the repeated field 2 lists its drawables in order: tables, text boxes, shapes and images ([0047](../experiments/0047-second-table.md), [0127](../experiments/0127-text-box-on-sheet.md)–[0129](../experiments/0129-shape-on-sheet.md)). Tables aren't anchored in the sheet's text. | `Document.iwa` |
 | 6000 | A table's drawable: position and size, and in field 2 the table model | `CalculationEngine.iwa` |
 | 6001 | The table model: rows (6), columns (7), name (8), and its storage in field 4. Field 4.3 lists the tiles. | `CalculationEngine.iwa` |
 | 6002 | A tile: the cells, by row | `Tables/Tile.iwa` |
