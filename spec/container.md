@@ -92,7 +92,7 @@ The key is PBKDF2-HMAC-SHA1 of the password (as UTF-8), using that salt and iter
 
 ## View state
 
-`ViewState.iwa` holds how the document was last shown, which a reader can ignore. Its type-10133 record has the zoom as a scale factor in field 15 (1.25 for 125%) in field 33 whether two pages are shown side by side, and in field 28 whether change tracking is paused ([0270](../experiments/0270-paused-tracking.md)). *Likely* ([0241](../experiments/0241-zoom.md), [0242](../experiments/0242-two-page-view.md), [0270](../experiments/0270-paused-tracking.md))
+`ViewState.iwa` holds how the document was last shown, which a reader can ignore. Its type-10133 record has the zoom as a scale factor in field 15 (1.25 for 125%), in field 33 whether two pages are shown side by side, and in field 28 whether change tracking is paused ([0270](../experiments/0270-paused-tracking.md)). *Likely* ([0241](../experiments/0241-zoom.md), [0242](../experiments/0242-two-page-view.md), [0270](../experiments/0270-paused-tracking.md))
 
 ## IDs and save-to-save changes
 
