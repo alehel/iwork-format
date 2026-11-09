@@ -34,4 +34,4 @@ A filter doesn't change any cells. Its rule is a formula in the node form of cel
 
 ## Conditional highlighting
 
-A highlighting rule is a type-6010 record in the table's list of type 9. Its condition is a formula, as for filters, starting with node type 63, which probably stands for the cell being tested. It names a cell style (type 6004) and a text style (type 2022) to apply, both kept in `ObjectContainer.iwa`. Cells under the rule gain flag bits 0x80 and 0x100. *Likely* ([0259](../experiments/0259-conditional-highlighting.md))
+A highlighting rule is a type-6010 record in the table's list of type 9. Its condition is a formula, as for filters, starting with node type 63, which probably stands for the cell being tested. It names a cell style (type 6004) and a text style (type 2022) to apply, both kept in `ObjectContainer.iwa`. Cells under the rule gain flag bits 0x80 and 0x100. Flag 0x80's key is the cell's entry in the type-9 list, and flag 0x100's key caches the result: 0 when the rule matches, 15 when none does ([0267](../experiments/0267-highlighting-result.md)). *Likely* ([0259](../experiments/0259-conditional-highlighting.md))
