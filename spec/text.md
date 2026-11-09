@@ -80,7 +80,9 @@ A formula's nodes, in postfix order (*likely*, [0031](../experiments/0031-cell-k
 | 67 | Range | 40.1 first and last column, 40.2 first and last row, as signed offsets from the formula's cell (not zigzag) |
 | 17 | Number | 4: the value as a double |
 | 1, 3 | Addition, multiplication | |
-| 16 | Function call | 2: the function (168 is SUM), 3: number of arguments |
+| 16 | Function call | 2: the function, 3: number of arguments. 168 appeared for SUM, but also after a merged range ([0044](../experiments/0044-merged-cells.md)), so it may mean something more general |
+
+Merged cells are recorded in the table model's field 47.2, as ranges in this node form, not in the cells. A merged cell keeps its value in its top-left cell. *Likely* ([0044](../experiments/0044-merged-cells.md))
 
 An image placed on the page, rather than in the text, is a record of type 3005 in `Document.iwa`, listed next to the body text by page-level records (types 10015 and 10010). It holds its position and size in points in field 1.1, like a table's drawable, and the data ID of its file in field 11.1 (see [container.md](container.md#data-files)). *Likely* ([0023](../experiments/0023-an-image.md))
 
