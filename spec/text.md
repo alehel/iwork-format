@@ -88,6 +88,8 @@ An image placed on the page, rather than in the text, is a record of type 3005 i
 
 A text box, a shape and a line are all shapes of type 2011, listed by the same page-level record. A shape's position and size are in field 1.1, its outline path in 1.3 and its style (type 2025, such as `textbox-0-shapestyle`, `shape-0-shapestyle` or `line-0-shapestyle`) in 1.2. Fields 2 and 4 name its text, a type-2001 record with no field 1. *Likely* ([0049](../experiments/0049-text-box.md), [0050](../experiments/0050-shape.md), [0051](../experiments/0051-line.md))
 
+An object is either in the text (a U+FFFC with an attachment, and its drawable's field 1.2 names that text) or on the page (listed by type 10015, with no field 1.2). *Likely* ([0020](../experiments/0020-a-table.md), [0052](../experiments/0052-floating-table.md))
+
 In the geometry of any drawable (field 1.1), 1.1.1 is the position and 1.1.2 the size of the unrotated box, in points, and 1.1.4 its rotation in degrees about its centre. A line is a box of zero height, rotated. *Likely* ([0051](../experiments/0051-line.md))
 
 ## Paragraphs
