@@ -24,6 +24,12 @@ The seven `.iwa` parts of a new document are `AnnotationAuthorStorage-N`, `Calcu
 
 A document with a table also has parts under `Index/Tables/`: `DataList`, `HeaderStorageBucket` and `Tile`, each holding one record. Each is named either without a number or as `Name-N-2.iwa`, where N is the ID of the record inside. *Likely* ([0020](../experiments/0020-a-table.md))
 
+## Data files
+
+Files a document embeds, such as images, are stored unchanged under `Data/`, each named after its original file name with `-N` before the extension. N is a data ID, by which records refer to the file. *Likely* ([0023](../experiments/0023-an-image.md))
+
+`Metadata.iwa` record 2 (type 11006) lists the data in its repeated field 4. Each entry holds the data ID (field 1), the file's SHA-1 (field 2), the original file name (field 3) and the stored file name (field 4). Entries for resources of the template have no file in the package. *Likely* ([0023](../experiments/0023-an-image.md))
+
 ## Chunks
 
 An `.iwa` part is a sequence of chunks, with nothing before, between or after them. *Confirmed* ([0001](../experiments/0001-empty-document.md), [0002](../experiments/0002-one-word.md))
