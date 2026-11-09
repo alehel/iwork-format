@@ -48,7 +48,21 @@ For a table, the attachment (type 2003, in `Document.iwa`) points at a drawable 
 
 The table model's field 4 holds its storage: 4.3 lists the tiles, each entry giving a tile index (4.3.1.1) and the tile record (4.3.1.2), and 4.1 and 4.2 name header storage buckets (type 6006). Each tile covers 256 rows (field 4.3.2), and row numbers inside a tile are local, so a cell's row in the table is the tile index × 256 plus its row in the tile. A tile's field 4 counts its rows with content. *Likely* ([0029](../experiments/0029-numbers-root-to-table.md), [0030](../experiments/0030-tiles.md)), in Pages and Numbers alike.
 
-A table's cells are stored by row in its tile (type 6002, `Index/Tables/Tile.iwa`). Each row with content is one field-5 entry: 5.1 is the row index, 5.4 a table of 255 little-endian 16-bit offsets into the row's cell bytes (one per column, `ffff` for an empty cell), and 5.6 the cell bytes. A cell starts with a version byte (5) and a type byte: 2 for a number, stored as a little-endian IEEE 754 decimal128, and 3 for text, stored as a 32-bit key into a string table (type 6005, `Index/Tables/DataList.iwa`) whose entries hold the key in field 3.1 and the string in 3.3. *Confirmed* ([0021](../experiments/0021-table-cells.md), [0026](../experiments/0026-numbers-cells.md)); Numbers stores cells identically. The other bytes of a cell are *unknown*.
+A table's cells are stored by row in its tile (type 6002, `Index/Tables/Tile.iwa`). Each row with content is one field-5 entry: 5.1 is the row index, 5.4 a table of 255 little-endian 16-bit offsets into the row's cell bytes (one per column, `ffff` for an empty cell), and 5.6 the cell bytes. A cell starts with a version byte (5) and a type byte: 2 for a number, stored as a little-endian IEEE 754 decimal128, and 3 for text, stored as a 32-bit key into a string table (type 6005, `Index/Tables/DataList.iwa`) whose entries hold the key in field 3.1 and the string in 3.3. *Confirmed* ([0021](../experiments/0021-table-cells.md), [0026](../experiments/0026-numbers-cells.md)); Numbers stores cells identically.
+
+When a row has several cells, it is field 5.7, not 5.4, that holds their byte offsets. *Likely* ([0031](../experiments/0031-cell-kinds.md))
+
+A cell's bytes 8–11 are little-endian flags saying which values and keys follow, in order of their bits. Further type bytes are 5 (date) and 10 (currency). *Likely* ([0031](../experiments/0031-cell-kinds.md))
+
+| Flag bit | Followed by |
+| --- | --- |
+| 0x0001 | A decimal128 number |
+| 0x0004 | A date, as a little-endian double: seconds since 2001-01-01 00:00 UTC |
+| 0x0200 | A key into the formula list (model field 4.6), whose entries are formulas as postfix lists of nodes |
+| 0x1000 | A key into a list not identified yet (*unknown*) |
+| 0x2000, 0x4000, 0x8000 | A key into the format list (model field 4.22), for a number, currency or date format |
+
+The format list's entries give the kind of format in field 1 (256 number, 257 currency, 258 percent, 261 date), plus its details, such as a currency code or a date pattern. A formula cell also keeps its last result as a value. *Likely* ([0031](../experiments/0031-cell-kinds.md))
 
 An image placed on the page, rather than in the text, is a record of type 3005 in `Document.iwa`, listed next to the body text by page-level records (types 10015 and 10010). It holds its position and size in points in field 1.1, like a table's drawable, and the data ID of its file in field 11.1 (see [container.md](container.md#data-files)). *Likely* ([0023](../experiments/0023-an-image.md))
 
