@@ -189,7 +189,7 @@ A paragraph style also has a field 12 for paragraph properties. *Likely* ([0008]
 | 1 | Alignment | varint: 0 left, 1 right, 2 centred, 3 justified, 4 probably natural (the Body style's value, shown as left) |
 | 7 | First-line indent | float, in points ([0253](../experiments/0253-indents.md)) |
 | 11 | Left indent | float, in points ([0253](../experiments/0253-indents.md)) |
-| 13 | Line spacing | message: field 2 is the amount, 2.0 for double ([0252](../experiments/0252-line-spacing.md)) |
+| 13 | Line spacing | message: field 1 is the kind (absent for a multiple of lines, 2 for exactly so many points) and field 2 the amount, such as 2.0 for double ([0252](../experiments/0252-line-spacing.md), [0276](../experiments/0276-exact-line-spacing.md)) |
 | 19 | Right indent | float, in points ([0253](../experiments/0253-indents.md)) |
 | 20 | Space after the paragraph | float, in points ([0256](../experiments/0256-paragraph-spacing.md)) |
 | 21 | Space before the paragraph | float, in points ([0256](../experiments/0256-paragraph-spacing.md)) |
