@@ -150,6 +150,7 @@ Several fields of a type-2001 record are run tables: lists of entries that apply
 | 21 | Tracked insertions: type-2060 change records with field 1 = 1, a time (field 3, seconds since 2001) and a type-2062 record in field 2 that names the author. Authors are type-212 records in `AnnotationAuthorStorage`, with a name (field 1) and a colour (field 2). | *Likely* ([0193](../experiments/0193-tracked-insertion.md)) |
 | 22 | Tracked deletions: type-2060 records with field 1 = 2. The deleted text stays in field 3 until the change is accepted, so a reader showing the edited document leaves these ranges out. That changes are type-2060 records is *confirmed*. | *Likely* ([0194](../experiments/0194-tracked-deletion.md)) |
 | 23 | Comments and highlights (type 2013), each pointing in field 1 at a type-3056 record with the comment's text (field 1, empty for a highlight), a time (field 2), an author (field 3, type 212) and a 128-bit ID (field 5) | *Confirmed* ([0200](../experiments/0200-highlight.md), [0249](../experiments/0249-comment.md)) |
+| 28 | Drop caps: each entry points at a type-10024 drop-cap style, such as `dropcap-style-0`, whose field 12.1.2 is the number of lines; no value means no drop cap | *Likely* ([0261](../experiments/0261-drop-cap.md)) |
 
 Field 2 of the record names the type-401 object that holds the styles, which is probably the stylesheet. Fields 14, 24 and 28 hold entries of zeros in every document so far. *Unknown*
 
