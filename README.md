@@ -6,7 +6,7 @@ Pages, Keynote and Numbers are trademarks of Apple Inc. This project isn't affil
 
 ## Status
 
-Just started. Nothing in [`spec/`](spec/) is confirmed yet. The first experiment, [0001: an empty document](experiments/0001-empty-document.md), is planned but hasn't been run.
+Just started. Nothing in [`spec/`](spec/) is confirmed yet. The first experiment, [0001: an empty document](experiments/0001-empty-document.md), has been run. Its container findings are *likely* and wait for a second experiment to confirm them.
 
 ## Why
 

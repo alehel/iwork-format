@@ -4,7 +4,7 @@ The spec is written in layers, each built on the one before. A layer's file is a
 
 | Layer | Covers | Status |
 | --- | --- | --- |
-| 1. Container | How a document is packaged: ZIP or folder, its parts, how they're encoded, how objects refer to each other | Not started |
+| 1. Container | How a document is packaged: ZIP or folder, its parts, how they're encoded, how objects refer to each other | Experiment 0001 run; findings likely, not yet written up here |
 | 2. Text | The document's text, paragraphs and breaks | Not started |
 | 3. Styles | Paragraph and character styles, fonts, colours | Not started |
 | 4. Objects | Lists, tables and inline images | Not started |
@@ -16,4 +16,4 @@ Keynote and Numbers layers can start once layer 1 is confirmed.
 
 | Pages | macOS | First experiment |
 | --- | --- | --- |
-| 15.4 | | [0001](../experiments/0001-empty-document.md) (planned) |
+| 15.4 | 26.5.2 | [0001](../experiments/0001-empty-document.md) |
