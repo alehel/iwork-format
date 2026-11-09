@@ -81,6 +81,15 @@ Every object in a document can be reached by starting at objects 1 (in `Document
 
 Object 1, the document root, has a different type and layout in each app (type 10000 in Pages, type 1 in Keynote and in Numbers, and those two differ). Each embeds the same block of document properties as one large message (Pages field 15, Keynote field 3, Numbers field 8), holding the locale (field 1 starts with it, field 3 is the language) and the template path (field 9, such as `Application/Blank/ISO`). *Likely* ([0027](../experiments/0027-document-roots.md))
 
+## Password protection
+
+A document with a password has two extra files at the top of the package, `.iwph` and `.iwpv2`, and no previews. *Likely* ([0179](../experiments/0179-password.md))
+
+- `.iwph` holds the password hint as plain text.
+- `.iwpv2` is 104 bytes: two 16-bit values (2 and 1, meaning *unknown*), a 32-bit iteration count (100,000), a 16-byte salt, a 16-byte IV, then 64 encrypted bytes. Decrypted, those are 32 random bytes followed by their SHA-256, which checks the password.
+
+The key is PBKDF2-HMAC-SHA1 of the password, using that salt and iteration count, 16 bytes long. Every `.iwa` part and `BuildVersionHistory.plist` is encrypted with it, using AES-128-CBC with PKCS #7 padding. `DocumentIdentifier` and `Properties.plist` are not encrypted. An encrypted part is laid out as 16 bytes of unknown meaning, the IV, the ciphertext, and 20 bytes of unknown meaning, probably an integrity check. Decrypted, a part is the same as in an unprotected document. The salt is new on every save. *Likely* ([0179](../experiments/0179-password.md))
+
 ## IDs and save-to-save changes
 
 Saving the same content twice can change these, and nothing else in the `.iwa` parts. *Likely* ([0001](../experiments/0001-empty-document.md), [0002](../experiments/0002-one-word.md))
