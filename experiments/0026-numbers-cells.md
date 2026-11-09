@@ -36,7 +36,7 @@ cells.numbers        Index/Tables/DataList-904552.iwa   1: 1  2: 2  3: { 1: 1, 2
 
 The decoded tile record (type 6002) of `cells.numbers` is byte-for-byte the same as that of `cells.pages`. Both have the SHA-1 `67e56451ad5e2eb0bd743e273f6a66a70f399843` over the decoded payload. That includes both rows' offset tables and cell bytes, with the type bytes 2 and 3, the decimal128 42, and the string key 1.
 
-Numbers names its table parts `DataList-N.iwa`, `HeaderStorageBucket-N.iwa` and `Tile.iwa`, without the `-2` ending Pages adds.
+Numbers names most of its table parts `DataList-N.iwa`, `HeaderStorageBucket-N.iwa` and `Tile.iwa`. *Corrected after [0030](0030-tiles.md):* the first version of this write-up said Numbers never uses Pages' `-2` ending. In fact this file also has `Tile-905022-2.iwa` and three `HeaderStorageBucket-N-2.iwa` parts, which a comparison that collapsed part names had hidden.
 
 ## Conclusion
 
@@ -49,7 +49,7 @@ Numbers stores cells exactly as Pages does. The same values in the same cells gi
 
 The string table's entry for a text cell doesn't depend on the string's content: the key and count were the same for `Abc` and `abc`.
 
-The `-2` ending of table part names is Pages' own, and isn't part of the table format.
+Both apps use the `-2` ending for some table parts (see the correction above).
 
 ## Confidence
 

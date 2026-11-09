@@ -22,7 +22,7 @@ A new document holds these 13 parts. *Confirmed* ([0001](../experiments/0001-emp
 
 The seven `.iwa` parts of a new document are `AnnotationAuthorStorage-N`, `CalculationEngine-N`, `Document`, `DocumentMetadata`, `DocumentStylesheet`, `Metadata` and `ViewState`. Where a name ends in a number, it is the ID of the part's first object. *Confirmed* ([0001](../experiments/0001-empty-document.md), [0002](../experiments/0002-one-word.md))
 
-A document with a table also has parts under `Index/Tables/`: `DataList`, `HeaderStorageBucket` and `Tile`, each holding one record. Each is named either without a number or as `Name-N-2.iwa` in Pages, or `Name-N.iwa` in Numbers, where N is the ID of the record inside. *Likely* ([0020](../experiments/0020-a-table.md), [0026](../experiments/0026-numbers-cells.md))
+A document with a table also has parts under `Index/Tables/`: `DataList`, `HeaderStorageBucket` and `Tile`, each holding one record. Each is named `Name.iwa`, `Name-N.iwa` or `Name-N-2.iwa`, where N is the ID of the record inside. Both Pages and Numbers use all three forms. What the `-2` ending means is *unknown*. *Likely* ([0020](../experiments/0020-a-table.md), [0026](../experiments/0026-numbers-cells.md), [0030](../experiments/0030-tiles.md))
 
 ## Data files
 
