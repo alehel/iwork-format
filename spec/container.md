@@ -6,7 +6,7 @@ Observed with Pages 15.4 on macOS 26.5.2. Keynote 15.4 and Numbers 15.4 write th
 
 ## The package
 
-A document saved by Pages is a ZIP file. *Likely* ([0001](../experiments/0001-empty-document.md), [0002](../experiments/0002-one-word.md); both saved through AppleScript, so a document saved from the File menu is still to be checked.)
+A document saved by Pages is a ZIP file by default. *Likely* ([0001](../experiments/0001-empty-document.md), [0002](../experiments/0002-one-word.md)). It can also be a folder (File → Advanced → Change File Type → Package): the metadata files and previews are files in the folder, and the `.iwa` parts are inside an `Index.zip` in it, under the same `Index/` names. *Likely* ([0076](../experiments/0076-package-format.md))
 
 Its entries are stored without ZIP compression. *Confirmed* ([0001](../experiments/0001-empty-document.md), [0002](../experiments/0002-one-word.md))
 

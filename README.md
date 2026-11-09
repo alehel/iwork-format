@@ -6,7 +6,7 @@ Pages, Keynote and Numbers are trademarks of Apple Inc. This project isn't affil
 
 ## Status
 
-Early. Seventy-five [experiments](experiments/) have been run, all with the 15.4 apps on macOS 26.5.2. Each layer's status is in [`spec/README.md`](spec/README.md). In short:
+Early. Seventy-six [experiments](experiments/) have been run, all with the 15.4 apps on macOS 26.5.2. Each layer's status is in [`spec/README.md`](spec/README.md). In short:
 
 - **Container** ([`spec/container.md`](spec/container.md)): how the parts are compressed and split into records is *confirmed*, and so is the fact that record headers list references. That every object can be reached from three roots through those references is *likely*.
 - **Text** ([`spec/text.md`](spec/text.md)): where the body text lives, its encoding (UTF-8, with positions in UTF-16 units), paragraph breaks, and the run tables that attach styles to ranges are *confirmed*. So are the language and autocorrection runs that typing adds. Line, page and section breaks, footnotes and page number fields are *likely*.
@@ -54,7 +54,7 @@ cargo run --release -- list path/to/document.pages
 
 | Command | What it does |
 | --- | --- |
-| `list <file>` | Lists the parts of a document, whether it's a ZIP file or a folder package |
+| `list <file>` | Lists the parts of a document, whether it's a ZIP file or a folder package, including the parts inside a package's `Index.zip` |
 | `hex <file> <part> [--offset N] [--len N]` | Shows the bytes of one part in hexadecimal |
 | `proto <file> <part> [--offset N] [--len N]` | Decodes bytes as a Protocol Buffers message and prints the fields as a tree |
 | `chunks <file> <part>` | Lists the Snappy-compressed chunks of an `.iwa` part |

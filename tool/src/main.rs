@@ -237,7 +237,8 @@ fn list(file: &str) -> Result<String, String> {
     let mut package = Package::open(Path::new(file)).map_err(|e| format!("{file}: {e}"))?;
     let kind = match package {
         Package::Zip(_) => "ZIP file",
-        Package::Folder(_) => "folder package",
+        Package::Folder(_, None) => "folder package",
+        Package::Folder(_, Some(_)) => "folder package with Index.zip",
     };
     let parts = package.parts().map_err(|e| format!("{file}: {e}"))?;
     let count = match parts.len() {

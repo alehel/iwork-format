@@ -63,15 +63,24 @@ pub struct Part {
     pub stored_size: Option<u64>,
 }
 
+/// The ZIP file a folder package keeps its `.iwa` parts in (experiment 0076).
+pub const INDEX_ZIP: &str = "Index.zip";
+
 pub enum Package {
     Zip(zip::ZipArchive<fs::File>),
-    Folder(PathBuf),
+    /// A folder package, and its `Index.zip` if it has one.
+    Folder(PathBuf, Option<zip::ZipArchive<fs::File>>),
 }
 
 impl Package {
     pub fn open(path: &Path) -> Result<Self, Error> {
         if fs::metadata(path)?.is_dir() {
-            Ok(Self::Folder(path.to_path_buf()))
+            let index = path.join(INDEX_ZIP);
+            let inner = match fs::symlink_metadata(&index) {
+                Ok(meta) if meta.is_file() => Some(zip::ZipArchive::new(fs::File::open(&index)?)?),
+                _ => None,
+            };
+            Ok(Self::Folder(path.to_path_buf(), inner))
         } else {
             Ok(Self::Zip(zip::ZipArchive::new(fs::File::open(path)?)?))
         }
@@ -81,23 +90,13 @@ impl Package {
     pub fn parts(&mut self) -> Result<Vec<Part>, Error> {
         let mut parts = Vec::new();
         match self {
-            Self::Zip(archive) => {
-                if archive.len() > MAX_PARTS {
-                    return Err(Error::TooManyParts);
-                }
-                for i in 0..archive.len() {
-                    let entry = archive.by_index_raw(i)?;
-                    if entry.is_dir() {
-                        continue;
-                    }
-                    parts.push(Part {
-                        name: entry.name().to_string(),
-                        size: entry.size(),
-                        stored_size: Some(entry.compressed_size()),
-                    });
+            Self::Zip(archive) => zip_parts(archive, &mut parts)?,
+            Self::Folder(root, inner) => {
+                walk(root, root, 0, &mut parts)?;
+                if let Some(archive) = inner {
+                    zip_parts(archive, &mut parts)?;
                 }
             }
-            Self::Folder(root) => walk(root, root, 0, &mut parts)?,
         }
         parts.sort_by(|a, b| a.name.cmp(&b.name));
         Ok(parts)
@@ -113,7 +112,15 @@ impl Package {
                 })?;
                 read_capped(entry, name)
             }
-            Self::Folder(root) => {
+            Self::Folder(root, inner) => {
+                // A part inside Index.zip is read from there; everything else from the folder.
+                if let Some(archive) = inner {
+                    match archive.by_name(name) {
+                        Ok(entry) => return read_capped(entry, name),
+                        Err(zip::result::ZipError::FileNotFound) => {}
+                        Err(other) => return Err(Error::Zip(other)),
+                    }
+                }
                 let path = join(root, name)?;
                 let meta = fs::symlink_metadata(&path).map_err(|_| Error::NotFound(name.to_string()))?;
                 if !meta.is_file() {
@@ -123,6 +130,25 @@ impl Package {
             }
         }
     }
+}
+
+/// Add a ZIP archive's file entries to `parts`.
+fn zip_parts(archive: &mut zip::ZipArchive<fs::File>, parts: &mut Vec<Part>) -> Result<(), Error> {
+    if archive.len().saturating_add(parts.len()) > MAX_PARTS {
+        return Err(Error::TooManyParts);
+    }
+    for i in 0..archive.len() {
+        let entry = archive.by_index_raw(i)?;
+        if entry.is_dir() {
+            continue;
+        }
+        parts.push(Part {
+            name: entry.name().to_string(),
+            size: entry.size(),
+            stored_size: Some(entry.compressed_size()),
+        });
+    }
+    Ok(())
 }
 
 /// Read at most [`MAX_PART_BYTES`], whatever size the part claims to have.
@@ -232,6 +258,25 @@ mod tests {
         assert!(parts[0].stored_size.unwrap() < 100);
         assert_eq!(pkg.read("Index/one.bin").unwrap(), vec![7; 100]);
         assert!(matches!(pkg.read("nope"), Err(Error::NotFound(_))));
+        fs::remove_dir_all(dir).unwrap();
+    }
+
+    #[test]
+    fn a_folder_package_reads_parts_inside_its_index_zip() {
+        let dir = scratch();
+        fs::write(dir.join("preview.jpg"), [9]).unwrap();
+        {
+            let mut zip = zip::ZipWriter::new(fs::File::create(dir.join(INDEX_ZIP)).unwrap());
+            let opts = zip::write::SimpleFileOptions::default().compression_method(zip::CompressionMethod::Stored);
+            zip.start_file("Index/Document.iwa", opts).unwrap();
+            zip.write_all(&[1, 2, 3]).unwrap();
+            zip.finish().unwrap();
+        }
+        let mut pkg = Package::open(&dir).unwrap();
+        let names: Vec<_> = pkg.parts().unwrap().into_iter().map(|p| p.name).collect();
+        assert_eq!(names, vec!["Index.zip", "Index/Document.iwa", "preview.jpg"]);
+        assert_eq!(pkg.read("Index/Document.iwa").unwrap(), vec![1, 2, 3]);
+        assert_eq!(pkg.read("preview.jpg").unwrap(), vec![9]);
         fs::remove_dir_all(dir).unwrap();
     }
 
