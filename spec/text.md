@@ -35,8 +35,8 @@ Several fields of a type-2001 record are run tables: lists of entries that apply
 | 8 | Character styles (type 2021). Absent when no text has one. | *Likely* ([0004](../experiments/0004-larger-word.md)) |
 | 12 | Objects of type 2024 | *Unknown* |
 | 17 | Objects of type 10011 in `Document.iwa` | *Unknown* |
-| 19 | Languages: field 2 is a language code as text, such as `nb`. Present only in text typed in Pages. | *Likely* ([0006](../experiments/0006-typing-in-pages.md)) |
-| 20 | A UUID as text in field 2, on ranges that Pages autocorrected. Present only in text typed in Pages. | *Unknown* ([0006](../experiments/0006-typing-in-pages.md)) |
+| 19 | Languages: field 2 is a language code as text, such as `nb`. Only text typed or rewritten in Pages has one; text set through AppleScript has no field 19, or an entry without field 2. | *Confirmed* ([0006](../experiments/0006-typing-in-pages.md), [0009](../experiments/0009-autocorrection.md)) |
+| 20 | Autocorrections: each range Pages autocorrected has a UUID as text in field 2, and an entry without one closes it. Absent when nothing was corrected. | *Confirmed* ([0006](../experiments/0006-typing-in-pages.md), [0009](../experiments/0009-autocorrection.md)) |
 
 Field 2 of the record names the type-401 object that holds the styles, which is probably the stylesheet. Fields 6, 14, 24 and 28 hold entries of zeros in every document so far. *Unknown*
 
