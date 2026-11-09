@@ -55,6 +55,8 @@ Field 10000.1 is the chart type and 10000.5 the grouping into series (1 by row, 
 | 7 | Stacked horizontal bar ([0195](../experiments/0195-remaining-chart-types.md)) |
 | 8 | Stacked area ([0195](../experiments/0195-remaining-chart-types.md)) |
 | 9 | Scatter |
+| 10 | Mixed ([0224](../experiments/0224-menu-chart-types.md)) |
+| 11 | Two-axis ([0224](../experiments/0224-menu-chart-types.md)) |
 | 12 | 3D vertical bar |
 | 13 | 3D horizontal bar ([0195](../experiments/0195-remaining-chart-types.md)) |
 | 14 | 3D line ([0195](../experiments/0195-remaining-chart-types.md)) |
@@ -63,3 +65,10 @@ Field 10000.1 is the chart type and 10000.5 the grouping into series (1 by row, 
 | 17 | 3D stacked vertical bar ([0195](../experiments/0195-remaining-chart-types.md)) |
 | 18 | 3D stacked horizontal bar ([0195](../experiments/0195-remaining-chart-types.md)) |
 | 19 | 3D stacked area ([0195](../experiments/0195-remaining-chart-types.md)) |
+| 20 | Interactive column ([0224](../experiments/0224-menu-chart-types.md)) |
+| 21 | Interactive bar ([0224](../experiments/0224-menu-chart-types.md)) |
+| 22 | Bubble ([0224](../experiments/0224-menu-chart-types.md)) |
+| 23 | Interactive scatter ([0224](../experiments/0224-menu-chart-types.md)) |
+| 24 | Interactive bubble ([0224](../experiments/0224-menu-chart-types.md)) |
+| 25 | Donut ([0224](../experiments/0224-menu-chart-types.md)) |
+| 27 | Radar ([0224](../experiments/0224-menu-chart-types.md)) |
