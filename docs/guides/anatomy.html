@@ -11,7 +11,7 @@
 <header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
 <p class="wip"><strong>Work in progress.</strong> This specification is incomplete and changes as new experiments run. Each finding says how sure it is: <em>confirmed</em>, <em>likely</em> or <em>unknown</em>. See <a href="../spec/index.html">what each layer covers so far</a>.</p>
 <div class="layout">
-<nav class="side" aria-label="Contents"><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a class="current" href="anatomy.html">Reading a Pages document</a></li><li><a href="numbers-table.html">Reading a Numbers table</a></li><li><a href="writing.html">Writing a document</a></li><li><a href="samples.html">Sample files</a></li><li class="group">Specification</li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2–5. Text, styles, objects, layout</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li class="group">Evidence</li><li><a href="../experiments/index.html">All experiments</a></li></ul></nav>
+<nav class="side" aria-label="Contents"><details open><summary>Contents</summary><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a class="current" href="anatomy.html">Reading a Pages document</a></li><li><a href="numbers-table.html">Reading a Numbers table</a></li><li><a href="writing.html">Writing a document</a></li><li><a href="samples.html">Sample files</a></li><li class="group">Specification</li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2–5. Text, styles, objects, layout</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li class="group">Evidence</li><li><a href="../experiments/index.html">All experiments</a></li></ul></details></nav>
 <main>
 <h1 id="reading-a-pages-document">Reading a Pages document<a class="anchor" href="#reading-a-pages-document" aria-label="Link to this section">#</a></h1>
 <p>This page follows one file from its ZIP listing down to the five bytes that hold its text. The file is <a href="../files/hello.pages">hello.pages</a>: a new blank document in which the word <code>hello</code> was typed and saved (<a href="../experiments/0002-one-word.html">0002</a>).</p>
@@ -148,7 +148,20 @@ hello</code></pre>
 <p>This walk-through followed one path. The same steps lead everywhere else: list the parts, decode the chunks, read the records, and follow references from objects 1, 2 and 71. The remaining 51 records in <code>Document.iwa</code> hold header and footer texts, the section, the document settings and more, each described in the <a href="../spec/index.html">specification</a>.</p>
 <footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Last built from <a href="https://github.com/alehel/iwork-format">alehel/iwork-format</a>.</p></footer>
 </main>
-<nav class="toc" aria-label="On this page"><p>On this page</p><ul><li><a href="#1-the-zip-package">1. The ZIP package</a></li><li><a href="#2-chunks">2. Chunks</a></li><li><a href="#3-records">3. Records</a></li><li><a href="#4-the-document-root">4. The document root</a></li><li><a href="#5-the-body-text">5. The body text</a></li><li><a href="#6-the-paragraph-style">6. The paragraph style</a></li><li><a href="#what-was-skipped">What was skipped</a></li></ul></nav>
+<nav class="toc" aria-label="On this page"><details open><summary>On this page</summary><ul><li><a href="#1-the-zip-package">1. The ZIP package</a></li><li><a href="#2-chunks">2. Chunks</a></li><li><a href="#3-records">3. Records</a></li><li><a href="#4-the-document-root">4. The document root</a></li><li><a href="#5-the-body-text">5. The body text</a></li><li><a href="#6-the-paragraph-style">6. The paragraph style</a></li><li><a href="#what-was-skipped">What was skipped</a></li></ul></details></nav>
 </div>
+<script>
+// On narrow screens the contents and on-this-page lists start folded; on wide ones they stay open.
+(function () {
+  var narrow = window.matchMedia("(max-width: 48rem)");
+  var lists = document.querySelectorAll(".side details, .toc details");
+  function fit() { for (var i = 0; i < lists.length; i++) lists[i].open = !narrow.matches; }
+  fit();
+  if (narrow.addEventListener) narrow.addEventListener("change", fit);
+  document.addEventListener("click", function (e) {
+    if (narrow.matches && e.target.closest && e.target.closest(".toc a")) fit();
+  });
+})();
+</script>
 </body>
 </html>

@@ -11,7 +11,7 @@
 <header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
 <p class="wip"><strong>Work in progress.</strong> This specification is incomplete and changes as new experiments run. Each finding says how sure it is: <em>confirmed</em>, <em>likely</em> or <em>unknown</em>. See <a href="index.html">what each layer covers so far</a>.</p>
 <div class="layout">
-<nav class="side" aria-label="Contents"><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="../guides/anatomy.html">Reading a Pages document</a></li><li><a href="../guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="../guides/writing.html">Writing a document</a></li><li><a href="../guides/samples.html">Sample files</a></li><li class="group">Specification</li><li><a class="current" href="index.html">Layers and status</a></li><li><a href="container.html">1. Container</a></li><li><a href="text.html">2–5. Text, styles, objects, layout</a></li><li><a href="keynote.html">Keynote</a></li><li><a href="numbers.html">Numbers</a></li><li class="group">Evidence</li><li><a href="../experiments/index.html">All experiments</a></li></ul></nav>
+<nav class="side" aria-label="Contents"><details open><summary>Contents</summary><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="../guides/anatomy.html">Reading a Pages document</a></li><li><a href="../guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="../guides/writing.html">Writing a document</a></li><li><a href="../guides/samples.html">Sample files</a></li><li class="group">Specification</li><li><a class="current" href="index.html">Layers and status</a></li><li><a href="container.html">1. Container</a></li><li><a href="text.html">2–5. Text, styles, objects, layout</a></li><li><a href="keynote.html">Keynote</a></li><li><a href="numbers.html">Numbers</a></li><li class="group">Evidence</li><li><a href="../experiments/index.html">All experiments</a></li></ul></details></nav>
 <main>
 <h1 id="specification">Specification<a class="anchor" href="#specification" aria-label="Link to this section">#</a></h1>
 <p>The spec is written in layers, each built on the one before. A layer's file is added once its first experiment has run. Every finding links to the experiments that support it, and carries a confidence level (see <a href="https://github.com/alehel/iwork-format/blob/main/CONTRIBUTING.md#confidence">CONTRIBUTING.md</a>).</p>
@@ -21,7 +21,20 @@
 <div class="table"><table><thead><tr><th>Pages</th><th>macOS</th><th>First experiment</th></tr></thead><tbody><tr><td>15.4</td><td>26.5.2</td><td><a href="../experiments/0001-empty-document.html">0001</a></td></tr></tbody></table></div>
 <footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Last built from <a href="https://github.com/alehel/iwork-format">alehel/iwork-format</a>.</p></footer>
 </main>
-<nav class="toc" aria-label="On this page"><p>On this page</p><ul><li><a href="#pages-versions-observed">Pages versions observed</a></li></ul></nav>
+<nav class="toc" aria-label="On this page"><details open><summary>On this page</summary><ul><li><a href="#pages-versions-observed">Pages versions observed</a></li></ul></details></nav>
 </div>
+<script>
+// On narrow screens the contents and on-this-page lists start folded; on wide ones they stay open.
+(function () {
+  var narrow = window.matchMedia("(max-width: 48rem)");
+  var lists = document.querySelectorAll(".side details, .toc details");
+  function fit() { for (var i = 0; i < lists.length; i++) lists[i].open = !narrow.matches; }
+  fit();
+  if (narrow.addEventListener) narrow.addEventListener("change", fit);
+  document.addEventListener("click", function (e) {
+    if (narrow.matches && e.target.closest && e.target.closest(".toc a")) fit();
+  });
+})();
+</script>
 </body>
 </html>

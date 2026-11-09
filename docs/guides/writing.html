@@ -11,7 +11,7 @@
 <header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
 <p class="wip"><strong>Work in progress.</strong> This specification is incomplete and changes as new experiments run. Each finding says how sure it is: <em>confirmed</em>, <em>likely</em> or <em>unknown</em>. See <a href="../spec/index.html">what each layer covers so far</a>.</p>
 <div class="layout">
-<nav class="side" aria-label="Contents"><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="anatomy.html">Reading a Pages document</a></li><li><a href="numbers-table.html">Reading a Numbers table</a></li><li><a class="current" href="writing.html">Writing a document</a></li><li><a href="samples.html">Sample files</a></li><li class="group">Specification</li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2–5. Text, styles, objects, layout</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li class="group">Evidence</li><li><a href="../experiments/index.html">All experiments</a></li></ul></nav>
+<nav class="side" aria-label="Contents"><details open><summary>Contents</summary><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="anatomy.html">Reading a Pages document</a></li><li><a href="numbers-table.html">Reading a Numbers table</a></li><li><a class="current" href="writing.html">Writing a document</a></li><li><a href="samples.html">Sample files</a></li><li class="group">Specification</li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2–5. Text, styles, objects, layout</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li class="group">Evidence</li><li><a href="../experiments/index.html">All experiments</a></li></ul></details></nav>
 <main>
 <h1 id="writing-a-document">Writing a document<a class="anchor" href="#writing-a-document" aria-label="Link to this section">#</a></h1>
 <p>A specification is tested best by writing from it. Experiments <a href="../experiments/0287-rewriting-a-document.html">0287</a> to <a href="../experiments/0290-writing-a-cell.html">0290</a> wrote documents with a small Python program built only from what the spec says, and opened the results in the apps. The program, [<code>recipes/0287-iwa-writer.py</code>](../../recipes/0287-iwa-writer.py), uses only the Python standard library.</p>
@@ -51,7 +51,20 @@ new = (42).to_bytes(14, &quot;little&quot;) + bytes([0x40, 0x30])  # 42 × 10⁰
 <ul><li>Any change that adds objects needs new IDs that are unique in the document, and every reference listed in the record header (fields 2.4 and 2.5).</li><li>Run tables must cover the new text: positions are in UTF-16 code units.</li><li>Cells that add strings need string table entries, with use counts.</li><li>The previews are optional; Pages makes new ones when it next saves.</li></ul>
 <footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Last built from <a href="https://github.com/alehel/iwork-format">alehel/iwork-format</a>.</p></footer>
 </main>
-<nav class="toc" aria-label="On this page"><p>On this page</p><ul><li><a href="#re-encoding-every-part">Re-encoding every part</a></li><li><a href="#new-text">New text</a></li><li><a href="#paragraphs-need-run-entries">Paragraphs need run entries</a></li><li><a href="#a-new-cell-value">A new cell value</a></li><li><a href="#what-a-writer-still-has-to-get-right">What a writer still has to get right</a></li></ul></nav>
+<nav class="toc" aria-label="On this page"><details open><summary>On this page</summary><ul><li><a href="#re-encoding-every-part">Re-encoding every part</a></li><li><a href="#new-text">New text</a></li><li><a href="#paragraphs-need-run-entries">Paragraphs need run entries</a></li><li><a href="#a-new-cell-value">A new cell value</a></li><li><a href="#what-a-writer-still-has-to-get-right">What a writer still has to get right</a></li></ul></details></nav>
 </div>
+<script>
+// On narrow screens the contents and on-this-page lists start folded; on wide ones they stay open.
+(function () {
+  var narrow = window.matchMedia("(max-width: 48rem)");
+  var lists = document.querySelectorAll(".side details, .toc details");
+  function fit() { for (var i = 0; i < lists.length; i++) lists[i].open = !narrow.matches; }
+  fit();
+  if (narrow.addEventListener) narrow.addEventListener("change", fit);
+  document.addEventListener("click", function (e) {
+    if (narrow.matches && e.target.closest && e.target.closest(".toc a")) fit();
+  });
+})();
+</script>
 </body>
 </html>

@@ -228,8 +228,8 @@ def page(out_path, title, body, toc=None, description=""):
         nav.append(f'<li><a{cls} href="{relpath(href, out_path)}">{html.escape(label)}</a></li>')
     toc_html = ""
     if toc:
-        toc_html = '<nav class="toc" aria-label="On this page"><p>On this page</p><ul>' + "".join(
-            f'<li><a href="#{a}">{html.escape(t)}</a></li>' for a, t in toc) + "</ul></nav>"
+        toc_html = '<nav class="toc" aria-label="On this page"><details open><summary>On this page</summary><ul>' + "".join(
+            f'<li><a href="#{a}">{html.escape(t)}</a></li>' for a, t in toc) + "</ul></details></nav>"
     css = relpath("style.css", out_path)
     home = relpath("index.html", out_path)
     doc = f"""<!doctype html>
@@ -245,13 +245,26 @@ def page(out_path, title, body, toc=None, description=""):
 <header class="top"><a class="brand" href="{home}">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><a class="repo" href="{REPO}">Repository</a></header>
 <p class="wip"><strong>Work in progress.</strong> This specification is incomplete and changes as new experiments run. Each finding says how sure it is: <em>confirmed</em>, <em>likely</em> or <em>unknown</em>. See <a href="{relpath("spec/index.html", out_path)}">what each layer covers so far</a>.</p>
 <div class="layout">
-<nav class="side" aria-label="Contents"><ul>{''.join(nav)}</ul></nav>
+<nav class="side" aria-label="Contents"><details open><summary>Contents</summary><ul>{''.join(nav)}</ul></details></nav>
 <main>
 {body}
 <footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Last built from <a href="{REPO}">alehel/iwork-format</a>.</p></footer>
 </main>
 {toc_html}
 </div>
+<script>
+// On narrow screens the contents and on-this-page lists start folded; on wide ones they stay open.
+(function () {{
+  var narrow = window.matchMedia("(max-width: 48rem)");
+  var lists = document.querySelectorAll(".side details, .toc details");
+  function fit() {{ for (var i = 0; i < lists.length; i++) lists[i].open = !narrow.matches; }}
+  fit();
+  if (narrow.addEventListener) narrow.addEventListener("change", fit);
+  document.addEventListener("click", function (e) {{
+    if (narrow.matches && e.target.closest && e.target.closest(".toc a")) fit();
+  }});
+}})();
+</script>
 </body>
 </html>
 """

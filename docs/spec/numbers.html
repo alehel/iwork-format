@@ -11,7 +11,7 @@
 <header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
 <p class="wip"><strong>Work in progress.</strong> This specification is incomplete and changes as new experiments run. Each finding says how sure it is: <em>confirmed</em>, <em>likely</em> or <em>unknown</em>. See <a href="index.html">what each layer covers so far</a>.</p>
 <div class="layout">
-<nav class="side" aria-label="Contents"><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="../guides/anatomy.html">Reading a Pages document</a></li><li><a href="../guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="../guides/writing.html">Writing a document</a></li><li><a href="../guides/samples.html">Sample files</a></li><li class="group">Specification</li><li><a href="index.html">Layers and status</a></li><li><a href="container.html">1. Container</a></li><li><a href="text.html">2–5. Text, styles, objects, layout</a></li><li><a href="keynote.html">Keynote</a></li><li><a class="current" href="numbers.html">Numbers</a></li><li class="group">Evidence</li><li><a href="../experiments/index.html">All experiments</a></li></ul></nav>
+<nav class="side" aria-label="Contents"><details open><summary>Contents</summary><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="../guides/anatomy.html">Reading a Pages document</a></li><li><a href="../guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="../guides/writing.html">Writing a document</a></li><li><a href="../guides/samples.html">Sample files</a></li><li class="group">Specification</li><li><a href="index.html">Layers and status</a></li><li><a href="container.html">1. Container</a></li><li><a href="text.html">2–5. Text, styles, objects, layout</a></li><li><a href="keynote.html">Keynote</a></li><li><a class="current" href="numbers.html">Numbers</a></li><li class="group">Evidence</li><li><a href="../experiments/index.html">All experiments</a></li></ul></details></nav>
 <main>
 <h1 id="numbers">Numbers<a class="anchor" href="#numbers" aria-label="Link to this section">#</a></h1>
 <p>What is specific to Numbers documents. The container is the same as Pages' (<a href="container.html">container.md</a>), and tables are stored as described in <a href="text.html#objects-in-the-text">text.md</a>. Every finding links to the experiments that support it, with a confidence level as defined in <a href="https://github.com/alehel/iwork-format/blob/main/CONTRIBUTING.md#confidence">CONTRIBUTING.md</a>.</p>
@@ -31,7 +31,20 @@
 <p>A highlighting rule is a type-6010 record in the table's list of type 9. Its condition is a formula, as for filters, starting with node type 63, which probably stands for the cell being tested. It names a cell style (type 6004) and a text style (type 2022) to apply, both kept in <code>ObjectContainer.iwa</code>. Cells under the rule gain flag bits 0x80 and 0x100. Flag 0x80's key is the cell's entry in the type-9 list, and flag 0x100's key caches the result: the index of the first matching rule, from 0, or 15 when none matches, <em>confirmed</em> (<a href="../experiments/0267-highlighting-result.html">0267</a>, <a href="../experiments/0280-two-highlighting-rules.html">0280</a>). <em>Likely</em> (<a href="../experiments/0259-conditional-highlighting.html">0259</a>)</p>
 <footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Last built from <a href="https://github.com/alehel/iwork-format">alehel/iwork-format</a>.</p></footer>
 </main>
-<nav class="toc" aria-label="On this page"><p>On this page</p><ul><li><a href="#parts">Parts</a></li><li><a href="#from-the-root-to-a-tables-cells">From the root to a table&#x27;s cells</a></li><li><a href="#categories">Categories</a></li><li><a href="#pivot-tables">Pivot tables</a></li><li><a href="#filters">Filters</a></li><li><a href="#conditional-highlighting">Conditional highlighting</a></li></ul></nav>
+<nav class="toc" aria-label="On this page"><details open><summary>On this page</summary><ul><li><a href="#parts">Parts</a></li><li><a href="#from-the-root-to-a-tables-cells">From the root to a table&#x27;s cells</a></li><li><a href="#categories">Categories</a></li><li><a href="#pivot-tables">Pivot tables</a></li><li><a href="#filters">Filters</a></li><li><a href="#conditional-highlighting">Conditional highlighting</a></li></ul></details></nav>
 </div>
+<script>
+// On narrow screens the contents and on-this-page lists start folded; on wide ones they stay open.
+(function () {
+  var narrow = window.matchMedia("(max-width: 48rem)");
+  var lists = document.querySelectorAll(".side details, .toc details");
+  function fit() { for (var i = 0; i < lists.length; i++) lists[i].open = !narrow.matches; }
+  fit();
+  if (narrow.addEventListener) narrow.addEventListener("change", fit);
+  document.addEventListener("click", function (e) {
+    if (narrow.matches && e.target.closest && e.target.closest(".toc a")) fit();
+  });
+})();
+</script>
 </body>
 </html>
