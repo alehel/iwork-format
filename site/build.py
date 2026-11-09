@@ -243,6 +243,7 @@ def page(out_path, title, body, toc=None, description=""):
 </head>
 <body>
 <header class="top"><a class="brand" href="{home}">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><a class="repo" href="{REPO}">Repository</a></header>
+<p class="wip"><strong>Work in progress.</strong> This specification is incomplete and changes as new experiments run. Each finding says how sure it is: <em>confirmed</em>, <em>likely</em> or <em>unknown</em>. See <a href="{relpath("spec/index.html", out_path)}">what each layer covers so far</a>.</p>
 <div class="layout">
 <nav class="side" aria-label="Contents"><ul>{''.join(nav)}</ul></nav>
 <main>
