@@ -27,7 +27,7 @@ Pages keeps its page setup in the document root (object 1, type 10000). All leng
 | 36, 37 | Header and footer distance from the page edge |
 | 43 | Printer name |
 | 42 | Orientation: 0 portrait, 1 landscape; 30 and 31 are already swapped ([0155](../experiments/0155-landscape-template.md)) |
-| 44 | Paper name, such as `iso-a4` |
+| 44 | Paper name, such as `iso-a4`; empty for a custom size, as in the book templates, which make ordinary documents ([0198](../experiments/0198-book-template.md)) |
 | 15.9 | The identifier of the template the document came from, such as `Application/Blank/ISO` ([0155](../experiments/0155-landscape-template.md)) |
 | 48 | Only in page-layout documents: names a page template (type 10017). Their body text record is empty. ([0156](../experiments/0156-page-layout-template.md)) |
 
