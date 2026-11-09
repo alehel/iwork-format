@@ -62,7 +62,7 @@ A cell's bytes 8–11 are little-endian flags saying which values and keys follo
 | Flag bit | Followed by |
 | --- | --- |
 | 0x0001 | A decimal128 number |
-| 0x0002 | A double, for a boolean (type 6): 1.0 is true and 0.0 false ([0036](../experiments/0036-more-cell-formats.md), [0169](../experiments/0169-unchecked-checkbox.md)) |
+| 0x0002 | A double, for a boolean (type 6): 1.0 is true and 0.0 false, for a checkbox or a formula's result ([0036](../experiments/0036-more-cell-formats.md), [0169](../experiments/0169-unchecked-checkbox.md), [0175](../experiments/0175-boolean-formula.md)) |
 | 0x0004 | A date, as a little-endian double: seconds since 2001-01-01 00:00, with the shown clock time counted as UTC (no time-zone conversion) |
 | 0x0200 | A key into the formula list (model field 4.6), whose entries are formulas as postfix lists of nodes |
 | 0x0008 | A string key ([0021](../experiments/0021-table-cells.md)) |
