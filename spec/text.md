@@ -4,7 +4,7 @@ Where a Pages document keeps its body text, and how the text is encoded. Every f
 
 Observed with Pages 15.4 on macOS 26.5.2. Keynote 15.4 stores slide text in type-2001 records laid out the same way, referring to the same kinds of styles (types 401, 2022, 2023), so this layer applies to Keynote text too. *Likely* ([0025](../experiments/0025-keynote-title.md))
 
-Field 3 of a type-2001 record is its text in all three apps. *Confirmed* over every sample of experiments 0001–0031 ([0032](../experiments/0032-reading-all-text.md)). Field 1 seems to say what kind of text the record holds: in Pages 0 is the body and 1 a header or footer, Numbers uses 1 for text owned by a sheet, Keynote's presenter notes use 4 ([0039](../experiments/0039-presenter-notes.md)), and Keynote's shape text leaves it out. Text can contain U+00AD (soft hyphen). *Likely* ([0032](../experiments/0032-reading-all-text.md))
+Field 3 of a type-2001 record is its text in all three apps. *Confirmed* over every sample of experiments 0001–0031 ([0032](../experiments/0032-reading-all-text.md)). Field 1 seems to say what kind of text the record holds: in Pages 0 is the body, 1 a header or footer and 2 a footnote ([0041](../experiments/0041-footnote.md)), Numbers uses 1 for text owned by a sheet, Keynote's presenter notes use 4 ([0039](../experiments/0039-presenter-notes.md)), and Keynote's shape text leaves it out. Text can contain U+00AD (soft hyphen). *Likely* ([0032](../experiments/0032-reading-all-text.md))
 
 ## The body text
 
@@ -108,6 +108,7 @@ Several fields of a type-2001 record are run tables: lists of entries that apply
 | 8 | Character styles (type 2021). Absent when no text has one. | *Likely* ([0004](../experiments/0004-larger-word.md)) |
 | 9 | Attachments: each entry sits at a U+FFFC character in the text. In Pages it points at a type-2003 record, which points at the attached object (for a table, its drawable of type 6000). A Numbers sheet's text has an entry pointing at a type-2043 record instead, whose purpose is unknown. | *Likely* ([0020](../experiments/0020-a-table.md), [0032](../experiments/0032-reading-all-text.md)) |
 | 12 | Objects of type 2024 | *Unknown* |
+| 16 | Footnotes: an entry at each U+000E footnote mark points at a type-2008 record, whose field 2 names the footnote's text (a type-2001 record with field 1 = 2) | *Likely* ([0041](../experiments/0041-footnote.md)) |
 | 17 | Sections (type 10011 in `Document.iwa`), which hold among other things the headers and footers | *Likely* ([0016](../experiments/0016-header-and-footer.md)) |
 | 19 | Languages: field 2 is a language code as text, such as `nb`. Only text typed or rewritten in Pages has one; text set through AppleScript has no field 19, or an entry without field 2. | *Confirmed* ([0006](../experiments/0006-typing-in-pages.md), [0009](../experiments/0009-autocorrection.md)) |
 | 20 | Autocorrections: each range Pages autocorrected has a UUID as text in field 2, and an entry without one closes it. Absent when nothing was corrected. | *Confirmed* ([0006](../experiments/0006-typing-in-pages.md), [0009](../experiments/0009-autocorrection.md)) |
