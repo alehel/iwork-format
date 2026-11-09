@@ -162,6 +162,7 @@ Field 11 of a character style or a paragraph style holds the character propertie
 | 11 | Underline | varint: 1 underlined, 0 not |
 | 12 | Strikethrough | varint: 1 struck through, 0 not |
 | 13 | Capitalisation | varint: 1 all caps, 2 small caps; the stored text keeps its case ([0205](../experiments/0205-small-caps.md), [0206](../experiments/0206-all-caps.md)) |
+| 27 | Letter spacing | float, as a fraction of the font size: 0.01 is 1% ([0207](../experiments/0207-looser-letter-spacing.md)) |
 
 Field 11.5 is *confirmed* ([0010](../experiments/0010-alignment.md), [0053](../experiments/0053-font.md)), and so are 11.7 ([0013](../experiments/0013-text-colour.md)), 11.11 and 11.12 ([0012](../experiments/0012-underline-and-strikethrough.md)); the rest as above.
 
