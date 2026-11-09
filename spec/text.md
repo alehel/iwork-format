@@ -53,7 +53,20 @@ Field 11 of a character style or a paragraph style holds the character propertie
 | 1 | Bold | varint: 1 bold, 0 not bold |
 | 2 | Italic | varint: 1 italic |
 | 3 | Size in points | float |
+| 5 | Font name, such as `HelveticaNeue` | text |
 
-Field 10 was 1 for styles setting one property and 2 for the style setting two. *Unknown*
+Field 11.5 is *likely* ([0010](../experiments/0010-alignment.md)); the rest as above.
+
+A paragraph style also has a field 12 for paragraph properties. *Likely* ([0008](../experiments/0008-runs-and-shared-styles.md), [0010](../experiments/0010-alignment.md))
+
+| Field 12.n | Property | Encoding |
+| --- | --- | --- |
+| 1 | Alignment | varint: 1 right, 2 centred, 3 justified; the Body style has 4 and shows as left |
+
+Field 12.1 is *likely* ([0010](../experiments/0010-alignment.md)). Which value Pages writes when a paragraph is set back to left is *unknown*.
+
+Named styles such as Body set every property; unnamed ones set only what differs from their parent (field 1.3). *Likely* ([0010](../experiments/0010-alignment.md))
+
+Field 10 is 1 or 2 in unnamed styles and 57 in the named paragraph styles seen so far. It isn't simply the number of properties set. *Unknown*
 
 Styles get their own layer once more of them are understood.
