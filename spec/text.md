@@ -158,6 +158,7 @@ Field 11 of a character style or a paragraph style holds the character propertie
 | 3 | Size in points | float |
 | 5 | Font name, such as `HelveticaNeue` | text |
 | 7 | Text colour | message: red, green and blue in fields 3, 4 and 5 and alpha in field 6, as floats from 0 to 1; colour space unknown |
+| 10 | Baseline position | varint: 1 superscript ([0203](../experiments/0203-superscript.md)) |
 | 11 | Underline | varint: 1 underlined, 0 not |
 | 12 | Strikethrough | varint: 1 struck through, 0 not |
 
