@@ -189,6 +189,8 @@ A paragraph style also has a field 12 for paragraph properties. *Likely* ([0008]
 | 11 | Left indent | float, in points ([0253](../experiments/0253-indents.md)) |
 | 13 | Line spacing | message: field 2 is the amount, 2.0 for double ([0252](../experiments/0252-line-spacing.md)) |
 | 19 | Right indent | float, in points ([0253](../experiments/0253-indents.md)) |
+| 20 | Space after the paragraph | float, in points ([0256](../experiments/0256-paragraph-spacing.md)) |
+| 21 | Space before the paragraph | float, in points ([0256](../experiments/0256-paragraph-spacing.md)) |
 | 25 | Tab stops | message: one 25.1 per stop, with its position in points in field 1 ([0255](../experiments/0255-tab-stop.md)) |
 
 Values 0 to 3 are *confirmed* ([0010](../experiments/0010-alignment.md), [0011](../experiments/0011-left-alignment.md)); 4 as natural alignment is *likely*.
