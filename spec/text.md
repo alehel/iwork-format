@@ -49,6 +49,7 @@ Other fields of the type-10012 document settings:
 
 | Type-10012 field | Setting |
 | --- | --- |
+| 1 | Document body: 1 word processing (default), 0 page layout ([0240](../experiments/0240-no-document-body.md)) |
 | 2 | Show headers, 1 on (default) ([0238](../experiments/0238-no-header.md)) |
 | 3 | Show footers, 1 on (default) ([0239](../experiments/0239-no-footer.md)) |
 | 9 | Hyphenate the whole document, 1 on ([0236](../experiments/0236-hyphenation.md)) |
