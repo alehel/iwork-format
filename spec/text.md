@@ -50,6 +50,7 @@ Other fields of the type-10012 document settings:
 | Type-10012 field | Setting |
 | --- | --- |
 | 2 | Show headers, 1 on (default) ([0238](../experiments/0238-no-header.md)) |
+| 3 | Show footers, 1 on (default) ([0239](../experiments/0239-no-footer.md)) |
 | 9 | Hyphenate the whole document, 1 on ([0236](../experiments/0236-hyphenation.md)) |
 | 10 | Use ligatures, 1 on (default) ([0237](../experiments/0237-document-ligatures.md)) |
 
