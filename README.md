@@ -6,7 +6,7 @@ Pages, Keynote and Numbers are trademarks of Apple Inc. This project isn't affil
 
 ## Status
 
-Early. Eighty-nine [experiments](experiments/) have been run, all with the 15.4 apps on macOS 26.5.2. Each layer's status is in [`spec/README.md`](spec/README.md). In short:
+Early. Ninety [experiments](experiments/) have been run, all with the 15.4 apps on macOS 26.5.2. Each layer's status is in [`spec/README.md`](spec/README.md). In short:
 
 - **Container** ([`spec/container.md`](spec/container.md)): how the parts are compressed and split into records is *confirmed*, and so is the fact that record headers list references. That every object can be reached from three roots through those references (four when a chart adds `ObjectContainer.iwa`) is *likely*, and so is the folder form of a document, with its parts inside `Index.zip`.
 - **Text** ([`spec/text.md`](spec/text.md)): where the body text lives, its encoding (UTF-8, with positions in UTF-16 units), paragraph breaks, and the run tables that attach styles to ranges are *confirmed*. So are the language and autocorrection runs that typing adds. Line, page and section breaks, footnotes and page number fields are *likely*.
