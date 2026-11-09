@@ -70,19 +70,21 @@ A cell's bytes 8–11 are little-endian flags saying which values and keys follo
 | 0x2000, 0x4000, 0x8000 | A key into the format list (model field 4.22), for a number, currency or date format |
 | 0x10000, 0x20000, 0x40000 | A key into the format list, for a duration, text or boolean format ([0036](../experiments/0036-more-cell-formats.md)) |
 
-The format list's entries give the kind of format in field 1 (256 number, 257 currency, 258 percent, 259 scientific, 260 text, 261 date, 262 fraction, 263 checkbox, 267 rating, 268 duration), plus its details, such as a currency code or a date pattern. A formula cell also keeps its last result as a value. *Likely* ([0031](../experiments/0031-cell-kinds.md))
+The format list's entries give the kind of format in field 1 (256 number, 257 currency, 258 percent, 259 scientific, 260 text, 261 date, 262 fraction, 263 checkbox, 267 rating, 268 duration), plus its details, such as a currency code or a date pattern. A formula cell also keeps its last result as a value, as a cell of the result's type: a date, or text through the string table ([0108](../experiments/0108-today.md), [0110](../experiments/0110-text-result.md)). A negative decimal128 has its sign bit set ([0112](../experiments/0112-unary-minus.md)). *Likely* ([0031](../experiments/0031-cell-kinds.md))
 
 A formula's nodes, in postfix order (*likely*, [0031](../experiments/0031-cell-kinds.md), [0035](../experiments/0035-formula-references.md)):
 
 | Node type | Meaning | Fields |
 | --- | --- | --- |
-| 36 | Cell reference | 26 column, 27 row, and for another table 28.1: its UUID as four little-endian 32-bit words ([0065](../experiments/0065-cross-table-reference.md)). In each, field 1 is the value and field 2 is 1 for an absolute reference. A relative value is the zigzag-encoded offset from the formula's own cell; an absolute one is the zigzag-encoded index. |
+| 36 | Cell reference | 26 column, 27 row (absent for a whole column, [0105](../experiments/0105-whole-column.md)), and for another table, on any sheet, 28.1: its UUID as four little-endian 32-bit words ([0065](../experiments/0065-cross-table-reference.md), [0107](../experiments/0107-other-sheet.md)). Column and row each have their own absolute flag ([0106](../experiments/0106-mixed-references.md)). In each, field 1 is the value and field 2 is 1 for an absolute reference. A relative value is the zigzag-encoded offset from the formula's own cell; an absolute one is the zigzag-encoded index. |
 | 67 | Range | 40.1 first and last column, 40.2 first and last row, as signed offsets from the formula's cell (not zigzag) |
-| 17 | Number | 4: the value as a double |
+| 17 | Number | 4: the value as a double; 42 and 43: the same value as the low and high 64 bits of a decimal128 ([0104](../experiments/0104-nested-functions.md)) |
+| 19 | Text literal | 6: the text ([0109](../experiments/0109-string-literal.md)) |
+| 13, 15 | Unary minus, percent (both after their operand) ([0111](../experiments/0111-percent-literal.md), [0112](../experiments/0112-unary-minus.md)) | |
 | 1–6 | Operators: 1 `+`, 2 `-`, 3 `*`, 4 `/`, 5 `^`, 6 `&` ([0064](../experiments/0064-operators-and-functions.md)) | |
 | 7–12 | Comparisons: 7 `>`, 8 `>=`, 9 `<`, 10 `<=`, 11 `=`, 12 `<>` ([0066](../experiments/0066-comparisons-and-if.md)) | |
 | 34, 35 | Bracket an argument that is evaluated only when needed, as IF's second and third ([0066](../experiments/0066-comparisons-and-if.md)) | |
-| 16 | Function call | 2: the function, 3: number of arguments. Functions seen: 15 AVERAGE, 30 COUNT, 62 IF, 84 MAX, 88 MIN, 168 SUM, numbered in alphabetical order ([0064](../experiments/0064-operators-and-functions.md)). A SUM node also ends a merged range ([0044](../experiments/0044-merged-cells.md)). |
+| 16 | Function call | 2: the function, 3: number of arguments. Functions seen: 15 AVERAGE, 30 COUNT, 62 IF, 77 LEN, 84 MAX, 88 MIN, 126 ROUND, 154 TODAY, 168 SUM ([0103](../experiments/0103-round.md), [0108](../experiments/0108-today.md), [0109](../experiments/0109-string-literal.md)), numbered in alphabetical order ([0064](../experiments/0064-operators-and-functions.md)). A SUM node also ends a merged range ([0044](../experiments/0044-merged-cells.md)). |
 
 Merged cells are recorded in the table model's field 47.2, as ranges in this node form, not in the cells. A merged cell keeps its value in its top-left cell. *Likely* ([0044](../experiments/0044-merged-cells.md))
 
