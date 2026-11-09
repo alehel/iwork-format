@@ -1,0 +1,15 @@
+-- Experiment 0067: save a Keynote presentation whose first slide has a vertical bar chart.
+-- Usage: osascript recipes/0067-keynote-chart.applescript /absolute/path/doc.key
+-- Rows "r1" and "r2", columns "a", "b" and "c"; data {1, 2, 3} and {4, 5, 6}.
+-- The folder must exist. Keynote opens while the recipe runs.
+
+on run argv
+	if (count of argv) is not 1 then error "usage: osascript 0067-keynote-chart.applescript /absolute/path/doc.key"
+	set outFile to POSIX file (item 1 of argv)
+	tell application "Keynote"
+		set theDoc to make new document
+		add chart slide 1 of theDoc row names {"r1", "r2"} column names {"a", "b", "c"} data {{1, 2, 3}, {4, 5, 6}} type vertical_bar_2d group by chart row
+		save theDoc in outFile
+		close theDoc saving no
+	end tell
+end run

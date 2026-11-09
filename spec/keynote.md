@@ -21,3 +21,7 @@ A new presentation has the seven `.iwa` parts that Pages documents have, without
 | 2001 | The shape's text, as in [text.md](text.md) | `Slide-N.iwa` |
 
 *Likely* ([0025](../experiments/0025-keynote-title.md), [0027](../experiments/0027-document-roots.md))
+
+## Charts
+
+A chart is a drawable of type 5021 on the slide. Its field 10000.7 holds its data: row names in 7.1, column names in 7.2, and one 7.3 per row listing its values as doubles. *Likely* ([0067](../experiments/0067-chart.md))
