@@ -6,10 +6,10 @@ Pages, Keynote and Numbers are trademarks of Apple Inc. This project isn't affil
 
 ## Status
 
-Early. Forty-seven [experiments](experiments/) have been run, all with the 15.4 apps on macOS 26.5.2. Each layer's status is in [`spec/README.md`](spec/README.md). In short:
+Early. Forty-eight [experiments](experiments/) have been run, all with the 15.4 apps on macOS 26.5.2. Each layer's status is in [`spec/README.md`](spec/README.md). In short:
 
 - **Container** ([`spec/container.md`](spec/container.md)): how the parts are compressed and split into records is *confirmed*, and so is the fact that record headers list references. That every object can be reached from three roots through those references is *likely*.
-- **Text** ([`spec/text.md`](spec/text.md)): where the body text lives, its encoding (UTF-8, with positions in UTF-16 units), paragraph breaks, and the run tables that attach styles to ranges are *confirmed*. So are the language and autocorrection runs that typing adds. Line, page and section breaks, and footnotes, are *likely*.
+- **Text** ([`spec/text.md`](spec/text.md)): where the body text lives, its encoding (UTF-8, with positions in UTF-16 units), paragraph breaks, and the run tables that attach styles to ranges are *confirmed*. So are the language and autocorrection runs that typing adds. Line, page and section breaks, footnotes and page number fields are *likely*.
 - **Styles**: character and paragraph styles are partly mapped. Bold, italic, size, font, colour, underline, strikethrough and alignment are *likely*. So is how character and paragraph styles and their parents combine, tested against Pages' own reading of each word.
 - **Lists and page layout**: list styles, list levels, where header and footer text is stored, and some section and document switches are *likely*.
 - **Tables**: how number and text cells are stored is *confirmed*, and Numbers stores them identically. How a table is anchored in the text, and where its size and name are, is *likely*. How dates, currency, percentages, checkboxes, ratings and formulas are stored, and how cells point at their formats, is *likely*. So are how formulas refer to cells and ranges, how a cell's text style and background are attached, where merged cells are recorded, and where row heights and column widths are kept.

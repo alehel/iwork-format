@@ -60,7 +60,7 @@ The text layer holds for every document saved so far: a reader that knows only t
 
 Field 1 of a text record doesn't mean the same thing in every app. In Pages, 0 is the body and 1 a header or footer. In Numbers, a sheet owns a text record with field 1 = 1 whose only character is U+FFFC. Keynote leaves field 1 out. `iwork-probe text` therefore reports field 1's value rather than naming it.
 
-What the Numbers sheet's text is for isn't clear. Its single U+FFFC has a field-9 entry like an anchored object's, but the entry points at a type-2043 record holding the word `decimal`, not at the table. So field 9 entries can point at more than one kind of record. The table is not anchored through this text.
+*Note after [0048](0048-page-number.md):* the type-2043 record is a page number field, with `decimal` as its number format. So the sheet's text holds a page number. What the Numbers sheet's text is for isn't clear. Its single U+FFFC has a field-9 entry like an anchored object's, but the entry points at a type-2043 record holding the word `decimal`, not at the table. So field 9 entries can point at more than one kind of record. The table is not anchored through this text.
 
 A Keynote theme's placeholder texts are stored in the template slides. Texts can contain U+00AD, so a reader that displays text should treat it as a soft hyphen.
 
