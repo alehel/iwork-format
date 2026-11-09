@@ -8,7 +8,7 @@ The spec is written in layers, each built on the one before. A layer's file is a
 | 2. Text | The document's text, paragraphs and breaks | [Started](text.md): where the body text is, confirmed |
 | 3. Styles | Paragraph and character styles, fonts, colours | First findings in [text.md](text.md#styles), from [0004](../experiments/0004-larger-word.md) and [0007](../experiments/0007-bold-and-italic.md) |
 | 4. Objects | Lists, tables and inline images | Not started |
-| 5. Page layout | Sections, headers, footers, page setup | Not started |
+| 5. Page layout | Sections, headers, footers, page setup | First findings in [text.md](text.md#headers-and-footers), from [0016](../experiments/0016-header-and-footer.md) |
 
 Keynote and Numbers layers can start once layer 1 is confirmed.
 

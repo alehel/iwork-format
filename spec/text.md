@@ -12,7 +12,11 @@ The body text is in `Index/Document.iwa`, in field 3 of a record of type 2001. *
 - It has no terminator or extra length prefix: the field's own length is the text's length in bytes.
 - An empty body has no field 3 at all.
 
-`Document.iwa` holds more than one type-2001 record: 19 in a new document. The body's record has field 1 set to 0, and none of the others has had a field 3 so far. *Likely* ([0003](../experiments/0003-non-ascii-word.md)). The other 18 use the paragraph style named for headers and footers, so they are probably the (empty) header and footer text. *Likely* ([0004](../experiments/0004-larger-word.md))
+`Document.iwa` holds more than one type-2001 record: 19 in a new document. The body's record has field 1 set to 0, and the other 18 have field 1 set to 1. *Likely* ([0003](../experiments/0003-non-ascii-word.md)). The other 18 hold header and footer text, and use the paragraph style named for headers and footers. *Likely* ([0004](../experiments/0004-larger-word.md), [0016](../experiments/0016-header-and-footer.md))
+
+## Headers and footers
+
+Header and footer text is in type-2001 records, like the body. They are reached through the body's section runs (field 17), which point at a section (type 10011). Fields 23, 24 and 25 of a section each name a set of headers and footers (type 10143). In a set, field 1 lists the header and field 2 the footer, each as three text records in the order left, centre, right. A plain document uses the set in field 25. *Likely* ([0016](../experiments/0016-header-and-footer.md)). What the sets in fields 23 and 24 are for is *unknown*, probably a different first page and left and right pages.
 
 ## Paragraphs
 
@@ -35,7 +39,7 @@ Several fields of a type-2001 record are run tables: lists of entries that apply
 | 7 | List styles (type 2023). A list is a list style on a range of paragraphs; the marker (a dash, a number) is not in the text. | *Likely* ([0002](../experiments/0002-one-word.md), [0004](../experiments/0004-larger-word.md), [0014](../experiments/0014-lists.md)) |
 | 8 | Character styles (type 2021). Absent when no text has one. | *Likely* ([0004](../experiments/0004-larger-word.md)) |
 | 12 | Objects of type 2024 | *Unknown* |
-| 17 | Objects of type 10011 in `Document.iwa` | *Unknown* |
+| 17 | Sections (type 10011 in `Document.iwa`), which hold among other things the headers and footers | *Likely* ([0016](../experiments/0016-header-and-footer.md)) |
 | 19 | Languages: field 2 is a language code as text, such as `nb`. Only text typed or rewritten in Pages has one; text set through AppleScript has no field 19, or an entry without field 2. | *Confirmed* ([0006](../experiments/0006-typing-in-pages.md), [0009](../experiments/0009-autocorrection.md)) |
 | 20 | Autocorrections: each range Pages autocorrected has a UUID as text in field 2, and an entry without one closes it. Absent when nothing was corrected. | *Confirmed* ([0006](../experiments/0006-typing-in-pages.md), [0009](../experiments/0009-autocorrection.md)) |
 
