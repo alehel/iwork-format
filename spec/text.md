@@ -193,7 +193,7 @@ A paragraph style also has a field 12 for paragraph properties. *Likely* ([0008]
 | 19 | Right indent | float, in points ([0253](../experiments/0253-indents.md)) |
 | 20 | Space after the paragraph | float, in points ([0256](../experiments/0256-paragraph-spacing.md)) |
 | 21 | Space before the paragraph | float, in points ([0256](../experiments/0256-paragraph-spacing.md)) |
-| 25 | Tab stops | message: one 25.1 per stop, with its position in points in field 1 ([0255](../experiments/0255-tab-stop.md)) |
+| 25 | Tab stops | message: one 25.1 per stop, with its position in points in field 1, its alignment in field 2 (absent for left, 2 right) and its leader character in field 3 ([0255](../experiments/0255-tab-stop.md), [0277](../experiments/0277-right-tab.md)) |
 | 32 | Border | message: a stroke in the layout of a shape's (colour, width, pattern); property 45 gives its edges as bits (1 top, 2 bottom, 15 all), and property 15 an older single value (1 top, 2 bottom, 4 all) ([0262](../experiments/0262-paragraph-border.md), [0273](../experiments/0273-border-edges.md)) |
 
 Values 0 to 3 are *confirmed* ([0010](../experiments/0010-alignment.md), [0011](../experiments/0011-left-alignment.md)); 4 as natural alignment is *likely*.
