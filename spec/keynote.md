@@ -6,7 +6,7 @@ Observed with Keynote 15.4 on macOS 26.5.2.
 
 ## Parts
 
-A new presentation has the seven `.iwa` parts that Pages documents have, without numbers in their names, plus one `Index/Slide-N.iwa` per slide and one `Index/TemplateSlide-N.iwa` per template slide of the theme. N is the ID of the slide record inside. The theme's images, including slide thumbnails, are stored under `Data/`. *Likely* ([0024](../experiments/0024-keynote-and-numbers.md), [0027](../experiments/0027-document-roots.md))
+A new presentation has the seven `.iwa` parts that Pages documents have, without numbers in their names, plus one `Index/Slide-N.iwa` per slide and one `Index/TemplateSlide-N.iwa` per template slide of the theme. N is usually the ID of the slide record inside, but a part may be named `Slide.iwa` or end in `-2`, and names move between slides when slides are deleted; find slides by their IDs ([0161](../experiments/0161-deleted-slide.md), [0162](../experiments/0162-ten-slides.md)). The theme's images, including slide thumbnails, are stored under `Data/`. *Likely* ([0024](../experiments/0024-keynote-and-numbers.md), [0027](../experiments/0027-document-roots.md))
 
 ## From the root to a slide's text
 
@@ -22,9 +22,13 @@ A new presentation has the seven `.iwa` parts that Pages documents have, without
 
 *Likely* ([0025](../experiments/0025-keynote-title.md), [0027](../experiments/0027-document-roots.md))
 
+## Slides
+
+Show order is the order of field 3.2 alone: moving a slide changes only that list ([0160](../experiments/0160-moved-slide.md)). A duplicated slide is a full copy with new IDs ([0159](../experiments/0159-duplicated-slide.md)), and a deleted slide leaves nothing behind ([0161](../experiments/0161-deleted-slide.md)). A template slide's field 10 is its layout name in the app's language ([0165](../experiments/0165-slide-layouts.md)). An empty title placeholder is an empty text record; its prompt is only in the layout ([0168](../experiments/0168-untouched-title.md)). Line feeds in titles and presenter notes are paragraph breaks ([0163](../experiments/0163-multi-paragraph-notes.md), [0164](../experiments/0164-two-line-title.md)). *Likely*
+
 ## Slide contents
 
-Shapes added to a slide (text boxes) are type 2011, images type 3005 and tables types 6000 and 6001, as in Pages and Numbers. Each drawable's field 1.2 names the slide it is on. Placeholders from the layout, such as the title, are type 7. *Likely* ([0068](../experiments/0068-keynote-text-box.md), [0069](../experiments/0069-keynote-image.md), [0073](../experiments/0073-keynote-table.md))
+Shapes added to a slide (text boxes) are type 2011, images type 3005 and tables types 6000 and 6001, as in Pages and Numbers. Each drawable's field 1.2 names the slide it is on. Placeholders from the layout, such as the title, are type 7. Lines and shapes have the same geometry and style identifiers as in Pages ([0166](../experiments/0166-keynote-line.md), [0167](../experiments/0167-keynote-shape-text.md)). *Likely* ([0068](../experiments/0068-keynote-text-box.md), [0069](../experiments/0069-keynote-image.md), [0073](../experiments/0073-keynote-table.md))
 
 A slide's transition is in its field 4.2.8: the effect's name in field 2, its duration in seconds in field 3, the delay before an automatic transition in field 5 (default 0.5) and whether it starts automatically in field 6. *Likely* ([0071](../experiments/0071-transition.md), [0094](../experiments/0094-automatic-transition.md))
 
