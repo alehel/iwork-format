@@ -26,7 +26,10 @@ Pages keeps its page setup in the document root (object 1, type 10000). All leng
 | 32, 33, 34, 35 | Left, right, top and bottom margins |
 | 36, 37 | Header and footer distance from the page edge |
 | 43 | Printer name |
+| 42 | Orientation: 0 portrait, 1 landscape; 30 and 31 are already swapped ([0155](../experiments/0155-landscape-template.md)) |
 | 44 | Paper name, such as `iso-a4` |
+| 15.9 | The identifier of the template the document came from, such as `Application/Blank/ISO` ([0155](../experiments/0155-landscape-template.md)) |
+| 48 | Only in page-layout documents: names a page template (type 10017). Their body text record is empty. ([0156](../experiments/0156-page-layout-template.md)) |
 
 ## Headers and footers
 
@@ -88,7 +91,7 @@ A formula's nodes, in postfix order (*likely*, [0031](../experiments/0031-cell-k
 
 Merged cells are recorded in the table model's field 47.2, as ranges in this node form, not in the cells. A merged cell keeps its value in its top-left cell. *Likely* ([0044](../experiments/0044-merged-cells.md))
 
-An image placed on the page, rather than in the text, is a record of type 3005 in `Document.iwa`, listed next to the body text by page-level records (types 10015 and 10010). It holds its position and size in points in field 1.1, like a table's drawable, and the data ID of its file in field 11.1 (see [container.md](container.md#data-files)). *Likely* ([0023](../experiments/0023-an-image.md)). Field 9 is its natural size and fields 1.1.2 and 4 the size it is drawn at ([0055](../experiments/0055-image-size.md)). Field 3 names its image style (type 3016), whose field 11.2 is the opacity from 0 to 1 ([0057](../experiments/0057-image-opacity.md)) and 11.4 the reflection, with its strength in 11.4.1 ([0099](../experiments/0099-image-reflection.md)).
+An image placed on the page, rather than in the text, is a record of type 3005 in `Document.iwa`, listed next to the body text by page-level records (types 10015 and 10010). It holds its position and size in points in field 1.1, like a table's drawable, and the data ID of its file in field 11.1, with a reduced copy for a large image in field 12 ([0148](../experiments/0148-large-image.md)) (see [container.md](container.md#data-files)). *Likely* ([0023](../experiments/0023-an-image.md)). Field 9 is its natural size and fields 1.1.2 and 4 the size it is drawn at ([0055](../experiments/0055-image-size.md)). Field 3 names its image style (type 3016), whose field 11.2 is the opacity from 0 to 1 ([0057](../experiments/0057-image-opacity.md)) and 11.4 the reflection, with its strength in 11.4.1 ([0099](../experiments/0099-image-reflection.md)).
 
 A text box, a shape and a line are all shapes of type 2011, listed by the same page-level record. A shape's position and size are in field 1.1, its outline path in 1.3 and its style (type 2025, such as `textbox-0-shapestyle`, `shape-0-shapestyle` or `line-0-shapestyle`) in 1.2. Fields 2 and 4 name its text, a type-2001 record with no field 1. *Likely* ([0049](../experiments/0049-text-box.md), [0050](../experiments/0050-shape.md), [0051](../experiments/0051-line.md)) A shape style keeps its properties one level deeper than text styles, in field 1.11; field 1.11.1.1 is the fill colour, in the same colour layout as text colour, and 1.11.3 the opacity. *Likely* ([0077](../experiments/0077-shape-fill.md), [0098](../experiments/0098-keynote-shape-opacity.md))
 
@@ -110,7 +113,9 @@ A section break (Insert → Section Break) is the character U+0004. It starts a 
 
 ## Positions in the text
 
-Positions in the text count UTF-16 code units, not UTF-8 bytes or code points. So a character outside the Basic Multilingual Plane counts as 2, and a reader has to convert positions before using them on the UTF-8 text. *Confirmed* ([0003](../experiments/0003-non-ascii-word.md), [0004](../experiments/0004-larger-word.md))
+Positions in the text count UTF-16 code units, not UTF-8 bytes or code points. So a character outside the Basic Multilingual Plane counts as 2, and an emoji joined from several (such as 👨‍👩‍👧) counts every unit, joiners included. A reader has to convert positions before using them on the UTF-8 text. *Confirmed* ([0003](../experiments/0003-non-ascii-word.md), [0004](../experiments/0004-larger-word.md), [0149](../experiments/0149-family-emoji.md))
+
+No writing direction is stored for right-to-left text set through AppleScript; lay text out by the Unicode bidirectional rules. *Likely* ([0150](../experiments/0150-arabic-text.md))
 
 ## Runs
 
@@ -118,11 +123,12 @@ Several fields of a type-2001 record are run tables: lists of entries that apply
 
 | Field | Runs of | Confidence |
 | --- | --- | --- |
-| 5 | Paragraph styles (type 2022). One entry per paragraph, at its first character; the break before it belongs to the previous paragraph. An entry names a style wherever it changes ([0034](../experiments/0034-mixed-paragraph-styles.md)); one with no field 2 seems to keep the previous paragraph's style. | *Likely* ([0002](../experiments/0002-one-word.md), [0004](../experiments/0004-larger-word.md), [0005](../experiments/0005-paragraphs.md), [0006](../experiments/0006-typing-in-pages.md)); the meaning of an entry with no field 2 is *unknown* |
+| 5 | Paragraph styles (type 2022). One entry per paragraph, at its first character, even when the style doesn't change ([0151](../experiments/0151-thousand-paragraphs.md)); the break before it belongs to the previous paragraph. An entry names a style wherever it changes ([0034](../experiments/0034-mixed-paragraph-styles.md)); one with no field 2 seems to keep the previous paragraph's style. | *Likely* ([0002](../experiments/0002-one-word.md), [0004](../experiments/0004-larger-word.md), [0005](../experiments/0005-paragraphs.md), [0006](../experiments/0006-typing-in-pages.md)); the meaning of an entry with no field 2 is *unknown* |
 | 6 | List levels. Entries start at paragraph boundaries; field 2 is a number, the level (0 for the first), not an object. Field 3 has always been 0. | *Likely* ([0015](../experiments/0015-list-levels.md)) |
 | 7 | List styles (type 2023). A list is a list style on a range of paragraphs; the marker (a dash, a number) is not in the text. | *Likely* ([0002](../experiments/0002-one-word.md), [0004](../experiments/0004-larger-word.md), [0014](../experiments/0014-lists.md)) |
 | 8 | Character styles (type 2021). Absent when no text has one. | *Likely* ([0004](../experiments/0004-larger-word.md)) |
 | 9 | Attachments: each entry sits at a U+FFFC character in the text. In Pages it points at a type-2003 record, which points at the attached object (for a table, its drawable of type 6000). A page number field points directly at a type-2043 record, whose field 4 is the number format, such as `decimal`. A Numbers sheet's text holds one. | *Likely* ([0020](../experiments/0020-a-table.md), [0032](../experiments/0032-reading-all-text.md), [0048](../experiments/0048-page-number.md)) |
+| 11 | Smart fields over ranges: placeholder text (type 2031), a date (type 2034, with its format and locale in fields 2 and 3) and a merge field (type 2036, such as the author's name). An entry with no field 2 ends a range, and the text inside is what the field shows now. | *Likely* ([0158](../experiments/0158-essay-template.md)) |
 | 12 | Objects of type 2024 | *Unknown* |
 | 16 | Footnotes: an entry at each U+000E footnote mark points at a type-2008 record, whose field 2 names the footnote's text (a type-2001 record with field 1 = 2) | *Likely* ([0041](../experiments/0041-footnote.md)) |
 | 17 | Sections (type 10011 in `Document.iwa`), which hold among other things the headers and footers | *Likely* ([0016](../experiments/0016-header-and-footer.md)) |
@@ -135,7 +141,9 @@ Field 2 of the record names the type-401 object that holds the styles, which is 
 
 Changing the size of part of the text, or making it bold or italic, creates a new, unnamed character style (type 2021) in `DocumentStylesheet.iwa`. It inherits (field 1.3) from a character style whose identifier is `character-style-null`. *Confirmed* ([0004](../experiments/0004-larger-word.md), [0007](../experiments/0007-bold-and-italic.md), [0008](../experiments/0008-runs-and-shared-styles.md))
 
-Formatting a whole paragraph instead creates an unnamed paragraph style (type 2022) that inherits from the paragraph's style and carries the change. *Likely* ([0008](../experiments/0008-runs-and-shared-styles.md))
+Formatting a whole paragraph instead creates an unnamed paragraph style (type 2022) that inherits from the paragraph's style and carries the change. *Likely* ([0008](../experiments/0008-runs-and-shared-styles.md), [0149](../experiments/0149-family-emoji.md))
+
+Several properties set on one range go into one style ([0152](../experiments/0152-size-and-colour.md)). Setting a property to the value it already has makes no style ([0153](../experiments/0153-same-size-again.md)), and styles nothing uses are dropped on save ([0154](../experiments/0154-replaced-text.md)). A template's styles are copied into the document with their own values, such as white text in the black template ([0157](../experiments/0157-black-template.md)). *Likely*
 
 Field 11 of a character style or a paragraph style holds the character properties it sets. A property that is left out is inherited, and one set to 0 is turned off. *Likely* ([0004](../experiments/0004-larger-word.md), [0007](../experiments/0007-bold-and-italic.md), [0008](../experiments/0008-runs-and-shared-styles.md))
 
@@ -161,7 +169,7 @@ Values 0 to 3 are *confirmed* ([0010](../experiments/0010-alignment.md), [0011](
 
 Named styles such as Body set every property; unnamed ones set only what differs from their parent (field 1.3). *Likely* ([0010](../experiments/0010-alignment.md))
 
-Field 10 has equalled the number of properties set in every unnamed style so far, and is 57 in the named paragraph styles, which set 59. It doesn't count edits. *Unknown* ([0010](../experiments/0010-alignment.md), [0011](../experiments/0011-left-alignment.md))
+Field 10 has equalled the number of properties set in every unnamed style so far, and is 57 in the named paragraph styles, which set 59. It doesn't count edits. *Unknown* ([0010](../experiments/0010-alignment.md), [0011](../experiments/0011-left-alignment.md), [0152](../experiments/0152-size-and-colour.md))
 
 A list style (type 2023) stores most properties as nine repeated values, one per list level. Field 11 is the kind of marker (0 none, 2 a text character, 3 a number), field 16 the marker text for kind 2, and field 13 an indent in points that grows by a fixed step per level. *Likely* ([0014](../experiments/0014-lists.md))
 
