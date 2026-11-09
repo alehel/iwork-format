@@ -54,7 +54,7 @@ A table's cells are stored by row in its tile (type 6002, `Index/Tables/Tile.iwa
 
 When a row has several cells, it is field 5.7, not 5.4, that holds their byte offsets. *Likely* ([0031](../experiments/0031-cell-kinds.md))
 
-A cell's bytes 8–11 are little-endian flags saying which values and keys follow, in order of their bits. Further type bytes are 5 (date), 6 (boolean) and 10 (currency). *Likely* ([0031](../experiments/0031-cell-kinds.md))
+A cell's bytes 8–11 are little-endian flags saying which values and keys follow, in order of their bits. Further type bytes are 5 (date), 6 (boolean), 8 (a formula whose result is an error, stored with no value, [0078](../experiments/0078-formula-error.md)) and 10 (currency). *Likely* ([0031](../experiments/0031-cell-kinds.md))
 
 | Flag bit | Followed by |
 | --- | --- |
