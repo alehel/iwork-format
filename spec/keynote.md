@@ -13,14 +13,22 @@ A new presentation has the seven `.iwa` parts that Pages documents have, without
 | Type | Holds | Part |
 | --- | --- | --- |
 | 1 | The document root, with the shared document-properties block in field 3 (see [container.md](container.md#following-references)) | `Document.iwa` |
-| 2 | The presentation: field 3.2 lists the slide nodes in show order, field 4 is the slide size in points (such as 1920 × 1080), field 5 names the stylesheet ([0038](../experiments/0038-second-slide.md)) | `Document.iwa` |
-| 4 | A slide node: field 2 names the slide; fields 10 (thumbnail size) and 16.1 (data ID of the thumbnail image) are optional | `Document.iwa` |
+| 2 | The presentation: field 3.2 lists the slide nodes in show order, field 4 is the slide size in points (such as 1920 × 1080, *confirmed* by [0075](../experiments/0075-slide-size.md)), field 5 names the stylesheet ([0038](../experiments/0038-second-slide.md)) | `Document.iwa` |
+| 4 | A slide node: field 2 names the slide; fields 10 (thumbnail size) and 16.1 (data ID of the thumbnail image) are optional; field 4 is 1 for a skipped slide ([0070](../experiments/0070-skipped-slide.md)) and field 18 is 1 when the slide's number is shown ([0074](../experiments/0074-slide-numbers.md)) | `Document.iwa` |
 | 5 | A slide; field 17 names its layout, a template slide that is itself a type-5 slide named in its field 10 ([0046](../experiments/0046-slide-layout.md)); field 27 names its presenter notes (type 15) | `Slide-N.iwa`, `Slide.iwa`, or `TemplateSlide-N.iwa` for layouts |
 | 15 | Presenter notes: field 1 names the notes text, a type-2001 record with field 1 = 4. Every slide has one, empty or not ([0039](../experiments/0039-presenter-notes.md)). | `Slide-N.iwa` |
 | 7 | A shape on the slide, such as the title box; fields 2 and 4 name its text record | `Slide-N.iwa` |
 | 2001 | The shape's text, as in [text.md](text.md) | `Slide-N.iwa` |
 
 *Likely* ([0025](../experiments/0025-keynote-title.md), [0027](../experiments/0027-document-roots.md))
+
+## Slide contents
+
+Shapes added to a slide (text boxes) are type 2011, images type 3005 and tables types 6000 and 6001, as in Pages and Numbers. Each drawable's field 1.2 names the slide it is on. Placeholders from the layout, such as the title, are type 7. *Likely* ([0068](../experiments/0068-keynote-text-box.md), [0069](../experiments/0069-keynote-image.md), [0073](../experiments/0073-keynote-table.md))
+
+A slide's transition is in its field 4.2.8: the effect's name in field 2 (such as `none` or `apple:dissolve`) and its duration in seconds in field 3. *Likely* ([0071](../experiments/0071-transition.md))
+
+Bulleted body text uses the same text records and list styles as Pages; the theme's default body list style is a bullet (`•` in field 16). *Likely* ([0072](../experiments/0072-keynote-bullets.md))
 
 ## Charts
 
