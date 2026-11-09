@@ -36,6 +36,8 @@ Effect names are Keynote's own identifiers: `none`, `apple:dissolve` (AppleScrip
 
 Sounds and movies are type 3007. Field 14 names the media file by data ID, field 15 a poster image for a movie, field 7 the volume (0–1) and field 24 the repetition (0 none, 1 loop). Field 23 is 1 when the media has pictures and field 9 is 1 when it has only sound; fields 20 and 21 are a movie's natural size. Field 29 describes the first track: its kind (`soun` or `vide`) and time scale. A sound's drawable has a size of 0 × 0. *Likely* ([0185](../experiments/0185-keynote-audio.md)–[0187](../experiments/0187-keynote-movie.md)). Pages and Numbers store media in the same record: that sounds and movies are type 3007 with their file in field 14 is *confirmed* ([0188](../experiments/0188-media-in-pages-and-numbers.md)).
 
+A build is a type-8 record listed in slide field 2: field 1 names the object, field 2 the delivery (such as `All at Once`), and field 4.18 the effect, with `In` for a build-in in 4.18.1, an identifier such as `apple:dissolve character` in 4.18.2 and the duration in 4.18.3. Slide field 43 lists type-153 records, probably the build order. *Likely* ([0257](../experiments/0257-build.md))
+
 Bulleted body text uses the same text records and list styles as Pages; the theme's default body list style is a bullet (`•` in field 16). *Likely* ([0072](../experiments/0072-keynote-bullets.md))
 
 ## Charts
