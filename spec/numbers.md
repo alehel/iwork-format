@@ -27,3 +27,7 @@ Grouping rows by a column's values (Organise → Add Category) moves no cells. T
 ## Pivot tables
 
 A pivot table is an ordinary table model whose cells hold the current summary, so it reads like any table. Numbers also adds a hidden table model with a copy of the source data, named after the source with ` as Pivot Source Table`, and new record types (6369, 6370, 6374, 6382). Type 6370 names the source table in field 12 and holds the last update time in field 9. *Likely* ([0227](../experiments/0227-pivot-table.md))
+
+## Filters
+
+A filter doesn't change any cells. Its rule is a formula in the node form of cell formulas, comparing the tested cell with a value (`cell > 2` is a reference, the number 2 and comparison node 7), held in type-6220 records. The rows the filter hides are listed by their IDs in table model field 70.2.3, each with field 3 set to 1. *Likely* ([0258](../experiments/0258-filter.md))
