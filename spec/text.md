@@ -68,7 +68,7 @@ A cell's bytes 8–11 are little-endian flags saying which values and keys follo
 | 0x0008 | A string key ([0021](../experiments/0021-table-cells.md)) |
 | 0x0020 | A key into the style list (list type 4) naming a cell style: type 6004, background colour in field 11.1.1, text wrap in 11.3 (0 off) ([0043](../experiments/0043-cell-styles.md), [0062](../experiments/0062-text-wrap.md)) |
 | 0x0040 | A key into the style list naming a text style: an unnamed paragraph style (type 2022) with the cell text's character properties and its alignment in 12.1 ([0043](../experiments/0043-cell-styles.md), [0061](../experiments/0061-cell-alignment.md)) |
-| 0x0400 | A key into the cell-control list (list type 12), such as a checkbox or a rating's range ([0036](../experiments/0036-more-cell-formats.md)) |
+| 0x0400 | A key into the cell-control list (list type 12). Its entry's field 12.1 is the control (4 stepper, 5 slider, 6 rating, 8 checkbox) and 12.3, 12.4 and 12.5 the minimum, maximum and step ([0036](../experiments/0036-more-cell-formats.md), [0169](../experiments/0169-unchecked-checkbox.md)–[0172](../experiments/0172-stepper.md)) |
 | 0x1000 | A key into a list not identified yet (*unknown*) |
 | 0x2000, 0x4000, 0x8000 | A key into the format list (model field 4.22), for a number, currency or date format |
 | 0x10000, 0x20000, 0x40000 | A key into the format list, for a duration, text or boolean format ([0036](../experiments/0036-more-cell-formats.md)) |
