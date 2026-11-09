@@ -49,7 +49,7 @@ A range in a function's argument (`B2:C3`) is a node of type 67. Its field 40.1 
 Operators and functions are nodes in the postfix list:
 
 - type 1 is addition, and type 3 is multiplication ([0031](0031-cell-kinds.md))
-- type 16 is a function call: field 2 is the function, 168 for SUM, and field 3 the number of arguments
+- type 16 is a function call: field 2 is the function, 168 for SUM, and field 3 the number of arguments. *Note after [0044](0044-merged-cells.md):* the same node `16, 168, 1` also ends the expression for a merged range. So 168 may not mean SUM specifically.
 - type 17 is a number ([0031](0031-cell-kinds.md))
 
 ## Confidence
