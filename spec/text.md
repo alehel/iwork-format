@@ -16,7 +16,9 @@ The body text is in `Index/Document.iwa`, in field 3 of a record of type 2001. *
 
 ## Paragraphs
 
-A paragraph break is a character in the text. Pages has stored both U+000D (carriage return) and U+000A (line feed) as given, and each starts a new paragraph. The last paragraph has no break after it. *Likely* ([0005](../experiments/0005-paragraphs.md)). Which character Pages writes when a user presses Return is *unknown*.
+A paragraph break is a character in the text. Pressing Return in Pages writes U+000A (line feed). A U+000D (carriage return) set through AppleScript is kept as given and also starts a paragraph. The last paragraph has no break after it. *Confirmed* for U+000A ([0005](../experiments/0005-paragraphs.md), [0006](../experiments/0006-typing-in-pages.md)); *likely* for U+000D ([0005](../experiments/0005-paragraphs.md)).
+
+Pressing Shift-Return writes U+2028 (line separator), a line break that doesn't start a paragraph. *Likely* ([0006](../experiments/0006-typing-in-pages.md))
 
 ## Positions in the text
 
@@ -28,11 +30,13 @@ Several fields of a type-2001 record are run tables: lists of entries that apply
 
 | Field | Runs of | Confidence |
 | --- | --- | --- |
-| 5 | Paragraph styles (type 2022). One entry per paragraph, at its first character; the break before it belongs to the previous paragraph. An entry with no field 2 seems to keep the previous paragraph's style. | *Likely* ([0002](../experiments/0002-one-word.md), [0004](../experiments/0004-larger-word.md), [0005](../experiments/0005-paragraphs.md)); the meaning of an entry with no field 2 is *unknown* |
+| 5 | Paragraph styles (type 2022). One entry per paragraph, at its first character; the break before it belongs to the previous paragraph. An entry names a style where it changes; one with no field 2 seems to keep the previous paragraph's style. | *Likely* ([0002](../experiments/0002-one-word.md), [0004](../experiments/0004-larger-word.md), [0005](../experiments/0005-paragraphs.md), [0006](../experiments/0006-typing-in-pages.md)); the meaning of an entry with no field 2 is *unknown* |
 | 7 | List styles (type 2023) | *Likely* ([0002](../experiments/0002-one-word.md), [0004](../experiments/0004-larger-word.md)) |
 | 8 | Character styles (type 2021). Absent when no text has one. | *Likely* ([0004](../experiments/0004-larger-word.md)) |
 | 12 | Objects of type 2024 | *Unknown* |
 | 17 | Objects of type 10011 in `Document.iwa` | *Unknown* |
+| 19 | Languages: field 2 is a language code as text, such as `nb`. Present only in text typed in Pages. | *Likely* ([0006](../experiments/0006-typing-in-pages.md)) |
+| 20 | A UUID as text in field 2, on ranges that Pages autocorrected. Present only in text typed in Pages. | *Unknown* ([0006](../experiments/0006-typing-in-pages.md)) |
 
 Field 2 of the record names the type-401 object that holds the styles, which is probably the stylesheet. Fields 6, 14, 24 and 28 hold entries of zeros in every document so far. *Unknown*
 
