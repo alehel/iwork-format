@@ -6,7 +6,7 @@ Pages, Keynote and Numbers are trademarks of Apple Inc. This project isn't affil
 
 ## Status
 
-Early. Thirty-one [experiments](experiments/) have been run, all with the 15.4 apps on macOS 26.5.2. Each layer's status is in [`spec/README.md`](spec/README.md). In short:
+Early. Thirty-two [experiments](experiments/) have been run, all with the 15.4 apps on macOS 26.5.2. Each layer's status is in [`spec/README.md`](spec/README.md). In short:
 
 - **Container** ([`spec/container.md`](spec/container.md)): how the parts are compressed and split into records is *confirmed*, and so is the fact that record headers list references. That every object can be reached from three roots through those references is *likely*.
 - **Text** ([`spec/text.md`](spec/text.md)): where the body text lives, its encoding (UTF-8, with positions in UTF-16 units), paragraph breaks, and the run tables that attach styles to ranges are *confirmed*. So are the language and autocorrection runs that typing adds. Line and page breaks are *likely*.
@@ -60,6 +60,7 @@ cargo run --release -- list path/to/document.pages
 | `chunks <file> <part>` | Lists the Snappy-compressed chunks of an `.iwa` part |
 | `records <file> <part>` | Splits an `.iwa` part's decoded bytes into records and lists each payload's offset, length, ID, type and version |
 | `refs <file> <part>` | Lists the object IDs each record's header says it refers to |
+| `text <file>` | Prints the text of every text record (type 2001) in a document, in any of the three apps |
 
 Add `--decoded` to `hex` or `proto` to read an `.iwa` part's decoded bytes. The offsets `records` prints are offsets into those bytes, so `proto <file> <part> --decoded --offset <payload> --len <len>` shows one payload.
 

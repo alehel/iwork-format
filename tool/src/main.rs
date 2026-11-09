@@ -12,7 +12,7 @@ use std::io::{self, Write};
 use std::path::Path;
 use std::process::ExitCode;
 
-use iwork_probe::{hex, iwa, package::Package, proto};
+use iwork_probe::{hex, iwa, package::Package, proto, text};
 
 const USAGE: &str = "\
 usage:
@@ -22,6 +22,7 @@ usage:
   iwork-probe chunks <file> <part>
   iwork-probe records <file> <part>
   iwork-probe refs <file> <part>
+  iwork-probe text <file>
 
 <file> is a document: a ZIP file or a folder package.
 --decoded works on an .iwa part's decoded bytes instead of its stored ones; the offsets
@@ -102,6 +103,7 @@ fn run(raw: &[String]) -> Result<(), String> {
         ["chunks", file, part] => chunks(file, part)?,
         ["records", file, part] => records(file, part)?,
         ["refs", file, part] => refs(file, part)?,
+        ["text", file] => texts(file)?,
         _ => return Err(USAGE.to_string()),
     };
     let mut out = io::stdout().lock();
@@ -199,6 +201,33 @@ fn refs(file: &str, part: &str) -> Result<String, String> {
             let ids: Vec<String> = p.references.iter().map(u64::to_string).collect();
             let list = if ids.is_empty() { "-".to_string() } else { ids.join(" ") };
             out.push_str(&format!("{:>10} {type_number:>7}  {list}\n", r.id));
+        }
+    }
+    Ok(out)
+}
+
+/// Every text record in the document, part by part, with its kind and text.
+fn texts(file: &str) -> Result<String, String> {
+    let mut package = Package::open(Path::new(file)).map_err(|e| format!("{file}: {e}"))?;
+    let parts = package.parts().map_err(|e| format!("{file}: {e}"))?;
+    let mut out = String::new();
+    for part in parts.iter().filter(|p| p.name.ends_with(".iwa")) {
+        let bytes = package.read(&part.name).map_err(|e| format!("{file}: {e}"))?;
+        let decoded = decode(&part.name, &bytes)?;
+        let records = iwa::records(&decoded.bytes).map_err(|e| format!("{}: {e}", part.name))?;
+        for t in text::texts(&decoded.bytes, &records) {
+            if t.text.is_empty() {
+                continue;
+            }
+            // Field 1's meaning is Pages': 0 for the body, 1 for headers and footers. Numbers
+            // also uses 1 for a sheet's text, so the label only reports the value.
+            let kind = match t.kind {
+                text::Kind::Body => "field 1 = 0".to_string(),
+                text::Kind::HeaderOrFooter => "field 1 = 1".to_string(),
+                text::Kind::Other(n) => format!("field 1 = {n}"),
+                text::Kind::Unmarked => "no field 1".to_string(),
+            };
+            out.push_str(&format!("== {} object {} ({kind})\n{}\n", part.name, t.id, text::readable(&t.text)));
         }
     }
     Ok(out)

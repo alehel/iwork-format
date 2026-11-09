@@ -19,3 +19,4 @@ pub mod iwa;
 pub mod package;
 pub mod proto;
 pub mod snappy;
+pub mod text;
