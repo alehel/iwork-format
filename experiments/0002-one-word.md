@@ -34,7 +34,7 @@ Sizes that changed from the empty document: `Document.iwa` (7,683 → 7,690 byte
 
 ### Where the word is
 
-One record carries the text: `Document.iwa`, object 1732539, type 2001. In the empty document its payload is 97 bytes. With `hello` it is 104 bytes, and the only difference is one new field:
+One record carries the text: `Document.iwa`, object 1732539, type 2001. (`Document.iwa` holds 19 records of type 2001; this is the only one that changed. See [0003](0003-non-ascii-word.md).) In the empty document its payload is 97 bytes. With `hello` it is 104 bytes, and the only difference is one new field:
 
 ```
  1: varint 0
@@ -70,13 +70,15 @@ Fields 6, 14 and 24 each hold an entry of three zeros, field 28 an entry of one 
 
 ### What else changed
 
+*Corrected after [0003](0003-non-ascii-word.md):* two records in `ViewState.iwa` also hold the text's length (5 here, 0 in the empty document), and some floats in them change. The first version of this write-up missed both.
+
 Everything else that differs from the baseline also differed between the two empty documents in 0001: the UUIDs, the creation time in record type 10012, the IDs of objects made at save time and the references to them, and a list in `Metadata.iwa` record 2 whose entries come in a different order. That reordering turns up between `empty-a` and `empty-b` as well, so it is noise.
 
 `CalculationEngine-1732610.iwa` record type 4000 holds a fixed64 that reads as a double of seconds since 2001-01-01 (815,918,420 → 2026-11-09), next to the text `Europe/Oslo`. It and several 128-bit-looking values (four varints in a message) change on every save, empty or not.
 
 ## Conclusion
 
-The body text of a Pages document is stored as UTF-8 (at least for ASCII) in field 3 of one type-2001 record in `Document.iwa`. An empty body leaves the field out. Nothing else in the file changes when only the text's letters change, so a reader can find the text without understanding any other record.
+The body text of a Pages document is stored as UTF-8 (at least for ASCII) in field 3 of one of the type-2001 records in `Document.iwa`. An empty body leaves the field out. Nothing else in the file changes when only the text's letters change, so a reader can find the text without understanding any other record.
 
 Record 2001 also points at the stylesheet (field 2) and at four other objects through lists that start at 0. Those look like the run tables that attach styles to ranges of the text, but this experiment can't tell, because a single word has only one run.
 

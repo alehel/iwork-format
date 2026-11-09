@@ -5,7 +5,7 @@ The spec is written in layers, each built on the one before. A layer's file is a
 | Layer | Covers | Status |
 | --- | --- | --- |
 | 1. Container | How a document is packaged: ZIP or folder, its parts, how they're encoded, how objects refer to each other | [Started](container.md): chunks and records confirmed |
-| 2. Text | The document's text, paragraphs and breaks | Experiment [0002](../experiments/0002-one-word.md) run; findings likely |
+| 2. Text | The document's text, paragraphs and breaks | [Started](text.md): where the body text is, confirmed |
 | 3. Styles | Paragraph and character styles, fonts, colours | Not started |
 | 4. Objects | Lists, tables and inline images | Not started |
 | 5. Page layout | Sections, headers, footers, page setup | Not started |

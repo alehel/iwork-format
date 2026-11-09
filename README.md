@@ -6,7 +6,7 @@ Pages, Keynote and Numbers are trademarks of Apple Inc. This project isn't affil
 
 ## Status
 
-Early. Experiments [0001](experiments/0001-empty-document.md) and [0002](experiments/0002-one-word.md) have been run. How the parts are compressed and split into records is *confirmed* and written up in [`spec/container.md`](spec/container.md). Where the body text lives is *likely*.
+Early. Three [experiments](experiments/) have been run. How the parts are compressed and split into records is *confirmed* and written up in [`spec/container.md`](spec/container.md). Where the body text lives and how it's encoded is *confirmed* too, in [`spec/text.md`](spec/text.md).
 
 ## Why
 
