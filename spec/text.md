@@ -16,7 +16,7 @@ The body text is in `Index/Document.iwa`, in field 3 of a record of type 2001. *
 
 ## Headers and footers
 
-Header and footer text is in type-2001 records, like the body. They are reached through the body's section runs (field 17), which point at a section (type 10011). Fields 23, 24 and 25 of a section each name a set of headers and footers (type 10143). In a set, field 1 lists the header and field 2 the footer, each as three text records in the order left, centre, right. A plain document uses the set in field 25. *Likely* ([0016](../experiments/0016-header-and-footer.md)). What the sets in fields 23 and 24 are for is *unknown*. They may be for left and right pages ([0017](../experiments/0017-section-switches.md)).
+Header and footer text is in type-2001 records, like the body. They are reached through the body's section runs (field 17), which point at a section (type 10011). Fields 23, 24 and 25 of a section each name a set of headers and footers (type 10143). In a set, field 1 lists the header and field 2 the footer, each as three text records in the order left, centre, right. A plain document uses the set in field 25. *Likely* ([0016](../experiments/0016-header-and-footer.md)). What the sets in fields 23 and 24 are for is *unknown*. Turning on facing pages alone doesn't use them: left and right pages then share the set in field 25 ([0017](../experiments/0017-section-switches.md), [0018](../experiments/0018-page-break-and-left-page.md)).
 
 Other section fields hold switches from the Section tab of Pages' Document sidebar. *Likely* ([0017](../experiments/0017-section-switches.md))
 
@@ -32,6 +32,8 @@ The document-wide *Facing pages* setting is field 34 of the type-10012 record, w
 A paragraph break is a character in the text. Pressing Return in Pages writes U+000A (line feed). A U+000D (carriage return) set through AppleScript is kept as given and also starts a paragraph. The last paragraph has no break after it. *Confirmed* for U+000A ([0005](../experiments/0005-paragraphs.md), [0006](../experiments/0006-typing-in-pages.md)); *likely* for U+000D ([0005](../experiments/0005-paragraphs.md)).
 
 Pressing Shift-Return writes U+2028 (line separator), a line break that doesn't start a paragraph. *Likely* ([0006](../experiments/0006-typing-in-pages.md))
+
+A page break (Insert → Page Break) is the character U+0005, and it also starts a new paragraph. *Likely* ([0018](../experiments/0018-page-break-and-left-page.md))
 
 ## Positions in the text
 
