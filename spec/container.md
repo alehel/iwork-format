@@ -6,7 +6,11 @@ Observed with Pages 15.4 on macOS 26.5.2. Keynote 15.4 and Numbers 15.4 write th
 
 ## The package
 
-A document saved by Pages is a ZIP file by default. *Likely* ([0001](../experiments/0001-empty-document.md), [0002](../experiments/0002-one-word.md)). It can also be a folder (File → Advanced → Change File Type → Package): the metadata files and previews are files in the folder, and the `.iwa` parts are inside an `Index.zip` in it, under the same `Index/` names. *Likely* ([0076](../experiments/0076-package-format.md))
+A document saved by Pages is a ZIP file by default. *Likely* ([0001](../experiments/0001-empty-document.md), [0002](../experiments/0002-one-word.md)). It can also be a folder (File → Advanced → Change File Type → Package): the metadata files and previews are files in the folder, the `.iwa` parts are inside an `Index.zip` in it, under the same `Index/` names, and data files are in a `Data/` folder beside it. *Confirmed* for all three apps ([0076](../experiments/0076-package-format.md), [0146](../experiments/0146-keynote-package.md), [0147](../experiments/0147-numbers-package.md))
+
+ZIP entry names are UTF-8, but Pages doesn't set the ZIP flag that says so; read them as UTF-8 regardless. *Likely* ([0144](../experiments/0144-non-ascii-file-name.md))
+
+Part names aren't fixed: after a document is saved again, a part can be renamed after the ID of its new first record (`ViewState.iwa` became `ViewState-1732662.iwa`). Find parts by listing them. *Likely* ([0139](../experiments/0139-resave.md))
 
 Its entries are stored without ZIP compression. *Confirmed* ([0001](../experiments/0001-empty-document.md), [0002](../experiments/0002-one-word.md))
 
@@ -28,6 +32,8 @@ A document with a table also has parts under `Index/Tables/`: `DataList`, `Heade
 
 Files a document embeds, such as images, are stored unchanged under `Data/`, each named after its original file name with `-N` before the extension. N is a data ID, by which records refer to the file. *Likely* ([0023](../experiments/0023-an-image.md))
 
+Identical files are stored once ([0142](../experiments/0142-same-image-twice.md)), in their original format ([0143](../experiments/0143-jpeg-image.md)), and files nothing uses are dropped on save ([0145](../experiments/0145-deleted-image.md)). For a large image, Pages also stores a reduced copy (`name-small-N.ext`), which the image record names in field 12 ([0148](../experiments/0148-large-image.md)). *Likely*
+
 `Metadata.iwa` record 2 (type 11006) lists the data in its repeated field 4. Each entry holds the data ID (field 1), the file's SHA-1 (field 2), the original file name (field 3) and the stored file name (field 4). Entries for resources of the template have no file in the package. *Likely* ([0023](../experiments/0023-an-image.md))
 
 ## Chunks
@@ -40,7 +46,7 @@ An `.iwa` part is a sequence of chunks, with nothing before, between or after th
 | 3 | Length of the data that follows, little-endian |
 | length | A raw Snappy block (the block format, not the Snappy framing format) |
 
-No chunk has decoded to more than 65,536 bytes, and a part that decodes to more is split into chunks of exactly 65,536 decoded bytes, then a shorter last one. *Likely* ([0001](../experiments/0001-empty-document.md); only `DocumentStylesheet.iwa` has needed more than one chunk.)
+No chunk has decoded to more than 65,536 bytes, and a part that decodes to more is split into chunks of exactly 65,536 decoded bytes, then a shorter last one. *Confirmed* ([0001](../experiments/0001-empty-document.md), [0141](../experiments/0141-large-text.md))
 
 ## Records
 
@@ -85,4 +91,4 @@ Saving the same content twice can change these, and nothing else in the `.iwa` p
 - The IDs of objects made at save time, and every reference to them. They changed between the two documents in 0001 but not between the two in 0002. Objects that come from the template keep their IDs.
 - The order of entries in one list in `Metadata.iwa` record 2.
 
-Whether IDs stay the same when one document is saved twice, rather than two new documents being saved, hasn't been tested.
+When a document is saved again, existing objects keep their IDs and newly made ones (such as the view state) get new ones. Saving under a new name gives a new document UUID. *Likely* ([0139](../experiments/0139-resave.md), [0140](../experiments/0140-edit-and-save.md))
