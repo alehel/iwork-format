@@ -45,6 +45,12 @@ Other section fields hold switches from the Section tab of Pages' Document sideb
 
 The document-wide *Facing pages* setting is field 34 of the type-10012 record, which also holds the creation time and template name and is probably the document's settings. *Likely* ([0017](../experiments/0017-section-switches.md))
 
+Other fields of the type-10012 document settings:
+
+| Type-10012 field | Setting |
+| --- | --- |
+| 9 | Hyphenate the whole document, 1 on ([0236](../experiments/0236-hyphenation.md)) |
+
 ## Objects in the text
 
 An object placed in the text, such as a table, is the character U+FFFC (OBJECT REPLACEMENT CHARACTER) in the text, with an entry in the attachment runs (field 9) at that position. *Likely* ([0020](../experiments/0020-a-table.md))
