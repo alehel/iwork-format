@@ -31,7 +31,7 @@ Several fields of a type-2001 record are run tables: lists of entries that apply
 | Field | Runs of | Confidence |
 | --- | --- | --- |
 | 5 | Paragraph styles (type 2022). One entry per paragraph, at its first character; the break before it belongs to the previous paragraph. An entry names a style where it changes; one with no field 2 seems to keep the previous paragraph's style. | *Likely* ([0002](../experiments/0002-one-word.md), [0004](../experiments/0004-larger-word.md), [0005](../experiments/0005-paragraphs.md), [0006](../experiments/0006-typing-in-pages.md)); the meaning of an entry with no field 2 is *unknown* |
-| 7 | List styles (type 2023) | *Likely* ([0002](../experiments/0002-one-word.md), [0004](../experiments/0004-larger-word.md)) |
+| 7 | List styles (type 2023). A list is a list style on a range of paragraphs; the marker (a dash, a number) is not in the text. | *Likely* ([0002](../experiments/0002-one-word.md), [0004](../experiments/0004-larger-word.md), [0014](../experiments/0014-lists.md)) |
 | 8 | Character styles (type 2021). Absent when no text has one. | *Likely* ([0004](../experiments/0004-larger-word.md)) |
 | 12 | Objects of type 2024 | *Unknown* |
 | 17 | Objects of type 10011 in `Document.iwa` | *Unknown* |
@@ -71,5 +71,7 @@ Values 0 to 3 are *confirmed* ([0010](../experiments/0010-alignment.md), [0011](
 Named styles such as Body set every property; unnamed ones set only what differs from their parent (field 1.3). *Likely* ([0010](../experiments/0010-alignment.md))
 
 Field 10 has equalled the number of properties set in every unnamed style so far, and is 57 in the named paragraph styles, which set 59. It doesn't count edits. *Unknown* ([0010](../experiments/0010-alignment.md), [0011](../experiments/0011-left-alignment.md))
+
+A list style (type 2023) stores most properties as nine repeated values, one per list level. Field 11 is the kind of marker (0 none, 2 a text character, 3 a number), field 16 the marker text for kind 2, and field 13 an indent in points that grows by a fixed step per level. *Likely* ([0014](../experiments/0014-lists.md))
 
 Styles get their own layer once more of them are understood.
