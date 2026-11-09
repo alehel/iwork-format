@@ -12,7 +12,7 @@ A new spreadsheet has the seven `.iwa` parts that Pages documents have, without 
 
 | Type | Holds | Part |
 | --- | --- | --- |
-| 1 | The document root, with the shared document-properties block in field 8 and the paper name and size in fields 11 and 12 | `Document.iwa` |
+| 1 | The document root: field 1 lists the sheets in order ([0037](../experiments/0037-second-sheet.md)), field 8 holds the shared document-properties block, and fields 11 and 12 the paper name and size | `Document.iwa` |
 | 2 | A sheet: field 1 is its name, field 2 names a drawable on it | `Document.iwa` |
 | 6000 | A table's drawable: position and size, and in field 2 the table model | `CalculationEngine.iwa` |
 | 6001 | The table model: rows (6), columns (7), name (8), and its storage in field 4. Field 4.3 lists the tiles. | `CalculationEngine.iwa` |
