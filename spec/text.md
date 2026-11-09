@@ -162,6 +162,7 @@ Field 11 of a character style or a paragraph style holds the character propertie
 | 11 | Underline | varint: 1 underlined, 0 not |
 | 12 | Strikethrough | varint: 1 struck through, 0 not |
 | 13 | Capitalisation | varint: 1 all caps, 2 small caps; the stored text keeps its case ([0205](../experiments/0205-small-caps.md), [0206](../experiments/0206-all-caps.md)) |
+| 14 | Baseline shift | float, in points, up from the baseline ([0209](../experiments/0209-raised-baseline.md)) |
 | 16 | Ligatures | varint: 0 none; absent means the default ([0208](../experiments/0208-no-ligatures.md)) |
 | 27 | Letter spacing | float, as a fraction of the font size: 0.01 is 1% ([0207](../experiments/0207-looser-letter-spacing.md)) |
 
