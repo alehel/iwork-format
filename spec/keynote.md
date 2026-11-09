@@ -38,6 +38,8 @@ Sounds and movies are type 3007. Field 14 names the media file by data ID, field
 
 A build is a type-8 record listed in slide field 2: field 1 names the object, field 2 the delivery (such as `All at Once`), and field 4.18 the effect, with `In`, `Out` or `Action` in 4.18.1 for a build-in, build-out or action, *confirmed* ([0263](../experiments/0263-build-out.md), [0264](../experiments/0264-action-build.md)); an action's settings, such as a rotation's angle in 4.9, sit beside the effect in field 4, an identifier such as `apple:dissolve character` in 4.18.2 and the duration in 4.18.3. Slide field 43 lists type-153 records, probably the build order. *Likely* ([0257](../experiments/0257-build.md))
 
+A slide's background is the fill in its slide style (type 9, property 11.1). A dynamic background is an image fill (field 3) showing a pre-rendered still, a `motionBackground-…` data file, plus field 200 naming a type-26 motion background style. That style holds the generator's name, such as `KNGradientLinearBase`, colour stops as in a gradient fill, and parameters such as the scale (64) and speed (70). *Likely* ([0271](../experiments/0271-dynamic-background.md))
+
 Bulleted body text uses the same text records and list styles as Pages; the theme's default body list style is a bullet (`•` in field 16). *Likely* ([0072](../experiments/0072-keynote-bullets.md))
 
 ## Charts
