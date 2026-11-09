@@ -90,6 +90,10 @@ A document with a password has two extra files at the top of the package, `.iwph
 
 The key is PBKDF2-HMAC-SHA1 of the password (as UTF-8), using that salt and iteration count, 16 bytes long. Every `.iwa` part, every data file and `BuildVersionHistory.plist` is encrypted with it, using AES-128-CBC with PKCS #7 padding. `DocumentIdentifier` and `Properties.plist` are not encrypted. An encrypted part is laid out as 16 bytes of unknown meaning, the IV, the ciphertext, and 20 bytes of unknown meaning, probably an integrity check. Decrypted, a part is the same as in an unprotected document. The salt is new on every save. *Confirmed* ([0179](../experiments/0179-password.md), [0180](../experiments/0180-password-in-other-apps.md)); that the password is UTF-8 is *likely*.
 
+## View state
+
+`ViewState.iwa` holds how the document was last shown, which a reader can ignore. Its type-10133 record has the zoom as a scale factor in field 15 (1.25 for 125%). *Likely* ([0241](../experiments/0241-zoom.md))
+
 ## IDs and save-to-save changes
 
 Saving the same content twice can change these, and nothing else in the `.iwa` parts. *Likely* ([0001](../experiments/0001-empty-document.md), [0002](../experiments/0002-one-word.md))
