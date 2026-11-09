@@ -54,8 +54,10 @@ Field 11 of a character style or a paragraph style holds the character propertie
 | 2 | Italic | varint: 1 italic |
 | 3 | Size in points | float |
 | 5 | Font name, such as `HelveticaNeue` | text |
+| 11 | Underline | varint: 1 underlined, 0 not |
+| 12 | Strikethrough | varint: 1 struck through, 0 not |
 
-Field 11.5 is *likely* ([0010](../experiments/0010-alignment.md)); the rest as above.
+Field 11.5 is *likely* ([0010](../experiments/0010-alignment.md)), and so are 11.11 and 11.12 ([0012](../experiments/0012-underline-and-strikethrough.md)); the rest as above.
 
 A paragraph style also has a field 12 for paragraph properties. *Likely* ([0008](../experiments/0008-runs-and-shared-styles.md), [0010](../experiments/0010-alignment.md))
 
