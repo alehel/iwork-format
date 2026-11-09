@@ -19,3 +19,7 @@ A new spreadsheet has the seven `.iwa` parts that Pages documents have, without 
 | 6002 | A tile: the cells, by row | `Tables/Tile.iwa` |
 
 *Likely* ([0029](../experiments/0029-numbers-root-to-table.md))
+
+## Categories
+
+Grouping rows by a column's values (Organise → Add Category) moves no cells. The groups are a tree of type-6383 records in `CalculationEngine.iwa`: each group has a 128-bit ID (field 1), its value as a typed cell value (field 6), its rows (field 9, single row numbers `{ 1: n }` or ranges `{ 1: first, 2: last }`) and its child groups (field 10). Table model field 81.2.6 becomes 1. The summary rows Numbers shows aren't stored. *Likely* ([0226](../experiments/0226-category.md))
