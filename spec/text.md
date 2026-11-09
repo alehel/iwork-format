@@ -2,7 +2,7 @@
 
 Where a Pages document keeps its body text, and how the text is encoded. Every finding links to the experiments that support it, with a confidence level as defined in [CONTRIBUTING.md](../CONTRIBUTING.md#confidence). Records, object IDs and types are as described in [1. Container](container.md).
 
-Observed with Pages 15.4 on macOS 26.5.2.
+Observed with Pages 15.4 on macOS 26.5.2. Keynote 15.4 stores slide text in type-2001 records laid out the same way, referring to the same kinds of styles (types 401, 2022, 2023), so this layer applies to Keynote text too. *Likely* ([0025](../experiments/0025-keynote-title.md))
 
 ## The body text
 
