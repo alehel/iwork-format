@@ -86,7 +86,7 @@ Merged cells are recorded in the table model's field 47.2, as ranges in this nod
 
 An image placed on the page, rather than in the text, is a record of type 3005 in `Document.iwa`, listed next to the body text by page-level records (types 10015 and 10010). It holds its position and size in points in field 1.1, like a table's drawable, and the data ID of its file in field 11.1 (see [container.md](container.md#data-files)). *Likely* ([0023](../experiments/0023-an-image.md))
 
-A text box is a shape of type 2011, listed by the same page-level record. Its position and size are in field 1.1, its outline path in 1.3 and its style in 1.2, and fields 2 and 4 name its text, a type-2001 record with no field 1. *Likely* ([0049](../experiments/0049-text-box.md))
+A text box and a shape are both shapes of type 2011, listed by the same page-level record. A shape's position and size are in field 1.1, its outline path in 1.3 and its style (type 2025, such as `textbox-0-shapestyle` or `shape-0-shapestyle`) in 1.2. Fields 2 and 4 name its text, a type-2001 record with no field 1. *Likely* ([0049](../experiments/0049-text-box.md), [0050](../experiments/0050-shape.md))
 
 ## Paragraphs
 
