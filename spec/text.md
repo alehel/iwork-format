@@ -86,6 +86,8 @@ Merged cells are recorded in the table model's field 47.2, as ranges in this nod
 
 An image placed on the page, rather than in the text, is a record of type 3005 in `Document.iwa`, listed next to the body text by page-level records (types 10015 and 10010). It holds its position and size in points in field 1.1, like a table's drawable, and the data ID of its file in field 11.1 (see [container.md](container.md#data-files)). *Likely* ([0023](../experiments/0023-an-image.md))
 
+A text box is a shape of type 2011, listed by the same page-level record. Its position and size are in field 1.1, its outline path in 1.3 and its style in 1.2, and fields 2 and 4 name its text, a type-2001 record with no field 1. *Likely* ([0049](../experiments/0049-text-box.md))
+
 ## Paragraphs
 
 A paragraph break is a character in the text. Pressing Return in Pages writes U+000A (line feed). A U+000D (carriage return) set through AppleScript is kept as given and also starts a paragraph. The last paragraph has no break after it. *Confirmed* for U+000A ([0005](../experiments/0005-paragraphs.md), [0006](../experiments/0006-typing-in-pages.md)); *likely* for U+000D ([0005](../experiments/0005-paragraphs.md)).
