@@ -33,3 +33,16 @@ Bulleted body text uses the same text records and list styles as Pages; the them
 ## Charts
 
 A chart is a drawable of type 5021 on the slide. Its field 10000.7 holds its data: row names in 7.1, column names in 7.2, and one 7.3 per row listing its values as doubles. *Likely* ([0067](../experiments/0067-chart.md))
+
+Field 10000.1 is the chart type and 10000.5 the grouping into series (1 by row, 2 by column); the data grid in 10000.7 is the same whatever the type or grouping. *Likely* ([0079](../experiments/0079-pie-chart.md)–[0086](../experiments/0086-chart-grouped-by-column.md))
+
+| 10000.1 | Type |
+| --- | --- |
+| 1 | Vertical bar |
+| 2 | Horizontal bar |
+| 3 | Line |
+| 4 | Area |
+| 5 | Pie |
+| 6 | Stacked vertical bar |
+| 9 | Scatter |
+| 12 | 3D vertical bar |
