@@ -54,17 +54,21 @@ A table's cells are stored by row in its tile (type 6002, `Index/Tables/Tile.iwa
 
 When a row has several cells, it is field 5.7, not 5.4, that holds their byte offsets. *Likely* ([0031](../experiments/0031-cell-kinds.md))
 
-A cell's bytes 8–11 are little-endian flags saying which values and keys follow, in order of their bits. Further type bytes are 5 (date) and 10 (currency). *Likely* ([0031](../experiments/0031-cell-kinds.md))
+A cell's bytes 8–11 are little-endian flags saying which values and keys follow, in order of their bits. Further type bytes are 5 (date), 6 (boolean) and 10 (currency). *Likely* ([0031](../experiments/0031-cell-kinds.md))
 
 | Flag bit | Followed by |
 | --- | --- |
 | 0x0001 | A decimal128 number |
+| 0x0002 | A double, for a boolean (type 6): 1.0 is true ([0036](../experiments/0036-more-cell-formats.md)) |
 | 0x0004 | A date, as a little-endian double: seconds since 2001-01-01 00:00, with the shown clock time counted as UTC (no time-zone conversion) |
 | 0x0200 | A key into the formula list (model field 4.6), whose entries are formulas as postfix lists of nodes |
+| 0x0008 | A string key ([0021](../experiments/0021-table-cells.md)) |
+| 0x0400 | A key into the cell-control list (list type 12), such as a checkbox or a rating's range ([0036](../experiments/0036-more-cell-formats.md)) |
 | 0x1000 | A key into a list not identified yet (*unknown*) |
 | 0x2000, 0x4000, 0x8000 | A key into the format list (model field 4.22), for a number, currency or date format |
+| 0x10000, 0x20000, 0x40000 | A key into the format list, for a duration, text or boolean format ([0036](../experiments/0036-more-cell-formats.md)) |
 
-The format list's entries give the kind of format in field 1 (256 number, 257 currency, 258 percent, 261 date), plus its details, such as a currency code or a date pattern. A formula cell also keeps its last result as a value. *Likely* ([0031](../experiments/0031-cell-kinds.md))
+The format list's entries give the kind of format in field 1 (256 number, 257 currency, 258 percent, 259 scientific, 260 text, 261 date, 262 fraction, 263 checkbox, 267 rating, 268 duration), plus its details, such as a currency code or a date pattern. A formula cell also keeps its last result as a value. *Likely* ([0031](../experiments/0031-cell-kinds.md))
 
 A formula's nodes, in postfix order (*likely*, [0031](../experiments/0031-cell-kinds.md), [0035](../experiments/0035-formula-references.md)):
 
