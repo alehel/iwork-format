@@ -132,6 +132,7 @@ Several fields of a type-2001 record are run tables: lists of entries that apply
 | 12 | Objects of type 2024 | *Unknown* |
 | 16 | Footnotes: an entry at each U+000E footnote mark points at a type-2008 record, whose field 2 names the footnote's text (a type-2001 record with field 1 = 2) | *Likely* ([0041](../experiments/0041-footnote.md)) |
 | 15 | Bookmarks (type 2035, identified by the UUID in field 1.1) | *Likely* ([0191](../experiments/0191-bookmark.md)) |
+| 21 | Tracked insertions: type-2060 change records with field 1 = 1, a time (field 3, seconds since 2001) and a type-2062 record in field 2 that names the author. Authors are type-212 records in `AnnotationAuthorStorage`, with a name (field 1) and a colour (field 2). | *Likely* ([0193](../experiments/0193-tracked-insertion.md)) |
 | 17 | Sections (type 10011 in `Document.iwa`), which hold among other things the headers and footers | *Likely* ([0016](../experiments/0016-header-and-footer.md)) |
 | 19 | Languages: field 2 is a language code as text, such as `nb`. Only text typed or rewritten in Pages has one; text set through AppleScript has no field 19, or an entry without field 2. | *Confirmed* ([0006](../experiments/0006-typing-in-pages.md), [0009](../experiments/0009-autocorrection.md)) |
 | 20 | Autocorrections: each range Pages autocorrected has a UUID as text in field 2, and an entry without one closes it. Absent when nothing was corrected. | *Confirmed* ([0006](../experiments/0006-typing-in-pages.md), [0009](../experiments/0009-autocorrection.md)) |
