@@ -8,6 +8,11 @@ repository.workspace = true
 
 [dependencies]
 zip = { version = "3", default-features = false, features = ["deflate"] }
+aes = "0.9"
+cbc = "0.2"
+pbkdf2 = { version = "0.13", default-features = false, features = ["hmac"] }
+sha1 = "0.11"
+sha2 = "0.11"
 
 [lints]
 workspace = true

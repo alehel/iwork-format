@@ -14,6 +14,7 @@
     clippy::unreachable
 )]
 
+pub mod crypt;
 pub mod hex;
 pub mod iwa;
 pub mod package;

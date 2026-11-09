@@ -12,7 +12,7 @@ use std::io::{self, Write};
 use std::path::Path;
 use std::process::ExitCode;
 
-use iwork_probe::{hex, iwa, package::Package, proto, text};
+use iwork_probe::{crypt, hex, iwa, package::Package, proto, text};
 
 const USAGE: &str = "\
 usage:
@@ -24,7 +24,9 @@ usage:
   iwork-probe refs <file> <part>
   iwork-probe text <file>
 
-<file> is a document: a ZIP file or a folder package.
+<file> is a document: a ZIP file or a folder package. Every command takes
+--password P to read a password-protected document; its parts are decrypted as
+they're read (experiments 0179 and 0180). `list` shows them as stored.
 --decoded works on an .iwa part's decoded bytes instead of its stored ones; the offsets
 that `chunks` and `records` print are offsets into those decoded bytes.
 N may be decimal or 0x-prefixed hexadecimal.";
@@ -52,6 +54,7 @@ struct Args<'a> {
     len: Option<usize>,
     depth: usize,
     decoded: bool,
+    password: Option<&'a str>,
 }
 
 fn number(text: &str) -> Result<usize, String> {
@@ -63,7 +66,8 @@ fn number(text: &str) -> Result<usize, String> {
 }
 
 fn parse(args: &[String]) -> Result<Args<'_>, String> {
-    let mut parsed = Args { positional: Vec::new(), offset: 0, len: None, depth: DEFAULT_DEPTH, decoded: false };
+    let mut parsed =
+        Args { positional: Vec::new(), offset: 0, len: None, depth: DEFAULT_DEPTH, decoded: false, password: None };
     let mut iter = args.iter();
     while let Some(arg) = iter.next() {
         let mut value = || iter.next().ok_or_else(|| format!("{arg} needs a value")).and_then(|v| number(v));
@@ -72,6 +76,7 @@ fn parse(args: &[String]) -> Result<Args<'_>, String> {
             "--len" => parsed.len = Some(value()?),
             "--depth" => parsed.depth = value()?,
             "--decoded" => parsed.decoded = true,
+            "--password" => parsed.password = Some(iter.next().ok_or("--password needs a value")?.as_str()),
             other if other.starts_with("--") => return Err(format!("unknown option {other}\n\n{USAGE}")),
             other => parsed.positional.push(other),
         }
@@ -100,10 +105,10 @@ fn run(raw: &[String]) -> Result<(), String> {
             let bytes = read_maybe_decoded(file, part, &args)?;
             proto::render(window(&bytes, &args, None)?, args.depth).map_err(|e| e.to_string())?
         }
-        ["chunks", file, part] => chunks(file, part)?,
-        ["records", file, part] => records(file, part)?,
-        ["refs", file, part] => refs(file, part)?,
-        ["text", file] => texts(file)?,
+        ["chunks", file, part] => chunks(file, part, &args)?,
+        ["records", file, part] => records(file, part, &args)?,
+        ["refs", file, part] => refs(file, part, &args)?,
+        ["text", file] => texts(file, &args)?,
         _ => return Err(USAGE.to_string()),
     };
     let mut out = io::stdout().lock();
@@ -114,14 +119,49 @@ fn run(raw: &[String]) -> Result<(), String> {
     }
 }
 
-fn read(file: &str, part: &str) -> Result<Vec<u8>, String> {
-    let mut package = Package::open(Path::new(file)).map_err(|e| format!("{file}: {e}"))?;
-    package.read(part).map_err(|e| format!("{file}: {e}"))
+/// A document opened for reading, with the key to its parts if it's password-protected.
+struct Document<'a> {
+    file: &'a str,
+    package: Package,
+    key: Option<crypt::Key>,
+}
+
+impl<'a> Document<'a> {
+    fn open(file: &'a str, args: &Args<'_>) -> Result<Self, String> {
+        let mut package = Package::open(Path::new(file)).map_err(|e| format!("{file}: {e}"))?;
+        let key = match package.read(crypt::HEADER) {
+            Err(_) => None,
+            Ok(header) => {
+                let password = args.password.ok_or_else(|| {
+                    let hint = package.read(crypt::HINT).map(|h| String::from_utf8_lossy(&h).into_owned());
+                    let hint = hint.map(|h| format!(" (hint: {h:?})")).unwrap_or_default();
+                    format!("{file}: the document is password-protected{hint}; give it with --password")
+                })?;
+                Some(crypt::key(&header, password).map_err(|e| format!("{file}: {e}"))?)
+            }
+        };
+        Ok(Self { file, package, key })
+    }
+
+    /// A part's bytes, decrypted if the document is password-protected.
+    fn read(&mut self, part: &str) -> Result<Vec<u8>, String> {
+        let stored = self.package.read(part).map_err(|e| format!("{}: {e}", self.file))?;
+        match &self.key {
+            Some(key) if crypt::is_encrypted(part) => {
+                crypt::decrypt(key, part, &stored).map_err(|e| format!("{}: {e}", self.file))
+            }
+            _ => Ok(stored),
+        }
+    }
+}
+
+fn read(file: &str, part: &str, args: &Args<'_>) -> Result<Vec<u8>, String> {
+    Document::open(file, args)?.read(part)
 }
 
 /// A part's bytes, decoded from its `.iwa` chunks when `--decoded` is given.
 fn read_maybe_decoded(file: &str, part: &str, args: &Args<'_>) -> Result<Vec<u8>, String> {
-    let bytes = read(file, part)?;
+    let bytes = read(file, part, args)?;
     if args.decoded { decode(part, &bytes).map(|d| d.bytes) } else { Ok(bytes) }
 }
 
@@ -133,8 +173,8 @@ fn plural(n: usize, one: &str, many: &str) -> String {
     if n == 1 { format!("1 {one}") } else { format!("{n} {many}") }
 }
 
-fn chunks(file: &str, part: &str) -> Result<String, String> {
-    let bytes = read(file, part)?;
+fn chunks(file: &str, part: &str, args: &Args<'_>) -> Result<String, String> {
+    let bytes = read(file, part, args)?;
     let decoded = decode(part, &bytes)?;
     let mut out = format!(
         "{part}: {}, {} stored bytes, {} decoded bytes\n{:>10} {:>5} {:>10} {:>10} {:>10}\n",
@@ -156,8 +196,8 @@ fn chunks(file: &str, part: &str) -> Result<String, String> {
     Ok(out)
 }
 
-fn records(file: &str, part: &str) -> Result<String, String> {
-    let bytes = read(file, part)?;
+fn records(file: &str, part: &str, args: &Args<'_>) -> Result<String, String> {
+    let bytes = read(file, part, args)?;
     let decoded = decode(part, &bytes)?;
     let records = iwa::records(&decoded.bytes).map_err(|e| format!("{part}: {e}"))?;
     let mut out = format!(
@@ -190,8 +230,8 @@ fn records(file: &str, part: &str) -> Result<String, String> {
 }
 
 /// Each payload's header-listed references, one record per line.
-fn refs(file: &str, part: &str) -> Result<String, String> {
-    let bytes = read(file, part)?;
+fn refs(file: &str, part: &str, args: &Args<'_>) -> Result<String, String> {
+    let bytes = read(file, part, args)?;
     let decoded = decode(part, &bytes)?;
     let records = iwa::records(&decoded.bytes).map_err(|e| format!("{part}: {e}"))?;
     let mut out = format!("{part}: {}\n", plural(records.len(), "record", "records"));
@@ -207,12 +247,12 @@ fn refs(file: &str, part: &str) -> Result<String, String> {
 }
 
 /// Every text record in the document, part by part, with its kind and text.
-fn texts(file: &str) -> Result<String, String> {
-    let mut package = Package::open(Path::new(file)).map_err(|e| format!("{file}: {e}"))?;
-    let parts = package.parts().map_err(|e| format!("{file}: {e}"))?;
+fn texts(file: &str, args: &Args<'_>) -> Result<String, String> {
+    let mut document = Document::open(file, args)?;
+    let parts = document.package.parts().map_err(|e| format!("{file}: {e}"))?;
     let mut out = String::new();
     for part in parts.iter().filter(|p| p.name.ends_with(".iwa")) {
-        let bytes = package.read(&part.name).map_err(|e| format!("{file}: {e}"))?;
+        let bytes = document.read(&part.name)?;
         let decoded = decode(&part.name, &bytes)?;
         let records = iwa::records(&decoded.bytes).map_err(|e| format!("{}: {e}", part.name))?;
         for t in text::texts(&decoded.bytes, &records) {
