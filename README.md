@@ -6,7 +6,7 @@ Pages, Keynote and Numbers are trademarks of Apple Inc. This project isn't affil
 
 ## Status
 
-Just started. Nothing in [`spec/`](spec/) is confirmed yet. The first experiment, [0001: an empty document](experiments/0001-empty-document.md), has been run. Its container findings are *likely* and wait for a second experiment to confirm them.
+Early. Experiments [0001](experiments/0001-empty-document.md) and [0002](experiments/0002-one-word.md) have been run. How the parts are compressed and split into records is *confirmed* and written up in [`spec/container.md`](spec/container.md). Where the body text lives is *likely*.
 
 ## Why
 
