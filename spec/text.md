@@ -57,7 +57,7 @@ A cell's bytes 8–11 are little-endian flags saying which values and keys follo
 | Flag bit | Followed by |
 | --- | --- |
 | 0x0001 | A decimal128 number |
-| 0x0004 | A date, as a little-endian double: seconds since 2001-01-01 00:00 UTC |
+| 0x0004 | A date, as a little-endian double: seconds since 2001-01-01 00:00, with the shown clock time counted as UTC (no time-zone conversion) |
 | 0x0200 | A key into the formula list (model field 4.6), whose entries are formulas as postfix lists of nodes |
 | 0x1000 | A key into a list not identified yet (*unknown*) |
 | 0x2000, 0x4000, 0x8000 | A key into the format list (model field 4.22), for a number, currency or date format |

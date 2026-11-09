@@ -57,7 +57,7 @@ Only 5.7 splits the cell bytes so that every cell starts with the version byte `
 
 B2's bytes 4–7 are `00 00 02 08`, and C2's are `00 00 01 00`. The other cells have zeros there.
 
-E2's 8 bytes, read as a little-endian double, are 788,961,600. That is the number of seconds from 2001-01-01 00:00 UTC to 2026-01-02 11:00 UTC, which is 12:00 in Oslo.
+E2's 8 bytes, read as a little-endian double, are 789,048,000. That is the number of seconds from 2001-01-01 00:00 to 2026-01-02 12:00, counting both as UTC. The clock time shown in the cell, 12:00, is stored as-is, with no conversion from the Mac's time zone (Oslo, UTC+1).
 
 ### The lists the keys point into
 
@@ -95,7 +95,7 @@ The flag bits:
 | Bit | What follows |
 | --- | --- |
 | 0x0001 | A decimal128 number |
-| 0x0004 | A date: a double, seconds since 2001-01-01 00:00 UTC |
+| 0x0004 | A date: a double, seconds since 2001-01-01 00:00, with the cell's clock time counted as UTC |
 | 0x0200 | A formula: a key into the formula list (model field 4.6) |
 | 0x1000 | A key into a list not identified yet |
 | 0x2000 | A number format: a key into the format list (model field 4.22) |
