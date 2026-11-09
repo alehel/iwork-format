@@ -83,12 +83,12 @@ Object 1, the document root, has a different type and layout in each app (type 1
 
 ## Password protection
 
-A document with a password has two extra files at the top of the package, `.iwph` and `.iwpv2`, and no previews. *Likely* ([0179](../experiments/0179-password.md))
+A document with a password has two extra files at the top of the package, `.iwph` and `.iwpv2`, and no previews. This holds in all three apps. *Confirmed* ([0179](../experiments/0179-password.md), [0180](../experiments/0180-password-in-other-apps.md))
 
 - `.iwph` holds the password hint as plain text.
 - `.iwpv2` is 104 bytes: two 16-bit values (2 and 1, meaning *unknown*), a 32-bit iteration count (100,000), a 16-byte salt, a 16-byte IV, then 64 encrypted bytes. Decrypted, those are 32 random bytes followed by their SHA-256, which checks the password.
 
-The key is PBKDF2-HMAC-SHA1 of the password, using that salt and iteration count, 16 bytes long. Every `.iwa` part and `BuildVersionHistory.plist` is encrypted with it, using AES-128-CBC with PKCS #7 padding. `DocumentIdentifier` and `Properties.plist` are not encrypted. An encrypted part is laid out as 16 bytes of unknown meaning, the IV, the ciphertext, and 20 bytes of unknown meaning, probably an integrity check. Decrypted, a part is the same as in an unprotected document. The salt is new on every save. *Likely* ([0179](../experiments/0179-password.md))
+The key is PBKDF2-HMAC-SHA1 of the password (as UTF-8), using that salt and iteration count, 16 bytes long. Every `.iwa` part, every data file and `BuildVersionHistory.plist` is encrypted with it, using AES-128-CBC with PKCS #7 padding. `DocumentIdentifier` and `Properties.plist` are not encrypted. An encrypted part is laid out as 16 bytes of unknown meaning, the IV, the ciphertext, and 20 bytes of unknown meaning, probably an integrity check. Decrypted, a part is the same as in an unprotected document. The salt is new on every save. *Confirmed* ([0179](../experiments/0179-password.md), [0180](../experiments/0180-password-in-other-apps.md)); that the password is UTF-8 is *likely*.
 
 ## IDs and save-to-save changes
 
