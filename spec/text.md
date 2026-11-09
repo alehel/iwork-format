@@ -66,6 +66,16 @@ A cell's bytes 8–11 are little-endian flags saying which values and keys follo
 
 The format list's entries give the kind of format in field 1 (256 number, 257 currency, 258 percent, 261 date), plus its details, such as a currency code or a date pattern. A formula cell also keeps its last result as a value. *Likely* ([0031](../experiments/0031-cell-kinds.md))
 
+A formula's nodes, in postfix order (*likely*, [0031](../experiments/0031-cell-kinds.md), [0035](../experiments/0035-formula-references.md)):
+
+| Node type | Meaning | Fields |
+| --- | --- | --- |
+| 36 | Cell reference | 26 column, 27 row. In each, field 1 is the value and field 2 is 1 for an absolute reference. A relative value is the zigzag-encoded offset from the formula's own cell; an absolute one is the zigzag-encoded index. |
+| 67 | Range | 40.1 first and last column, 40.2 first and last row, as signed offsets from the formula's cell (not zigzag) |
+| 17 | Number | 4: the value as a double |
+| 1, 3 | Addition, multiplication | |
+| 16 | Function call | 2: the function (168 is SUM), 3: number of arguments |
+
 An image placed on the page, rather than in the text, is a record of type 3005 in `Document.iwa`, listed next to the body text by page-level records (types 10015 and 10010). It holds its position and size in points in field 1.1, like a table's drawable, and the data ID of its file in field 11.1 (see [container.md](container.md#data-files)). *Likely* ([0023](../experiments/0023-an-image.md))
 
 ## Paragraphs
