@@ -79,8 +79,8 @@ A formula's nodes, in postfix order (*likely*, [0031](../experiments/0031-cell-k
 | 36 | Cell reference | 26 column, 27 row. In each, field 1 is the value and field 2 is 1 for an absolute reference. A relative value is the zigzag-encoded offset from the formula's own cell; an absolute one is the zigzag-encoded index. |
 | 67 | Range | 40.1 first and last column, 40.2 first and last row, as signed offsets from the formula's cell (not zigzag) |
 | 17 | Number | 4: the value as a double |
-| 1, 3 | Addition, multiplication | |
-| 16 | Function call | 2: the function, 3: number of arguments. 168 appeared for SUM, but also after a merged range ([0044](../experiments/0044-merged-cells.md)), so it may mean something more general |
+| 1–6 | Operators: 1 `+`, 2 `-`, 3 `*`, 4 `/`, 5 `^`, 6 `&` ([0064](../experiments/0064-operators-and-functions.md)) | |
+| 16 | Function call | 2: the function, 3: number of arguments. Functions seen: 15 AVERAGE, 30 COUNT, 84 MAX, 88 MIN, 168 SUM, numbered in alphabetical order ([0064](../experiments/0064-operators-and-functions.md)). A SUM node also ends a merged range ([0044](../experiments/0044-merged-cells.md)). |
 
 Merged cells are recorded in the table model's field 47.2, as ranges in this node form, not in the cells. A merged cell keeps its value in its top-left cell. *Likely* ([0044](../experiments/0044-merged-cells.md))
 
