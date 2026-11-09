@@ -16,13 +16,14 @@ The body text is in `Index/Document.iwa`, in field 3 of a record of type 2001. *
 
 ## Headers and footers
 
-Header and footer text is in type-2001 records, like the body. They are reached through the body's section runs (field 17), which point at a section (type 10011). Fields 23, 24 and 25 of a section each name a set of headers and footers (type 10143). In a set, field 1 lists the header and field 2 the footer, each as three text records in the order left, centre, right. A plain document uses the set in field 25. *Likely* ([0016](../experiments/0016-header-and-footer.md)). What the sets in fields 23 and 24 are for is *unknown*. Turning on facing pages alone doesn't use them: left and right pages then share the set in field 25 ([0017](../experiments/0017-section-switches.md), [0018](../experiments/0018-page-break-and-left-page.md)).
+Header and footer text is in type-2001 records, like the body. They are reached through the body's section runs (field 17), which point at a section (type 10011). Fields 23, 24 and 25 of a section each name a set of headers and footers (type 10143). In a set, field 1 lists the header and field 2 the footer, each as three text records in the order left, centre, right. A plain document uses the set in field 25. When section field 19 is 1, left-hand pages use the set in field 24 instead. *Likely* ([0016](../experiments/0016-header-and-footer.md), [0018](../experiments/0018-page-break-and-left-page.md), [0019](../experiments/0019-left-and-right-pages.md)). What the set in field 23 is for is *unknown*.
 
 Other section fields hold switches from the Section tab of Pages' Document sidebar. *Likely* ([0017](../experiments/0017-section-switches.md))
 
 | Section field | Switch | Values |
 | --- | --- | --- |
 | 17 | Same as previous section | 1 on (default), 0 off |
+| 19 | Left and right pages are different (shown only with facing pages on) | 0 off (default), 1 on ([0019](../experiments/0019-left-and-right-pages.md)) |
 | 28 | Hide header and footer on the section's first page | 0 off (default), 1 on |
 
 The document-wide *Facing pages* setting is field 34 of the type-10012 record, which also holds the creation time and template name and is probably the document's settings. *Likely* ([0017](../experiments/0017-section-switches.md))
