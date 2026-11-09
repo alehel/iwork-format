@@ -22,6 +22,8 @@ A new document holds these 13 parts. *Confirmed* ([0001](../experiments/0001-emp
 
 The seven `.iwa` parts of a new document are `AnnotationAuthorStorage-N`, `CalculationEngine-N`, `Document`, `DocumentMetadata`, `DocumentStylesheet`, `Metadata` and `ViewState`. Where a name ends in a number, it is the ID of the part's first object. *Confirmed* ([0001](../experiments/0001-empty-document.md), [0002](../experiments/0002-one-word.md))
 
+A document with a table also has parts under `Index/Tables/`: `DataList`, `HeaderStorageBucket` and `Tile`, each holding one record. Each is named either without a number or as `Name-N-2.iwa`, where N is the ID of the record inside. *Likely* ([0020](../experiments/0020-a-table.md))
+
 ## Chunks
 
 An `.iwa` part is a sequence of chunks, with nothing before, between or after them. *Confirmed* ([0001](../experiments/0001-empty-document.md), [0002](../experiments/0002-one-word.md))

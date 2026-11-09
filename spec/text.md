@@ -28,6 +28,12 @@ Other section fields hold switches from the Section tab of Pages' Document sideb
 
 The document-wide *Facing pages* setting is field 34 of the type-10012 record, which also holds the creation time and template name and is probably the document's settings. *Likely* ([0017](../experiments/0017-section-switches.md))
 
+## Objects in the text
+
+An object placed in the text, such as a table, is the character U+FFFC (OBJECT REPLACEMENT CHARACTER) in the text, with an entry in the attachment runs (field 9) at that position. *Likely* ([0020](../experiments/0020-a-table.md))
+
+For a table, the attachment (type 2003, in `Document.iwa`) points at a drawable (type 6000, in `CalculationEngine`). The drawable holds the position and size in points (fields 1.1.1 and 1.1.2) and points at the table model (type 6001), whose fields 6, 7 and 8 are the number of rows, the number of columns and the table's name. *Likely* ([0020](../experiments/0020-a-table.md)). How cells are stored is *unknown*.
+
 ## Paragraphs
 
 A paragraph break is a character in the text. Pressing Return in Pages writes U+000A (line feed). A U+000D (carriage return) set through AppleScript is kept as given and also starts a paragraph. The last paragraph has no break after it. *Confirmed* for U+000A ([0005](../experiments/0005-paragraphs.md), [0006](../experiments/0006-typing-in-pages.md)); *likely* for U+000D ([0005](../experiments/0005-paragraphs.md)).
@@ -50,6 +56,7 @@ Several fields of a type-2001 record are run tables: lists of entries that apply
 | 6 | List levels. Entries start at paragraph boundaries; field 2 is a number, the level (0 for the first), not an object. Field 3 has always been 0. | *Likely* ([0015](../experiments/0015-list-levels.md)) |
 | 7 | List styles (type 2023). A list is a list style on a range of paragraphs; the marker (a dash, a number) is not in the text. | *Likely* ([0002](../experiments/0002-one-word.md), [0004](../experiments/0004-larger-word.md), [0014](../experiments/0014-lists.md)) |
 | 8 | Character styles (type 2021). Absent when no text has one. | *Likely* ([0004](../experiments/0004-larger-word.md)) |
+| 9 | Attachments: each entry sits at a U+FFFC character in the text and points at a type-2003 record, which points at the attached object (for a table, its drawable of type 6000). | *Likely* ([0020](../experiments/0020-a-table.md)) |
 | 12 | Objects of type 2024 | *Unknown* |
 | 17 | Sections (type 10011 in `Document.iwa`), which hold among other things the headers and footers | *Likely* ([0016](../experiments/0016-header-and-footer.md)) |
 | 19 | Languages: field 2 is a language code as text, such as `nb`. Only text typed or rewritten in Pages has one; text set through AppleScript has no field 19, or an entry without field 2. | *Confirmed* ([0006](../experiments/0006-typing-in-pages.md), [0009](../experiments/0009-autocorrection.md)) |
