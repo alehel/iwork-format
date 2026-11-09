@@ -1,0 +1,8 @@
+# Files Pages wrote: never committed (see CONTRIBUTING.md).
+/samples/
+*.pages
+*.key
+*.numbers
+
+/target/
+.DS_Store

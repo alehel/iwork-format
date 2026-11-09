@@ -1,0 +1,13 @@
+[package]
+name = "iwork-probe"
+version = "0.1.0"
+description = "Inspect the files Apple Pages writes, for clean-room format experiments"
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+
+[dependencies]
+zip = { version = "3", default-features = false, features = ["deflate"] }
+
+[lints]
+workspace = true
