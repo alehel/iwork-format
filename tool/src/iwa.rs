@@ -8,7 +8,10 @@
 //! an object ID. Field 2 repeats once per payload, and its field 3 gives the payload's length.
 //! Fields 2.1 and 2.2 are reported as a type and a version, which is a hypothesis, not a finding.
 //!
-//! See `experiments/0001-empty-document.md`.
+//! Fields 2.5 and 2.4.4, packed varints, list object IDs the payload refers to: the references
+//! that lead down the object tree, but not those that lead back up (experiment 0022, *likely*).
+//!
+//! See `experiments/0001-empty-document.md` and `experiments/0022-header-references.md`.
 
 use std::fmt;
 
@@ -156,6 +159,8 @@ pub struct Payload {
     pub type_number: Option<u64>,
     /// Header field 2.2 read as packed varints, if it's length-delimited and reads that way.
     pub version: Option<Vec<u64>>,
+    /// Object IDs listed in header fields 2.5 and 2.4.4, in the order they appear.
+    pub references: Vec<u64>,
     /// Where the payload starts in the decoded stream.
     pub offset: usize,
     pub len: usize,
@@ -182,6 +187,19 @@ fn packed_varints(bytes: &[u8]) -> Option<Vec<u64>> {
         values.push(proto::read_varint(bytes, &mut pos).ok()?);
     }
     Some(values)
+}
+
+/// The IDs in field 4 of one header field 2.4 entry, read as packed varints.
+fn reference_list_ids(entry: &[u8]) -> Vec<u64> {
+    let Ok(fields) = proto::decode(entry) else { return Vec::new() };
+    fields
+        .iter()
+        .filter_map(|f| match (f.number, f.value) {
+            (4, Value::Bytes(b)) => packed_varints(b),
+            _ => None,
+        })
+        .flatten()
+        .collect()
 }
 
 /// Split a part's decoded bytes into records.
@@ -218,11 +236,14 @@ pub fn records(decoded: &[u8]) -> Result<Vec<Record>, Error> {
             let mut type_number = None;
             let mut version = None;
             let mut length = None;
+            let mut references = Vec::new();
             for f in &info {
                 match (f.number, f.value) {
                     (1, Value::Varint(v)) => type_number = type_number.or(Some(v)),
                     (2, Value::Bytes(b)) => version = version.or_else(|| packed_varints(b)),
                     (3, Value::Varint(v)) => length = length.or(Some(v)),
+                    (4, Value::Bytes(b)) => references.extend(reference_list_ids(b)),
+                    (5, Value::Bytes(b)) => references.extend(packed_varints(b).unwrap_or_default()),
                     _ => {}
                 }
             }
@@ -234,7 +255,7 @@ pub fn records(decoded: &[u8]) -> Result<Vec<Record>, Error> {
                 return Err(Error::TruncatedPayload { offset: pos, length });
             }
             pos = end;
-            payloads.push(Payload { type_number, version, offset: payload_offset, len });
+            payloads.push(Payload { type_number, version, references, offset: payload_offset, len });
         }
         records.push(Record { offset, header_offset, header_len, id, payloads });
     }
@@ -289,7 +310,13 @@ mod tests {
                 header_offset: 1,
                 header_len: 14,
                 id: 71,
-                payloads: vec![Payload { type_number: Some(11011), version: Some(vec![1, 0, 5]), offset: 15, len: 3 }],
+                payloads: vec![Payload {
+                    type_number: Some(11011),
+                    version: Some(vec![1, 0, 5]),
+                    references: vec![],
+                    offset: 15,
+                    len: 3,
+                }],
             }]
         );
     }
@@ -306,6 +333,21 @@ mod tests {
         assert_eq!(lens, vec![(15, 2), (17, 1)]);
         assert_eq!(records[1].id, 10);
         assert!(records[1].payloads.is_empty());
+    }
+
+    #[test]
+    fn header_fields_2_5_and_2_4_4_are_read_as_references() {
+        // { 1: 7, 2: { 1: 9, 3: 0, 4: { 1: "F", 4: [300, 5] }, 5: [1732539] } }
+        let entry = [0x0a, 0x01, b'F', 0x22, 0x03, 0xac, 0x02, 0x05];
+        let mut info = vec![0x08, 0x09, 0x18, 0x00, 0x22, entry.len() as u8];
+        info.extend_from_slice(&entry);
+        info.extend_from_slice(&[0x2a, 0x03, 0xbb, 0xdf, 0x69]);
+        let mut header = vec![0x08, 0x07, 0x12, info.len() as u8];
+        header.extend_from_slice(&info);
+        let mut bytes = vec![header.len() as u8];
+        bytes.extend_from_slice(&header);
+        let records = records(&bytes).unwrap();
+        assert_eq!(records[0].payloads[0].references, vec![300, 5, 1732539]);
     }
 
     #[test]

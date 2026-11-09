@@ -55,9 +55,17 @@ The header's fields:
 | 2.1 | A varint that differs between records with differently shaped payloads. Probably the payload's type. | *Unknown* |
 | 2.2 | Three packed varints, such as `1 0 5`. Probably a version. | *Unknown* |
 | 2.3 | The payload's length in bytes | *Confirmed* |
-| 4, 5, 6 | Present in some headers; meaning not established | *Unknown* |
+| 2.5 | Packed varints: IDs of objects the payload refers to | *Likely* ([0022](../experiments/0022-header-references.md)) |
+| 2.4 | Repeated; field 4 of each entry holds more referenced IDs as packed varints, and field 1 is probably the field path that holds them | *Likely* ([0022](../experiments/0022-header-references.md)) |
+| 2.6 | Present in some headers; meaning not established | *Unknown* |
 
 Most records have one payload. In a new document, six records in `Document.iwa` have two, with the same 2.1 value and different 2.2 values. *Likely* ([0001](../experiments/0001-empty-document.md))
+
+## Following references
+
+Every ID in header fields 2.5 and 2.4.4 is a reference in the record's payload. *Confirmed* ([0022](../experiments/0022-header-references.md)). They are the references that lead down the object tree. References back up, such as a style's or a text's link to the stylesheet, or a table drawable's link to its text, aren't listed. *Likely* ([0022](../experiments/0022-header-references.md))
+
+Every object in a document can be reached by starting at objects 1 (in `Document.iwa`), 2 (in `Metadata.iwa`) and 71 (in `DocumentMetadata.iwa`) and following the IDs in record headers. *Likely* ([0022](../experiments/0022-header-references.md))
 
 ## IDs and save-to-save changes
 

@@ -21,6 +21,7 @@ usage:
   iwork-probe proto <file> <part> [--decoded] [--offset N] [--len N] [--depth N]
   iwork-probe chunks <file> <part>
   iwork-probe records <file> <part>
+  iwork-probe refs <file> <part>
 
 <file> is a document: a ZIP file or a folder package.
 --decoded works on an .iwa part's decoded bytes instead of its stored ones; the offsets
@@ -100,6 +101,7 @@ fn run(raw: &[String]) -> Result<(), String> {
         }
         ["chunks", file, part] => chunks(file, part)?,
         ["records", file, part] => records(file, part)?,
+        ["refs", file, part] => refs(file, part)?,
         _ => return Err(USAGE.to_string()),
     };
     let mut out = io::stdout().lock();
@@ -180,6 +182,23 @@ fn records(file: &str, part: &str) -> Result<String, String> {
                 .map(|v| v.iter().map(u64::to_string).collect::<Vec<_>>().join("."))
                 .unwrap_or_else(|| "-".to_string());
             out.push_str(&format!("{head} {:>10} {:>8} {:>10} {type_number:>7}  {version}\n", p.offset, p.len, r.id));
+        }
+    }
+    Ok(out)
+}
+
+/// Each payload's header-listed references, one record per line.
+fn refs(file: &str, part: &str) -> Result<String, String> {
+    let bytes = read(file, part)?;
+    let decoded = decode(part, &bytes)?;
+    let records = iwa::records(&decoded.bytes).map_err(|e| format!("{part}: {e}"))?;
+    let mut out = format!("{part}: {}\n", plural(records.len(), "record", "records"));
+    for r in &records {
+        for p in &r.payloads {
+            let type_number = p.type_number.map(|t| t.to_string()).unwrap_or_else(|| "-".to_string());
+            let ids: Vec<String> = p.references.iter().map(u64::to_string).collect();
+            let list = if ids.is_empty() { "-".to_string() } else { ids.join(" ") };
+            out.push_str(&format!("{:>10} {type_number:>7}  {list}\n", r.id));
         }
     }
     Ok(out)
