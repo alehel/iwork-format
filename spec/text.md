@@ -16,7 +16,15 @@ The body text is in `Index/Document.iwa`, in field 3 of a record of type 2001. *
 
 ## Page setup
 
-Pages keeps its page setup in the document root (object 1, type 10000). Fields 30 and 31 are the paper width and height in points, fields 32–35 the four margins and fields 36 and 37 the header and footer distances, in points. Field 43 is the printer name and field 44 the paper name, such as `iso-a4`. *Likely* ([0027](../experiments/0027-document-roots.md)). Which of fields 32–35 is which margin is *unknown*.
+Pages keeps its page setup in the document root (object 1, type 10000). All lengths are in points, as floats. *Likely* ([0027](../experiments/0027-document-roots.md), [0028](../experiments/0028-margins.md))
+
+| Field | Holds |
+| --- | --- |
+| 30, 31 | Paper width and height |
+| 32, 33, 34, 35 | Left, right, top and bottom margins |
+| 36, 37 | Header and footer distance from the page edge |
+| 43 | Printer name |
+| 44 | Paper name, such as `iso-a4` |
 
 ## Headers and footers
 
