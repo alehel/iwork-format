@@ -32,7 +32,9 @@ The document-wide *Facing pages* setting is field 34 of the type-10012 record, w
 
 An object placed in the text, such as a table, is the character U+FFFC (OBJECT REPLACEMENT CHARACTER) in the text, with an entry in the attachment runs (field 9) at that position. *Likely* ([0020](../experiments/0020-a-table.md))
 
-For a table, the attachment (type 2003, in `Document.iwa`) points at a drawable (type 6000, in `CalculationEngine`). The drawable holds the position and size in points (fields 1.1.1 and 1.1.2) and points at the table model (type 6001), whose fields 6, 7 and 8 are the number of rows, the number of columns and the table's name. *Likely* ([0020](../experiments/0020-a-table.md)). How cells are stored is *unknown*.
+For a table, the attachment (type 2003, in `Document.iwa`) points at a drawable (type 6000, in `CalculationEngine`). The drawable holds the position and size in points (fields 1.1.1 and 1.1.2) and points at the table model (type 6001), whose fields 6, 7 and 8 are the number of rows, the number of columns and the table's name. *Likely* ([0020](../experiments/0020-a-table.md))
+
+A table's cells are stored by row in its tile (type 6002, `Index/Tables/Tile.iwa`). Each row with content is one field-5 entry: 5.1 is the row index, 5.4 a table of 255 little-endian 16-bit offsets into the row's cell bytes (one per column, `ffff` for an empty cell), and 5.6 the cell bytes. A cell starts with a version byte (5) and a type byte: 2 for a number, stored as a little-endian IEEE 754 decimal128, and 3 for text, stored as a 32-bit key into a string table (type 6005, `Index/Tables/DataList.iwa`) whose entries hold the key in field 3.1 and the string in 3.3. *Likely* ([0021](../experiments/0021-table-cells.md)). The other bytes of a cell are *unknown*.
 
 ## Paragraphs
 
