@@ -2,7 +2,7 @@
 
 How a Pages document is packaged, and how its parts are encoded. Every finding links to the experiments that support it, with a confidence level as defined in [CONTRIBUTING.md](../CONTRIBUTING.md#confidence).
 
-Observed with Pages 15.4 on macOS 26.5.2.
+Observed with Pages 15.4 on macOS 26.5.2. Keynote 15.4 and Numbers 15.4 write the same container: the package, chunk, record and reference findings below hold for their documents too ([0024](../experiments/0024-keynote-and-numbers.md)). The apps differ in their document root (object 1: type 10000 in Pages, type 1 in Keynote and Numbers) and in the parts they add, such as `Slide-N` and `TemplateSlide-N` in Keynote.
 
 ## The package
 

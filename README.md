@@ -6,7 +6,7 @@ Pages, Keynote and Numbers are trademarks of Apple Inc. This project isn't affil
 
 ## Status
 
-Early. Twenty-three [experiments](experiments/) have been run, all with Pages 15.4 on macOS 26.5.2. Each layer's status is in [`spec/README.md`](spec/README.md). In short:
+Early. Twenty-four [experiments](experiments/) have been run, all with the 15.4 apps on macOS 26.5.2. Each layer's status is in [`spec/README.md`](spec/README.md). In short:
 
 - **Container** ([`spec/container.md`](spec/container.md)): how the parts are compressed and split into records is *confirmed*, and so is the fact that record headers list references. That every object can be reached from three roots through those references is *likely*.
 - **Text** ([`spec/text.md`](spec/text.md)): where the body text lives, its encoding (UTF-8, with positions in UTF-16 units), paragraph breaks, and the run tables that attach styles to ranges are *confirmed*. So are the language and autocorrection runs that typing adds. Line and page breaks are *likely*.
@@ -14,13 +14,14 @@ Early. Twenty-three [experiments](experiments/) have been run, all with Pages 15
 - **Lists and page layout**: list styles, list levels, where header and footer text is stored, and some section and document switches are *likely*.
 - **Tables**: how a table is anchored in the text, where its size and name are, and how number and text cells are stored are *likely*. Cell formatting isn't known yet.
 - **Images**: how an image file is stored and found, and the image's position and size on the page, are *likely*.
-- **Not started**: page setup, and Keynote and Numbers documents. Neither app was installed on the test machine.
+- **Keynote and Numbers**: their documents use the same container as Pages, *confirmed* for the package, chunks, records and header references. What's inside their documents isn't started.
+- **Not started**: page setup.
 
 ## Why
 
 Apple publishes no specification for the Pages format. Projects that want to open Pages documents have two options today: rely on material derived from Apple's binaries, or use importers whose licences don't suit them. This project builds a third option: a specification that anyone can check, because every statement in it links to an experiment that anyone with a Mac and Pages can rerun.
 
-Keynote and Numbers documents appear to share a container with Pages. That's why the repository is named for iWork, not just Pages. Whether the container really is shared is something experiments will confirm.
+Keynote and Numbers documents share a container with Pages, as [experiment 0024](experiments/0024-keynote-and-numbers.md) confirmed. That's why the repository is named for iWork, not just Pages.
 
 ## How it's made
 
