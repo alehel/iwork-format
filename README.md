@@ -48,8 +48,12 @@ cargo run --release -- list path/to/document.pages
 | `list <file>` | Lists the parts of a document, whether it's a ZIP file or a folder package |
 | `hex <file> <part> [--offset N] [--len N]` | Shows the bytes of one part in hexadecimal |
 | `proto <file> <part> [--offset N] [--len N]` | Decodes bytes as a Protocol Buffers message and prints the fields as a tree |
+| `chunks <file> <part>` | Lists the Snappy-compressed chunks of an `.iwa` part |
+| `records <file> <part>` | Splits an `.iwa` part's decoded bytes into records and lists each payload's offset, length, ID, type and version |
 
-The tool only uses public specifications: ZIP and the Protocol Buffers wire format. Commands that understand Pages' own structures (`dump` and `diff`) are added once experiments have established those structures.
+Add `--decoded` to `hex` or `proto` to read an `.iwa` part's decoded bytes. The offsets `records` prints are offsets into those bytes, so `proto <file> <part> --decoded --offset <payload> --len <len>` shows one payload.
+
+The decoders only use public specifications: ZIP, Snappy and the Protocol Buffers wire format. What the tool knows about Pages' own structures comes from experiments: `chunks` and `records` follow the layout [experiment 0001](experiments/0001-empty-document.md) found. Commands that need more than that, such as `dump` and `diff`, are added once experiments have established those structures.
 
 ## Licences
 

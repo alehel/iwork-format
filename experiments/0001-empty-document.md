@@ -24,7 +24,14 @@ cargo run --release -- list samples/0001/empty-a.pages
 
 Saving two empty documents shows which bytes change between saves of the same content, such as IDs, timestamps or random values. Later experiments then know to ignore those.
 
-The two documents were saved 13 seconds apart. Both were unzipped and compared part by part with `cmp`. `iwork-probe` can't yet decompress `.iwa` parts, so a throwaway script written from the public Snappy format description decoded them. That script also split the decoded bytes into records, using the layout described below. `iwork-probe proto` then printed individual records from the decoded bytes.
+The two documents were saved 13 seconds apart. Both were unzipped and compared part by part with `cmp`. At the time, `iwork-probe` couldn't decompress `.iwa` parts, so a throwaway script written from the public Snappy format description decoded them. That script also split the decoded bytes into records, using the layout described below. `iwork-probe proto` then printed individual records from the decoded bytes.
+
+`iwork-probe` has since gained `chunks`, `records` and `--decoded`, which do the same job. Its decoded bytes match the script's for all 14 parts. To repeat the analysis with it:
+
+```bash
+cargo run --release -- chunks samples/0001/empty-a.pages Index/DocumentStylesheet.iwa
+cargo run --release -- records samples/0001/empty-a.pages Index/Document.iwa
+```
 
 ## Observation
 
@@ -115,6 +122,8 @@ Within a header, field 1 is a number that is unique to one record in most parts.
 | `Metadata.iwa` | 6 | 2 – 1732655 | 1.0.5 |
 | `ViewState.iwa` | 10 | 1732641 – 1732653 | 1.0.5 |
 
+Records don't respect chunk boundaries. In `DocumentStylesheet.iwa`, a record crosses each of the five boundaries between its six chunks. For example, record 1731937 starts at decoded offset 65,285, and its 331-byte payload runs past 65,536. The chunks have to be decoded and joined before the records can be split.
+
 The six `Document.iwa` records with two payloads (field 1 = 1732619 – 1732624) all have type 6247. Each has a 226-byte payload tagged 2.4.0 and a 68-byte payload tagged 2.0.0.
 
 The number in the file names `AnnotationAuthorStorage-1732609` and `CalculationEngine-1732610` equals field 1 of the first record in that part.
@@ -146,7 +155,7 @@ Two of those payloads also changed for other reasons:
 
 A Pages 15.4 document saved by AppleScript is a ZIP file. It holds three JPEG previews, three plain metadata files and seven `.iwa` parts under `Index/`. ZIP compression isn't used. Instead, each `.iwa` part is compressed in its own chunks: a 4-byte header (a type byte, then a 3-byte little-endian length), followed by a raw Snappy block that decodes to at most 64 KiB.
 
-Decoded, an `.iwa` part is a list of records. Each record is a varint length, a Protocol Buffers header, then one or more payloads. The header seems to carry an object ID (field 1), and for each payload a type number (2.1), a three-part version (2.2) and the payload length (2.3). Every object ID is unique across the document. Some parts are named after the ID of their first object.
+Decoded and joined, an `.iwa` part is a list of records, and a record may span two chunks. Each record is a varint length, a Protocol Buffers header, then one or more payloads. The header seems to carry an object ID (field 1), and for each payload a type number (2.1), a three-part version (2.2) and the payload length (2.3). Every object ID is unique across the document. Some parts are named after the ID of their first object.
 
 Between two saves of the same empty content, these things vary and later comparisons should ignore them:
 
@@ -167,4 +176,3 @@ Follow-ups that would settle these:
 - 0002 (type one word) should confirm the framing on a part that changes, and show which record holds text.
 - Saving the same document twice, without making a new one, would show whether object IDs stay stable across saves of one document.
 - Saving from the File menu instead of AppleScript would check that the recipe doesn't affect the container (for example ZIP versus folder package).
-- A document large enough to need several chunks in `Document.iwa` would test whether a record can cross a chunk boundary.

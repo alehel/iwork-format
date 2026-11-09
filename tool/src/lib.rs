@@ -1,8 +1,8 @@
 //! `iwork-probe`: inspect the files Apple Pages writes, for clean-room format experiments.
 //!
-//! Everything here comes from public specifications (ZIP and the Protocol Buffers wire format).
+//! The decoders come from public specifications: ZIP, Snappy and the Protocol Buffers wire format.
 //! Knowledge of Pages' own structures is added only once experiments in this repository have
-//! established it.
+//! established it, and each module that holds some names the experiment it comes from.
 
 #![forbid(unsafe_code)]
 #![deny(
@@ -15,5 +15,7 @@
 )]
 
 pub mod hex;
+pub mod iwa;
 pub mod package;
 pub mod proto;
+pub mod snappy;
