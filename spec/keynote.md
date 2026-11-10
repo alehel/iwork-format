@@ -52,6 +52,8 @@ A chart is a drawable of type 5021 on the slide. Its field 10000.7 holds its dat
 
 A chart also names a chart style (type 5022) in field 10000.9 and a type-5023 record of settings in 10000.10. In the settings, 10000.21 = 1 shows the chart's title and 10000.20 = 1 its legend; turning one off leaves 0. The border is chart style property 10000.18 = 1, which Keynote sets through an unnamed style whose parent is the theme's chart style, as with text styles. A chart's caption is drawable field 1.11, as for other objects. *Likely* ([0295](../experiments/0295-chart-options.md))
 
+Each part of a chart has such a pair of a style and a settings record, named in field 10000: 10000.9 and 10000.10 the chart (types 5022, 5023), 10000.11 and 10000.12 types 5024 and 5025, 10000.13 and 10000.14 the axes (types 5026, 5027, two each, the value axis first), and 10000.15 and 10000.16 one more type-5026 and type-5027 pair. Shareable properties go in a style, which Keynote overrides through an unnamed child style; a chart's own switches go in its settings record. For the value axis, style property 10000.25 = 1 draws the axis line and 10000.31 = 0 hides the minimum value, and setting 10000.14 = 1 shows the axis name. *Likely* ([0296](../experiments/0296-chart-axis.md))
+
 Field 10000.1 is the chart type and 10000.5 the grouping into series (1 by row, 2 by column); the data grid in 10000.7 is the same whatever the type or grouping. *Likely* ([0079](../experiments/0079-pie-chart.md)–[0086](../experiments/0086-chart-grouped-by-column.md))
 
 | 10000.1 | Type |

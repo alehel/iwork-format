@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0296: A chart&#x27;s value axis · iWork file format specification</title>
+<meta name="description" content="iWork file format specification">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
+<p class="wip"><strong>Work in progress.</strong> This specification is incomplete and changes as new experiments run. Each finding says how sure it is: <em>confirmed</em>, <em>likely</em> or <em>unknown</em>. See <a href="../spec/index.html">what each layer covers so far</a>.</p>
+<div class="layout">
+<nav class="side" aria-label="Contents"><details open><summary>Contents</summary><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="../guides/anatomy.html">Reading a Pages document</a></li><li><a href="../guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="../guides/writing.html">Writing a document</a></li><li><a href="../guides/samples.html">Sample files</a></li><li class="group">Specification</li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2–5. Text, styles, objects, layout</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li class="group">Evidence</li><li><a href="index.html">All experiments</a></li></ul></details></nav>
+<main>
+<h1 id="0296-a-charts-value-axis">0296: A chart's value axis<a class="anchor" href="#0296-a-charts-value-axis" aria-label="Link to this section">#</a></h1>
+<p><strong>Status:</strong> run</p>
+<p><a href="0295-chart-options.html">0295</a> found a chart's title and legend switches in a type-5023 record and its border in its chart style. This experiment changes three options of a chart's value axis, to see where axis settings are kept and whether they follow the same split.</p>
+<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Keynote</td><td>15.4</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-10</td></tr><tr><td>Theme</td><td>The test theme (<a href="0291-test-theme.html">0291</a>)</td></tr><tr><td>Chart</td><td>A 2D vertical bar chart from the <a href="0067-chart.html">0067</a> recipe</td></tr></tbody></table></div>
+<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section">#</a></h2>
+<pre class="lang-bash"><code>mkdir -p samples/0296
+for n in baseline axis-title axis-line no-minimum; do
+  IWORK_KEYNOTE_THEME=&#x27;iwork-format test&#x27; osascript recipes/0067-keynote-chart.applescript &quot;$PWD/samples/0296/$n.key&quot;
+done</code></pre>
+<p>Each copy but the baseline was opened on its own, the chart selected, and one option changed on the Format sidebar's Axis tab, Value (Y) (<em>Akse, Verdi (Y)</em>), before saving in place:</p>
+<ul><li><code>axis-title.key</code>: Axis Name (<em>Aksenavn</em>) turned on.</li><li><code>axis-line.key</code>: Axis Line (<em>Akselinje</em>) turned on.</li><li><code>no-minimum.key</code>: Show Minimum Value (<em>Vis minimumsverdi</em>) turned off; the axis's 0 label disappears.</li></ul>
+<p>Using a fresh copy for each change avoids the autosave problem of <a href="0295-chart-options.html">0295</a>.</p>
+<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section">#</a></h2>
+<p>A chart drawable (type 5021) names eight sets of records in field 10000, in pairs of a style and a settings record:</p>
+<div class="table"><table><thead><tr><th>Field</th><th>Type</th><th>Count</th></tr></thead><tbody><tr><td>10000.9, 10000.10</td><td>5022 chart style, 5023 chart settings</td><td>1 each</td></tr><tr><td>10000.11, 10000.12</td><td>5024, 5025</td><td>1 each</td></tr><tr><td>10000.13, 10000.14</td><td>5026, 5027</td><td>2 each</td></tr><tr><td>10000.15, 10000.16</td><td>5026, 5027</td><td>1 each</td></tr></tbody></table></div>
+<p>In the baseline, the styles are the theme's named styles, and the settings records are empty.</p>
+<div class="table"><table><thead><tr><th>Change</th><th>What changes</th></tr></thead><tbody><tr><td>Axis Name</td><td>The first type-5027 record in 10000.14 gets 10000.14 = 1, with 10001 = 1 and 10002 = 1</td></tr><tr><td>Axis Line</td><td>The first entry of 10000.13 names a new, unnamed type-5026 style whose parent is the theme's axis style, with 10000.25 = 1</td></tr><tr><td>Show Minimum Value off</td><td>The first entry of 10000.13 names a new unnamed type-5026 style, with 10000.31 = 0</td></tr></tbody></table></div>
+<p>For Axis Name and Axis Line, Keynote also gave the chart drawable a new ID and remade its settings records, all empty except the one changed. The second entries of 10000.13 and 10000.14 didn't change.</p>
+<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section">#</a></h2>
+<p>A chart keeps each part's options in two records: a style, for properties that styles can share, and a settings record, for switches of that one chart. Field 10000.13 and 10000.14 hold the axes, the first entry being the value axis. Its line (10000.25) and whether it shows its minimum value (10000.31) are style properties, set through an unnamed child style as with the border in <a href="0295-chart-options.html">0295</a>. Its name switch (10000.14) is a setting. By their pairing, 10000.11 and 10000.12 are probably the legend, and 10000.15 and 10000.16 another axis; neither was tested here.</p>
+<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section">#</a></h2>
+<p><em>Likely</em>: the pairing of style and settings records per chart part; value-axis style properties 10000.25 (axis line) and 10000.31 (show minimum); value-axis setting 10000.14 (axis name).</p>
+<p><em>Unknown</em>: what 10000.11 to 10000.12 and 10000.15 to 10000.16 belong to; what 10001 and 10002 in the settings records mean.</p>
+<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Last built from <a href="https://github.com/alehel/iwork-format">alehel/iwork-format</a>.</p></footer>
+</main>
+
+</div>
+<script>
+// On narrow screens the contents and on-this-page lists start folded; on wide ones they stay open.
+(function () {
+  var narrow = window.matchMedia("(max-width: 48rem)");
+  var lists = document.querySelectorAll(".side details, .toc details");
+  function fit() { for (var i = 0; i < lists.length; i++) lists[i].open = !narrow.matches; }
+  fit();
+  if (narrow.addEventListener) narrow.addEventListener("change", fit);
+  document.addEventListener("click", function (e) {
+    if (narrow.matches && e.target.closest && e.target.closest(".toc a")) fit();
+  });
+})();
+</script>
+</body>
+</html>
