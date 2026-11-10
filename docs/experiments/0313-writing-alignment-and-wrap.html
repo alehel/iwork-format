@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0313: Writing a cell&#x27;s alignment and text wrap · iWork file format specification</title>
+<meta name="description" content="iWork file format specification">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
+<p class="wip"><strong>Work in progress.</strong> This specification is incomplete and changes as new experiments run. Each finding says how sure it is: <em>confirmed</em>, <em>likely</em> or <em>unknown</em>. See <a href="../spec/index.html">what each layer covers so far</a>.</p>
+<div class="layout">
+<nav class="side" aria-label="Contents"><details open><summary>Contents</summary><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="../guides/anatomy.html">Reading a Pages document</a></li><li><a href="../guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="../guides/writing.html">Writing a document</a></li><li><a href="../guides/samples.html">Sample files</a></li><li class="group">Specification</li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2–5. Text, styles, objects, layout</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li class="group">Evidence</li><li><a href="index.html">All experiments</a></li></ul></details></nav>
+<main>
+<h1 id="0313-writing-a-cells-alignment-and-text-wrap">0313: Writing a cell's alignment and text wrap<a class="anchor" href="#0313-writing-a-cells-alignment-and-text-wrap" aria-label="Link to this section">#</a></h1>
+<p><strong>Status:</strong> run</p>
+<p>A cell's horizontal alignment was read as field 12.1 of its text style (type 2022), with Pages' values (0 left, 1 right, 2 centred, <a href="0061-cell-alignment.html">0061</a>), and its text wrap as field 11.3 of its cell style (type 6004), 0 when off (<a href="0062-text-wrap.html">0062</a>). AppleScript reads a cell's <code>alignment</code> and <code>text wrap</code>. This experiment writes both and asks Numbers.</p>
+<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Numbers</td><td>15.4</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-10</td></tr><tr><td>Input</td><td><code>samples/0061/center.numbers</code>: B2 centred, through text style 905237 with 12.1 = 2; <code>samples/0062/top-nowrap.numbers</code>: B2 without wrapping, through cell style 905247 with 11.3 = 0</td></tr><tr><td>Writer</td><td>[<code>recipes/0302-set-path.py</code>](../recipes/0302-set-path.py)</td></tr></tbody></table></div>
+<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section">#</a></h2>
+<pre class="lang-bash"><code>mkdir -p samples/0313
+cp samples/0061/center.numbers samples/0313/center.numbers
+cp samples/0062/top-nowrap.numbers samples/0313/nowrap.numbers
+python3 -I recipes/0302-set-path.py samples/0313/center.numbers samples/0313/right.numbers 905237 12.1 varint 1
+python3 -I recipes/0302-set-path.py samples/0313/nowrap.numbers samples/0313/wrap.numbers 905247 11.3 varint 1</code></pre>
+<p>Numbers opened each file on its own and read B2 through AppleScript; the written files were saved again.</p>
+<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th>File</th><th>Alignment</th><th>Text wrap</th></tr></thead><tbody><tr><td><code>center.numbers</code></td><td>center</td><td>true</td></tr><tr><td><code>right.numbers</code></td><td>right</td><td>true</td></tr><tr><td><code>nowrap.numbers</code></td><td>auto align</td><td>false</td></tr><tr><td><code>wrap.numbers</code></td><td>auto align</td><td>true</td></tr></tbody></table></div>
+<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section">#</a></h2>
+<p>Text style field 12.1 = 1 right-aligns a cell, as in Pages' paragraph styles, and cell style field 11.3 = 1 wraps its text. A cell with no alignment of its own reads as <code>auto align</code>.</p>
+<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section">#</a></h2>
+<p><em>Confirmed</em>: cell alignment 12.1 and text wrap 11.3, by writing them.</p>
+<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Last built from <a href="https://github.com/alehel/iwork-format">alehel/iwork-format</a>.</p></footer>
+</main>
+
+</div>
+<script>
+// On narrow screens the contents and on-this-page lists start folded; on wide ones they stay open.
+(function () {
+  var narrow = window.matchMedia("(max-width: 48rem)");
+  var lists = document.querySelectorAll(".side details, .toc details");
+  function fit() { for (var i = 0; i < lists.length; i++) lists[i].open = !narrow.matches; }
+  fit();
+  if (narrow.addEventListener) narrow.addEventListener("change", fit);
+  document.addEventListener("click", function (e) {
+    if (narrow.matches && e.target.closest && e.target.closest(".toc a")) fit();
+  });
+})();
+</script>
+</body>
+</html>
