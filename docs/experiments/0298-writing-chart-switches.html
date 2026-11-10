@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0298: Writing a chart&#x27;s title and legend switches · iWork file format specification</title>
+<meta name="description" content="iWork file format specification">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
+<p class="wip"><strong>Work in progress.</strong> This specification is incomplete and changes as new experiments run. Each finding says how sure it is: <em>confirmed</em>, <em>likely</em> or <em>unknown</em>. See <a href="../spec/index.html">what each layer covers so far</a>.</p>
+<div class="layout">
+<nav class="side" aria-label="Contents"><details open><summary>Contents</summary><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="../guides/anatomy.html">Reading a Pages document</a></li><li><a href="../guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="../guides/writing.html">Writing a document</a></li><li><a href="../guides/samples.html">Sample files</a></li><li class="group">Specification</li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2–5. Text, styles, objects, layout</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li class="group">Evidence</li><li><a href="index.html">All experiments</a></li></ul></details></nav>
+<main>
+<h1 id="0298-writing-a-charts-title-and-legend-switches">0298: Writing a chart's title and legend switches<a class="anchor" href="#0298-writing-a-charts-title-and-legend-switches" aria-label="Link to this section">#</a></h1>
+<p><strong>Status:</strong> run</p>
+<p><a href="0295-chart-options.html">0295</a> read a chart's title and legend switches from the Format sidebar's changes: fields 10000.21 and 10000.20 of the chart's type-5023 settings record. This experiment tests that reading from the other side, by writing the two fields into a file and letting Keynote show the result.</p>
+<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Keynote</td><td>15.4</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-10</td></tr><tr><td>Input</td><td><code>samples/0297/baseline.key</code>, a bar chart in the test theme with no title or legend</td></tr><tr><td>Writer</td><td>[<code>recipes/0298-chart-switches.py</code>](../recipes/0298-chart-switches.py), using the writer of <a href="0287-rewriting-a-document.html">0287</a></td></tr></tbody></table></div>
+<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section">#</a></h2>
+<pre class="lang-bash"><code>mkdir -p samples/0298/images
+cp samples/0297/baseline.key samples/0298/baseline.key
+python3 -I recipes/0298-chart-switches.py samples/0298/baseline.key samples/0298/written.key title legend</code></pre>
+<p>The script follows the chart drawable's field 10000.10 to its settings record and sets 10000.21 = 1 and 10000.20 = 1, leaving everything else as it was. Keynote then opened <code>written.key</code> through AppleScript, exported the slide as a PNG image, and saved it again as <code>resaved.key</code>.</p>
+<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section">#</a></h2>
+<p>Keynote opens the written file without a warning. The exported slide shows the chart with its title, <code>Tittel</code>, and a legend naming the two series, <code>r1</code> and <code>r2</code>:</p>
+<figure><img src="../files/0298-written-chart.png" alt="The slide Keynote exported from the written file: a bar chart with a legend and the title Tittel" loading="lazy"><figcaption>The slide Keynote exported from the written file: a bar chart with a legend and the title Tittel</figcaption></figure>
+<p>In <code>resaved.key</code>, the settings record still holds 10000.20 = 1 and 10000.21 = 1, as written.</p>
+<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section">#</a></h2>
+<p>Field 10000.21 of a chart's type-5023 settings record shows its title and 10000.20 its legend, read in <a href="0295-chart-options.html">0295</a> and now produced by writing. Nothing else in the file needs to change for Keynote to draw them: the default title text and the legend entries come from the app and from the chart's data.</p>
+<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section">#</a></h2>
+<p><em>Confirmed</em>: 10000.21 is the title switch and 10000.20 the legend switch.</p>
+<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Last built from <a href="https://github.com/alehel/iwork-format">alehel/iwork-format</a>.</p></footer>
+</main>
+
+</div>
+<script>
+// On narrow screens the contents and on-this-page lists start folded; on wide ones they stay open.
+(function () {
+  var narrow = window.matchMedia("(max-width: 48rem)");
+  var lists = document.querySelectorAll(".side details, .toc details");
+  function fit() { for (var i = 0; i < lists.length; i++) lists[i].open = !narrow.matches; }
+  fit();
+  if (narrow.addEventListener) narrow.addEventListener("change", fit);
+  document.addEventListener("click", function (e) {
+    if (narrow.matches && e.target.closest && e.target.closest(".toc a")) fit();
+  });
+})();
+</script>
+</body>
+</html>

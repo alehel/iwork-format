@@ -108,6 +108,9 @@ def render(md, here, toc=None):
         if m:
             flush()
             src = m.group(2)
+            target = os.path.normpath(os.path.join(os.path.dirname(here), src)).replace(os.sep, "/")
+            if target.startswith("site/files/"):
+                src = link_target(src, here)
             out.append(f'<figure><img src="{html.escape(src)}" alt="{html.escape(m.group(1))}" loading="lazy"><figcaption>{inline(m.group(1), here)}</figcaption></figure>')
             i += 1
             continue
