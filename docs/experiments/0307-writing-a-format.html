@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0307: Writing a cell format · iWork file format specification</title>
+<meta name="description" content="iWork file format specification">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
+<p class="wip"><strong>Work in progress.</strong> This specification is incomplete and changes as new experiments run. Each finding says how sure it is: <em>confirmed</em>, <em>likely</em> or <em>unknown</em>. See <a href="../spec/index.html">what each layer covers so far</a>.</p>
+<div class="layout">
+<nav class="side" aria-label="Contents"><details open><summary>Contents</summary><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="../guides/anatomy.html">Reading a Pages document</a></li><li><a href="../guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="../guides/writing.html">Writing a document</a></li><li><a href="../guides/samples.html">Sample files</a></li><li class="group">Specification</li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2–5. Text, styles, objects, layout</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li class="group">Evidence</li><li><a href="index.html">All experiments</a></li></ul></details></nav>
+<main>
+<h1 id="0307-writing-a-cell-format">0307: Writing a cell format<a class="anchor" href="#0307-writing-a-cell-format" aria-label="Link to this section">#</a></h1>
+<p><strong>Status:</strong> run</p>
+<p>Number cells hold a key into the table's format list, whose entries give the kind of format in field 3.6.1: 256 number, 258 percent and so on (<a href="0031-cell-kinds.html">0031</a>, <a href="0036-more-cell-formats.html">0036</a>). This experiment changes the kind of the format that a table's number cells use, and asks Numbers how the cells look.</p>
+<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Numbers</td><td>15.4</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-10</td></tr><tr><td>Input</td><td><code>samples/0226/plain.numbers</code>: column B holds 1, 2, 3 and 4, all pointing at format key 2, kind 256</td></tr><tr><td>Writer</td><td>[<code>recipes/0307-format-kind.py</code>](../recipes/0307-format-kind.py), using the writer of <a href="0287-rewriting-a-document.html">0287</a></td></tr></tbody></table></div>
+<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section">#</a></h2>
+<pre class="lang-bash"><code>mkdir -p samples/0307
+cp samples/0226/plain.numbers samples/0307/original.numbers
+python3 -I recipes/0307-format-kind.py samples/0307/original.numbers samples/0307/percent.numbers 2 258</code></pre>
+<p>The format list (type 6005 in <code>DataList-904541.iwa</code>) has key 1, kind 260 (text), used by 6 cells, and key 2, kind 256, with 2 = 253 and 4 = 5 = 0, used by 4. The script changes key 2's kind to 258 and leaves its other fields. Numbers opened each file on its own and read B2 through AppleScript, and saved the written file again.</p>
+<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th>File</th><th>B2 value</th><th>B2 shown as</th><th>B2 format (AppleScript)</th></tr></thead><tbody><tr><td><code>original.numbers</code></td><td>1.0</td><td><code>1</code></td><td>automatic</td></tr><tr><td><code>percent.numbers</code></td><td>1.0</td><td><code>100 %</code></td><td>automatic</td></tr></tbody></table></div>
+<p>Saved again, key 2 has kind 258, with its other fields unchanged.</p>
+<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section">#</a></h2>
+<p>The format list's kind decides how a number is shown: with 258 the same value 1 appears as <code>100 %</code>. AppleScript still calls the cell's format automatic in both files, so the format list holds the format Numbers resolved for display, not the inspector's choice of Automatic. Where that choice is stored isn't shown by this test.</p>
+<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section">#</a></h2>
+<p><em>Confirmed</em>: format kind 258 is percent, and number cells show their format-list entry's kind.</p>
+<p><em>Unknown</em>: where a cell's Automatic setting is kept.</p>
+<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Last built from <a href="https://github.com/alehel/iwork-format">alehel/iwork-format</a>.</p></footer>
+</main>
+
+</div>
+<script>
+// On narrow screens the contents and on-this-page lists start folded; on wide ones they stay open.
+(function () {
+  var narrow = window.matchMedia("(max-width: 48rem)");
+  var lists = document.querySelectorAll(".side details, .toc details");
+  function fit() { for (var i = 0; i < lists.length; i++) lists[i].open = !narrow.matches; }
+  fit();
+  if (narrow.addEventListener) narrow.addEventListener("change", fit);
+  document.addEventListener("click", function (e) {
+    if (narrow.matches && e.target.closest && e.target.closest(".toc a")) fit();
+  });
+})();
+</script>
+</body>
+</html>
