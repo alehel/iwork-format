@@ -24,7 +24,7 @@ python3 -I recipes/0364-table-size.py samples/0226/plain.numbers samples/0365/th
 <p>Numbers opened the file and read the size and B2 through AppleScript. It set the new corner cell, I30, to 7 and saved a copy (<code>thirty-by-nine-resaved.numbers</code>). That copy was then opened again, read and exported as PDF.</p>
 <h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section">#</a></h2>
 <div class="table"><table><thead><tr><th>File</th><th>Size</th><th>Last cell</th><th>Cells</th></tr></thead><tbody><tr><td><code>thirty-by-nine.numbers</code></td><td>30 × 9</td><td>I30</td><td>B2 = 1; I30 could be set to 7</td></tr><tr><td><code>thirty-by-nine-resaved.numbers</code></td><td>30 × 9</td><td></td><td>I30 = 7</td></tr></tbody></table></div>
-<p>The resaved table model has 30 and 9 in fields 6 and 7. The PDF's page is 1028 points wide, wider than the 22 × 7 table's export, to fit the extra columns.</p>
+<p>The resaved table model has 30 and 9 in fields 6 and 7. The PDF's page is 1028 × 792 points, against 832 × 792 for the 22 × 7 table: 196 points more, two columns of 98 points. The table's ink ends at 703.0 points from the top, against 542.5.</p>
 <h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section">#</a></h2>
 <p>A table grows when new UUIDs are added, each with its number appended to both maps. Numbers accepts random UUIDs, lets cells in the new rows and columns be set, and keeps them on saving. Only the row and column lists are needed: no tile or header storage changed.</p>
 <h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section">#</a></h2>
