@@ -39,6 +39,11 @@ OURS = re.compile(
     r"^(photo-[a-f](-small)?|background|alpha|small|red-8x4(-filtered)?|rød bilde|gradient-3000x2000(-small)?|"
     r"square|data|tone|clip|posterImage|mt-[0-9A-F-]+|st-[0-9A-F-]+)-\d+\.\w+$")
 # Test passwords, from experiments 0179 and 0180.
+# Documents whose comments, highlights or tracked changes record the project owner's name as
+# their author (record type 212). Published with the owner's agreement; the name is in that
+# record only.
+AUTHOR_NAMED = {"samples/0193/tracked.pages", "samples/0194/deleted.pages", "samples/0200/highlight.pages",
+                "samples/0249/comment.pages", "samples/0268/accepted.pages", "samples/0269/rejected.pages"}
 PASSWORDS = {"samples/0179/locked.pages": "pw1234", "samples/0179/locked2.pages": "pw1234",
              "samples/0180/accent.pages": "påss", "samples/0180/image.pages": "pw1234",
              "samples/0180/locked.numbers": "pw1234",
@@ -101,6 +106,8 @@ def problem(path, rel):
         foreign = [n[5:] for n in (fix_name(i) for i in z.infolist()) if n.startswith("Data/") and not OURS.match(n[5:])]
     if foreign:
         return "media not made by the project: " + ", ".join(foreign[:3])
+    if rel in AUTHOR_NAMED:
+        return None
     password = PASSWORDS.get(rel)
     parts = decrypted_parts(path, password) if password else plain_parts(path)
     for name, data in parts:
@@ -142,13 +149,13 @@ def main(out_zip):
             title = titles.get(num, ("", num))[1]
             pw = PASSWORDS.get(rel)
             rows.append(f"| `{arc}` | [{title}](../experiments/{titles.get(num, (num,))[0]}) | {os.path.getsize(rel):,} | `{digest}` |"
-                        + (f" password `{pw}` |" if pw else " |"))
+                        + (f" password `{pw}` |" if pw else " names its author |" if rel in AUTHOR_NAMED else " |"))
         z.write("fixtures/LICENSE.md", "LICENSE.md")
 
     index = ["# Fixtures", "",
              "Sample documents from the experiments, for testing readers and writers. They are published as a zip "
              "attached to the repository's GitHub release `fixtures`, not committed. Built by `python3 -I fixtures/build.py`, "
-             "which leaves out anything from Apple's templates or images, and anything holding a personal name. "
+             "which leaves out anything from Apple's templates or images, and anything holding a personal name except the six whose comments, highlights or tracked changes name the project owner as their author. "
              f"See [LICENSE.md](LICENSE.md).", "",
              f"{len(kept)} documents. Keynote presentations, under `keynote/`, were made with the project's test theme "
              "([0291](../experiments/0291-test-theme.md), [0292](../experiments/0292-test-theme-reruns.md)). "

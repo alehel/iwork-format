@@ -1,8 +1,8 @@
 # Fixtures
 
-Sample documents from the experiments, for testing readers and writers. They are published as a zip attached to the repository's GitHub release `fixtures`, not committed. Built by `python3 -I fixtures/build.py`, which leaves out anything from Apple's templates or images, and anything holding a personal name. See [LICENSE.md](LICENSE.md).
+Sample documents from the experiments, for testing readers and writers. They are published as a zip attached to the repository's GitHub release `fixtures`, not committed. Built by `python3 -I fixtures/build.py`, which leaves out anything from Apple's templates or images, and anything holding a personal name except the six whose comments, highlights or tracked changes name the project owner as their author. See [LICENSE.md](LICENSE.md).
 
-462 documents. Keynote presentations, under `keynote/`, were made with the project's test theme ([0291](../experiments/0291-test-theme.md), [0292](../experiments/0292-test-theme-reruns.md)). Encrypted documents list their test password.
+468 documents. Keynote presentations, under `keynote/`, were made with the project's test theme ([0291](../experiments/0291-test-theme.md), [0292](../experiments/0292-test-theme-reruns.md)). Encrypted documents list their test password.
 
 | File | Experiment | Bytes | SHA-256 | Note |
 | --- | --- | --- | --- | --- |
@@ -168,6 +168,9 @@ Sample documents from the experiments, for testing readers and writers. They are
 | `0191/bookmark.pages` | [0191: A bookmark](../experiments/0191-bookmark.md) | 90,344 | `7c802193ee4893af738f96ec3e6fa25997bb31496f9d10828f490f173fe1e19a` | |
 | `0192/bookmark-link.pages` | [0192: A link to a bookmark](../experiments/0192-link-to-bookmark.md) | 90,821 | `241881ca339ca09787aceee9fe0a38ec0a4623bf88561521948910769f31fcdf` | |
 | `0193/empty-comment.pages` | [0193: A tracked insertion](../experiments/0193-tracked-insertion.md) | 90,301 | `4af1e5817a56bcf21e67f0b65de14007307500783f40a4a35899e91b78f92e1a` | |
+| `0193/tracked.pages` | [0193: A tracked insertion](../experiments/0193-tracked-insertion.md) | 90,954 | `8c091a38124ae34ba5e702d6fe1efd2fe7ea0f6c4ccb921f0ef75569751976ba` | names its author |
+| `0194/deleted.pages` | [0194: A tracked deletion](../experiments/0194-tracked-deletion.md) | 90,932 | `eecbe112ce8fb4e10e1880f5dff21bde5d8261f12c29e14c3da67ee6f0cd9380` | names its author |
+| `0200/highlight.pages` | [0200: A highlight](../experiments/0200-highlight.md) | 90,590 | `ddacfc01c1f916ceee3ab1506b0f6fdb22cf49ca368a875260eee25db045d5fb` | names its author |
 | `0201/page-count.pages` | [0201: A page count field](../experiments/0201-page-count.md) | 90,516 | `8982c44b270e92d44e3e7fc1d6d5d90f9cdd85140b4b9b4cb8a7ded528af4c73` | |
 | `0202/toc.pages` | [0202: A table of contents](../experiments/0202-table-of-contents.md) | 92,330 | `b22d0740745cce16a5ccae294d5037860f31c475e8234010f3be124fe79c6d49` | |
 | `0203/superscript.pages` | [0203: Superscript](../experiments/0203-superscript.md) | 90,557 | `f67f0c1b009e0ca477acf3eb40c4e297f1f77761db0c2cac342c5a60a44b911d` | |
@@ -344,6 +347,7 @@ Sample documents from the experiments, for testing readers and writers. They are
 | `0248/WEEKNUM.numbers` | [0248: Seventy more functions](../experiments/0248-more-functions.md) | 137,715 | `ae1a42701c6a139c6ba08cbe7ee99b53c6630ddc41b6a2b847afe0c5c65bf695` | |
 | `0248/WORKDAY.numbers` | [0248: Seventy more functions](../experiments/0248-more-functions.md) | 138,236 | `16e2322ebd855e5bd65393a341671c7d6386ec5fc436d336bd6cb3a2091003f1` | |
 | `0248/XOR.numbers` | [0248: Seventy more functions](../experiments/0248-more-functions.md) | 138,062 | `2ad8c6aef7633605186d1b980ec09946e74d2ecffb51ae1d93f3fc81d5e481ba` | |
+| `0249/comment.pages` | [0249: A comment](../experiments/0249-comment.md) | 90,582 | `5d4fba777858429ebdc8d1346f121567eae763fea92463b5c0ede3d09db3a6e2` | names its author |
 | `0250/border.pages` | [0250: A border on a shape](../experiments/0250-shape-border.md) | 92,690 | `e3a7c932d98aa3eb40dddc5b766e02ad57476978f315c0c66502bf44d9aecdf6` | |
 | `0251/shadow.pages` | [0251: A shadow on a shape](../experiments/0251-shape-shadow.md) | 92,837 | `c889beb9716426f413a08944e617650123807279941676a0356ad0cd147c65bf` | |
 | `0252/double.pages` | [0252: Double line spacing](../experiments/0252-line-spacing.md) | 90,415 | `d07d2ae268549c3c6794dac6cf17ceeb3929b486e60a52ffa52c5963070238ce` | |
@@ -360,6 +364,8 @@ Sample documents from the experiments, for testing readers and writers. They are
 | `0265/SUMMER.numbers` | [0265: Localised function names](../experiments/0265-localised-function-names.md) | 138,693 | `c345042c39fd24469cb8250658f9f50b8e5554113f81f9f1f9c4faa1694681b9` | |
 | `0265/TID.numbers` | [0265: Localised function names](../experiments/0265-localised-function-names.md) | 138,267 | `b3502c21ecc9eb91b01feb3f6ce65735adbbc7b9ca841c148867bac8ee8974e0` | |
 | `0265/TIMEVALUE.numbers` | [0265: Localised function names](../experiments/0265-localised-function-names.md) | 138,746 | `12531c3d851908ab9b15ffdc5f233f6deac75d6c9a2b1b9367b753ce914d6c3c` | |
+| `0268/accepted.pages` | [0268: An accepted deletion](../experiments/0268-accepted-deletion.md) | 90,369 | `be53058be2314e609985bcf35f97b3828b713a69eef4597a992fb6a689dafacf` | names its author |
+| `0269/rejected.pages` | [0269: A rejected insertion, and where tracking is turned on](../experiments/0269-rejected-insertion.md) | 90,360 | `19bd52003c7aa16d0171fcff1e513883bc6852065b408442127289b091d2fd45` | names its author |
 | `0270/paused.pages` | [0270: Paused change tracking](../experiments/0270-paused-tracking.md) | 90,337 | `f0654702e180ebe16b0a8f032a940a8b11345be30a0083f0feebc8c274b1388d` | |
 | `0270/tracking.pages` | [0270: Paused change tracking](../experiments/0270-paused-tracking.md) | 90,343 | `18e582bc7cb4f92c7140ab61c51ef5901ea380428ac846ef92f7a57f96479b08` | |
 | `0273/all-edges.pages` | [0273: Which edges a paragraph border is on](../experiments/0273-border-edges.md) | 94,069 | `99d0a72394850a5a1a79cc0f5101cd4e5ca35f05e43d0b28e370663fbd1b4b6d` | |
@@ -471,7 +477,7 @@ Sample documents from the experiments, for testing readers and writers. They are
 
 ## Left out
 
-27 documents, besides 77 Keynote presentations in Basic White that are included as their test-theme versions under `keynote/`.
+21 documents, besides 77 Keynote presentations in Basic White that are included as their test-theme versions under `keynote/`.
 
 | File | Why |
 | --- | --- |
@@ -483,15 +489,9 @@ Sample documents from the experiments, for testing readers and writers. They are
 | `0156/layout.pages` | made from one of Apple's templates |
 | `0157/black.pages` | made from one of Apple's templates |
 | `0158/essay.pages` | made from one of Apple's templates |
-| `0193/tracked.pages` | holds the user's name |
-| `0194/deleted.pages` | holds the user's name |
 | `0198/book.pages` | made from one of Apple's templates |
 | `0198/image-slides.key` | made from one of Apple's templates |
 | `0199/letter.pages` | made from one of Apple's templates |
-| `0200/highlight.pages` | holds the user's name |
-| `0249/comment.pages` | holds the user's name |
-| `0268/accepted.pages` | holds the user's name |
-| `0269/rejected.pages` | holds the user's name |
 | `0271/dynamic.key` | Keynote with Basic White's photos; its test-theme version is left out too |
 | `0291/iwork-format test v2.key` | a step in building or testing the test theme, which is in theme/ |
 | `0291/iwork-format test.key` | a step in building or testing the test theme, which is in theme/ |
