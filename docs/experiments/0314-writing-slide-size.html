@@ -26,7 +26,7 @@ python3 -I recipes/0302-set-path.py samples/0314/original.key samples/0314/writt
 <h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section">#</a></h2>
 <div class="table"><table><thead><tr><th>File</th><th>Slide size</th><th>Title position</th><th>Title width</th></tr></thead><tbody><tr><td><code>original.key</code></td><td>1920 × 1080</td><td>95, 203</td><td>1730</td></tr><tr><td><code>written.key</code></td><td>1024 × 768</td><td>95, 203</td><td>1730</td></tr></tbody></table></div>
 <h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section">#</a></h2>
-<p>Field 4.1 is the slide width and 4.2 the height, floats in points, and Keynote uses them as written. The objects keep their geometry, so in the written file the title runs past the slide's right edge. Keynote's own Slide Size setting also moves and scales the objects; a writer that changes the size has to do that itself.</p>
+<p>Field 4.1 is the slide width and 4.2 the height, floats in points, and Keynote uses them as written. The objects keep their geometry, so in the written file the title runs past the slide's right edge. A writer that changes the size has to place the objects itself. Whether Keynote's own Slide Size setting moves and scales them wasn't tested.</p>
 <h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section">#</a></h2>
 <p><em>Confirmed</em>: presentation fields 4.1 and 4.2, by writing them. <em>Likely</em>: writing them doesn't rescale anything.</p>
 <footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Last built from <a href="https://github.com/alehel/iwork-format">alehel/iwork-format</a>.</p></footer>

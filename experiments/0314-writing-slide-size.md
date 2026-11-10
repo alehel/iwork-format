@@ -33,7 +33,7 @@ Keynote opened each file on its own and read the presentation's size and the fir
 
 ## Conclusion
 
-Field 4.1 is the slide width and 4.2 the height, floats in points, and Keynote uses them as written. The objects keep their geometry, so in the written file the title runs past the slide's right edge. Keynote's own Slide Size setting also moves and scales the objects; a writer that changes the size has to do that itself.
+Field 4.1 is the slide width and 4.2 the height, floats in points, and Keynote uses them as written. The objects keep their geometry, so in the written file the title runs past the slide's right edge. A writer that changes the size has to place the objects itself. Whether Keynote's own Slide Size setting moves and scales them wasn't tested.
 
 ## Confidence
 
