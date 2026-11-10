@@ -50,6 +50,8 @@ Bulleted body text uses the same text records and list styles as Pages; the them
 
 A chart is a drawable of type 5021 on the slide. Its field 10000.7 holds its data: row names in 7.1, column names in 7.2, and one 7.3 per row listing its values as doubles. *Confirmed*: Pages stores charts the same way ([0067](../experiments/0067-chart.md), [0222](../experiments/0222-pages-chart.md)). A Numbers chart also links to its table: field 10000.8 names a type-12006 record whose field 3 holds formulas, in the cell-formula node form, for the series values (3.1), category labels (3.3) and series names (3.4); 10000.7 keeps a copy of the values. *Likely* ([0225](../experiments/0225-numbers-chart.md))
 
+A chart also names a chart style (type 5022) in field 10000.9 and a type-5023 record of settings in 10000.10. In the settings, 10000.21 = 1 shows the chart's title and 10000.20 = 1 its legend; turning one off leaves 0. The border is chart style property 10000.18 = 1, which Keynote sets through an unnamed style whose parent is the theme's chart style, as with text styles. A chart's caption is drawable field 1.11, as for other objects. *Likely* ([0295](../experiments/0295-chart-options.md))
+
 Field 10000.1 is the chart type and 10000.5 the grouping into series (1 by row, 2 by column); the data grid in 10000.7 is the same whatever the type or grouping. *Likely* ([0079](../experiments/0079-pie-chart.md)–[0086](../experiments/0086-chart-grouped-by-column.md))
 
 | 10000.1 | Type |

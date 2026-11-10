@@ -122,7 +122,7 @@ def problem(path, rel):
             return "a step in building or testing the test theme, which is in theme/"
         if os.path.exists(rel.replace("samples/", "samples/theme/")):
             return "Keynote with Basic White's photos; see samples/theme/"
-        return "Keynote with Basic White's photos, not yet rerun with the test theme"
+        # Otherwise it may have been made with the test theme from the start: the media check decides.
     words = examples.forbidden()
     if os.path.isdir(path):
         names = folder_files(path)
