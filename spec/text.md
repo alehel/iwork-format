@@ -43,7 +43,7 @@ Other section fields hold switches from the Section tab of Pages' Document sideb
 | 17 | Same as previous section | 1 on (default), 0 off |
 | 19 | Left and right pages are different (shown only with facing pages on) | 0 off (default), 1 on ([0019](../experiments/0019-left-and-right-pages.md)) |
 | 28 | Hide header and footer on the section's first page | 0 off (default), 1 on |
-| 30 | The background of the section's pages, a fill like a shape's (a colour in field 1) ([0286](../experiments/0286-section-background.md)) | message |
+| 30 | The background of the section's pages, a fill like a shape's (a colour in field 1), drawn out to the page's edges ([0286](../experiments/0286-section-background.md); *confirmed* by writing it, [0328](../experiments/0328-writing-a-page-background.md)) | message |
 
 The document-wide *Facing pages* setting is field 34 of the type-10012 record, which also holds the creation time and template name and is probably the document's settings. *Confirmed* by writing it ([0017](../experiments/0017-section-switches.md), [0300](../experiments/0300-writing-document-settings.md))
 
@@ -172,7 +172,7 @@ Field 11 of a character style or a paragraph style holds the character propertie
 | 2 | Italic | varint: 1 italic |
 | 3 | Size in points | float |
 | 5 | Font name, such as `HelveticaNeue` | text |
-| 7 | Text colour | message: red, green and blue in fields 3, 4 and 5 and alpha in field 6, as floats from 0 to 1, in sRGB (field 1 = 1 RGB, field 12 = 1 probably sRGB); AppleScript reports colours converted to Generic RGB ([0309](../experiments/0309-writing-a-cell-colour.md)). In cell text styles, at least, the colour drawn is 46.1 and this field a copy that the app rewrites from it on saving ([0310](../experiments/0310-writing-a-cell-text-style.md)) |
+| 7 | Text colour | message: red, green and blue in fields 3, 4 and 5 and alpha in field 6, as floats from 0 to 1, in sRGB (field 1 = 1 RGB, field 12 = 1 probably sRGB; five colours matched, by AppleScript and on the drawn page, [0328](../experiments/0328-writing-a-page-background.md)); AppleScript reports colours converted to Generic RGB ([0309](../experiments/0309-writing-a-cell-colour.md)). In cell text styles, at least, the colour drawn is 46.1 and this field a copy that the app rewrites from it on saving ([0310](../experiments/0310-writing-a-cell-text-style.md)) |
 | 46 | Text fill | message: field 1 is the text colour as in 7; this is the one drawn, and the app keeps 7 in step with it when saving ([0310](../experiments/0310-writing-a-cell-text-style.md)). With 1, 2, 3 and 5, *confirmed* by writing a paragraph style in Pages ([0311](../experiments/0311-writing-a-paragraph-style.md)) |
 | 10 | Baseline position | varint: 1 superscript, 2 subscript ([0203](../experiments/0203-superscript.md), [0204](../experiments/0204-subscript.md)) *Confirmed* by writing and measuring ([0322](../experiments/0322-writing-character-properties.md)). |
 | 11 | Underline | varint: 1 underlined, 0 not |
