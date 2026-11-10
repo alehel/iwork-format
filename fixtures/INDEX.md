@@ -2,7 +2,7 @@
 
 Sample documents from the experiments, for testing readers and writers. They are published as a zip attached to the repository's GitHub release `fixtures`, not committed. Built by `python3 -I fixtures/build.py`, which leaves out anything from Apple's templates or images, and anything holding a personal name. See [LICENSE.md](LICENSE.md).
 
-461 documents. Keynote presentations, under `keynote/`, were made with the project's test theme ([0291](../experiments/0291-test-theme.md), [0292](../experiments/0292-test-theme-reruns.md)). Encrypted documents list their test password.
+462 documents. Keynote presentations, under `keynote/`, were made with the project's test theme ([0291](../experiments/0291-test-theme.md), [0292](../experiments/0292-test-theme-reruns.md)). Encrypted documents list their test password.
 
 | File | Experiment | Bytes | SHA-256 | Note |
 | --- | --- | --- | --- | --- |
@@ -467,10 +467,11 @@ Sample documents from the experiments, for testing readers and writers. They are
 | `keynote/0263/build-out.key` | [0263: A build-out](../experiments/0263-build-out.md) | 889,262 | `1c05e163431e53caf4634f134a6ae17b40592c5da286a2533c6617b2499128e2` | |
 | `keynote/0264/action.key` | [0264: An action build](../experiments/0264-action-build.md) | 889,267 | `ce9e081278b3f946a875352b7592667b8f4879e766a953de2d9b4dc1bd6c5e3c` | |
 | `keynote/0271/plain.key` | [0271: A dynamic background](../experiments/0271-dynamic-background.md) | 882,060 | `1ddcdbfe366a7f435e5eb48f353fc1fdaee0b43039f085541168b625d252ca59` | |
+| `keynote/0272/self-playing.key` | [0272: A self-playing presentation](../experiments/0272-self-playing.md) | 882,092 | `652970768c781348d0f410f358f55f97fd7abae5fe06583c90e698e1233eb8bb` | |
 
 ## Left out
 
-28 documents, besides 76 Keynote presentations in Basic White that are included as their test-theme versions under `keynote/`.
+27 documents, besides 77 Keynote presentations in Basic White that are included as their test-theme versions under `keynote/`.
 
 | File | Why |
 | --- | --- |
@@ -492,7 +493,6 @@ Sample documents from the experiments, for testing readers and writers. They are
 | `0268/accepted.pages` | holds the user's name |
 | `0269/rejected.pages` | holds the user's name |
 | `0271/dynamic.key` | Keynote with Basic White's photos; its test-theme version is left out too |
-| `0272/self-playing.key` | Keynote with Basic White's photos, not yet rerun with the test theme |
 | `0291/iwork-format test v2.key` | a step in building or testing the test theme, which is in theme/ |
 | `0291/iwork-format test.key` | a step in building or testing the test theme, which is in theme/ |
 | `0291/regen.key` | a step in building or testing the test theme, which is in theme/ |

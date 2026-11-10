@@ -52,8 +52,8 @@ iwork-probe text hello.pages
 
 ## All fixtures
 
-[Download all fixtures](https://github.com/alehel/iwork-format/releases/download/fixtures/iwork-format-fixtures.zip) (zip, about 116 MB): 461 documents from the experiments, from Pages, Numbers and Keynote. The [index](../../fixtures/INDEX.md) lists each file with its experiment, size, SHA-256 and, for encrypted documents, the test password.
+[Download all fixtures](https://github.com/alehel/iwork-format/releases/download/fixtures/iwork-format-fixtures.zip) (zip, about 117 MB): 462 documents from the experiments, from Pages, Numbers and Keynote. The [index](../../fixtures/INDEX.md) lists each file with its experiment, size, SHA-256 and, for encrypted documents, the test password.
 
-The Keynote presentations were made again with the project's own test theme, which replaces Basic White's photos with labelled test cards ([0291](../../experiments/0291-test-theme.md), [0292](../../experiments/0292-test-theme-reruns.md)). Left out are documents made from Apple's templates, documents holding a personal name (tracked changes and comments record their author), folder packages, and Keynote experiments not yet rerun with the test theme. Every experiment's recipe says how to make its documents again with AppleScript.
+The Keynote presentations were made again with the project's own test theme, which replaces Basic White's photos with labelled test cards ([0291](../../experiments/0291-test-theme.md), [0292](../../experiments/0292-test-theme-reruns.md)). Left out are documents made from Apple's templates, documents holding a personal name (tracked changes and comments record their author), folder packages,. Every experiment's recipe says how to make its documents again with AppleScript.
 
 What the project contributed to the fixtures is released under CC0; see [LICENSE.md](../../fixtures/LICENSE.md).
