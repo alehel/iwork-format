@@ -2,7 +2,7 @@
 
 Sample documents from the experiments, for testing readers and writers. They are published as a zip attached to the repository's GitHub release `fixtures`, not committed. Built by `python3 -I fixtures/build.py`, which leaves out anything from Apple's templates or images, and anything holding a personal name except the six whose comments, highlights or tracked changes name the project owner as their author. See [LICENSE.md](LICENSE.md).
 
-474 documents. Keynote presentations, under `keynote/`, were made with the project's test theme ([0291](../experiments/0291-test-theme.md), [0292](../experiments/0292-test-theme-reruns.md)). Encrypted documents list their test password. A folder package's SHA-256 is taken over each of its files in path order, as the path, a zero byte and the contents.
+497 documents. Keynote presentations, under `keynote/`, were made with the project's test theme ([0291](../experiments/0291-test-theme.md), [0292](../experiments/0292-test-theme-reruns.md)). Encrypted documents list their test password. A folder package's SHA-256 is taken over each of its files in path order, as the path, a zero byte and the contents.
 
 | File | Experiment | Bytes | SHA-256 | Note |
 | --- | --- | --- | --- | --- |
@@ -402,6 +402,29 @@ Sample documents from the experiments, for testing readers and writers. They are
 | `0289/without-run-resaved.pages` | [0289: Writing two paragraphs](../experiments/0289-writing-two-paragraphs.md) | 90,776 | `c58501977456601cc6946f7e04d704b0e5a15b687ab50398a8098d8278cd1b10` | |
 | `0289/without-run.pages` | [0289: Writing two paragraphs](../experiments/0289-writing-two-paragraphs.md) | 80,277 | `25d00d08b34b983dac28cbf5b3593a01218efdf0c62ebfdfd66bdecaa6a3672b` | |
 | `0290/forty-two.numbers` | [0290: Writing a cell](../experiments/0290-writing-a-cell.md) | 86,733 | `182e18ee4185bf04cbfa8a3d2b81c1ebda98960bf1185cd4dc416a203767f10d` | |
+| `0295/baseline.key` | [0295: A chart's title, legend, border and caption](../experiments/0295-chart-options.md) | 904,185 | `27a8cd0ff48f7f79557066f4a1fb33bf223d745953c10cf6d8a0c62836ee7699` | |
+| `0295/border.key` | [0295: A chart's title, legend, border and caption](../experiments/0295-chart-options.md) | 915,879 | `add0935a376777fb0f877dd15f612da59fd78621ceee010391bc7bce0e58520d` | |
+| `0295/caption.key` | [0295: A chart's title, legend, border and caption](../experiments/0295-chart-options.md) | 914,239 | `fd7a5d05c7fe008fa183fa40504f4668b6bbf431888a99115d1756b199aa0f0e` | |
+| `0295/legend.key` | [0295: A chart's title, legend, border and caption](../experiments/0295-chart-options.md) | 915,844 | `68c6066a904f9cf4a08c11a43034843b5a93aba2ad0d30dd95376aefc075d455` | |
+| `0295/title.key` | [0295: A chart's title, legend, border and caption](../experiments/0295-chart-options.md) | 915,586 | `6620bc1d477a7e117a945f59e4e252fcbecae88ec2ab271400ee95f0892a177c` | |
+| `0296/axis-line.key` | [0296: A chart's value axis](../experiments/0296-chart-axis.md) | 914,552 | `38573dc480398ee19ed5747b4afaa171eae6f493ac36ea9fbb93f12a65e65bad` | |
+| `0296/axis-title.key` | [0296: A chart's value axis](../experiments/0296-chart-axis.md) | 915,757 | `33b53cafe7e4e82a4bfa78f033fcb3ff5d6e277e0aa96381160b27499299bffa` | |
+| `0296/baseline.key` | [0296: A chart's value axis](../experiments/0296-chart-axis.md) | 904,201 | `a595c00777b5da2f922d7efd0241ca7e46e3994814a45107dc0553b0576c080e` | |
+| `0296/no-minimum.key` | [0296: A chart's value axis](../experiments/0296-chart-axis.md) | 913,663 | `a0effc2b98d684a70239f8deadab5e2d22d60300ae215ca5e68f38242d9c41c5` | |
+| `0297/baseline.key` | [0297: A chart's category axis, series and text styles](../experiments/0297-chart-category-axis.md) | 904,185 | `a988fbe07c49f066e7d72b277110f27eb0fab4d0581d76be07ffad1fcf4e4438` | |
+| `0297/x-axis-name.key` | [0297: A chart's category axis, series and text styles](../experiments/0297-chart-category-axis.md) | 916,680 | `56eda796b2caec1d481116c9d9d5eac31d3cc8914dedd9317c4371534cb72950` | |
+| `0298/baseline.key` | [0298: Writing a chart's title and legend switches](../experiments/0298-writing-chart-switches.md) | 904,185 | `a988fbe07c49f066e7d72b277110f27eb0fab4d0581d76be07ffad1fcf4e4438` | |
+| `0298/resaved.key` | [0298: Writing a chart's title and legend switches](../experiments/0298-writing-chart-switches.md) | 941,996 | `e3ada5af9e241f713d5dd5f48c4a18ef7ad19bc8bc22b9e4856c08a0a906ae6f` | |
+| `0298/written.key` | [0298: Writing a chart's title and legend switches](../experiments/0298-writing-chart-switches.md) | 1,242,314 | `6071f10a9cdcb85c143b5421b6edf594f71c92d94917e22a29025955586cc31e` | |
+| `0299/resaved.key` | [0299: Writing a skipped slide](../experiments/0299-writing-a-skipped-slide.md) | 919,847 | `e6706f9934453960afa1ab28932ef530ad7ee43cc675bc1678d86ee658f17638` | |
+| `0299/second-skipped.key` | [0299: Writing a skipped slide](../experiments/0299-writing-a-skipped-slide.md) | 1,225,780 | `c2b0716e7f892fe5981629b3e2a24a1fc0429e7fff5990d798027209070cb29d` | |
+| `0299/two-slides.key` | [0299: Writing a skipped slide](../experiments/0299-writing-a-skipped-slide.md) | 887,226 | `bb870b75de92baf4860b48c35b4713e52dd7279b9ea646a78fa434972c37ce40` | |
+| `0300/facing-resaved.pages` | [0300: Writing document settings](../experiments/0300-writing-document-settings.md) | 90,443 | `1a413fa685dc43febbb954d26457d062310dfffc770e93cc10ba8d485f541c05` | |
+| `0300/facing.pages` | [0300: Writing document settings](../experiments/0300-writing-document-settings.md) | 395,046 | `20b96ac68f2d18f237fa88076e5e529aca7d9be840f966bacf099ee8bda61905` | |
+| `0300/loop-play-resaved.key` | [0300: Writing document settings](../experiments/0300-writing-document-settings.md) | 913,884 | `724f6d0bb599fe8d9726a94d28710f7d050dc29b4ec0d3d349b56fbd0c7925f2` | |
+| `0300/loop-play.key` | [0300: Writing document settings](../experiments/0300-writing-document-settings.md) | 1,223,065 | `48d2c9f08e54b9aacfcc87e509339e2c12dafb3acf58755f8d37fbb584180e0d` | |
+| `0301/headers-resaved.numbers` | [0301: Writing a table's header and footer rows](../experiments/0301-writing-header-rows.md) | 144,035 | `98ca20893b9419fcaab293bad0762e384ca12befc9c804a09601160fe70fb105` | |
+| `0301/headers.numbers` | [0301: Writing a table's header and footer rows](../experiments/0301-writing-header-rows.md) | 457,167 | `97a153b0ecb39621dd86845b52afc17dca74b3977238cb75a351ef2f2bc83db8` | |
 | `keynote/0024/empty-a.key` | [0024: Keynote and Numbers](../experiments/0024-keynote-and-numbers.md) | 882,066 | `912b4de37a6cd26f79bf830b1fe894e608e2cccfefa0cadc626d92e0f0358a85` | |
 | `keynote/0024/empty-b.key` | [0024: Keynote and Numbers](../experiments/0024-keynote-and-numbers.md) | 882,065 | `95a5a1cbe9b95a8b5fb33a29d585e0fc999983bd08a717ed3e3eaa84af118085` | |
 | `keynote/0025/empty.key` | [0025: Text on a Keynote slide](../experiments/0025-keynote-title.md) | 882,066 | `912b4de37a6cd26f79bf830b1fe894e608e2cccfefa0cadc626d92e0f0358a85` | |
