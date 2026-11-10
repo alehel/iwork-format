@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0321: Writing paragraph and line spacing, measured on the page · iWork file format specification</title>
+<meta name="description" content="iWork file format specification">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
+<p class="wip"><strong>Work in progress.</strong> This specification is incomplete and changes as new experiments run. Each finding says how sure it is: <em>confirmed</em>, <em>likely</em> or <em>unknown</em>. See <a href="../spec/index.html">what each layer covers so far</a>.</p>
+<div class="layout">
+<nav class="side" aria-label="Contents"><details open><summary>Contents</summary><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="../guides/anatomy.html">Reading a Pages document</a></li><li><a href="../guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="../guides/writing.html">Writing a document</a></li><li><a href="../guides/samples.html">Sample files</a></li><li class="group">Specification</li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2–5. Text, styles, objects, layout</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li class="group">Evidence</li><li><a href="index.html">All experiments</a></li></ul></details></nav>
+<main>
+<h1 id="0321-writing-paragraph-and-line-spacing-measured-on-the-page">0321: Writing paragraph and line spacing, measured on the page<a class="anchor" href="#0321-writing-paragraph-and-line-spacing-measured-on-the-page" aria-label="Link to this section">#</a></h1>
+<p><strong>Status:</strong> run</p>
+<p>A paragraph style's spacing was read as properties 12.20 (space after) and 12.21 (space before), in points, and 12.13 (line spacing): a message with the kind in field 1 (0 lines, 1 at least, 2 exactly, 4 between) and the amount in field 2 (<a href="0252-line-spacing.html">0252</a>, <a href="0256-paragraph-spacing.html">0256</a>, <a href="0276-exact-line-spacing.html">0276</a>, <a href="0281-other-line-spacing-kinds.html">0281</a>). This experiment writes them into the Body style and measures the lines on the exported page with [<code>recipes/0319-measure-pdf.swift</code>](../recipes/0319-measure-pdf.swift).</p>
+<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Pages</td><td>15.4</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-10</td></tr><tr><td>Input</td><td><code>samples/0005/two-lf.pages</code> (paragraphs <code>one</code> and <code>two</code>) and <code>samples/0320/long.pages</code> (one paragraph wrapping to several lines), both in the 11-point Body style, which has no 12.13</td></tr><tr><td>Writer</td><td>[<code>recipes/0302-set-path.py</code>](../recipes/0302-set-path.py)</td></tr></tbody></table></div>
+<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section">#</a></h2>
+<pre class="lang-bash"><code>mkdir -p samples/0321
+cp samples/0005/two-lf.pages samples/0321/two.pages
+cp samples/0320/long.pages samples/0321/long.pages
+python3 -I recipes/0302-set-path.py samples/0321/two.pages samples/0321/after24.pages 1731511 12.20 float 24
+python3 -I recipes/0302-set-path.py samples/0321/two.pages samples/0321/before24.pages 1731511 12.21 float 24
+python3 -I recipes/0302-set-path.py samples/0321/long.pages samples/0321/double.pages 1731511 12.13.1 varint 0 12.13.2 float 2
+python3 -I recipes/0302-set-path.py samples/0321/long.pages samples/0321/exactly30.pages 1731511 12.13.1 varint 2 12.13.2 float 30</code></pre>
+<p>Each file was opened in Pages on its own, exported as PDF and measured. Line bottoms are compared, since they don't depend on which letters a line holds.</p>
+<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section">#</a></h2>
+<p>Bottoms of the first lines, in points from the top of the page:</p>
+<div class="table"><table><thead><tr><th>File</th><th>Line 1</th><th>Line 2</th><th>Line 3</th></tr></thead><tbody><tr><td><code>two.pages</code></td><td>66.2</td><td>78.2</td><td></td></tr><tr><td><code>after24.pages</code> (12.20 = 24)</td><td>66.2</td><td>102.2</td><td></td></tr><tr><td><code>before24.pages</code> (12.21 = 24)</td><td>66.2</td><td>102.2</td><td></td></tr><tr><td><code>long.pages</code></td><td>66.2</td><td>78.2</td><td>90.2</td></tr><tr><td><code>double.pages</code> (12.13 = 0, 2)</td><td>66.2</td><td>90.0</td><td>113.5</td></tr><tr><td><code>exactly30.pages</code> (12.13 = 2, 30)</td><td>80.8</td><td>110.8</td><td>140.8</td></tr></tbody></table></div>
+<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section">#</a></h2>
+<p>12.20 adds space after each paragraph and 12.21 before it, in points. Pages leaves out the space before the first paragraph at the top of the page. Line spacing kind 0 multiplies the normal line height: twice 12 is close to the 23.5 to 23.8 measured. Kind 2 sets the distance between baselines to exactly the amount, 30 points, and moves the first line down to suit.</p>
+<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section">#</a></h2>
+<p><em>Confirmed</em>: 12.20, 12.21, and 12.13 kinds 0 and 2, by writing them and measuring.</p>
+<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Last built from <a href="https://github.com/alehel/iwork-format">alehel/iwork-format</a>.</p></footer>
+</main>
+
+</div>
+<script>
+// On narrow screens the contents and on-this-page lists start folded; on wide ones they stay open.
+(function () {
+  var narrow = window.matchMedia("(max-width: 48rem)");
+  var lists = document.querySelectorAll(".side details, .toc details");
+  function fit() { for (var i = 0; i < lists.length; i++) lists[i].open = !narrow.matches; }
+  fit();
+  if (narrow.addEventListener) narrow.addEventListener("change", fit);
+  document.addEventListener("click", function (e) {
+    if (narrow.matches && e.target.closest && e.target.closest(".toc a")) fit();
+  });
+})();
+</script>
+</body>
+</html>
