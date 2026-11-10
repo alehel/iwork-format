@@ -58,7 +58,7 @@ The dynamic background's first preset came out with an angle of 33.7°, a scale 
 
 Apart from its photos, the test theme makes presentations that are structurally the same as Basic White's. The objects, references, texts and record types match across 58 experiments. So the Keynote findings don't depend on Basic White's images. These presentations can stand in for the originals as published samples, all except 0090.
 
-A theme's photos can stay inside the app. Keynote then stores only a reduced copy and a path to the full image, and the six type-11014 colours are probably one per such photo. What the extra type-4009 lists mean, and why the test theme's tables have them, is *unknown*.
+A theme's photos can stay inside the app. Keynote then stores only a reduced copy and a path to the full image, and the six type-11014 colours are probably one per such photo. What the extra type-4009 lists mean, and why the test theme's tables have them, was *unknown* here; [0293](0293-calculation-owners.md) found they belong to the calculation engine's owners.
 
 ## Confidence
 
