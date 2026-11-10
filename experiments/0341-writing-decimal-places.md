@@ -44,4 +44,4 @@ Field 2 is the number of decimal places in number-like formats too, and 253 mean
 
 *Confirmed*: field 2 is the decimal places, 253 automatic.
 
-*Unknown*: fields 4 and 5.
+*Unknown*: fields 4 and 5, since found to be the negative style and the thousands separator ([0342](0342-negative-numbers-and-thousands.md)).

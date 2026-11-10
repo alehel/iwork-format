@@ -44,4 +44,4 @@ The sign bit makes a decimal128 negative, and Numbers reads −12345 as written.
 
 *Confirmed*: negative decimal128s, and field 5 as the thousands separator, by writing them.
 
-*Likely*: field 4 is the negative style, 1 being red without a sign (the colour not seen).
+*Likely*: field 4 is the negative style, 1 being red without a sign (the colour not seen here; confirmed in [0343](0343-negative-number-styles.md)).

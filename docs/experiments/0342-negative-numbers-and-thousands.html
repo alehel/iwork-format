@@ -32,7 +32,7 @@ python3 -I $R samples/0342/negative.numbers samples/0342/f5-2.numbers 2 5 varint
 <p>The sign bit makes a decimal128 negative, and Numbers reads −12345 as written. Field 4 of a number format is the negative-number style: 1 drops the minus sign, which fits Numbers' style that shows negatives in red without one; the colour can't be read through AppleScript. Field 5 turns on the thousands separator, and any non-zero value does.</p>
 <h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section">#</a></h2>
 <p><em>Confirmed</em>: negative decimal128s, and field 5 as the thousands separator, by writing them.</p>
-<p><em>Likely</em>: field 4 is the negative style, 1 being red without a sign (the colour not seen).</p>
+<p><em>Likely</em>: field 4 is the negative style, 1 being red without a sign (the colour not seen here; confirmed in <a href="0343-negative-number-styles.html">0343</a>).</p>
 <footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Last built from <a href="https://github.com/alehel/iwork-format">alehel/iwork-format</a>.</p></footer>
 </main>
 
