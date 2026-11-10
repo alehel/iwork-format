@@ -1,0 +1,39 @@
+apple:ClotheslinePush	clothesline
+apple:FlipThrough	switch
+apple:apple-grid	grid
+apple:bounce	drop
+apple:ca-cube	object cube
+apple:ca-dissolve-and-flip	object flip
+apple:ca-isometric	perspective
+apple:ca-pop	object pop
+apple:ca-push	object push
+apple:ca-revolve	object revolve
+apple:ca-swing	swing
+apple:ca-text-shimmer	shimmer
+apple:ca-text-sparkle	sparkle
+apple:ca-zoom	object zoom
+apple:doorway	doorway
+apple:droplet	droplet
+apple:fade-and-move	fade and move
+apple:fall	fall
+apple:pageflip	page flip
+apple:pivot	pivot
+apple:radial wipe	radial wipe
+apple:reveal	reveal
+apple:revolve	flip
+apple:scale	scale
+apple:twirl	twirl
+apple:wipe	wipe
+apple:wipe-iris	iris
+com.apple.iWork.Keynote.BLTBlinds	blinds
+com.apple.iWork.Keynote.BLTFadeThruColor	fade through color
+com.apple.iWork.Keynote.BLTMosaicFlip	mosaic
+com.apple.iWork.Keynote.BLTReflection	reflection
+com.apple.iWork.Keynote.BLTRevolvingDoor	revolving door
+com.apple.iWork.Keynote.BLTSwoosh	swoosh
+com.apple.iWork.Keynote.BUKFlop	flop
+com.apple.iWork.Keynote.BUKTwist	twist
+com.apple.iWork.Keynote.KLNColorPlanes	color planes
+com.apple.iWork.Keynote.KLNConfetti	confetti
+com.apple.iWork.Keynote.KLNSwap	swap
+none	no transition effect
