@@ -93,7 +93,7 @@ A formula's nodes, in postfix order (*likely*, [0031](../experiments/0031-cell-k
 | Node type | Meaning | Fields |
 | --- | --- | --- |
 | 36 | Cell reference | 26 column, 27 row (absent for a whole column, [0105](../experiments/0105-whole-column.md)), and for another table, on any sheet, 28.1: its UUID as four little-endian 32-bit words ([0065](../experiments/0065-cross-table-reference.md), [0107](../experiments/0107-other-sheet.md)). Column and row each have their own absolute flag ([0106](../experiments/0106-mixed-references.md)). In each, field 1 is the value and field 2 is 1 for an absolute reference. A relative value is the zigzag-encoded offset from the formula's own cell; an absolute one is the zigzag-encoded index. |
-| 67 | Range | 40.1 first and last column, 40.2 first and last row, as signed offsets from the formula's cell (not zigzag) |
+| 67 | Range | 40.1 first and last column, 40.2 first and last row, as signed offsets from the formula's cell (not zigzag); a value left out is 0 (*confirmed* by writing them, [0370](../experiments/0370-writing-a-formula-range.md)) |
 | 17 | Number | 4: the value as a double; 42 and 43: the same value as the low and high 64 bits of a decimal128 ([0104](../experiments/0104-nested-functions.md)) |
 | 19 | Text literal | 6: the text ([0109](../experiments/0109-string-literal.md)) |
 | 13, 15 | Unary minus, percent (both after their operand) ([0111](../experiments/0111-percent-literal.md), [0112](../experiments/0112-unary-minus.md)) | |
