@@ -20,13 +20,25 @@ struct Card {
 
 // Six photo cards with the proportions of the six photos in Basic White's placeholders
 // (experiment 0291), plus cards for backgrounds and formats Keynote treats differently.
+// Photo cards are drawn at most 1024 pixels on the longer side, keeping the proportions, so that
+// presentations made with the theme stay small enough to publish as fixtures.
+let photoMax = 1024.0
+func fit(_ w: Int, _ h: Int) -> (Int, Int) {
+    let k = min(1.0, photoMax / Double(max(w, h)))
+    return (Int((Double(w) * k).rounded()), Int((Double(h) * k).rounded()))
+}
+func photo(_ name: String, _ w: Int, _ h: Int, _ hue: CGFloat) -> Card {
+    let (fw, fh) = fit(w, h)
+    return Card(name: name, width: fw, height: fh, format: "jpeg", hue: hue, role: "Photo placeholder, \(w):\(h)")
+}
+
 let cards: [Card] = [
-    Card(name: "photo-a", width: 1434, height: 1669, format: "jpeg", hue: 0.00, role: "Photo placeholder"),
-    Card(name: "photo-b", width: 1290, height: 1720, format: "jpeg", hue: 0.10, role: "Photo placeholder"),
-    Card(name: "photo-c", width: 1964, height: 1473, format: "jpeg", hue: 0.20, role: "Photo placeholder"),
-    Card(name: "photo-d", width: 1858, height: 1486, format: "jpeg", hue: 0.35, role: "Photo placeholder"),
-    Card(name: "photo-e", width: 3195, height: 2556, format: "jpeg", hue: 0.50, role: "Photo placeholder"),
-    Card(name: "photo-f", width: 3159, height: 1892, format: "jpeg", hue: 0.65, role: "Photo placeholder"),
+    photo("photo-a", 1434, 1669, 0.00),
+    photo("photo-b", 1290, 1720, 0.10),
+    photo("photo-c", 1964, 1473, 0.20),
+    photo("photo-d", 1858, 1486, 0.35),
+    photo("photo-e", 3195, 2556, 0.50),
+    photo("photo-f", 3159, 1892, 0.65),
     Card(name: "background", width: 1920, height: 1080, format: "png", hue: 0.80, role: "Slide background"),
     Card(name: "alpha", width: 800, height: 800, format: "png-alpha", hue: 0.90, role: "Transparent PNG"),
     Card(name: "small", width: 64, height: 48, format: "png", hue: 0.05, role: "Tiny image"),
@@ -108,7 +120,7 @@ try FileManager.default.createDirectory(atPath: out, withIntermediateDirectories
 for card in cards {
     let rep = draw(card)
     let jpeg = card.format == "jpeg"
-    let data = jpeg ? rep.representation(using: .jpeg, properties: [.compressionFactor: 0.85])!
+    let data = jpeg ? rep.representation(using: .jpeg, properties: [.compressionFactor: 0.6])!
                     : rep.representation(using: .png, properties: [:])!
     let path = "\(out)/\(card.name).\(jpeg ? "jpg" : "png")"
     try data.write(to: URL(fileURLWithPath: path))

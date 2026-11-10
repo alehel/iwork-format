@@ -26,7 +26,7 @@ python3 -I recipes/0292-compare-themes.py samples samples/theme
 
 [`recipes/0292-compare-themes.py`](../recipes/0292-compare-themes.py) compares each new presentation with its namesake. It checks that every part frames into chunks and records, that every object is reached from the roots through header references, and how many records of each type each holds. It also lists media in `Data/` that isn't the project's own. `iwork-probe text` compared their texts.
 
-0196, the experiment with every transition, hit an AppleScript timeout once and ran on a second try. 0146 makes a folder package, which the script doesn't read, so it isn't compared.
+The reruns were done twice: first with the test theme's full-size cards, then with the smaller cards it now has ([0291](0291-test-theme.md)). Both runs gave the results below. In the first, 0196, the experiment with every transition, hit an AppleScript timeout once and ran on a second try. 0146 makes a folder package, which the script doesn't read, so it isn't compared.
 
 ## Observation
 

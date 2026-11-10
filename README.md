@@ -44,6 +44,7 @@ The clean-room rules are in [CONTRIBUTING.md](CONTRIBUTING.md). Every contributo
 | [`experiments/`](experiments/) | One file per experiment, numbered |
 | [`recipes/`](recipes/) | AppleScript that reproduces each experiment's documents |
 | [`tool/`](tool/) | `iwork-probe`, the Rust tool for inspecting files |
+| [`fixtures/`](fixtures/) | The index and builder of the published sample documents, which are attached to the [`fixtures` release](https://github.com/alehel/iwork-format/releases/tag/fixtures) |
 | [`theme/`](theme/) | The project's Keynote test theme, built from Basic White with its photos replaced by test cards the project drew itself (CC0), so presentations made with it can be shared ([0291](experiments/0291-test-theme.md)) |
 | `samples/` | Gitignored. Files Pages wrote, kept on your own machine only |
 | [`site/`](site/) | The spec site's guides, stylesheet and builder. `python3 -I site/examples.py` makes its excerpts, renders and sample files from `samples/`; `python3 -I site/build.py` writes the site |

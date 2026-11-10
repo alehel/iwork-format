@@ -22,7 +22,7 @@ mkdir -p samples/0291
 osascript recipes/0291-test-theme.applescript "$PWD/theme/cards" "$PWD/samples/0291/test-theme.key"
 ```
 
-The Swift script draws nine test cards: six with the proportions of Basic White's six photos (`photo-a` to `photo-f`), a 1920 × 1080 background, a transparent PNG and a 64 × 48 image. Each card prints its own name, role, size and format, with a grid, diagonals, a centre circle and corner tags (TL, TR, BL, BR) to show scaling, cropping and flips.
+The Swift script draws nine test cards. The photo cards are at most 1024 pixels on the longer side, to keep presentations small; a first version drew them at the photos' full size, which made the theme 2.5 MB rather than 0.9 MB. The cards are: six with the proportions of Basic White's six photos (`photo-a` to `photo-f`), a 1920 × 1080 background, a transparent PNG and a 64 × 48 image. Each card prints its own name, role, size and format, with a grid, diagonals, a centre circle and corner tags (TL, TR, BL, BR) to show scaling, cropping and flips.
 
 AppleScript lists the images on each master slide of a new presentation. Basic White has seven, on five masters:
 
