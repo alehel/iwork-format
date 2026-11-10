@@ -22,8 +22,8 @@ Pages keeps its page setup in the document root (object 1, type 10000). All leng
 
 | Field | Holds |
 | --- | --- |
-| 30, 31 | Paper width and height |
-| 32, 33, 34, 35 | Left, right, top and bottom margins |
+| 30, 31 | Paper width and height (*confirmed* by writing them, [0318](../experiments/0318-writing-paper-size-and-margin.md)) |
+| 32, 33, 34, 35 | Left, right, top and bottom margins (32 *confirmed* by writing it, [0318](../experiments/0318-writing-paper-size-and-margin.md)) |
 | 36, 37 | Header and footer distance from the page edge |
 | 43 | Printer name |
 | 40 | Change tracking: 1 while it is on. Fields 16 and 17 then name the current editing session, a type-2062 record ([0269](../experiments/0269-rejected-insertion.md)) |
