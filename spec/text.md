@@ -34,7 +34,7 @@ Pages keeps its page setup in the document root (object 1, type 10000). All leng
 
 ## Headers and footers
 
-Header and footer text is in type-2001 records, like the body. They are reached through the body's section runs (field 17), which point at a section (type 10011). Fields 23, 24 and 25 of a section each name a set of headers and footers (type 10143). In a set, field 1 lists the header and field 2 the footer, each as three text records in the order left, centre, right (*confirmed* by writing text into them, [0327](../experiments/0327-writing-headers-and-footers.md); an empty one has no field 3). A plain document uses the set in field 25. When section field 19 is 1, left-hand pages use the set in field 24 instead. *Likely* ([0016](../experiments/0016-header-and-footer.md), [0018](../experiments/0018-page-break-and-left-page.md), [0019](../experiments/0019-left-and-right-pages.md)). What the set in field 23 is for is *unknown*.
+Header and footer text is in type-2001 records, like the body. They are reached through the body's section runs (field 17), which point at a section (type 10011). Fields 23, 24 and 25 of a section each name a set of headers and footers (type 10143). In a set, field 1 lists the header and field 2 the footer, each as three text records in the order left, centre, right (*confirmed* by writing text into them, [0327](../experiments/0327-writing-headers-and-footers.md); an empty one has no field 3). A plain document uses the set in field 25. When section field 19 is 1, left-hand pages use the set in field 24 instead. *Likely* ([0016](../experiments/0016-header-and-footer.md), [0018](../experiments/0018-page-break-and-left-page.md), [0019](../experiments/0019-left-and-right-pages.md)). When section field 18 is 1, the section's first page uses the set in field 23, *confirmed* by writing ([0362](../experiments/0362-writing-first-page-headers.md)).
 
 Other section fields hold switches from the Section tab of Pages' Document sidebar. *Likely* ([0017](../experiments/0017-section-switches.md))
 
@@ -42,7 +42,8 @@ Other section fields hold switches from the Section tab of Pages' Document sideb
 | --- | --- | --- |
 | 17 | Same as previous section | 1 on (default), 0 off |
 | 19 | Left and right pages are different (shown only with facing pages on) | 0 off (default), 1 on ([0019](../experiments/0019-left-and-right-pages.md)) |
-| 28 | Hide header and footer on the section's first page | 0 off (default), 1 on |
+| 18 | First page uses its own header-and-footer set (field 23) | 0 off (default), 1 on; *confirmed* by writing ([0362](../experiments/0362-writing-first-page-headers.md)) |
+| 28 | Hide header and footer on the section's first page | 0 off (default), 1 on; *confirmed* by writing ([0362](../experiments/0362-writing-first-page-headers.md)) |
 | 30 | The background of the section's pages, a fill like a shape's (a colour in field 1), drawn out to the page's edges ([0286](../experiments/0286-section-background.md); *confirmed* by writing it, [0328](../experiments/0328-writing-a-page-background.md)) | message |
 
 The document-wide *Facing pages* setting is field 34 of the type-10012 record, which also holds the creation time and template name and is probably the document's settings. *Confirmed* by writing it ([0017](../experiments/0017-section-switches.md), [0300](../experiments/0300-writing-document-settings.md))

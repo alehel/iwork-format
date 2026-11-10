@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0362: Writing first-page headers · iWork file format specification</title>
+<meta name="description" content="iWork file format specification">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
+<p class="wip"><strong>Work in progress.</strong> This specification is incomplete and changes as new experiments run. Each finding says how sure it is: <em>confirmed</em>, <em>likely</em> or <em>unknown</em>. See <a href="../spec/index.html">what each layer covers so far</a>.</p>
+<div class="layout">
+<nav class="side" aria-label="Contents"><details open><summary>Contents</summary><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="../guides/anatomy.html">Reading a Pages document</a></li><li><a href="../guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="../guides/writing.html">Writing a document</a></li><li><a href="../guides/samples.html">Sample files</a></li><li class="group">Specification</li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2–5. Text, styles, objects, layout</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li class="group">Evidence</li><li><a href="index.html">All experiments</a></li></ul></details></nav>
+<main>
+<h1 id="0362-writing-first-page-headers">0362: Writing first-page headers<a class="anchor" href="#0362-writing-first-page-headers" aria-label="Link to this section">#</a></h1>
+<p><strong>Status:</strong> run</p>
+<p>Section field 28 is the switch "Hide header and footer on the section's first page" (<a href="0017-section-switches.html">0017</a>). A section names three header-and-footer sets, in fields 23, 24 and 25. A plain document uses 25, and left-hand pages use 24 when field 19 is on; what 23 is for was unknown (<a href="0016-header-and-footer.html">0016</a>, <a href="0019-left-and-right-pages.html">0019</a>). This experiment writes field 28, then puts text into set 23 and turns on, one at a time, the section's other unexplained switches, 18, 20 and 21, to see which one shows set 23.</p>
+<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Pages</td><td>15.4</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-10</td></tr><tr><td>Input</td><td><code>samples/0327/header.pages</code>, whose set 25 has the header texts LEFT and RIGHT and the footer FOOT. Its section, 1732296, has 17 = 1, 22 = 1 and 18–21, 28 = 0. Set 23's left header is text storage 1732494</td></tr><tr><td>Writer</td><td>The writer of <a href="0287-rewriting-a-document.html">0287</a> and [<code>recipes/0302-set-path.py</code>](../recipes/0302-set-path.py)</td></tr></tbody></table></div>
+<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section">#</a></h2>
+<pre class="lang-bash"><code>mkdir -p samples/0362
+R=recipes/0302-set-path.py
+python3 -I recipes/0287-iwa-writer.py samples/0327/header.pages samples/0362/x.pages \
+  --text 1732539 &quot;$(printf &#x27;page one\x05page two&#x27;)&quot;
+python3 -I $R samples/0362/x.pages samples/0362/both.pages 1732494 3 string FIRSTSET
+rm samples/0362/x.pages
+python3 -I $R samples/0362/both.pages samples/0362/hide-first.pages 1732296 28 varint 1
+for n in 18 20 21; do
+  python3 -I $R samples/0362/both.pages samples/0362/field-$n.pages 1732296 $n varint 1
+done</code></pre>
+<p>Pages opened each file on its own and exported it as PDF. The text of each page was read with PDFKit.</p>
+<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th>File</th><th>Page 1</th><th>Page 2</th></tr></thead><tbody><tr><td><code>both.pages</code></td><td>LEFT RIGHT / page one / FOOT</td><td>LEFT RIGHT / page two / FOOT</td></tr><tr><td><code>hide-first.pages</code> (28 = 1)</td><td>page one</td><td>LEFT RIGHT / page two / FOOT</td></tr><tr><td><code>field-18.pages</code> (18 = 1)</td><td>FIRSTSET / page one</td><td>LEFT RIGHT / page two / FOOT</td></tr><tr><td><code>field-20.pages</code> (20 = 1)</td><td>as <code>both</code></td><td>as <code>both</code></td></tr><tr><td><code>field-21.pages</code> (21 = 1)</td><td>as <code>both</code></td><td>as <code>both</code></td></tr></tbody></table></div>
+<p>Set 23's footer is empty, so page 1 of <code>field-18.pages</code> has no footer.</p>
+<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section">#</a></h2>
+<p>Field 28 = 1 hides the header and footer on the section's first page. Field 18 = 1 makes the section's first page use its own set, the one in field 23, in place of set 25. Fields 20 and 21 change nothing that shows on these two pages.</p>
+<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section">#</a></h2>
+<p><em>Confirmed</em>: field 28 hides the first page's header and footer. Field 18 switches the first page to set 23. Which control in Pages sets field 18 wasn't checked.</p>
+<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Last built from <a href="https://github.com/alehel/iwork-format">alehel/iwork-format</a>.</p></footer>
+</main>
+
+</div>
+<script>
+// On narrow screens the contents and on-this-page lists start folded; on wide ones they stay open.
+(function () {
+  var narrow = window.matchMedia("(max-width: 48rem)");
+  var lists = document.querySelectorAll(".side details, .toc details");
+  function fit() { for (var i = 0; i < lists.length; i++) lists[i].open = !narrow.matches; }
+  fit();
+  if (narrow.addEventListener) narrow.addEventListener("change", fit);
+  document.addEventListener("click", function (e) {
+    if (narrow.matches && e.target.closest && e.target.closest(".toc a")) fit();
+  });
+})();
+</script>
+</body>
+</html>
