@@ -32,7 +32,7 @@ A document with a table also has parts under `Index/Tables/`: `DataList`, `Heade
 
 Files a document embeds, such as images, are stored unchanged under `Data/`, each named after its original file name with `-N` before the extension. N is a data ID, by which records refer to the file. *Likely* ([0023](../experiments/0023-an-image.md))
 
-Identical files are stored once ([0142](../experiments/0142-same-image-twice.md)), in their original format ([0143](../experiments/0143-jpeg-image.md)), and files nothing uses are dropped on save ([0145](../experiments/0145-deleted-image.md)). For a large image, Pages also stores a reduced copy (`name-small-N.ext`), which the image record names in field 12 ([0148](../experiments/0148-large-image.md)). *Likely*
+Identical files are stored once ([0142](../experiments/0142-same-image-twice.md)), in their original format ([0143](../experiments/0143-jpeg-image.md)), and files nothing uses are dropped on save ([0145](../experiments/0145-deleted-image.md)). For a large image, Pages also stores a reduced copy (`name-small-N.ext`), which the image record names in field 12 ([0148](../experiments/0148-large-image.md)). Keynote does the same, with the copy at most 256 pixels on the longer side, and stores an image used twice once ([0291](../experiments/0291-test-theme.md)). *Likely*
 
 `Metadata.iwa` record 2 (type 11006) lists the data in its repeated field 4. Each entry holds the data ID (field 1), the file's SHA-1 (field 2), the original file name (field 3) and the stored file name (field 4). Entries for resources of the template have no file in the package. *Likely* ([0023](../experiments/0023-an-image.md))
 

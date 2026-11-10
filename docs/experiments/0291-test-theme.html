@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0291: A test theme with our own images · iWork file format specification</title>
+<meta name="description" content="iWork file format specification">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
+<p class="wip"><strong>Work in progress.</strong> This specification is incomplete and changes as new experiments run. Each finding says how sure it is: <em>confirmed</em>, <em>likely</em> or <em>unknown</em>. See <a href="../spec/index.html">what each layer covers so far</a>.</p>
+<div class="layout">
+<nav class="side" aria-label="Contents"><details open><summary>Contents</summary><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="../guides/anatomy.html">Reading a Pages document</a></li><li><a href="../guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="../guides/writing.html">Writing a document</a></li><li><a href="../guides/samples.html">Sample files</a></li><li class="group">Specification</li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2–5. Text, styles, objects, layout</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li class="group">Evidence</li><li><a href="index.html">All experiments</a></li></ul></details></nav>
+<main>
+<h1 id="0291-a-test-theme-with-our-own-images">0291: A test theme with our own images<a class="anchor" href="#0291-a-test-theme-with-our-own-images" aria-label="Link to this section">#</a></h1>
+<p><strong>Status:</strong> run</p>
+<p>Every new Keynote presentation carries the images of its theme in <code>Data/</code>. With Basic White, the default theme, that is six stock photos and 17 thumbnails drawn from Apple's master slides, some showing those photos. Those images are Apple's, so the project's Keynote samples can't be published. This experiment builds a theme whose masters are Basic White's, with every photo replaced by a test card the project drew itself, and records what Keynote stores when it does.</p>
+<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Keynote</td><td>15.4</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-10</td></tr><tr><td>Theme</td><td>Basic White (<em>Enkel, hvit</em>), Keynote's default</td></tr><tr><td>Cards</td><td>[<code>recipes/0291-test-cards.swift</code>](../recipes/0291-test-cards.swift), released under CC0</td></tr></tbody></table></div>
+<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section">#</a></h2>
+<pre class="lang-bash"><code>swift recipes/0291-test-cards.swift theme/cards
+mkdir -p samples/0291
+osascript recipes/0291-test-theme.applescript &quot;$PWD/theme/cards&quot; &quot;$PWD/samples/0291/test-theme.key&quot;</code></pre>
+<p>The Swift script draws nine test cards: six with the proportions of Basic White's six photos (<code>photo-a</code> to <code>photo-f</code>), a 1920 × 1080 background, a transparent PNG and a 64 × 48 image. Each card prints its own name, role, size and format, with a grid, diagonals, a centre circle and corner tags (TL, TR, BL, BR) to show scaling, cropping and flips.</p>
+<p>AppleScript lists the images on each master slide of a new presentation. Basic White has seven, on five masters:</p>
+<div class="table"><table><thead><tr><th>Master</th><th>Image</th><th>Size on the slide</th><th>Card</th></tr></thead><tbody><tr><td>2, Title &amp; Photo</td><td><code>666699290_02_crop_3159x1892.jpg</code></td><td>1920 × 1080</td><td><code>photo-f</code></td></tr><tr><td>3, Title &amp; Photo Alt</td><td><code>910457886_1434x1669.jpg</code></td><td>860 × 880</td><td><code>photo-a</code></td></tr><tr><td>6, Title, Bullets &amp; Photo</td><td><code>660384004_1290x1720.jpg</code></td><td>860 × 881</td><td><code>photo-b</code></td></tr><tr><td>15, Photo – 3 Up</td><td><code>886640052_1858x1486.jpg</code></td><td>585 × 426</td><td><code>photo-d</code></td></tr><tr><td>15, Photo – 3 Up</td><td><code>910457886_1434x1669.jpg</code></td><td>585 × 426</td><td><code>photo-a</code></td></tr><tr><td>15, Photo – 3 Up</td><td><code>660384004_rotate_1964x1473.jpg</code></td><td>1116 × 885</td><td><code>photo-c</code></td></tr><tr><td>16, Photo</td><td><code>886640052_3195x2556.jpg</code></td><td>1920 × 1080</td><td><code>photo-e</code></td></tr></tbody></table></div>
+<p>The recipe sets each image's <code>file name</code> to its card, which AppleScript allows on a master's image, and saves. The result's thumbnails were then checked, and the document saved as a theme with File → Save Theme → Add to Theme Chooser (<em>Arkiv → Lagre tema → Legg til i Temavelger</em>), which isn't scriptable.</p>
+<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section">#</a></h2>
+<p><strong>Replacing the images.</strong> After <code>set file name</code>, each image names its card. The photos are gone from <code>Data/</code>. Each card is stored once under its own name (<code>photo-a-9080.jpg</code>), even though <code>photo-a</code> fills two placeholders. Keynote adds a reduced copy of each, at most 256 pixels on the longer side, named <code>photo-a-small-9081.jpeg</code>. Apple's photos were stored only in that reduced form, <code>…-small-N.jpeg</code>, at 256 pixels.</p>
+<p><strong>Thumbnails.</strong> <code>Data/</code> also holds one <code>mt-UUID-N.jpg</code> per master slide, 356 × 200 pixels, and one <code>st-UUID-N.jpg</code> for the slide. The master thumbnails keep their UUID from the theme: the same 17 names appear in every Basic White presentation. Saving after the replacement redrew most of them, but not the Photo and Photo – 3 Up masters, whose thumbnails still showed Apple's photos. Adding one slide per master and saving again redrew those two as well. Four thumbnails were never redrawn, and show only Apple's placeholder text (<em>Statement</em>, <em>“Notable Quote”</em>, <em>100% Fact information</em>) or an empty slide.</p>
+<p><strong>The theme file.</strong> The saved theme is a <code>.kth</code> file in <code>~/Library/Containers/com.apple.Keynote/Data/Library/Application Support/User Templates/</code>, named by a UUID. It is a ZIP laid out like a <code>.key</code>: the same <code>Index/</code>, <code>Metadata/</code> and <code>Data/</code> parts and previews. Its 30 data files are the six cards, their reduced copies, 17 master thumbnails and one slide thumbnail. None of its parts contains the theme's name. Keynote took the name from the presentation's file name. It probably keeps the names with its themes in iCloud: a theme added and then removed from that folder stayed in Keynote's theme list.</p>
+<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section">#</a></h2>
+<p>A theme with the project's own images can be built from Basic White by script, except for the final Save Theme. A master's image can be swapped with AppleScript's <code>file name</code>. Its master thumbnail, though, is redrawn only once the master is shown, so a builder must use every master on a slide before saving.</p>
+<p>A <code>.kth</code> theme is a Keynote document in the same container format, with a different extension. Two data findings from Pages carry over to Keynote: identical files are stored once (<a href="0142-same-image-twice.html">0142</a>), and large images get a reduced <code>-small</code> copy (<a href="0148-large-image.html">0148</a>), here at most 256 pixels on the longer side.</p>
+<p>The theme is in the repository as <code>theme/iwork-format test.kth</code>, with its cards in <code>theme/cards/</code>. How best to install it on another Mac isn't tested yet.</p>
+<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section">#</a></h2>
+<p><em>Likely</em>:</p>
+<ul><li>A theme file is a Keynote document.</li><li>A master thumbnail is redrawn only when its master is shown.</li><li>Keynote stores a reduced copy of an image at most 256 pixels on the longer side.</li><li>The theme name comes from the file name and isn't stored in the file.</li></ul>
+<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Last built from <a href="https://github.com/alehel/iwork-format">alehel/iwork-format</a>.</p></footer>
+</main>
+
+</div>
+<script>
+// On narrow screens the contents and on-this-page lists start folded; on wide ones they stay open.
+(function () {
+  var narrow = window.matchMedia("(max-width: 48rem)");
+  var lists = document.querySelectorAll(".side details, .toc details");
+  function fit() { for (var i = 0; i < lists.length; i++) lists[i].open = !narrow.matches; }
+  fit();
+  if (narrow.addEventListener) narrow.addEventListener("change", fit);
+  document.addEventListener("click", function (e) {
+    if (narrow.matches && e.target.closest && e.target.closest(".toc a")) fit();
+  });
+})();
+</script>
+</body>
+</html>

@@ -6,7 +6,9 @@ Observed with Keynote 15.4 on macOS 26.5.2.
 
 ## Parts
 
-A new presentation has the seven `.iwa` parts that Pages documents have, without numbers in their names, plus one `Index/Slide-N.iwa` per slide and one `Index/TemplateSlide-N.iwa` per template slide of the theme. N is usually the ID of the slide record inside, but a part may be named `Slide.iwa` or end in `-2`, and names move between slides when slides are deleted; find slides by their IDs ([0161](../experiments/0161-deleted-slide.md), [0162](../experiments/0162-ten-slides.md)). The theme's images, including slide thumbnails, are stored under `Data/`. *Likely* ([0024](../experiments/0024-keynote-and-numbers.md), [0027](../experiments/0027-document-roots.md))
+A new presentation has the seven `.iwa` parts that Pages documents have, without numbers in their names, plus one `Index/Slide-N.iwa` per slide and one `Index/TemplateSlide-N.iwa` per template slide of the theme. N is usually the ID of the slide record inside, but a part may be named `Slide.iwa` or end in `-2`, and names move between slides when slides are deleted; find slides by their IDs ([0161](../experiments/0161-deleted-slide.md), [0162](../experiments/0162-ten-slides.md)). The theme's images, including slide thumbnails, are stored under `Data/`. *Likely* ([0024](../experiments/0024-keynote-and-numbers.md), [0027](../experiments/0027-document-roots.md)). Each master slide has a 356 × 200 thumbnail named `mt-UUID-N.jpg`, where the UUID is the master's and stays the same in every presentation made from the theme; slides have `st-UUID-N.jpg`. A master's thumbnail is redrawn only once the master is shown, so a changed master can keep an old thumbnail until then ([0291](../experiments/0291-test-theme.md)).
+
+A theme file (`.kth`) is a Keynote document in the same container, with a different extension. Its name isn't stored in it: Keynote takes the name from the presentation it was saved from. *Likely* ([0291](../experiments/0291-test-theme.md))
 
 ## From the root to a slide's text
 
