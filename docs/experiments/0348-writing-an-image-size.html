@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0348: Writing an image&#x27;s size, measured on the page · iWork file format specification</title>
+<meta name="description" content="iWork file format specification">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
+<p class="wip"><strong>Work in progress.</strong> This specification is incomplete and changes as new experiments run. Each finding says how sure it is: <em>confirmed</em>, <em>likely</em> or <em>unknown</em>. See <a href="../spec/index.html">what each layer covers so far</a>.</p>
+<div class="layout">
+<nav class="side" aria-label="Contents"><details open><summary>Contents</summary><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="../guides/anatomy.html">Reading a Pages document</a></li><li><a href="../guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="../guides/writing.html">Writing a document</a></li><li><a href="../guides/samples.html">Sample files</a></li><li class="group">Specification</li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2–5. Text, styles, objects, layout</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li class="group">Evidence</li><li><a href="index.html">All experiments</a></li></ul></details></nav>
+<main>
+<h1 id="0348-writing-an-images-size-measured-on-the-page">0348: Writing an image's size, measured on the page<a class="anchor" href="#0348-writing-an-images-size-measured-on-the-page" aria-label="Link to this section">#</a></h1>
+<p><strong>Status:</strong> run</p>
+<p><a href="0055-image-size.html">0055</a> found an image's size in two places, both changing when the image was resized: the drawable geometry's 1.1.2 and the image's field 4, with its natural size in field 9. This experiment writes a new size into each, and both, and measures the image on the exported page.</p>
+<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Pages</td><td>15.4</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-10</td></tr><tr><td>Input</td><td><code>samples/0023/image.pages</code>: the 8 × 4 red PNG on the page at (286.8, 397.6), image record 1732647, with 8 × 4 in 1.1.2, 4 and 9</td></tr><tr><td>Writer</td><td>[<code>recipes/0302-set-path.py</code>](../recipes/0302-set-path.py)</td></tr></tbody></table></div>
+<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section">#</a></h2>
+<pre class="lang-bash"><code>mkdir -p samples/0348
+cp samples/0023/image.pages samples/0348/original.pages
+R=recipes/0302-set-path.py
+python3 -I $R samples/0348/original.pages samples/0348/both.pages 1732647 1.1.2.1 float 200 1.1.2.2 float 100 4.1 float 200 4.2 float 100
+python3 -I $R samples/0348/original.pages samples/0348/geometry-only.pages 1732647 1.1.2.1 float 200 1.1.2.2 float 100
+python3 -I $R samples/0348/original.pages samples/0348/field4-only.pages 1732647 4.1 float 200 4.2 float 100</code></pre>
+<p>Each file was opened in Pages on its own and exported as PDF; the page was drawn at 2 pixels per point and the box around its red pixels measured.</p>
+<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th>File</th><th>Red area</th></tr></thead><tbody><tr><td><code>original.pages</code></td><td>8.5 × 4.5 at 287.0, 397.5</td></tr><tr><td><code>both.pages</code></td><td>200.5 × 100.5 at 287.0, 397.5</td></tr><tr><td><code>geometry-only.pages</code> (1.1.2)</td><td>200.5 × 100.5 at 287.0, 397.5</td></tr><tr><td><code>field4-only.pages</code> (4)</td><td>8.5 × 4.5 at 287.0, 397.5</td></tr></tbody></table></div>
+<p>The extra half point is the pixel grid.</p>
+<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section">#</a></h2>
+<p>The geometry's 1.1.2 decides the size an image is drawn at, scaling the image to fill it. The image's field 4 doesn't change the drawing; Pages keeps it equal to 1.1.2, so a writer should set both.</p>
+<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section">#</a></h2>
+<p><em>Confirmed</em>: 1.1.2 is the drawn size, by writing it and measuring.</p>
+<p><em>Unknown</em>: what field 4 is used for, if anything.</p>
+<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Last built from <a href="https://github.com/alehel/iwork-format">alehel/iwork-format</a>.</p></footer>
+</main>
+
+</div>
+<script>
+// On narrow screens the contents and on-this-page lists start folded; on wide ones they stay open.
+(function () {
+  var narrow = window.matchMedia("(max-width: 48rem)");
+  var lists = document.querySelectorAll(".side details, .toc details");
+  function fit() { for (var i = 0; i < lists.length; i++) lists[i].open = !narrow.matches; }
+  fit();
+  if (narrow.addEventListener) narrow.addEventListener("change", fit);
+  document.addEventListener("click", function (e) {
+    if (narrow.matches && e.target.closest && e.target.closest(".toc a")) fit();
+  });
+})();
+</script>
+</body>
+</html>
