@@ -28,10 +28,10 @@ python3 -I recipes/0300-set-field.py samples/0226/plain.numbers samples/0301/hea
 <p>Saved again by Numbers, the model has fields 9 = 2, 11 = 1 and 13 = 1, and no fields 10 and 12: Numbers leaves out the fields that are 0.</p>
 <h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section">#</a></h2>
 <p>Fields 9, 10, 11 and 12 of the table model are what they were read as: header rows, header columns, footer rows, and whether header rows are frozen. Numbers writes a 0 in them by leaving the field out, so a reader must take an absent field as 0.</p>
-<p>The apps seem to refuse to open a document while another with the same document ID is open, which explains failures seen with copies in <a href="0299-writing-a-skipped-slide.html">0299</a>. Writers that start from a copy, and experiments that open both, should open one at a time. <em>Likely</em>, from three cases.</p>
+<p>The apps seemed to refuse to open a document while another with the same document ID was open. <a href="0302-writing-a-transition.html">0302</a> found refusals with no other document open, and that opening files through Launch Services (<code>open -a</code>) avoids them, so that explanation was wrong.</p>
 <h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section">#</a></h2>
 <p><em>Confirmed</em>: table model fields 9 to 12, by writing them.</p>
-<p><em>Likely</em>: the apps won't open two documents with the same document ID at once.</p>
+<p>The explanation of the refusals was withdrawn in <a href="0302-writing-a-transition.html">0302</a>.</p>
 <footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Last built from <a href="https://github.com/alehel/iwork-format">alehel/iwork-format</a>.</p></footer>
 </main>
 

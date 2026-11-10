@@ -42,10 +42,10 @@ Saved again by Numbers, the model has fields 9 = 2, 11 = 1 and 13 = 1, and no fi
 
 Fields 9, 10, 11 and 12 of the table model are what they were read as: header rows, header columns, footer rows, and whether header rows are frozen. Numbers writes a 0 in them by leaving the field out, so a reader must take an absent field as 0.
 
-The apps seem to refuse to open a document while another with the same document ID is open, which explains failures seen with copies in [0299](0299-writing-a-skipped-slide.md). Writers that start from a copy, and experiments that open both, should open one at a time. *Likely*, from three cases.
+The apps seemed to refuse to open a document while another with the same document ID was open. [0302](0302-writing-a-transition.md) found refusals with no other document open, and that opening files through Launch Services (`open -a`) avoids them, so that explanation was wrong.
 
 ## Confidence
 
 *Confirmed*: table model fields 9 to 12, by writing them.
 
-*Likely*: the apps won't open two documents with the same document ID at once.
+The explanation of the refusals was withdrawn in [0302](0302-writing-a-transition.md).

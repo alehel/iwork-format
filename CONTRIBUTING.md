@@ -23,7 +23,7 @@ In your first pull request, add this line to its description:
 1. Copy [`experiments/TEMPLATE.md`](experiments/TEMPLATE.md) to `experiments/NNNN-short-title.md`, using the next free number.
 2. Where you can, write the steps as an AppleScript in `recipes/NNNN-short-title.applescript`, so anyone can rerun them.
 3. Save the documents under `samples/NNNN/`. That folder is gitignored: never commit them. Make Keynote presentations with the test theme (`IWORK_KEYNOTE_THEME='iwork-format test'`, see [`theme/`](theme/)) so they can be shared. Documents are published only through `fixtures/build.py`, which leaves out anything with Apple's template images or a personal name, unless its author has agreed to it being published; see [`fixtures/INDEX.md`](fixtures/INDEX.md).
-   Open copies of a document one at a time: the apps seem to refuse a document while another with the same document ID is open ([0301](experiments/0301-writing-header-rows.md)).
+   To open a document from a script, use `open -a "Pages Creator Studio" FILE` and then work on the front document: AppleScript's own `open` is sometimes refused with "the operation is not permitted" ([0302](experiments/0302-writing-a-transition.md)).
 4. Compare the documents with `iwork-probe`, and paste only the part of the output that changed.
 5. Record the Pages and macOS versions. The format can change between releases.
 
