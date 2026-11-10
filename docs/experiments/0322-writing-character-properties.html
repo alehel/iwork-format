@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0322: Writing character properties, measured on the page · iWork file format specification</title>
+<meta name="description" content="iWork file format specification">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
+<p class="wip"><strong>Work in progress.</strong> This specification is incomplete and changes as new experiments run. Each finding says how sure it is: <em>confirmed</em>, <em>likely</em> or <em>unknown</em>. See <a href="../spec/index.html">what each layer covers so far</a>.</p>
+<div class="layout">
+<nav class="side" aria-label="Contents"><details open><summary>Contents</summary><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="../guides/anatomy.html">Reading a Pages document</a></li><li><a href="../guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="../guides/writing.html">Writing a document</a></li><li><a href="../guides/samples.html">Sample files</a></li><li class="group">Specification</li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2–5. Text, styles, objects, layout</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li class="group">Evidence</li><li><a href="index.html">All experiments</a></li></ul></details></nav>
+<main>
+<h1 id="0322-writing-character-properties-measured-on-the-page">0322: Writing character properties, measured on the page<a class="anchor" href="#0322-writing-character-properties-measured-on-the-page" aria-label="Link to this section">#</a></h1>
+<p><strong>Status:</strong> run</p>
+<p>Character properties were read as fields of a style's field 11: 10 the baseline (1 superscript, 2 subscript), 13 capitals (1 all caps, 2 small caps), 14 the baseline shift in points and 27 tracking (<a href="0203-superscript.html">0203</a>–<a href="0209-raised-baseline.html">0209</a>). This experiment writes each into the Body style and measures the text on the exported page with [<code>recipes/0319-measure-pdf.swift</code>](../recipes/0319-measure-pdf.swift).</p>
+<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Pages</td><td>15.4</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-10</td></tr><tr><td>Input</td><td><code>samples/0002/hello.pages</code> (the word <code>hello</code>, 11-point Body) and <code>samples/0320/long.pages</code> (a paragraph wrapping to several lines)</td></tr><tr><td>Writer</td><td>[<code>recipes/0302-set-path.py</code>](../recipes/0302-set-path.py)</td></tr></tbody></table></div>
+<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section">#</a></h2>
+<pre class="lang-bash"><code>mkdir -p samples/0322
+cp samples/0002/hello.pages samples/0322/original.pages
+R=recipes/0302-set-path.py
+python3 -I $R samples/0322/original.pages samples/0322/caps.pages 1731511 11.13 varint 1
+python3 -I $R samples/0322/original.pages samples/0322/super.pages 1731511 11.10 varint 1
+python3 -I $R samples/0322/original.pages samples/0322/shift10.pages 1731511 11.14 float 10
+python3 -I $R samples/0322/original.pages samples/0322/tracking.pages 1731511 11.27 float 0.5
+python3 -I $R samples/0320/long.pages samples/0322/long-shift10.pages 1731511 11.14 float 10</code></pre>
+<p>Each file was opened in Pages on its own, exported as PDF and measured.</p>
+<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section">#</a></h2>
+<p>The word's ink, in points:</p>
+<div class="table"><table><thead><tr><th>File</th><th>Left – right</th><th>Top – bottom</th></tr></thead><tbody><tr><td><code>original.pages</code></td><td>57.5 – 79.5</td><td>58.2 – 66.2</td></tr><tr><td><code>caps.pages</code> (13 = 1)</td><td>57.8 – 91.5</td><td>58.0 – 66.2</td></tr><tr><td><code>super.pages</code> (10 = 1)</td><td>57.5 – 72.0</td><td>58.2 – 63.2</td></tr><tr><td><code>shift10.pages</code> (14 = 10)</td><td>57.5 – 79.5</td><td>58.2 – 66.2</td></tr><tr><td><code>tracking.pages</code> (27 = 0.5)</td><td>57.5 – 101.5</td><td>58.2 – 66.2</td></tr></tbody></table></div>
+<p>The first three lines of the long paragraph, top – bottom: 60.2 – 66.2, 72.2 – 78.2 and 84.2 – 90.2 as written; 60.2 – 66.2, 82.2 – 88.2 and 104.2 – 110.2 with 14 = 10.</p>
+<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section">#</a></h2>
+<p>All caps sets <code>HELLO</code> in capitals, 12 points wider. Superscript sets the word smaller and raised: it is 7.5 points narrower and its bottom 3 points higher. Tracking 0.5 adds half an em, 5.5 points, after each of the word's letters, 22 points in all for the four gaps and the end. The baseline shift raises the text by 10 points, and each line grows by the same amount to make room, so on the first line the text stays where it was while the spacing between lines grows from 12 to 22 points.</p>
+<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section">#</a></h2>
+<p><em>Confirmed</em>: character properties 11.10, 11.13, 11.14 and 11.27, by writing them and measuring.</p>
+<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Last built from <a href="https://github.com/alehel/iwork-format">alehel/iwork-format</a>.</p></footer>
+</main>
+
+</div>
+<script>
+// On narrow screens the contents and on-this-page lists start folded; on wide ones they stay open.
+(function () {
+  var narrow = window.matchMedia("(max-width: 48rem)");
+  var lists = document.querySelectorAll(".side details, .toc details");
+  function fit() { for (var i = 0; i < lists.length; i++) lists[i].open = !narrow.matches; }
+  fit();
+  if (narrow.addEventListener) narrow.addEventListener("change", fit);
+  document.addEventListener("click", function (e) {
+    if (narrow.matches && e.target.closest && e.target.closest(".toc a")) fit();
+  });
+})();
+</script>
+</body>
+</html>

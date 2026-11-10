@@ -174,13 +174,13 @@ Field 11 of a character style or a paragraph style holds the character propertie
 | 5 | Font name, such as `HelveticaNeue` | text |
 | 7 | Text colour | message: red, green and blue in fields 3, 4 and 5 and alpha in field 6, as floats from 0 to 1, in sRGB (field 1 = 1 RGB, field 12 = 1 probably sRGB); AppleScript reports colours converted to Generic RGB ([0309](../experiments/0309-writing-a-cell-colour.md)). In cell text styles, at least, the colour drawn is 46.1 and this field a copy that the app rewrites from it on saving ([0310](../experiments/0310-writing-a-cell-text-style.md)) |
 | 46 | Text fill | message: field 1 is the text colour as in 7; this is the one drawn, and the app keeps 7 in step with it when saving ([0310](../experiments/0310-writing-a-cell-text-style.md)). With 1, 2, 3 and 5, *confirmed* by writing a paragraph style in Pages ([0311](../experiments/0311-writing-a-paragraph-style.md)) |
-| 10 | Baseline position | varint: 1 superscript, 2 subscript ([0203](../experiments/0203-superscript.md), [0204](../experiments/0204-subscript.md)) |
+| 10 | Baseline position | varint: 1 superscript, 2 subscript ([0203](../experiments/0203-superscript.md), [0204](../experiments/0204-subscript.md)) *Confirmed* by writing and measuring ([0322](../experiments/0322-writing-character-properties.md)). |
 | 11 | Underline | varint: 1 underlined, 0 not |
 | 12 | Strikethrough | varint: 1 struck through, 0 not |
-| 13 | Capitalisation | varint: 1 all caps, 2 small caps; the stored text keeps its case ([0205](../experiments/0205-small-caps.md), [0206](../experiments/0206-all-caps.md)) |
-| 14 | Baseline shift | float, in points, up from the baseline ([0209](../experiments/0209-raised-baseline.md)) |
+| 13 | Capitalisation | varint: 1 all caps, 2 small caps; the stored text keeps its case ([0205](../experiments/0205-small-caps.md), [0206](../experiments/0206-all-caps.md)) *Confirmed* by writing and measuring ([0322](../experiments/0322-writing-character-properties.md)). |
+| 14 | Baseline shift | float, in points, up from the baseline ([0209](../experiments/0209-raised-baseline.md)) *Confirmed* by writing and measuring ([0322](../experiments/0322-writing-character-properties.md)). |
 | 16 | Ligatures | varint: 0 none; absent means the default ([0208](../experiments/0208-no-ligatures.md)) |
-| 27 | Letter spacing | float, as a fraction of the font size: 0.01 is 1% ([0207](../experiments/0207-looser-letter-spacing.md)) |
+| 27 | Letter spacing | float, as a fraction of the font size: 0.01 is 1% ([0207](../experiments/0207-looser-letter-spacing.md)) *Confirmed* by writing and measuring ([0322](../experiments/0322-writing-character-properties.md)). |
 
 Field 11.5 is *confirmed* ([0010](../experiments/0010-alignment.md), [0053](../experiments/0053-font.md)), and so are 11.7 ([0013](../experiments/0013-text-colour.md)), 11.11 and 11.12 ([0012](../experiments/0012-underline-and-strikethrough.md)); the rest as above.
 
