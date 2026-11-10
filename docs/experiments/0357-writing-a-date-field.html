@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0357: Writing a date field · iWork file format specification</title>
+<meta name="description" content="iWork file format specification">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
+<p class="wip"><strong>Work in progress.</strong> This specification is incomplete and changes as new experiments run. Each finding says how sure it is: <em>confirmed</em>, <em>likely</em> or <em>unknown</em>. See <a href="../spec/index.html">what each layer covers so far</a>.</p>
+<div class="layout">
+<nav class="side" aria-label="Contents"><details open><summary>Contents</summary><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="../guides/anatomy.html">Reading a Pages document</a></li><li><a href="../guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="../guides/writing.html">Writing a document</a></li><li><a href="../guides/samples.html">Sample files</a></li><li class="group">Specification</li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2–5. Text, styles, objects, layout</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li class="group">Evidence</li><li><a href="index.html">All experiments</a></li></ul></details></nav>
+<main>
+<h1 id="0357-writing-a-date-field">0357: Writing a date field<a class="anchor" href="#0357-writing-a-date-field" aria-label="Link to this section">#</a></h1>
+<p><strong>Status:</strong> run</p>
+<p>A date field is a smart field over a range of the body (run table 11) pointing at a type-2034 record (<a href="0211-date-field.html">0211</a>). In <code>samples/0211/date.pages</code> that record holds a date pattern in field 2 (<code>EEEE d. MMMM y</code>), a locale in field 3 (<code>nb_NO</code>), 4 = 4, 5, 6 and 7 = 0, and the date in field 8.1 as a double of seconds since 2001. This experiment writes a new date, pattern and locale, and each of fields 5 to 7, and reads the exported page's text.</p>
+<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Pages</td><td>15.4, in Norwegian</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-10</td></tr><tr><td>Input</td><td><code>samples/0211/date.pages</code>: <code>One</code> followed by a date field showing <code>mandag 9. november 2026</code>, record 1732708</td></tr><tr><td>Writer</td><td>[<code>recipes/0302-set-path.py</code>](../recipes/0302-set-path.py)</td></tr></tbody></table></div>
+<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section">#</a></h2>
+<pre class="lang-bash"><code>mkdir -p samples/0357
+cp samples/0211/date.pages samples/0357/original.pages
+R=recipes/0302-set-path.py
+python3 -I $R samples/0357/original.pages samples/0357/date.pages 1732708 8.1 double 920289600
+python3 -I $R samples/0357/date.pages samples/0357/pattern.pages 1732708 2 string &quot;yyyy-MM-dd&quot; 3 string en_US
+for f in 5 6 7; do python3 -I $R samples/0357/pattern.pages samples/0357/f$f.pages 1732708 $f varint 1; done</code></pre>
+<p>920289600 seconds is 2030-03-01 12:00. Pages opened each file on its own and exported it as PDF; PDFKit extracted the page's text.</p>
+<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section">#</a></h2>
+<p>Every file, original and written, shows <code>One</code> and <code>mandag 9. november 2026</code>.</p>
+<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section">#</a></h2>
+<p>Pages draws a date field's text as it is stored in the body, under the smart field's run, and doesn't recompute it from the type-2034 record when it opens or exports a document, even with a new date, pattern or locale, or with field 5, 6 or 7 set. The record holds the field's settings for when Pages next updates the field itself; to change what a date field shows, a writer has to write the text in the body too. Which setting makes Pages update the date on opening isn't one of fields 5 to 7.</p>
+<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section">#</a></h2>
+<p><em>Likely</em>: a date field shows its stored body text, not text made from its record.</p>
+<p><em>Unknown</em>: the meaning of fields 4 to 7, and how automatic updating is stored.</p>
+<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Last built from <a href="https://github.com/alehel/iwork-format">alehel/iwork-format</a>.</p></footer>
+</main>
+
+</div>
+<script>
+// On narrow screens the contents and on-this-page lists start folded; on wide ones they stay open.
+(function () {
+  var narrow = window.matchMedia("(max-width: 48rem)");
+  var lists = document.querySelectorAll(".side details, .toc details");
+  function fit() { for (var i = 0; i < lists.length; i++) lists[i].open = !narrow.matches; }
+  fit();
+  if (narrow.addEventListener) narrow.addEventListener("change", fit);
+  document.addEventListener("click", function (e) {
+    if (narrow.matches && e.target.closest && e.target.closest(".toc a")) fit();
+  });
+})();
+</script>
+</body>
+</html>
