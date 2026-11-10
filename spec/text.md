@@ -34,7 +34,7 @@ Pages keeps its page setup in the document root (object 1, type 10000). All leng
 
 ## Headers and footers
 
-Header and footer text is in type-2001 records, like the body. They are reached through the body's section runs (field 17), which point at a section (type 10011). Fields 23, 24 and 25 of a section each name a set of headers and footers (type 10143). In a set, field 1 lists the header and field 2 the footer, each as three text records in the order left, centre, right. A plain document uses the set in field 25. When section field 19 is 1, left-hand pages use the set in field 24 instead. *Likely* ([0016](../experiments/0016-header-and-footer.md), [0018](../experiments/0018-page-break-and-left-page.md), [0019](../experiments/0019-left-and-right-pages.md)). What the set in field 23 is for is *unknown*.
+Header and footer text is in type-2001 records, like the body. They are reached through the body's section runs (field 17), which point at a section (type 10011). Fields 23, 24 and 25 of a section each name a set of headers and footers (type 10143). In a set, field 1 lists the header and field 2 the footer, each as three text records in the order left, centre, right (*confirmed* by writing text into them, [0327](../experiments/0327-writing-headers-and-footers.md); an empty one has no field 3). A plain document uses the set in field 25. When section field 19 is 1, left-hand pages use the set in field 24 instead. *Likely* ([0016](../experiments/0016-header-and-footer.md), [0018](../experiments/0018-page-break-and-left-page.md), [0019](../experiments/0019-left-and-right-pages.md)). What the set in field 23 is for is *unknown*.
 
 Other section fields hold switches from the Section tab of Pages' Document sidebar. *Likely* ([0017](../experiments/0017-section-switches.md))
 
@@ -52,7 +52,7 @@ Other fields of the type-10012 document settings:
 | Type-10012 field | Setting |
 | --- | --- |
 | 1 | Document body: 1 word processing (default), 0 page layout ([0240](../experiments/0240-no-document-body.md)) |
-| 2 | Show headers, 1 on (default) ([0238](../experiments/0238-no-header.md)) |
+| 2 | Show headers, 1 on (default) ([0238](../experiments/0238-no-header.md)); writing 0 alone doesn't hide headers that have text, so Pages' switch must involve more ([0327](../experiments/0327-writing-headers-and-footers.md)) |
 | 3 | Show footers, 1 on (default) ([0239](../experiments/0239-no-footer.md)) |
 | 9 | Hyphenate the whole document, 1 on ([0236](../experiments/0236-hyphenation.md)) |
 | 10 | Use ligatures, 1 on (default) ([0237](../experiments/0237-document-ligatures.md)) |

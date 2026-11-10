@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0327: Writing header and footer text · iWork file format specification</title>
+<meta name="description" content="iWork file format specification">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
+<p class="wip"><strong>Work in progress.</strong> This specification is incomplete and changes as new experiments run. Each finding says how sure it is: <em>confirmed</em>, <em>likely</em> or <em>unknown</em>. See <a href="../spec/index.html">what each layer covers so far</a>.</p>
+<div class="layout">
+<nav class="side" aria-label="Contents"><details open><summary>Contents</summary><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="../guides/anatomy.html">Reading a Pages document</a></li><li><a href="../guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="../guides/writing.html">Writing a document</a></li><li><a href="../guides/samples.html">Sample files</a></li><li class="group">Specification</li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2–5. Text, styles, objects, layout</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li class="group">Evidence</li><li><a href="index.html">All experiments</a></li></ul></details></nav>
+<main>
+<h1 id="0327-writing-header-and-footer-text">0327: Writing header and footer text<a class="anchor" href="#0327-writing-header-and-footer-text" aria-label="Link to this section">#</a></h1>
+<p><strong>Status:</strong> run</p>
+<p>Header and footer text is in type-2001 records reached through the section's header-and-footer sets: in a set (type 10143), field 1 lists the header's left, centre and right texts and field 2 the footer's (<a href="0016-header-and-footer.html">0016</a>). <a href="0238-no-header.html">0238</a> read field 2 of the document settings (type 10012) as the switch that shows headers. This experiment writes header and footer text, and turns that switch off, and measures the exported page with [<code>recipes/0319-measure-pdf.swift</code>](../recipes/0319-measure-pdf.swift).</p>
+<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Pages</td><td>15.4</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-10</td></tr><tr><td>Input</td><td><code>samples/0002/hello.pages</code>: the section (record 1732296) names set 1732544 in field 25, whose header texts are 1732234, 1732385 and 1732428 and footer texts 1732501, 1732440 and 1732492, all empty; settings record 1732614 has fields 1, 2 and 3 = 1</td></tr><tr><td>Writer</td><td>[<code>recipes/0302-set-path.py</code>](../recipes/0302-set-path.py)</td></tr></tbody></table></div>
+<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section">#</a></h2>
+<pre class="lang-bash"><code>mkdir -p samples/0327
+R=recipes/0302-set-path.py
+python3 -I $R samples/0002/hello.pages samples/0327/a.pages 1732234 3 string LEFT
+python3 -I $R samples/0327/a.pages samples/0327/b.pages 1732428 3 string RIGHT
+python3 -I $R samples/0327/b.pages samples/0327/header.pages 1732492 3 string FOOT
+rm samples/0327/a.pages samples/0327/b.pages
+python3 -I $R samples/0327/header.pages samples/0327/header-off.pages 1732614 2 varint 0</code></pre>
+<p>An empty text storage has no field 3, so the text is added as a new field. A first attempt with the writer of <a href="0287-rewriting-a-document.html">0287</a>, whose <code>--text</code> option only replaces an existing field 3, wrote nothing. Each file was opened in Pages on its own, exported as PDF and measured.</p>
+<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section">#</a></h2>
+<p><code>header.pages</code> and <code>header-off.pages</code> print the same:</p>
+<div class="table"><table><thead><tr><th>Text</th><th>Top – bottom</th><th>Left – right</th></tr></thead><tbody><tr><td><code>LEFT</code> and <code>RIGHT</code></td><td>37.8 – 46.8</td><td>57.8 – 84.5 and 503.5 – 538.8</td></tr><tr><td><code>hello</code> (body)</td><td>58.2 – 66.2</td><td>57.5 – 79.5</td></tr><tr><td><code>FOOT</code></td><td>788.0 – 797.0</td><td>507.5 – 538.8</td></tr></tbody></table></div>
+<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section">#</a></h2>
+<p>The header-and-footer set works as read: field 1's first and third texts are the left and right header boxes, aligned to the left and right margins, and field 2's third the right footer box. They are placed in the margins, 1.25 cm from the top and about 1.5 cm from the bottom, the Blank template's distances. Setting document settings field 2 to 0 alone doesn't hide headers that have text. When Pages turns headers off itself, it also replaces the header text records (<a href="0238-no-header.html">0238</a>), so field 2 is not the whole switch. How Pages decides to hide them isn't settled.</p>
+<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section">#</a></h2>
+<p><em>Confirmed</em>: header and footer texts and their order in a set, by writing them.</p>
+<p><em>Unknown</em>: what hides headers; field 2 = 0 alone doesn't.</p>
+<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Last built from <a href="https://github.com/alehel/iwork-format">alehel/iwork-format</a>.</p></footer>
+</main>
+
+</div>
+<script>
+// On narrow screens the contents and on-this-page lists start folded; on wide ones they stay open.
+(function () {
+  var narrow = window.matchMedia("(max-width: 48rem)");
+  var lists = document.querySelectorAll(".side details, .toc details");
+  function fit() { for (var i = 0; i < lists.length; i++) lists[i].open = !narrow.matches; }
+  fit();
+  if (narrow.addEventListener) narrow.addEventListener("change", fit);
+  document.addEventListener("click", function (e) {
+    if (narrow.matches && e.target.closest && e.target.closest(".toc a")) fit();
+  });
+})();
+</script>
+</body>
+</html>
