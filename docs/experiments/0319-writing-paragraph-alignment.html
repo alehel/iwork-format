@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0319: Writing paragraph alignment, measured on the page · iWork file format specification</title>
+<meta name="description" content="iWork file format specification">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
+<p class="wip"><strong>Work in progress.</strong> This specification is incomplete and changes as new experiments run. Each finding says how sure it is: <em>confirmed</em>, <em>likely</em> or <em>unknown</em>. See <a href="../spec/index.html">what each layer covers so far</a>.</p>
+<div class="layout">
+<nav class="side" aria-label="Contents"><details open><summary>Contents</summary><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="../guides/anatomy.html">Reading a Pages document</a></li><li><a href="../guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="../guides/writing.html">Writing a document</a></li><li><a href="../guides/samples.html">Sample files</a></li><li class="group">Specification</li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2–5. Text, styles, objects, layout</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li class="group">Evidence</li><li><a href="index.html">All experiments</a></li></ul></details></nav>
+<main>
+<h1 id="0319-writing-paragraph-alignment-measured-on-the-page">0319: Writing paragraph alignment, measured on the page<a class="anchor" href="#0319-writing-paragraph-alignment-measured-on-the-page" aria-label="Link to this section">#</a></h1>
+<p><strong>Status:</strong> run</p>
+<p>A paragraph style's alignment was read as property 12.1: 0 left, 1 right, 2 centred, 3 justified, and 4, the Body style's value, probably natural (<a href="0010-alignment.html">0010</a>, <a href="0011-left-alignment.html">0011</a>). This experiment writes 1 and 2 into the Body style and measures where Pages puts the text on the exported page, with a measuring tool that later experiments reuse.</p>
+<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Pages</td><td>15.4</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-10</td></tr><tr><td>Input</td><td><code>samples/0005/two-lf.pages</code>: the paragraphs <code>one</code> and <code>two</code> in the Body style (record 1731511, 12.1 = 4), on A4 with 56.69-point margins</td></tr><tr><td>Writer</td><td>[<code>recipes/0302-set-path.py</code>](../recipes/0302-set-path.py)</td></tr><tr><td>Measuring</td><td>[<code>recipes/0319-measure-pdf.swift</code>](../recipes/0319-measure-pdf.swift): draws a PDF's first page at 4 pixels per point and reports each line of ink, in points from the top-left corner</td></tr></tbody></table></div>
+<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section">#</a></h2>
+<pre class="lang-bash"><code>mkdir -p samples/0319
+cp samples/0005/two-lf.pages samples/0319/original.pages
+for v in 1 2; do
+  python3 -I recipes/0302-set-path.py samples/0319/original.pages samples/0319/align-$v.pages 1731511 12.1 varint $v
+done
+swift recipes/0319-measure-pdf.swift samples/0319/*.pdf</code></pre>
+<p>Each file was opened in Pages on its own, through Launch Services, and exported as PDF before measuring.</p>
+<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th>File</th><th>Line 1, left to right</th><th>Line 2, left to right</th></tr></thead><tbody><tr><td><code>original.pages</code> (4)</td><td>57.2 – 74.8</td><td>57.0 – 74.5</td></tr><tr><td><code>align-1.pages</code> (1)</td><td>520.8 – 538.5</td><td>520.8 – 538.2</td></tr><tr><td><code>align-2.pages</code> (2)</td><td>289.0 – 306.8</td><td>288.8 – 306.2</td></tr></tbody></table></div>
+<p>The text area runs from 56.69 to 538.59 points, so its centre is at 297.6.</p>
+<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section">#</a></h2>
+<p>12.1 = 1 right-aligns the paragraphs to the right margin, and 2 centres them on the text area: the lines' middles are at 297.9 and 297.5. The Body style's 4 lays out as left in this left-to-right text, which fits natural alignment.</p>
+<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section">#</a></h2>
+<p><em>Confirmed</em>: paragraph alignment values 1 and 2, by writing them and measuring.</p>
+<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Last built from <a href="https://github.com/alehel/iwork-format">alehel/iwork-format</a>.</p></footer>
+</main>
+
+</div>
+<script>
+// On narrow screens the contents and on-this-page lists start folded; on wide ones they stay open.
+(function () {
+  var narrow = window.matchMedia("(max-width: 48rem)");
+  var lists = document.querySelectorAll(".side details, .toc details");
+  function fit() { for (var i = 0; i < lists.length; i++) lists[i].open = !narrow.matches; }
+  fit();
+  if (narrow.addEventListener) narrow.addEventListener("change", fit);
+  document.addEventListener("click", function (e) {
+    if (narrow.matches && e.target.closest && e.target.closest(".toc a")) fit();
+  });
+})();
+</script>
+</body>
+</html>
