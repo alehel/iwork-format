@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0304: Writing an image&#x27;s opacity and reflection · iWork file format specification</title>
+<meta name="description" content="iWork file format specification">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
+<p class="wip"><strong>Work in progress.</strong> This specification is incomplete and changes as new experiments run. Each finding says how sure it is: <em>confirmed</em>, <em>likely</em> or <em>unknown</em>. See <a href="../spec/index.html">what each layer covers so far</a>.</p>
+<div class="layout">
+<nav class="side" aria-label="Contents"><details open><summary>Contents</summary><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="../guides/anatomy.html">Reading a Pages document</a></li><li><a href="../guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="../guides/writing.html">Writing a document</a></li><li><a href="../guides/samples.html">Sample files</a></li><li class="group">Specification</li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2–5. Text, styles, objects, layout</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li class="group">Evidence</li><li><a href="index.html">All experiments</a></li></ul></details></nav>
+<main>
+<h1 id="0304-writing-an-images-opacity-and-reflection">0304: Writing an image's opacity and reflection<a class="anchor" href="#0304-writing-an-images-opacity-and-reflection" aria-label="Link to this section">#</a></h1>
+<p><strong>Status:</strong> run</p>
+<p>An image's style (type 3016) was read as holding its opacity in field 11.2, from 0 to 1 (<a href="0057-image-opacity.html">0057</a>), and its reflection in 11.4, with the strength in 11.4.1 (<a href="0099-image-reflection.html">0099</a>). AppleScript reads an image's <code>opacity</code>, <code>reflection showing</code> and <code>reflection value</code>. This experiment writes both properties and asks Keynote.</p>
+<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Keynote</td><td>15.4</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-10</td></tr><tr><td>Input</td><td><code>samples/theme/0099/reflection.key</code>: an image with a 40 % reflection, in the test theme</td></tr><tr><td>Writer</td><td>[<code>recipes/0302-set-path.py</code>](../recipes/0302-set-path.py)</td></tr></tbody></table></div>
+<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section">#</a></h2>
+<pre class="lang-bash"><code>mkdir -p samples/0304
+cp samples/theme/0099/reflection.key samples/0304/original.key
+python3 -I recipes/0302-set-path.py samples/0304/original.key samples/0304/written.key 2655570 \
+  11.2 float 0.4 11.4.1 float 0.75</code></pre>
+<p>Record 2655570 is the image's own style, an unnamed child of the theme's image style. It holds only the reflection, 11.4.1 = 0.4; the opacity comes from the parent. The script adds 11.2 = 0.4 and sets the reflection to 0.75. Keynote opened each file on its own through Launch Services and read the image's properties, and the written file was saved again.</p>
+<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th>File</th><th>opacity</th><th>reflection showing</th><th>reflection value</th></tr></thead><tbody><tr><td><code>original.key</code></td><td>100</td><td>true</td><td>40</td></tr><tr><td><code>written.key</code></td><td>40</td><td>true</td><td>75</td></tr></tbody></table></div>
+<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section">#</a></h2>
+<p>Image style field 11.2 is the opacity and 11.4.1 the reflection's strength, both fractions from 0 to 1 that AppleScript shows as percentages. A property can be set in an object's own child style without touching the theme's style it inherits from.</p>
+<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section">#</a></h2>
+<p><em>Confirmed</em>: image style fields 11.2 and 11.4.1, by writing them.</p>
+<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Last built from <a href="https://github.com/alehel/iwork-format">alehel/iwork-format</a>.</p></footer>
+</main>
+
+</div>
+<script>
+// On narrow screens the contents and on-this-page lists start folded; on wide ones they stay open.
+(function () {
+  var narrow = window.matchMedia("(max-width: 48rem)");
+  var lists = document.querySelectorAll(".side details, .toc details");
+  function fit() { for (var i = 0; i < lists.length; i++) lists[i].open = !narrow.matches; }
+  fit();
+  if (narrow.addEventListener) narrow.addEventListener("change", fit);
+  document.addEventListener("click", function (e) {
+    if (narrow.matches && e.target.closest && e.target.closest(".toc a")) fit();
+  });
+})();
+</script>
+</body>
+</html>
