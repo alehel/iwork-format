@@ -48,6 +48,12 @@ The reruns were done twice: first with the test theme's full-size cards, then wi
 
 **Theme photos.** A Basic White photo's entry in the data list (`Metadata.iwa` record 2, field 4) has an empty field 4, so no file is stored. Its field 5 holds a path inside the app (`21_basicwhite/910457886_1434x1669`), and only a reduced copy is in `Data/`, with its own entry. The test theme's cards are stored in full. In every image's entry, field 10.100.1 holds the image's size in pixels, with the width in field 1 and the height in field 2 as floats: 1434 and 1669 for both `910457886_1434x1669` and `photo-a`, 220 and 256 for `photo-a-small`. The reduced copies of the theme's photos also have field 18, the file's size in bytes.
 
+### Experiments that needed clicks
+
+Five more Keynote experiments were redone with the test theme, with the clicks made through the accessibility interface: a build in, a build out and an action build on a title ([0257](0257-build.md), [0263](0263-build-out.md), [0264](0264-action-build.md)), and a dynamic background ([0271](0271-dynamic-background.md)), plus their plain baselines. [0180](0180-password-in-other-apps.md)'s password-protected presentation was remade by its recipe. The sidebar showed the same settings as in the original experiments, and each presentation's slide parts hold the same record types as the original's. Compared as above, the only differences are again the six type-11014 records.
+
+The dynamic background's first preset came out with an angle of 33.7°, a scale of 1.42 and a speed of 41.57, against 352.7°, 1.40 and 41.67 the first time, so Keynote varies them. Its still, `motionBackground-N.jpeg`, was byte for byte the same file both times, so the still doesn't follow the settings. [0272](0272-self-playing.md), a self-playing presentation, wasn't redone: its setting is a pop-up menu, which can't be used without taking over the screen.
+
 ## Conclusion
 
 Apart from its photos, the test theme makes presentations that are structurally the same as Basic White's. The objects, references, texts and record types match across 58 experiments. So the Keynote findings don't depend on Basic White's images. These presentations can stand in for the originals as published samples, all except 0090.

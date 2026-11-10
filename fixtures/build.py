@@ -41,7 +41,8 @@ OURS = re.compile(
 # Test passwords, from experiments 0179 and 0180.
 PASSWORDS = {"samples/0179/locked.pages": "pw1234", "samples/0179/locked2.pages": "pw1234",
              "samples/0180/accent.pages": "påss", "samples/0180/image.pages": "pw1234",
-             "samples/0180/locked.numbers": "pw1234"}
+             "samples/0180/locked.numbers": "pw1234",
+             "samples/theme/0180/locked.key": "pw1234"}
 
 
 def fix_name(info):
@@ -153,10 +154,14 @@ def main(out_zip):
              "([0291](../experiments/0291-test-theme.md), [0292](../experiments/0292-test-theme-reruns.md)). "
              "Encrypted documents list their test password.", "",
              "| File | Experiment | Bytes | SHA-256 | Note |", "| --- | --- | --- | --- | --- |"] + rows
-    replaced = [rel for rel, why in left if why.endswith("see samples/theme/")]
+    kept_paths = {rel for rel, _ in kept}
+    replaced = [rel for rel, why in left if why.endswith("see samples/theme/")
+                and rel.replace("samples/", "samples/theme/") in kept_paths]
     index += ["", "## Left out", "",
               f"{len(left) - len(replaced)} documents, besides {len(replaced)} Keynote presentations in Basic White "
               "that are included as their test-theme versions under `keynote/`.", "", "| File | Why |", "| --- | --- |"]
+    left = [(rel, "Keynote with Basic White's photos; its test-theme version is left out too"
+             if why.endswith("see samples/theme/") else why) for rel, why in left]
     index += [f"| `{rel.replace('samples/', '')}` | {why} |" for rel, why in left if rel not in replaced]
     open("fixtures/INDEX.md", "w", encoding="utf-8").write("\n".join(index) + "\n")
     print(f"{len(kept)} kept, {len(left)} left out, {os.path.getsize(out_zip) / 1e6:.1f} MB")

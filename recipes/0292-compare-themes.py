@@ -82,6 +82,9 @@ def main(old_root, new_root):
             if os.path.isdir(new) or os.path.isdir(old):
                 print(f"{os.path.relpath(new, new_root)}: a folder package, not compared")
                 continue
+            if ".iwpv2" in zipfile.ZipFile(new).namelist():
+                print(f"{os.path.relpath(new, new_root)}: password-protected, not compared")
+                continue
             t_new, unreached, total, foreign = analyse(new)
             line = f"{os.path.relpath(new, new_root)}: {total} objects"
             notes = []

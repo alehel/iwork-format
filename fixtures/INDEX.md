@@ -2,7 +2,7 @@
 
 Sample documents from the experiments, for testing readers and writers. They are published as a zip attached to the repository's GitHub release `fixtures`, not committed. Built by `python3 -I fixtures/build.py`, which leaves out anything from Apple's templates or images, and anything holding a personal name. See [LICENSE.md](LICENSE.md).
 
-455 documents. Keynote presentations, under `keynote/`, were made with the project's test theme ([0291](../experiments/0291-test-theme.md), [0292](../experiments/0292-test-theme-reruns.md)). Encrypted documents list their test password.
+461 documents. Keynote presentations, under `keynote/`, were made with the project's test theme ([0291](../experiments/0291-test-theme.md), [0292](../experiments/0292-test-theme-reruns.md)). Encrypted documents list their test password.
 
 | File | Experiment | Bytes | SHA-256 | Note |
 | --- | --- | --- | --- | --- |
@@ -444,6 +444,7 @@ Sample documents from the experiments, for testing readers and writers. They are
 | `keynote/0166/line.key` | [0166: A line on a slide](../experiments/0166-keynote-line.md) | 883,432 | `b927affb08322ac6affda34e08a1a82cb444a483971c5d6297cf8fe884895c4f` | |
 | `keynote/0167/shapetext.key` | [0167: A shape with text on a slide](../experiments/0167-keynote-shape-text.md) | 883,998 | `28f515342cd4c5aaf42f9e15eec794c80b4760a238c00ea9443e2aa24d16418f` | |
 | `keynote/0168/untouched.key` | [0168: A title never set](../experiments/0168-untouched-title.md) | 882,064 | `b1f0feaf16df38317fd8771690acbd632ec1f3793a1b8444d553e1a39956d8cb` | |
+| `keynote/0180/locked.key` | [0180: A password in Keynote and Numbers](../experiments/0180-password-in-other-apps.md) | 872,091 | `d4a5bbc5410b003f1bf66480058640487a16473b2351276a63af93584da5753c` | password `pw1234` |
 | `keynote/0185/audio.key` | [0185: A sound in Keynote](../experiments/0185-keynote-audio.md) | 888,506 | `a861ecf036250c83cb2c09672a9817368290b964ce6b26f23ffae539a4661a6e` | |
 | `keynote/0185/loop.key` | [0185: A sound in Keynote](../experiments/0185-keynote-audio.md) | 888,485 | `b5b6c6db658863de4062d821ea4427e2cc68eceba4d3e10cac7d6888b773ecb9` | |
 | `keynote/0185/movie.key` | [0185: A sound in Keynote](../experiments/0185-keynote-audio.md) | 886,685 | `6a410d7d46b169533d31a90c23353968a617fc27b0a3dda07384251f3312d13c` | |
@@ -461,10 +462,15 @@ Sample documents from the experiments, for testing readers and writers. They are
 | `keynote/0197/idle.key` | [0197: The idle time without auto restart](../experiments/0197-idle-time.md) | 882,070 | `70aa8eea1d18a49dba0320a6427907c137e0e9677730a2ce8324b7c0c3ef4832` | |
 | `keynote/0243/body.key` | [0243: A hidden body placeholder](../experiments/0243-hidden-body.md) | 883,827 | `6652f65ac086803e925fbab1d4bf717811318407498444d20d45b8b4bd5c8520` | |
 | `keynote/0243/no-body.key` | [0243: A hidden body placeholder](../experiments/0243-hidden-body.md) | 883,943 | `c7d7551b9bf10ab1fa2e8da76fc0f4964aada43f3e5688766bf1dc7af3c49228` | |
+| `keynote/0257/build.key` | [0257: A build](../experiments/0257-build.md) | 889,263 | `f7b55015a602e2dcd67058a1d8cb34707fb232d220c81b505e2fb06da801f63f` | |
+| `keynote/0257/plain.key` | [0257: A build](../experiments/0257-build.md) | 885,372 | `c5873f36ac3fe9d4300a36d42530f144b27def4a7f620bdd2697327c0c72d800` | |
+| `keynote/0263/build-out.key` | [0263: A build-out](../experiments/0263-build-out.md) | 889,262 | `1c05e163431e53caf4634f134a6ae17b40592c5da286a2533c6617b2499128e2` | |
+| `keynote/0264/action.key` | [0264: An action build](../experiments/0264-action-build.md) | 889,267 | `ce9e081278b3f946a875352b7592667b8f4879e766a953de2d9b4dc1bd6c5e3c` | |
+| `keynote/0271/plain.key` | [0271: A dynamic background](../experiments/0271-dynamic-background.md) | 882,060 | `1ddcdbfe366a7f435e5eb48f353fc1fdaee0b43039f085541168b625d252ca59` | |
 
 ## Left out
 
-33 documents, besides 70 Keynote presentations in Basic White that are included as their test-theme versions under `keynote/`.
+28 documents, besides 76 Keynote presentations in Basic White that are included as their test-theme versions under `keynote/`.
 
 | File | Why |
 | --- | --- |
@@ -476,7 +482,6 @@ Sample documents from the experiments, for testing readers and writers. They are
 | `0156/layout.pages` | made from one of Apple's templates |
 | `0157/black.pages` | made from one of Apple's templates |
 | `0158/essay.pages` | made from one of Apple's templates |
-| `0180/locked.key` | Keynote with Basic White's photos, not yet rerun with the test theme |
 | `0193/tracked.pages` | holds the user's name |
 | `0194/deleted.pages` | holds the user's name |
 | `0198/book.pages` | made from one of Apple's templates |
@@ -484,14 +489,9 @@ Sample documents from the experiments, for testing readers and writers. They are
 | `0199/letter.pages` | made from one of Apple's templates |
 | `0200/highlight.pages` | holds the user's name |
 | `0249/comment.pages` | holds the user's name |
-| `0257/build.key` | Keynote with Basic White's photos, not yet rerun with the test theme |
-| `0257/plain.key` | Keynote with Basic White's photos, not yet rerun with the test theme |
-| `0263/build-out.key` | Keynote with Basic White's photos, not yet rerun with the test theme |
-| `0264/action.key` | Keynote with Basic White's photos, not yet rerun with the test theme |
 | `0268/accepted.pages` | holds the user's name |
 | `0269/rejected.pages` | holds the user's name |
-| `0271/dynamic.key` | Keynote with Basic White's photos, not yet rerun with the test theme |
-| `0271/plain.key` | Keynote with Basic White's photos, not yet rerun with the test theme |
+| `0271/dynamic.key` | Keynote with Basic White's photos; its test-theme version is left out too |
 | `0272/self-playing.key` | Keynote with Basic White's photos, not yet rerun with the test theme |
 | `0291/iwork-format test v2.key` | a step in building or testing the test theme, which is in theme/ |
 | `0291/iwork-format test.key` | a step in building or testing the test theme, which is in theme/ |
@@ -501,3 +501,4 @@ Sample documents from the experiments, for testing readers and writers. They are
 | `0292/empty-default.key` | a step in building or testing the test theme, which is in theme/ |
 | `0292/empty.key` | a step in building or testing the test theme, which is in theme/ |
 | `theme/0090/theme.key` | made from one of Apple's templates |
+| `theme/0271/dynamic.key` | media not made by the project: motionBackground-9094.jpeg |
