@@ -8,7 +8,7 @@ on run argv
 	set d to item 1 of argv
 	set img to POSIX file (item 2 of argv)
 	tell application "Keynote"
-		set k to make new document
+		set k to my newKeynote()
 		set password "pw1234" to k hint "test" saving in keychain no
 		save k in POSIX file (d & "/locked.key")
 		close k saving no
@@ -33,3 +33,13 @@ on run argv
 		close b saving no
 	end tell
 end run
+
+-- A new Keynote presentation in the theme named in IWORK_KEYNOTE_THEME, such as
+-- "iwork-format test" (experiment 0291), or in Keynote's default theme when it is unset.
+on newKeynote()
+	set t to system attribute "IWORK_KEYNOTE_THEME"
+	tell application "Keynote"
+		if t is "" then return make new document
+		return make new document with properties {document theme:theme t}
+	end tell
+end newKeynote

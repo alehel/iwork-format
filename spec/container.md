@@ -36,6 +36,8 @@ Identical files are stored once ([0142](../experiments/0142-same-image-twice.md)
 
 `Metadata.iwa` record 2 (type 11006) lists the data in its repeated field 4. Each entry holds the data ID (field 1), the file's SHA-1 (field 2), the original file name (field 3) and the stored file name (field 4). Entries for resources of the template have no file in the package. *Likely* ([0023](../experiments/0023-an-image.md))
 
+In Keynote, a theme's own photos are such entries: field 4 (the stored name) is empty, field 5 is a path to the resource inside the app, such as `21_basicwhite/910457886_1434x1669`, Only a reduced copy, at most 256 pixels on the longer side, is stored in `Data/`, with its own entry, whose field 18 is the file's size in bytes. In every image's entry, stored or not, field 10.100.1 is the image's size in pixels: a message with the width in field 1 and the height in field 2, as floats. *Likely* ([0292](../experiments/0292-test-theme-reruns.md))
+
 ## Chunks
 
 An `.iwa` part is a sequence of chunks, with nothing before, between or after them. *Confirmed* ([0001](../experiments/0001-empty-document.md), [0002](../experiments/0002-one-word.md))

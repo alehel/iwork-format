@@ -8,7 +8,7 @@ on run argv
 	tell application "Keynote"
 		set effects to {shimmer, sparkle, swing, object cube, object flip, object pop, object push, object revolve, object zoom, perspective, clothesline, confetti, drop, droplet, fade through color, grid, iris, reveal, switch, wipe, blinds, color planes, doorway, fall, flip, flop, mosaic, page flip, pivot, reflection, revolving door, scale, swap, swoosh, twirl, twist, fade and move, radial wipe}
 		set names to {"shimmer", "sparkle", "swing", "object cube", "object flip", "object pop", "object push", "object revolve", "object zoom", "perspective", "clothesline", "confetti", "drop", "droplet", "fade through color", "grid", "iris", "reveal", "switch", "wipe", "blinds", "color planes", "doorway", "fall", "flip", "flop", "mosaic", "page flip", "pivot", "reflection", "revolving door", "scale", "swap", "swoosh", "twirl", "twist", "fade and move", "radial wipe"}
-		set theDoc to make new document
+		set theDoc to my newKeynote()
 		repeat with i from 1 to count of effects
 			if i > 1 then make new slide at end of slides of theDoc
 			set s to slide i of theDoc
@@ -19,3 +19,13 @@ on run argv
 		close theDoc saving no
 	end tell
 end run
+
+-- A new Keynote presentation in the theme named in IWORK_KEYNOTE_THEME, such as
+-- "iwork-format test" (experiment 0291), or in Keynote's default theme when it is unset.
+on newKeynote()
+	set t to system attribute "IWORK_KEYNOTE_THEME"
+	tell application "Keynote"
+		if t is "" then return make new document
+		return make new document with properties {document theme:theme t}
+	end tell
+end newKeynote

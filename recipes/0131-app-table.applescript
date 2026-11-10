@@ -19,7 +19,7 @@ on run argv
 		end tell
 	else
 		tell application "Keynote"
-			set theDoc to make new document
+			set theDoc to my newKeynote()
 			tell slide 1 of theDoc to set t to make new table with properties {row count:5, column count:5}
 			my changeTable(t, mode)
 			save theDoc in outFile
@@ -50,3 +50,13 @@ on changeTable(t, mode)
 		end if
 	end using terms from
 end changeTable
+
+-- A new Keynote presentation in the theme named in IWORK_KEYNOTE_THEME, such as
+-- "iwork-format test" (experiment 0291), or in Keynote's default theme when it is unset.
+on newKeynote()
+	set t to system attribute "IWORK_KEYNOTE_THEME"
+	tell application "Keynote"
+		if t is "" then return make new document
+		return make new document with properties {document theme:theme t}
+	end tell
+end newKeynote

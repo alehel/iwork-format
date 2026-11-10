@@ -8,7 +8,7 @@ on run argv
 	set outFile to POSIX file (item 1 of argv)
 	set mode to item 2 of argv
 	tell application "Keynote"
-		set theDoc to make new document
+		set theDoc to my newKeynote()
 		set s to slide 1 of theDoc
 		if mode is "movein" then
 			set transition properties of s to {transition effect:move in, transition duration:1.5}
@@ -25,3 +25,13 @@ on run argv
 		close theDoc saving no
 	end tell
 end run
+
+-- A new Keynote presentation in the theme named in IWORK_KEYNOTE_THEME, such as
+-- "iwork-format test" (experiment 0291), or in Keynote's default theme when it is unset.
+on newKeynote()
+	set t to system attribute "IWORK_KEYNOTE_THEME"
+	tell application "Keynote"
+		if t is "" then return make new document
+		return make new document with properties {document theme:theme t}
+	end tell
+end newKeynote
