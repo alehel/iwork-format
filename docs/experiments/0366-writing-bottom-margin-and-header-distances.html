@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0366: Writing the bottom margin and the header and footer distances · iWork file format specification</title>
+<meta name="description" content="iWork file format specification">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
+<p class="wip"><strong>Work in progress.</strong> This specification is incomplete and changes as new experiments run. Each finding says how sure it is: <em>confirmed</em>, <em>likely</em> or <em>unknown</em>. See <a href="../spec/index.html">what each layer covers so far</a>.</p>
+<div class="layout">
+<nav class="side" aria-label="Contents"><details open><summary>Contents</summary><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="../guides/anatomy.html">Reading a Pages document</a></li><li><a href="../guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="../guides/writing.html">Writing a document</a></li><li><a href="../guides/samples.html">Sample files</a></li><li class="group">Specification</li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2–5. Text, styles, objects, layout</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li class="group">Evidence</li><li><a href="index.html">All experiments</a></li></ul></details></nav>
+<main>
+<h1 id="0366-writing-the-bottom-margin-and-the-header-and-footer-distances">0366: Writing the bottom margin and the header and footer distances<a class="anchor" href="#0366-writing-the-bottom-margin-and-the-header-and-footer-distances" aria-label="Link to this section">#</a></h1>
+<p><strong>Status:</strong> run</p>
+<p>The document root's fields 35, 36 and 37 are the bottom margin and the header's and footer's distance from the page edge, in points (<a href="0027-document-roots.html">0027</a>, <a href="0028-margins.html">0028</a>). The other margins were confirmed by writing them in <a href="0318-writing-paper-size-and-margin.html">0318</a> and <a href="0326-writing-top-and-right-margins.html">0326</a>. This experiment writes these three into a document with a header, a footer and three pages of body text, and measures the first page of each PDF with [<code>recipes/0319-measure-pdf.swift</code>](../recipes/0319-measure-pdf.swift).</p>
+<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Pages</td><td>15.4</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-10</td></tr><tr><td>Input</td><td><code>samples/0327/header.pages</code>: an A4 page (595.28 × 841.89) with 56.69-point margins, header distance 35.43 and footer distance 42.52, a header (LEFT, RIGHT) and a footer (FOOT)</td></tr><tr><td>Writer</td><td>The writer of <a href="0287-rewriting-a-document.html">0287</a> and [<code>recipes/0302-set-path.py</code>](../recipes/0302-set-path.py)</td></tr></tbody></table></div>
+<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section">#</a></h2>
+<pre class="lang-bash"><code>mkdir -p samples/0366
+R=recipes/0302-set-path.py
+python3 -I recipes/0287-iwa-writer.py samples/0327/header.pages samples/0366/base.pages \
+  --text 1732539 &quot;$(python3 -c &quot;print(&#x27;\n&#x27;.join(f&#x27;line {i}&#x27; for i in range(1,61)), end=&#x27;&#x27;)&quot;)&quot;
+python3 -I $R samples/0366/base.pages samples/0366/header-72.pages 1 36 float 72
+python3 -I $R samples/0366/base.pages samples/0366/footer-72.pages 1 37 float 72
+python3 -I $R samples/0366/base.pages samples/0366/bottom-200.pages 1 35 float 200</code></pre>
+<p>Each file was opened in Pages on its own and exported as PDF. Each has three pages.</p>
+<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section">#</a></h2>
+<p>Positions are in points from the top of the first page. Body lines are 24.8 points apart.</p>
+<div class="table"><table><thead><tr><th>File</th><th>Header ink top</th><th>First body line top</th><th>Body lines</th><th>Last body line top</th><th>Footer ink bottom</th></tr></thead><tbody><tr><td><code>base.pages</code></td><td>37.8</td><td>59.2</td><td>29</td><td>751.8</td><td>797.0</td></tr><tr><td><code>header-72.pages</code></td><td>74.2</td><td>88.2</td><td>28</td><td>756.0</td><td>797.0</td></tr><tr><td><code>footer-72.pages</code></td><td>37.8</td><td>59.2</td><td>28</td><td>727.0</td><td>767.5</td></tr><tr><td><code>bottom-200.pages</code></td><td>37.8</td><td>59.2</td><td>24</td><td>628.0</td><td>797.0</td></tr></tbody></table></div>
+<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section">#</a></h2>
+<p>Field 36 sets the header's distance from the top edge: going from 35.43 to 72 moves the header's ink down 36.4 points. Field 37 sets the footer's distance from the bottom edge: going from 42.52 to 72 moves the footer's ink up 29.5 points, against 29.48 written. Field 35 is the bottom margin: at 200 the body stops above 841.89 − 200 = 641.89, after 24 lines. A header or footer that reaches past the top or bottom margin pushes the body away. With the header 72 points down, the body starts below it at 88.2, not at the margin. With the footer 72 points up, the body loses a line.</p>
+<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section">#</a></h2>
+<p><em>Confirmed</em>: field 35 as the bottom margin, and fields 36 and 37 as the header and footer distances, by writing them.</p>
+<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Last built from <a href="https://github.com/alehel/iwork-format">alehel/iwork-format</a>.</p></footer>
+</main>
+
+</div>
+<script>
+// On narrow screens the contents and on-this-page lists start folded; on wide ones they stay open.
+(function () {
+  var narrow = window.matchMedia("(max-width: 48rem)");
+  var lists = document.querySelectorAll(".side details, .toc details");
+  function fit() { for (var i = 0; i < lists.length; i++) lists[i].open = !narrow.matches; }
+  fit();
+  if (narrow.addEventListener) narrow.addEventListener("change", fit);
+  document.addEventListener("click", function (e) {
+    if (narrow.matches && e.target.closest && e.target.closest(".toc a")) fit();
+  });
+})();
+</script>
+</body>
+</html>
