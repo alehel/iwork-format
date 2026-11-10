@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0303: Writing an object&#x27;s position, size, rotation and lock · iWork file format specification</title>
+<meta name="description" content="iWork file format specification">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
+<p class="wip"><strong>Work in progress.</strong> This specification is incomplete and changes as new experiments run. Each finding says how sure it is: <em>confirmed</em>, <em>likely</em> or <em>unknown</em>. See <a href="../spec/index.html">what each layer covers so far</a>.</p>
+<div class="layout">
+<nav class="side" aria-label="Contents"><details open><summary>Contents</summary><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="../guides/anatomy.html">Reading a Pages document</a></li><li><a href="../guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="../guides/writing.html">Writing a document</a></li><li><a href="../guides/samples.html">Sample files</a></li><li class="group">Specification</li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2–5. Text, styles, objects, layout</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li class="group">Evidence</li><li><a href="index.html">All experiments</a></li></ul></details></nav>
+<main>
+<h1 id="0303-writing-an-objects-position-size-rotation-and-lock">0303: Writing an object's position, size, rotation and lock<a class="anchor" href="#0303-writing-an-objects-position-size-rotation-and-lock" aria-label="Link to this section">#</a></h1>
+<p><strong>Status:</strong> run</p>
+<p>A drawable's field 1.1 was read as its geometry: 1.1.1 the position and 1.1.2 the size of the unrotated box in points, 1.1.4 the rotation in degrees (<a href="0055-image-size.html">0055</a>, <a href="0056-image-rotation.html">0056</a>, <a href="0097-keynote-shape-rotation.html">0097</a>); and field 1.5 as the lock (<a href="0100-locked-object.html">0100</a>). AppleScript can read an object's position, width, height, rotation and lock. This experiment writes new values and asks Keynote.</p>
+<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Keynote</td><td>15.4</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-10</td></tr><tr><td>Input</td><td><code>samples/theme/0069/image.key</code>: the 8 × 4 red PNG of <a href="0023-an-image.html">0023</a> on a slide, in the test theme</td></tr><tr><td>Writer</td><td>[<code>recipes/0302-set-path.py</code>](../recipes/0302-set-path.py)</td></tr></tbody></table></div>
+<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section">#</a></h2>
+<pre class="lang-bash"><code>mkdir -p samples/0303
+cp samples/theme/0069/image.key samples/0303/original.key
+python3 -I recipes/0302-set-path.py samples/0303/original.key samples/0303/written.key 2655552 \
+  1.1.1.1 float 100 1.1.1.2 float 200 1.1.2.1 float 320 1.1.2.2 float 160 1.1.4 float 30 1.5 varint 1</code></pre>
+<p>Record 2655552 is the image (type 3005), at (956, 538), 8 × 4, unrotated and unlocked. Keynote opened each file on its own through Launch Services (<a href="0302-writing-a-transition.html">0302</a>), read the image's properties through AppleScript, and saved the written file again.</p>
+<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th>File</th><th>Position</th><th>Size</th><th>Rotation</th><th>Locked</th></tr></thead><tbody><tr><td><code>original.key</code></td><td>956, 538</td><td>8 × 4</td><td>0</td><td>false</td></tr><tr><td><code>written.key</code></td><td>81, 131</td><td>320 × 160</td><td>30</td><td>true</td></tr></tbody></table></div>
+<p>The written box is 320 × 160 at (100, 200). Turned 30° about its centre, its bounding box starts at (81.4, 130.7), which is what AppleScript reports as the position. The resaved file holds the values as written.</p>
+<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section">#</a></h2>
+<p>The geometry fields are as read. 1.1.1 is the top-left corner of the unrotated box, 1.1.2 its size and 1.1.4 its rotation, all floats. AppleScript's <code>position</code> is the corner of the rotated object's bounding box instead, so it matches 1.1.1 only for unrotated objects. Field 1.5 = 1 locks the object.</p>
+<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section">#</a></h2>
+<p><em>Confirmed</em>: drawable fields 1.1.1, 1.1.2, 1.1.4 and 1.5, by writing them.</p>
+<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Last built from <a href="https://github.com/alehel/iwork-format">alehel/iwork-format</a>.</p></footer>
+</main>
+
+</div>
+<script>
+// On narrow screens the contents and on-this-page lists start folded; on wide ones they stay open.
+(function () {
+  var narrow = window.matchMedia("(max-width: 48rem)");
+  var lists = document.querySelectorAll(".side details, .toc details");
+  function fit() { for (var i = 0; i < lists.length; i++) lists[i].open = !narrow.matches; }
+  fit();
+  if (narrow.addEventListener) narrow.addEventListener("change", fit);
+  document.addEventListener("click", function (e) {
+    if (narrow.matches && e.target.closest && e.target.closest(".toc a")) fit();
+  });
+})();
+</script>
+</body>
+</html>
