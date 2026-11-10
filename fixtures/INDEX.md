@@ -2,7 +2,7 @@
 
 Sample documents from the experiments, for testing readers and writers. They are published as a zip attached to the repository's GitHub release `fixtures`, not committed. Built by `python3 -I fixtures/build.py`, which leaves out anything from Apple's templates or images, and anything holding a personal name except the six whose comments, highlights or tracked changes name the project owner as their author. See [LICENSE.md](LICENSE.md).
 
-468 documents. Keynote presentations, under `keynote/`, were made with the project's test theme ([0291](../experiments/0291-test-theme.md), [0292](../experiments/0292-test-theme-reruns.md)). Encrypted documents list their test password.
+474 documents. Keynote presentations, under `keynote/`, were made with the project's test theme ([0291](../experiments/0291-test-theme.md), [0292](../experiments/0292-test-theme-reruns.md)). Encrypted documents list their test password. A folder package's SHA-256 is taken over each of its files in path order, as the path, a zero byte and the contents.
 
 | File | Experiment | Bytes | SHA-256 | Note |
 | --- | --- | --- | --- | --- |
@@ -90,6 +90,7 @@ Sample documents from the experiments, for testing readers and writers. They are
 | `0064/functions.numbers` | [0064: Operators and functions](../experiments/0064-operators-and-functions.md) | 139,730 | `49139daabf1a6cf3e21e7fda1712969fb786b59c31a395b5c6a2d24318df593c` | |
 | `0065/cross.numbers` | [0065: A reference to another table](../experiments/0065-cross-table-reference.md) | 145,776 | `35771d248fc0a79892958c269069782978c4c8293e0d80e4670c24d10aaf8b4c` | |
 | `0066/if.numbers` | [0066: Comparisons and IF](../experiments/0066-comparisons-and-if.md) | 139,993 | `2b3a47839068774ffadbe6776a316a73ea5e7162f222bbc9935773c3b608c61a` | |
+| `0076/package.pages` | [0076: The package format](../experiments/0076-package-format.md) | 89,444 | `02472f544887d708757f51680f5ceeba649fbbcc6b23dda4541d2036a8edcfcb` | a folder package |
 | `0077/red-shape.pages` | [0077: A shape's fill](../experiments/0077-shape-fill.md) | 94,526 | `bedbfb8204a8d0eec9370f6d7a93689dd8e7f197a57e9479c4faa2146cb9b942` | |
 | `0078/error.numbers` | [0078: A formula error](../experiments/0078-formula-error.md) | 137,142 | `d2168cfb37bc4e13a58af53e78fa002584e8adcf6b39e5d87ce6c0e01876edfd` | |
 | `0103/round.numbers` | [0103: ROUND](../experiments/0103-round.md) | 138,598 | `10bfbfc0a497cd03f6b8b01b7f48e39b6d5c9eb27f220b01f3dbce883dc4fc8f` | |
@@ -132,6 +133,7 @@ Sample documents from the experiments, for testing readers and writers. They are
 | `0143/jpeg.pages` | [0143: A JPEG image](../experiments/0143-jpeg-image.md) | 91,933 | `1aab5753a61d5abb27479e64a2c513c97d3f29e0b5d72d73a76e8c5b6e48339b` | |
 | `0144/odd-name.pages` | [0144: A file name with spaces and ø](../experiments/0144-non-ascii-file-name.md) | 91,240 | `a1705142553abc867c9c58e04e5cf37e407d531080e32f8d152fbdc881fb1e83` | |
 | `0145/deleted.pages` | [0145: A deleted image](../experiments/0145-deleted-image.md) | 90,320 | `4f50d602134606eee8654aaf82fbd0acaa340897b17c8abecbe0f597d2855975` | |
+| `0147/package.numbers` | [0147: Numbers in the package format](../experiments/0147-numbers-package.md) | 136,058 | `24149f49f47880fc38aba891595b79755735a410b50127b28bbf8357c5db5e54` | a folder package |
 | `0148/large.pages` | [0148: A large image](../experiments/0148-large-image.md) | 1,820,787 | `02b2d229fc1ef0bf9f141b275d1c073bbc48a2523929752f165c02c6e4974b34` | |
 | `0149/zwj.pages` | [0149: A family emoji](../experiments/0149-family-emoji.md) | 91,374 | `3cd83925698fbbd54b31ae3fbc825a53a8d0ec9501e6fb732f81845f05174e15` | |
 | `0150/rtl.pages` | [0150: Arabic text](../experiments/0150-arabic-text.md) | 90,720 | `5947a1fdeb440c88ff1ffa9f513e7c2f691e7ebee0a9c8148337a31edca2763f` | |
@@ -139,6 +141,9 @@ Sample documents from the experiments, for testing readers and writers. They are
 | `0152/sizecolour.pages` | [0152: Size and colour on one word](../experiments/0152-size-and-colour.md) | 91,758 | `7f9c4deb975fe74ab04221249ee1addef4fdb09c502bc16406098c92ee23bfe2` | |
 | `0153/defaultsize.pages` | [0153: Setting a size a word already has](../experiments/0153-same-size-again.md) | 91,157 | `b7d4b298e44e5545eead610e588213428fc5d6c458ec4a35a52ec443140b1ebb` | |
 | `0154/replace.pages` | [0154: Replacing formatted text](../experiments/0154-replaced-text.md) | 90,742 | `ccad369b11dc31a02771bf11da4909e9d60d9af8007767222116fa50f32617db` | |
+| `0155/landscape.pages` | [0155: The landscape template](../experiments/0155-landscape-template.md) | 84,704 | `df7e4db00af2ccf043c7ef73145ccee057338ad1625ee2fff8a95137e4e4b0b5` | |
+| `0156/layout.pages` | [0156: The page layout template](../experiments/0156-page-layout-template.md) | 89,783 | `7335375993c4af5f039bf35923d796b858f79ca85a9a7b8a4c4ab88f7aa33921` | |
+| `0157/black.pages` | [0157: The black template](../experiments/0157-black-template.md) | 82,601 | `27ef09892eab773a76567314d3314df97a8417786d50b8718d5d5fc6e0f0f2fd` | |
 | `0169/checkfalse.numbers` | [0169: An unchecked checkbox](../experiments/0169-unchecked-checkbox.md) | 137,354 | `7d675da2e08f31fe01c3f301675bab0c1fe776163c6688db7f7b1d25834b3a0f` | |
 | `0170/rating0.numbers` | [0170: A rating of zero](../experiments/0170-zero-rating.md) | 137,982 | `c4ae457ef797b6d6f07dc5c54e104dd0c567f080ab9e2b52a94c0d0ef170b10a` | |
 | `0171/slider.numbers` | [0171: A slider](../experiments/0171-slider.md) | 137,369 | `84c0b21146e29a892cd6666af6bb13556313f330c1384ef2caaa1a757d013178` | |
@@ -170,6 +175,7 @@ Sample documents from the experiments, for testing readers and writers. They are
 | `0193/empty-comment.pages` | [0193: A tracked insertion](../experiments/0193-tracked-insertion.md) | 90,301 | `4af1e5817a56bcf21e67f0b65de14007307500783f40a4a35899e91b78f92e1a` | |
 | `0193/tracked.pages` | [0193: A tracked insertion](../experiments/0193-tracked-insertion.md) | 90,954 | `8c091a38124ae34ba5e702d6fe1efd2fe7ea0f6c4ccb921f0ef75569751976ba` | names its author |
 | `0194/deleted.pages` | [0194: A tracked deletion](../experiments/0194-tracked-deletion.md) | 90,932 | `eecbe112ce8fb4e10e1880f5dff21bde5d8261f12c29e14c3da67ee6f0cd9380` | names its author |
+| `0198/book.pages` | [0198: The blank book template](../experiments/0198-book-template.md) | 84,808 | `adf41653f330ee70767183ca00f9b47e7f889a09a2bcbac981df9f866fa1e233` | |
 | `0200/highlight.pages` | [0200: A highlight](../experiments/0200-highlight.md) | 90,590 | `ddacfc01c1f916ceee3ab1506b0f6fdb22cf49ca368a875260eee25db045d5fb` | names its author |
 | `0201/page-count.pages` | [0201: A page count field](../experiments/0201-page-count.md) | 90,516 | `8982c44b270e92d44e3e7fc1d6d5d90f9cdd85140b4b9b4cb8a7ded528af4c73` | |
 | `0202/toc.pages` | [0202: A table of contents](../experiments/0202-table-of-contents.md) | 92,330 | `b22d0740745cce16a5ccae294d5037860f31c475e8234010f3be124fe79c6d49` | |
@@ -439,7 +445,7 @@ Sample documents from the experiments, for testing readers and writers. They are
 | `keynote/0134/cells.key` | [0134: Cells in a Keynote table](../experiments/0134-keynote-table-cells.md) | 927,184 | `636c441088165a31bf27767125822e3249a974ea70eb0dd132b269c3f8ac1510` | |
 | `keynote/0135/formula.key` | [0135: A formula in a Keynote table](../experiments/0135-keynote-table-formula.md) | 928,084 | `6e35b80247b66fff7fd36ac6851ef0282e714cac972db8da38dfd6f46d6087b1` | |
 | `keynote/0137/currency.key` | [0137: A currency cell in Keynote](../experiments/0137-keynote-currency.md) | 927,372 | `4444a4dff41b2756d2eb976c4deeb801183beddcbf0fc76287fc63f18acedc21` | |
-| `keynote/0146/package.key` | [0146: Keynote in the package format](../experiments/0146-keynote-package.md) | 882,034 | `726dd6193349260f275eb6b96d04529483ad67ee236b6603fdd9fd2ad881fdc1` | |
+| `keynote/0146/package.key` | [0146: Keynote in the package format](../experiments/0146-keynote-package.md) | 876,707 | `6e070b60fde904ef53683a202c55f05594a4143b9db98264ddda5750dea65d56` | a folder package |
 | `keynote/0159/dup.key` | [0159: A duplicated slide](../experiments/0159-duplicated-slide.md) | 885,220 | `a69c19e916ebec88d72da713c68ee5a90f439fd7d566335da38f6455464774b1` | |
 | `keynote/0160/move.key` | [0160: A moved slide](../experiments/0160-moved-slide.md) | 886,912 | `1e56d02d37f1b4ddc4cb0135f4695009337753f77782592d38f5a209e421f2a2` | |
 | `keynote/0161/delete.key` | [0161: A deleted slide](../experiments/0161-deleted-slide.md) | 885,253 | `69a9ce9bab9ba92a3641d4be6feb4a16e960fa1bb868c783c43d6ba9251dc9fb` | |
@@ -477,21 +483,14 @@ Sample documents from the experiments, for testing readers and writers. They are
 
 ## Left out
 
-21 documents, besides 77 Keynote presentations in Basic White that are included as their test-theme versions under `keynote/`.
+14 documents, besides 78 Keynote presentations in Basic White that are included as their test-theme versions under `keynote/`.
 
 | File | Why |
 | --- | --- |
-| `0076/package.pages` | a folder package |
-| `0090/theme.key` | made from one of Apple's templates |
-| `0146/package.key` | a folder package |
-| `0147/package.numbers` | a folder package |
-| `0155/landscape.pages` | made from one of Apple's templates |
-| `0156/layout.pages` | made from one of Apple's templates |
-| `0157/black.pages` | made from one of Apple's templates |
-| `0158/essay.pages` | made from one of Apple's templates |
-| `0198/book.pages` | made from one of Apple's templates |
-| `0198/image-slides.key` | made from one of Apple's templates |
-| `0199/letter.pages` | made from one of Apple's templates |
+| `0090/theme.key` | holds Basic Black's photos |
+| `0158/essay.pages` | holds the template's placeholder text, written by Apple |
+| `0198/image-slides.key` | a dead end, not part of an experiment's result |
+| `0199/letter.pages` | holds the template's placeholder text, written by Apple |
 | `0271/dynamic.key` | Keynote with Basic White's photos; its test-theme version is left out too |
 | `0291/iwork-format test v2.key` | a step in building or testing the test theme, which is in theme/ |
 | `0291/iwork-format test.key` | a step in building or testing the test theme, which is in theme/ |
@@ -500,5 +499,5 @@ Sample documents from the experiments, for testing readers and writers. They are
 | `0291/theme-source.key` | a step in building or testing the test theme, which is in theme/ |
 | `0292/empty-default.key` | a step in building or testing the test theme, which is in theme/ |
 | `0292/empty.key` | a step in building or testing the test theme, which is in theme/ |
-| `theme/0090/theme.key` | made from one of Apple's templates |
+| `theme/0090/theme.key` | holds Basic Black's photos |
 | `theme/0271/dynamic.key` | media not made by the project: motionBackground-9094.jpeg |

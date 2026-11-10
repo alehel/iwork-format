@@ -34,7 +34,10 @@ def load(name, path):
 examples = load("examples", "site/examples.py")
 writer = load("writer", "recipes/0287-iwa-writer.py")
 
-TEMPLATES = {"0090", "0155", "0156", "0157", "0158", "0198", "0199"}
+# Experiments whose documents carry Apple's own theme images (0090) or placeholder prose (0158,
+# 0199). The other template experiments' documents hold only a template's styles and layout.
+TEMPLATES = {"0090", "0158", "0199"}
+SKIP = {"samples/0198/image-slides.key": "a dead end, not part of an experiment's result"}
 OURS = re.compile(
     r"^(photo-[a-f](-small)?|background|alpha|small|red-8x4(-filtered)?|rød bilde|gradient-3000x2000(-small)?|"
     r"square|data|tone|clip|posterImage|mt-[0-9A-F-]+|st-[0-9A-F-]+)-\d+\.\w+$")
@@ -89,12 +92,31 @@ def plain_parts(path):
             yield name, data
 
 
+def folder_parts(path):
+    """A folder package's files, with the parts inside its Index.zip, decoded."""
+    for dirpath, _, files in os.walk(path):
+        for f in sorted(files):
+            full = os.path.join(dirpath, f)
+            name = os.path.relpath(full, path)
+            if name == "Index.zip":
+                with zipfile.ZipFile(full) as z:
+                    for inner in z.namelist():
+                        data = z.read(inner)
+                        yield inner, writer.iwa_decode(data) if inner.endswith(".iwa") else data
+            else:
+                yield name, open(full, "rb").read()
+
+
+def folder_files(path):
+    return sorted(os.path.relpath(os.path.join(d, f), path) for d, _, fs in os.walk(path) for f in fs)
+
+
 def problem(path, rel):
-    if os.path.isdir(path):
-        return "a folder package"
+    if rel in SKIP:
+        return SKIP[rel]
     num = re.search(r"/(\d{4})/", rel).group(1)
     if num in TEMPLATES:
-        return "made from one of Apple's templates"
+        return "holds Basic Black's photos" if num == "0090" else "holds the template's placeholder text, written by Apple"
     if rel.endswith(".key") and not rel.startswith("samples/theme/"):
         if num in ("0291", "0292"):
             return "a step in building or testing the test theme, which is in theme/"
@@ -102,14 +124,18 @@ def problem(path, rel):
             return "Keynote with Basic White's photos; see samples/theme/"
         return "Keynote with Basic White's photos, not yet rerun with the test theme"
     words = examples.forbidden()
-    with zipfile.ZipFile(path) as z:
-        foreign = [n[5:] for n in (fix_name(i) for i in z.infolist()) if n.startswith("Data/") and not OURS.match(n[5:])]
+    if os.path.isdir(path):
+        names = folder_files(path)
+    else:
+        with zipfile.ZipFile(path) as z:
+            names = [fix_name(i) for i in z.infolist()]
+    foreign = [n[5:] for n in names if n.startswith("Data/") and not OURS.match(n[5:])]
     if foreign:
         return "media not made by the project: " + ", ".join(foreign[:3])
     if rel in AUTHOR_NAMED:
         return None
     password = PASSWORDS.get(rel)
-    parts = decrypted_parts(path, password) if password else plain_parts(path)
+    parts = folder_parts(path) if os.path.isdir(path) else decrypted_parts(path, password) if password else plain_parts(path)
     for name, data in parts:
         low = data.lower()
         for word in words:
@@ -143,13 +169,26 @@ def main(out_zip):
         rows = []
         for rel, _ in kept:
             arc = rel.replace("samples/theme/", "keynote/").replace("samples/", "")
-            z.write(rel, arc)
-            digest = hashlib.sha256(open(rel, "rb").read()).hexdigest()
+            if os.path.isdir(rel):
+                h, size = hashlib.sha256(), 0
+                for d, subdirs, files in os.walk(rel):
+                    if not subdirs and not files:
+                        z.writestr(f"{arc}/{os.path.relpath(d, rel)}/", b"")
+                for f in folder_files(rel):
+                    z.write(os.path.join(rel, f), f"{arc}/{f}")
+                    data = open(os.path.join(rel, f), "rb").read()
+                    h.update(f.encode() + b"\0" + data)
+                    size += len(data)
+                digest = h.hexdigest()
+            else:
+                z.write(rel, arc)
+                digest = hashlib.sha256(open(rel, "rb").read()).hexdigest()
+                size = os.path.getsize(rel)
             num = arc.split("/")[-2]
             title = titles.get(num, ("", num))[1]
             pw = PASSWORDS.get(rel)
-            rows.append(f"| `{arc}` | [{title}](../experiments/{titles.get(num, (num,))[0]}) | {os.path.getsize(rel):,} | `{digest}` |"
-                        + (f" password `{pw}` |" if pw else " names its author |" if rel in AUTHOR_NAMED else " |"))
+            rows.append(f"| `{arc}` | [{title}](../experiments/{titles.get(num, (num,))[0]}) | {size:,} | `{digest}` |"
+                        + (f" password `{pw}` |" if pw else " names its author |" if rel in AUTHOR_NAMED else " a folder package |" if os.path.isdir(rel) else " |"))
         z.write("fixtures/LICENSE.md", "LICENSE.md")
 
     index = ["# Fixtures", "",
@@ -159,7 +198,7 @@ def main(out_zip):
              f"See [LICENSE.md](LICENSE.md).", "",
              f"{len(kept)} documents. Keynote presentations, under `keynote/`, were made with the project's test theme "
              "([0291](../experiments/0291-test-theme.md), [0292](../experiments/0292-test-theme-reruns.md)). "
-             "Encrypted documents list their test password.", "",
+             "Encrypted documents list their test password. A folder package's SHA-256 is taken over each of its files in path order, as the path, a zero byte and the contents.", "",
              "| File | Experiment | Bytes | SHA-256 | Note |", "| --- | --- | --- | --- | --- |"] + rows
     kept_paths = {rel for rel, _ in kept}
     replaced = [rel for rel, why in left if why.endswith("see samples/theme/")
