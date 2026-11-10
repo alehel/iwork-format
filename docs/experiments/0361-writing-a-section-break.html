@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0361: Writing a section break · iWork file format specification</title>
+<meta name="description" content="iWork file format specification">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
+<p class="wip"><strong>Work in progress.</strong> This specification is incomplete and changes as new experiments run. Each finding says how sure it is: <em>confirmed</em>, <em>likely</em> or <em>unknown</em>. See <a href="../spec/index.html">what each layer covers so far</a>.</p>
+<div class="layout">
+<nav class="side" aria-label="Contents"><details open><summary>Contents</summary><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="../guides/anatomy.html">Reading a Pages document</a></li><li><a href="../guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="../guides/writing.html">Writing a document</a></li><li><a href="../guides/samples.html">Sample files</a></li><li class="group">Specification</li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2–5. Text, styles, objects, layout</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li class="group">Evidence</li><li><a href="index.html">All experiments</a></li></ul></details></nav>
+<main>
+<h1 id="0361-writing-a-section-break">0361: Writing a section break<a class="anchor" href="#0361-writing-a-section-break" aria-label="Link to this section">#</a></h1>
+<p><strong>Status:</strong> run</p>
+<p>A section break (Insert → Section Break) is U+0004 in the text. In a file Pages saved, the body's section runs (field 17) gain an entry at the character after it, pointing at a new section record (<a href="0040-section-break.html">0040</a>). This experiment writes the character in two ways and checks the sections, the pages and what Pages writes when it saves the file again:</p>
+<ol><li>The character alone, leaving one section run.</li><li>The character plus a second section run at the next character, pointing at the existing section record.</li></ol>
+<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Pages</td><td>15.4</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-10</td></tr><tr><td>Input</td><td><code>samples/0002/hello.pages</code>, whose body (text storage 1732539) has one section run, pointing at section record 1732296</td></tr><tr><td>Writer</td><td>The writer of <a href="0287-rewriting-a-document.html">0287</a> and [<code>recipes/0351-add-run.py</code>](../recipes/0351-add-run.py)</td></tr></tbody></table></div>
+<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section">#</a></h2>
+<pre class="lang-bash"><code>mkdir -p samples/0361
+python3 -I recipes/0287-iwa-writer.py samples/0002/hello.pages samples/0361/char-only.pages \
+  --text 1732539 &quot;$(printf &#x27;first\x04second&#x27;)&quot;
+python3 -I recipes/0351-add-run.py samples/0361/char-only.pages samples/0361/with-run.pages \
+  1732539 17 0 1732296 6 1732296</code></pre>
+<p>Pages opened each file on its own and counted the sections and the body's paragraphs through AppleScript. It then exported a PDF, read with PDFKit, and saved a copy (<code>-resaved</code>).</p>
+<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th>File</th><th>Sections</th><th>Paragraphs</th><th>PDF pages</th><th>Section runs as written</th><th>Section runs after Pages saved</th></tr></thead><tbody><tr><td><code>char-only.pages</code></td><td>2</td><td>2</td><td>2: "first", "second"</td><td>0 → 1732296</td><td>0 → 1732660, 6 → 1732682 (both new)</td></tr><tr><td><code>with-run.pages</code></td><td>2</td><td>2</td><td>2: "first", "second"</td><td>0 → 1732296, 6 → 1732296</td><td>unchanged</td></tr></tbody></table></div>
+<p>For comparison, <code>samples/0040/section-break.pages</code> has 0 → 1732296 and 4 → 1732696.</p>
+<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section">#</a></h2>
+<p>The U+0004 character alone makes the section break: Pages shows two sections, the second starting on a new page. The section runs only need to follow when the sections should differ. With one run, Pages makes the missing section on opening and writes two new section records when it saves. Two runs pointing at the same record are kept as they are, so a section record can be shared.</p>
+<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section">#</a></h2>
+<p><em>Confirmed</em>: U+0004 as a section break, by writing it. <em>Likely</em>: two sections may share one section record, since Pages kept the shared record on saving.</p>
+<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Last built from <a href="https://github.com/alehel/iwork-format">alehel/iwork-format</a>.</p></footer>
+</main>
+
+</div>
+<script>
+// On narrow screens the contents and on-this-page lists start folded; on wide ones they stay open.
+(function () {
+  var narrow = window.matchMedia("(max-width: 48rem)");
+  var lists = document.querySelectorAll(".side details, .toc details");
+  function fit() { for (var i = 0; i < lists.length; i++) lists[i].open = !narrow.matches; }
+  fit();
+  if (narrow.addEventListener) narrow.addEventListener("change", fit);
+  document.addEventListener("click", function (e) {
+    if (narrow.matches && e.target.closest && e.target.closest(".toc a")) fit();
+  });
+})();
+</script>
+</body>
+</html>
