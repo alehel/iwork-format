@@ -5,11 +5,13 @@ Usage: python3 -I recipes/0364-table-size.py IN OUT ROWS COLUMNS
 Writes ROWS and COLUMNS into the table model (type 6001, fields 6 and 7) and into the type-6305
 record (fields 3 and 2). In the type-6267 record, which lists a UUID per column (field 1) and per
 row (field 4), each with a pair of index maps (fields 2 and 3, 5 and 6), it keeps the first
-COLUMNS and ROWS UUIDs and the map entries below those counts. Only shrinking is supported, since
-growing would need new UUIDs. Everything else is re-encoded unchanged by the writer of 0287.
+COLUMNS and ROWS UUIDs and the map entries below those counts. To grow the table (experiment 0365)
+it adds random UUIDs and appends each new number to both of that list's maps. Everything else is
+re-encoded unchanged by the writer of 0287.
 """
 import importlib.util
 import os
+import secrets
 import sys
 import zipfile
 
@@ -43,7 +45,19 @@ def trim(payload, rows, cols):
         elif f in (5, 6) and w.read_varint(v, 0)[0] >= rows:
             continue
         out.append((f, t, v))
-    return w.serialize_message(out)
+    for uuids, maps, want in ((1, (2, 3), cols), (4, (5, 6), rows)):
+        have = seen[uuids]
+        if have == 0 or want <= have:
+            continue
+        added = []
+        for n in range(have, want):
+            uuid = w.serialize_message([(1, 0, w.write_varint(secrets.randbits(64))),
+                                        (2, 0, w.write_varint(secrets.randbits(64)))])
+            added.append((uuids, 2, uuid))
+            added += [(m, 0, w.write_varint(n)) for m in maps]
+        last = max(i for i, (f, _, _) in enumerate(out) if f in (uuids,) + maps)
+        out[last + 1:last + 1] = added
+    return w.serialize_message(sorted(out, key=lambda x: x[0]))
 
 
 def main(src, dst, rows, cols):
