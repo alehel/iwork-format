@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0323: A sweep of format kinds · iWork file format specification</title>
+<meta name="description" content="iWork file format specification">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
+<p class="wip"><strong>Work in progress.</strong> This specification is incomplete and changes as new experiments run. Each finding says how sure it is: <em>confirmed</em>, <em>likely</em> or <em>unknown</em>. See <a href="../spec/index.html">what each layer covers so far</a>.</p>
+<div class="layout">
+<nav class="side" aria-label="Contents"><details open><summary>Contents</summary><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="../guides/anatomy.html">Reading a Pages document</a></li><li><a href="../guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="../guides/writing.html">Writing a document</a></li><li><a href="../guides/samples.html">Sample files</a></li><li class="group">Specification</li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2–5. Text, styles, objects, layout</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li class="group">Evidence</li><li><a href="index.html">All experiments</a></li></ul></details></nav>
+<main>
+<h1 id="0323-a-sweep-of-format-kinds">0323: A sweep of format kinds<a class="anchor" href="#0323-a-sweep-of-format-kinds" aria-label="Link to this section">#</a></h1>
+<p><strong>Status:</strong> run</p>
+<p>The format list's kinds were read one at a time: 256 number, 257 currency, 258 percent, 259 scientific, 260 text, 261 date, 262 fraction, 263 checkbox, 267 rating, 268 duration and 269 numeral system (<a href="0036-more-cell-formats.html">0036</a>, <a href="0181-numeral-system.html">0181</a>), and <a href="0307-writing-a-format.html">0307</a> confirmed 258 by writing it. This experiment writes every kind from 250 to 280 into one format and reads how Numbers shows the value 1.</p>
+<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Numbers</td><td>15.4, started in English</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-10</td></tr><tr><td>Input</td><td><code>samples/0226/plain.numbers</code>: B2 holds 1 and uses format key 2, whose other fields are 2 = 253, 4 = 0 and 5 = 0</td></tr><tr><td>Script</td><td>[<code>recipes/0323-format-sweep.sh</code>](../recipes/0323-format-sweep.sh), using [<code>recipes/0307-format-kind.py</code>](../recipes/0307-format-kind.py)</td></tr></tbody></table></div>
+<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section">#</a></h2>
+<pre class="lang-bash"><code>mkdir -p samples/0323
+zsh recipes/0323-format-sweep.sh 250 280 &quot;$PWD/samples/0323/kinds.tsv&quot;</code></pre>
+<p>For each kind, the script writes it into format key 2, opens the file in Numbers through Launch Services and reads B2's <code>formatted value</code>, <code>format</code> and <code>value</code>. The results are in [<code>recipes/0323-format-kinds.tsv</code>](../recipes/0323-format-kinds.tsv).</p>
+<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th>Kind</th><th>B2 shown as</th></tr></thead><tbody><tr><td>258</td><td><code>100 %</code></td></tr><tr><td>259</td><td><code>1E+00</code></td></tr><tr><td>262</td><td><code>2</code></td></tr><tr><td>267</td><td><code>1 ★</code></td></tr><tr><td>269</td><td><code>1E+00</code></td></tr><tr><td>All others, 250–257, 260, 261, 263–266, 268, 270–280</td><td><code>1</code></td></tr></tbody></table></div>
+<p>The value stayed 1, and AppleScript's <code>format</code> stayed <code>automatic</code>, in every case.</p>
+<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section">#</a></h2>
+<p>The kinds that need nothing but the kind show themselves: 258 percent, 259 scientific and 267 rating. Currency, date, duration, checkbox and the others need settings of their own, such as a currency code or a date pattern, which this format doesn't have, so they fall back to showing the plain number. Kind 262 showing <code>2</code> and 269 showing scientific notation are probably the fraction and numeral-system formats misreading this format's fields, which belong to a number format, but that wasn't tested. Kinds outside 256 to 269 aren't formats Numbers knows.</p>
+<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section">#</a></h2>
+<p><em>Confirmed</em>: 258 percent, 259 scientific and 267 rating, by writing them.</p>
+<p><em>Unknown</em>: what 262 and 269 make of a number format's settings.</p>
+<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Last built from <a href="https://github.com/alehel/iwork-format">alehel/iwork-format</a>.</p></footer>
+</main>
+
+</div>
+<script>
+// On narrow screens the contents and on-this-page lists start folded; on wide ones they stay open.
+(function () {
+  var narrow = window.matchMedia("(max-width: 48rem)");
+  var lists = document.querySelectorAll(".side details, .toc details");
+  function fit() { for (var i = 0; i < lists.length; i++) lists[i].open = !narrow.matches; }
+  fit();
+  if (narrow.addEventListener) narrow.addEventListener("change", fit);
+  document.addEventListener("click", function (e) {
+    if (narrow.matches && e.target.closest && e.target.closest(".toc a")) fit();
+  });
+})();
+</script>
+</body>
+</html>
