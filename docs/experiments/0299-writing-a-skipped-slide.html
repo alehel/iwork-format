@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0299: Writing a skipped slide · iWork file format specification</title>
+<meta name="description" content="iWork file format specification">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
+<p class="wip"><strong>Work in progress.</strong> This specification is incomplete and changes as new experiments run. Each finding says how sure it is: <em>confirmed</em>, <em>likely</em> or <em>unknown</em>. See <a href="../spec/index.html">what each layer covers so far</a>.</p>
+<div class="layout">
+<nav class="side" aria-label="Contents"><details open><summary>Contents</summary><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="../guides/anatomy.html">Reading a Pages document</a></li><li><a href="../guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="../guides/writing.html">Writing a document</a></li><li><a href="../guides/samples.html">Sample files</a></li><li class="group">Specification</li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2–5. Text, styles, objects, layout</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li class="group">Evidence</li><li><a href="index.html">All experiments</a></li></ul></details></nav>
+<main>
+<h1 id="0299-writing-a-skipped-slide">0299: Writing a skipped slide<a class="anchor" href="#0299-writing-a-skipped-slide" aria-label="Link to this section">#</a></h1>
+<p><strong>Status:</strong> run</p>
+<p><a href="0070-skipped-slide.html">0070</a> read a slide node's field 4 as the flag that skips a slide in a slideshow. This experiment tests the reading by writing: it sets the flag in a file and asks Keynote, through AppleScript, which slides are skipped.</p>
+<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Keynote</td><td>15.4</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-10</td></tr><tr><td>Input</td><td><code>samples/theme/0038/two-slides.key</code>, two slides in the test theme (<a href="0292-test-theme-reruns.html">0292</a>)</td></tr><tr><td>Writer</td><td>[<code>recipes/0299-skip-slide.py</code>](../recipes/0299-skip-slide.py), using the writer of <a href="0287-rewriting-a-document.html">0287</a></td></tr></tbody></table></div>
+<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section">#</a></h2>
+<pre class="lang-bash"><code>mkdir -p samples/0299
+cp samples/theme/0038/two-slides.key samples/0299/two-slides.key
+python3 -I recipes/0299-skip-slide.py samples/0299/two-slides.key samples/0299/second-skipped.key 2655609</code></pre>
+<p>Record 2655609 is the second slide's node (type 4), whose field 4 is 0. The script sets it to 1. Keynote then opened the original and the written file through AppleScript, read each slide's <code>slide number</code> and <code>skipped</code>, and saved the written one again as <code>resaved.key</code>.</p>
+<p>Keynote at first refused to open the plain copy <code>two-slides.key</code>, saying it couldn't be opened at the moment because the operation wasn't permitted, while another document was still open. With all documents closed, the written file opened. Pages behaved the same way with some copies in an earlier attempt that wasn't written up, so this looks like a limit of the apps, not of the files.</p>
+<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th>File</th><th>Slide 1</th><th>Slide 2</th></tr></thead><tbody><tr><td>Original</td><td>number 1, not skipped</td><td>number 2, not skipped</td></tr><tr><td><code>second-skipped.key</code></td><td>number 1, not skipped</td><td>number −1, skipped</td></tr></tbody></table></div>
+<p>In <code>resaved.key</code>, the second slide node still has field 4 = 1 and the first 0.</p>
+<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section">#</a></h2>
+<p>Field 4 of a slide node is the slide's skipped flag: written as 1, it makes Keynote treat the slide as skipped, which AppleScript reports with the slide number −1, and Keynote keeps it when saving. A slide that isn't skipped has the field as 0, not absent.</p>
+<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section">#</a></h2>
+<p><em>Confirmed</em>: slide node field 4 = 1 skips the slide.</p>
+<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Last built from <a href="https://github.com/alehel/iwork-format">alehel/iwork-format</a>.</p></footer>
+</main>
+
+</div>
+<script>
+// On narrow screens the contents and on-this-page lists start folded; on wide ones they stay open.
+(function () {
+  var narrow = window.matchMedia("(max-width: 48rem)");
+  var lists = document.querySelectorAll(".side details, .toc details");
+  function fit() { for (var i = 0; i < lists.length; i++) lists[i].open = !narrow.matches; }
+  fit();
+  if (narrow.addEventListener) narrow.addEventListener("change", fit);
+  document.addEventListener("click", function (e) {
+    if (narrow.matches && e.target.closest && e.target.closest(".toc a")) fit();
+  });
+})();
+</script>
+</body>
+</html>
