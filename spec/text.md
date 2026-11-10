@@ -14,7 +14,7 @@ The body text is in `Index/Document.iwa`, in field 3 of a record of type 2001. *
 - It has no terminator or extra length prefix: the field's own length is the text's length in bytes.
 - An empty body has no field 3 at all.
 
-`Document.iwa` holds more than one type-2001 record: 19 in a new document. The body's record has field 1 set to 0, and the other 18 have field 1 set to 1. *Likely* ([0003](../experiments/0003-non-ascii-word.md)). The other 18 hold header and footer text, and use the paragraph style named for headers and footers. *Likely* ([0004](../experiments/0004-larger-word.md), [0016](../experiments/0016-header-and-footer.md))
+`Document.iwa` holds more than one type-2001 record: 19 in a new document. The body's record has field 1 set to 0, and the other 18 have field 1 set to 1. *Likely* ([0003](../experiments/0003-non-ascii-word.md)). The other 18 hold header and footer text, and use the paragraph style named for headers and footers. *Likely* ([0004](../experiments/0004-larger-word.md), [0016](../experiments/0016-header-and-footer.md)). Field 1 says what a text storage is for: 0 a body, 1 a header or footer, 2 a footnote, 4 a slide's presenter notes and 7 a table of contents; text inside shapes, text boxes, placeholders and cells leaves it out. *Likely*, from a survey of every sample ([0305](../experiments/0305-writing-presenter-notes.md))
 
 ## Page setup
 

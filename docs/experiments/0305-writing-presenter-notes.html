@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0305: Writing presenter notes, and the kinds of text storage · iWork file format specification</title>
+<meta name="description" content="iWork file format specification">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
+<p class="wip"><strong>Work in progress.</strong> This specification is incomplete and changes as new experiments run. Each finding says how sure it is: <em>confirmed</em>, <em>likely</em> or <em>unknown</em>. See <a href="../spec/index.html">what each layer covers so far</a>.</p>
+<div class="layout">
+<nav class="side" aria-label="Contents"><details open><summary>Contents</summary><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="../guides/anatomy.html">Reading a Pages document</a></li><li><a href="../guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="../guides/writing.html">Writing a document</a></li><li><a href="../guides/samples.html">Sample files</a></li><li class="group">Specification</li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2–5. Text, styles, objects, layout</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li class="group">Evidence</li><li><a href="index.html">All experiments</a></li></ul></details></nav>
+<main>
+<h1 id="0305-writing-presenter-notes-and-the-kinds-of-text-storage">0305: Writing presenter notes, and the kinds of text storage<a class="anchor" href="#0305-writing-presenter-notes-and-the-kinds-of-text-storage" aria-label="Link to this section">#</a></h1>
+<p><strong>Status:</strong> run</p>
+<p><a href="0039-presenter-notes.html">0039</a> found a slide's presenter notes in a text storage (type 2001) of their own. This experiment replaces that text by writing and asks Keynote for the notes. It also surveys field 1 of every text storage in the samples, which marks what a text is for.</p>
+<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Keynote</td><td>15.4</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-10</td></tr><tr><td>Input</td><td><code>samples/theme/0039/notes.key</code>: one slide whose notes are <code>notes here</code>, in the test theme</td></tr><tr><td>Writer</td><td>The writer of <a href="0287-rewriting-a-document.html">0287</a>, whose <code>--text</code> option sets a text storage's field 3</td></tr></tbody></table></div>
+<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section">#</a></h2>
+<pre class="lang-bash"><code>mkdir -p samples/0305
+cp samples/theme/0039/notes.key samples/0305/original.key
+python3 -I recipes/0287-iwa-writer.py samples/0305/original.key samples/0305/written.key \
+  --text 2655508 &quot;Notes written by a script&quot;</code></pre>
+<p>Record 2655508, in <code>Index/Slide.iwa</code>, is the text storage holding <code>notes here</code>. Keynote opened each file on its own through Launch Services (<a href="0302-writing-a-transition.html">0302</a>), read <code>presenter notes of slide 1</code>, and saved the written file again. A script then counted field 1 of every type-2001 record in the samples, by app.</p>
+<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section">#</a></h2>
+<p>Keynote reads the original's notes as <code>notes here</code> and the written file's as <code>Notes written by a script</code>. The resaved file keeps the new text in the same record.</p>
+<p>Field 1 of the type-2001 records:</p>
+<div class="table"><table><thead><tr><th>Field 1</th><th>Where</th><th>Count</th></tr></thead><tbody><tr><td>0</td><td>Pages: the body</td><td>191</td></tr><tr><td>1</td><td>Pages: headers and footers (<a href="0003-non-ascii-word.html">0003</a>); Numbers: text in <code>Document.iwa</code></td><td>3,456; 1,236</td></tr><tr><td>2</td><td>Pages: a footnote's text, in 0041</td><td>1</td></tr><tr><td>4</td><td>Keynote: presenter notes, one per slide</td><td>136</td></tr><tr><td>7</td><td>Pages: a table of contents, in 0202</td><td>1</td></tr><tr><td>Absent</td><td>Text in shapes, text boxes, placeholders and table cells</td><td>6,664</td></tr></tbody></table></div>
+<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section">#</a></h2>
+<p>A slide's presenter notes are an ordinary text storage, and writing its field 3 changes them. Field 1 of a text storage says what the text is for: 0 a document body, 1 a header or footer, 2 a footnote, 4 presenter notes and 7 a table of contents, while text inside objects leaves it out. What 1 means in Numbers, where it is common, isn't clear from this survey.</p>
+<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section">#</a></h2>
+<p><em>Confirmed</em>: presenter notes are written through their text storage's field 3.</p>
+<p><em>Likely</em>: field 1 values 0, 1, 2, 4 and 7.</p>
+<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Last built from <a href="https://github.com/alehel/iwork-format">alehel/iwork-format</a>.</p></footer>
+</main>
+
+</div>
+<script>
+// On narrow screens the contents and on-this-page lists start folded; on wide ones they stay open.
+(function () {
+  var narrow = window.matchMedia("(max-width: 48rem)");
+  var lists = document.querySelectorAll(".side details, .toc details");
+  function fit() { for (var i = 0; i < lists.length; i++) lists[i].open = !narrow.matches; }
+  fit();
+  if (narrow.addEventListener) narrow.addEventListener("change", fit);
+  document.addEventListener("click", function (e) {
+    if (narrow.matches && e.target.closest && e.target.closest(".toc a")) fit();
+  });
+})();
+</script>
+</body>
+</html>
