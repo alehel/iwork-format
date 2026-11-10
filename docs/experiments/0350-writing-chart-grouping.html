@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0350: Writing a chart&#x27;s grouping · iWork file format specification</title>
+<meta name="description" content="iWork file format specification">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
+<p class="wip"><strong>Work in progress.</strong> This specification is incomplete and changes as new experiments run. Each finding says how sure it is: <em>confirmed</em>, <em>likely</em> or <em>unknown</em>. See <a href="../spec/index.html">what each layer covers so far</a>.</p>
+<div class="layout">
+<nav class="side" aria-label="Contents"><details open><summary>Contents</summary><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="../guides/anatomy.html">Reading a Pages document</a></li><li><a href="../guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="../guides/writing.html">Writing a document</a></li><li><a href="../guides/samples.html">Sample files</a></li><li class="group">Specification</li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2–5. Text, styles, objects, layout</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li class="group">Evidence</li><li><a href="index.html">All experiments</a></li></ul></details></nav>
+<main>
+<h1 id="0350-writing-a-charts-grouping">0350: Writing a chart's grouping<a class="anchor" href="#0350-writing-a-charts-grouping" aria-label="Link to this section">#</a></h1>
+<p><strong>Status:</strong> run</p>
+<p>A chart's field 10000.5 was read as its grouping into series: 1 by row, 2 by column, with the data grid the same either way (<a href="0086-chart-grouped-by-column.html">0086</a>). This experiment writes 2 into a chart grouped by row and looks at the slide Keynote exports.</p>
+<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Keynote</td><td>15.4</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-10</td></tr><tr><td>Input</td><td><code>samples/0297/baseline.key</code>: a bar chart (record 2655552) with rows <code>r1</code> (1, 2, 3) and <code>r2</code> (4, 5, 6) and columns <code>a</code>, <code>b</code>, <code>c</code>, grouped by row, in the test theme</td></tr><tr><td>Writer</td><td>[<code>recipes/0302-set-path.py</code>](../recipes/0302-set-path.py)</td></tr></tbody></table></div>
+<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section">#</a></h2>
+<pre class="lang-bash"><code>mkdir -p samples/0350/img-row samples/0350/img-col
+cp samples/0297/baseline.key samples/0350/row.key
+python3 -I recipes/0302-set-path.py samples/0350/row.key samples/0350/column.key 2655552 10000.5 varint 2</code></pre>
+<p>Keynote opened each file on its own and exported its slide as an image.</p>
+<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section">#</a></h2>
+<p>Grouped by row, the chart shows categories <code>a</code>, <code>b</code> and <code>c</code> with two series, <code>r1</code> in blue and <code>r2</code> in green. With 10000.5 = 2 it shows categories <code>r1</code> and <code>r2</code> with three series, in blue, green and grey, the theme's first three series colours:</p>
+<figure><img src="../files/0350-grouped-by-column.png" alt="The slide exported after writing 10000.5 = 2: two groups of three bars" loading="lazy"><figcaption>The slide exported after writing 10000.5 = 2: two groups of three bars</figcaption></figure>
+<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section">#</a></h2>
+<p>Field 10000.5 = 2 makes the grid's columns the series and its rows the categories. The data grid is untouched, as <a href="0086-chart-grouped-by-column.html">0086</a> found.</p>
+<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section">#</a></h2>
+<p><em>Confirmed</em>: chart field 10000.5 is the grouping, by writing it.</p>
+<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Last built from <a href="https://github.com/alehel/iwork-format">alehel/iwork-format</a>.</p></footer>
+</main>
+
+</div>
+<script>
+// On narrow screens the contents and on-this-page lists start folded; on wide ones they stay open.
+(function () {
+  var narrow = window.matchMedia("(max-width: 48rem)");
+  var lists = document.querySelectorAll(".side details, .toc details");
+  function fit() { for (var i = 0; i < lists.length; i++) lists[i].open = !narrow.matches; }
+  fit();
+  if (narrow.addEventListener) narrow.addEventListener("change", fit);
+  document.addEventListener("click", function (e) {
+    if (narrow.matches && e.target.closest && e.target.closest(".toc a")) fit();
+  });
+})();
+</script>
+</body>
+</html>
