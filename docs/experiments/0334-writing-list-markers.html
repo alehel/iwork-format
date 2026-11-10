@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0334: Writing a list&#x27;s marker and indent, measured on the page · iWork file format specification</title>
+<meta name="description" content="iWork file format specification">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
+<p class="wip"><strong>Work in progress.</strong> This specification is incomplete and changes as new experiments run. Each finding says how sure it is: <em>confirmed</em>, <em>likely</em> or <em>unknown</em>. See <a href="../spec/index.html">what each layer covers so far</a>.</p>
+<div class="layout">
+<nav class="side" aria-label="Contents"><details open><summary>Contents</summary><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="../guides/anatomy.html">Reading a Pages document</a></li><li><a href="../guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="../guides/writing.html">Writing a document</a></li><li><a href="../guides/samples.html">Sample files</a></li><li class="group">Specification</li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2–5. Text, styles, objects, layout</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li class="group">Evidence</li><li><a href="index.html">All experiments</a></li></ul></details></nav>
+<main>
+<h1 id="0334-writing-a-lists-marker-and-indent-measured-on-the-page">0334: Writing a list's marker and indent, measured on the page<a class="anchor" href="#0334-writing-a-lists-marker-and-indent-measured-on-the-page" aria-label="Link to this section">#</a></h1>
+<p><strong>Status:</strong> run</p>
+<p>A list style (type 2023) keeps its properties as nine repeated values, one per level: field 11 the kind of marker (0 none, 2 a text character, 3 a number), field 16 the marker text, and field 13 an indent in points (<a href="0014-lists.html">0014</a>, <a href="0015-list-levels.html">0015</a>). This experiment writes each into a dash list's style and looks at the exported page.</p>
+<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Pages</td><td>15.4</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-10</td></tr><tr><td>Input</td><td><code>samples/0014/dash-list.pages</code>: the paragraphs <code>One</code>, <code>Two</code> and <code>Three</code> in the Dash list style (record 1731488, <code>text-7-liststyle-Dash</code>), whose marker kind is 2 and text <code>-</code> at every level, and whose first indent is 0</td></tr><tr><td>Writer</td><td>[<code>recipes/0334-set-repeated.py</code>](../recipes/0334-set-repeated.py), which sets every occurrence of a repeated field, or only the first</td></tr></tbody></table></div>
+<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section">#</a></h2>
+<pre class="lang-bash"><code>mkdir -p samples/0334
+cp samples/0014/dash-list.pages samples/0334/dash.pages
+R=recipes/0334-set-repeated.py
+python3 -I $R samples/0334/dash.pages samples/0334/none.pages 1731488 11 varint 0
+python3 -I $R samples/0334/dash.pages samples/0334/guillemet.pages 1731488 16 string &quot;»&quot;
+python3 -I $R samples/0334/dash.pages samples/0334/indent72.pages 1731488 13 float 72 1</code></pre>
+<p>Each file was opened in Pages on its own, exported as PDF and measured with [<code>recipes/0319-measure-pdf.swift</code>](../recipes/0319-measure-pdf.swift); the guillemet version's first lines were also drawn as an image.</p>
+<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section">#</a></h2>
+<p>The first line's ink, marker and word together:</p>
+<div class="table"><table><thead><tr><th>File</th><th>Ink</th></tr></thead><tbody><tr><td><code>dash.pages</code></td><td>57.5 – 89.0</td></tr><tr><td><code>none.pages</code> (11 = 0)</td><td>69.2 – 89.0</td></tr><tr><td><code>guillemet.pages</code> (16 = <code>»</code>)</td><td>57.8 – 89.0, drawn as <code>» One</code></td></tr><tr><td><code>indent72.pages</code> (first 13 = 72)</td><td>129.5 – 161.0</td></tr></tbody></table></div>
+<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section">#</a></h2>
+<p>Field 11 = 0 removes the marker and leaves the text where it was; field 16 is the character drawn as the marker; and the first occurrence of field 13 indents the first level's marker and text together by its value in points. The text itself never changes: list markers aren't in it.</p>
+<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section">#</a></h2>
+<p><em>Confirmed</em>: list style fields 11, 13 and 16, by writing them and measuring.</p>
+<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Last built from <a href="https://github.com/alehel/iwork-format">alehel/iwork-format</a>.</p></footer>
+</main>
+
+</div>
+<script>
+// On narrow screens the contents and on-this-page lists start folded; on wide ones they stay open.
+(function () {
+  var narrow = window.matchMedia("(max-width: 48rem)");
+  var lists = document.querySelectorAll(".side details, .toc details");
+  function fit() { for (var i = 0; i < lists.length; i++) lists[i].open = !narrow.matches; }
+  fit();
+  if (narrow.addEventListener) narrow.addEventListener("change", fit);
+  document.addEventListener("click", function (e) {
+    if (narrow.matches && e.target.closest && e.target.closest(".toc a")) fit();
+  });
+})();
+</script>
+</body>
+</html>
