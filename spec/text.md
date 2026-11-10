@@ -189,10 +189,10 @@ A paragraph style also has a field 12 for paragraph properties. *Likely* ([0008]
 | Field 12.n | Property | Encoding |
 | --- | --- | --- |
 | 1 | Alignment | varint: 0 left, 1 right, 2 centred, 3 justified, 4 probably natural (the Body style's value, shown as left); 1 and 2 *confirmed* by writing them and measuring the page ([0319](../experiments/0319-writing-paragraph-alignment.md)) |
-| 7 | First-line indent | float, in points ([0253](../experiments/0253-indents.md)) |
-| 11 | Left indent | float, in points ([0253](../experiments/0253-indents.md)) |
+| 7 | First-line indent | float, in points from the margin, for the first line only ([0253](../experiments/0253-indents.md); *confirmed* by writing and measuring, [0320](../experiments/0320-writing-indents.md)) |
+| 11 | Left indent | float, in points from the margin, for every line but the first, independent of 7 ([0253](../experiments/0253-indents.md); *confirmed*, [0320](../experiments/0320-writing-indents.md)) |
 | 13 | Line spacing | message: field 1 is the kind (absent for a multiple of lines; 1 at least, 2 exactly and 4 between, in points, [0281](../experiments/0281-other-line-spacing-kinds.md)) and field 2 the amount, such as 2.0 for double ([0252](../experiments/0252-line-spacing.md), [0276](../experiments/0276-exact-line-spacing.md)) |
-| 19 | Right indent | float, in points ([0253](../experiments/0253-indents.md)) |
+| 19 | Right indent | float, in points from the right margin ([0253](../experiments/0253-indents.md); *confirmed*, [0320](../experiments/0320-writing-indents.md)) |
 | 20 | Space after the paragraph | float, in points ([0256](../experiments/0256-paragraph-spacing.md)) |
 | 21 | Space before the paragraph | float, in points ([0256](../experiments/0256-paragraph-spacing.md)) |
 | 25 | Tab stops | message: one 25.1 per stop, with its position in points in field 1, its alignment in field 2 (absent for left, 1 centre, 2 right, 3 decimal, [0282](../experiments/0282-centre-and-decimal-tabs.md)) and its leader character in field 3 (a space draws nothing) ([0255](../experiments/0255-tab-stop.md), [0277](../experiments/0277-right-tab.md)) |
