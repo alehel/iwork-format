@@ -48,7 +48,7 @@ The clean-room rules are in [CONTRIBUTING.md](CONTRIBUTING.md). Every contributo
 | [`fixtures/`](fixtures/) | The index and builder of the published sample documents, which are attached to the [`fixtures` release](https://github.com/alehel/iwork-format/releases/tag/fixtures) |
 | [`theme/`](theme/) | The project's Keynote test theme, built from Basic White with its photos replaced by test cards the project drew itself (CC0), so presentations made with it can be shared ([0291](experiments/0291-test-theme.md)) |
 | `samples/` | Gitignored. Files Pages wrote, kept on your own machine only |
-| [`site/`](site/) | The spec site's guides, stylesheet and builder. `python3 -I site/examples.py` makes its excerpts, renders and sample files from `samples/`; `python3 -I site/build.py` writes the site |
+| [`site/`](site/) | The spec site's guides, stylesheet and builder. `python3 -I site/examples.py` makes its excerpts, renders and sample files from `samples/`; `python3 -I site/build.py` writes the site. When a new app release is taken up, `python3 -I site/archive.py 15.4` freezes the current spec in `spec/versions/15.4/`, and the site lets readers switch between releases |
 | [`docs/`](docs/) | The built site, plain HTML and CSS, for GitHub Pages. Don't edit it by hand |
 
 ## Using iwork-probe

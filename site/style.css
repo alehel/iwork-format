@@ -82,7 +82,7 @@ a:hover { text-decoration: underline; }
 .side a { display: block; padding: .2rem .5rem; border-radius: 4px; color: var(--fg); }
 .side a.current { background: var(--accent-soft); color: var(--accent); font-weight: 600; }
 /* The lists sit in <details> so they can fold on narrow screens; on wide ones they are always open */
-.side summary { display: none; }
+.side > details > summary { display: none; }
 .toc summary {
   list-style: none; pointer-events: none;
   color: var(--fg-soft); font-size: .75rem; text-transform: uppercase; letter-spacing: .08em; font-weight: 600; margin: 0 0 .5rem;
@@ -151,19 +151,19 @@ footer { margin-top: 4rem; padding-top: 1rem; border-top: 1px solid var(--rule);
     position: static; align-self: stretch; max-height: none; overflow: visible;
     padding: 0; border-bottom: 1px solid var(--rule); font-size: .95rem;
   }
-  .side summary, .toc summary {
+  .side > details > summary, .toc summary {
     display: flex; align-items: center; justify-content: space-between;
     pointer-events: auto; cursor: pointer; list-style: none; margin: 0;
     padding: .75rem 0; color: var(--fg);
     font-size: .8rem; text-transform: uppercase; letter-spacing: .08em; font-weight: 600;
   }
-  .side summary::after, .toc summary::after {
+  .side > details > summary::after, .toc summary::after {
     content: ""; width: .5rem; height: .5rem; margin-right: .3rem;
     border-right: 2px solid var(--fg-soft); border-bottom: 2px solid var(--fg-soft);
     transform: rotate(45deg); transition: transform .15s;
   }
-  .side details[open] summary::after, .toc details[open] summary::after { transform: rotate(-135deg); }
-  .side details > ul, .toc details > ul { padding: 0 0 .8rem; }
+  .side > details[open] > summary::after, .toc details[open] summary::after { transform: rotate(-135deg); }
+  .side > details > ul, .toc details > ul { padding: 0 0 .8rem; }
   .side li.group { margin-top: .8rem; }
   .side li.group:first-child { margin-top: 0; }
   .side a, .toc a { padding: .45rem .5rem; }
@@ -175,3 +175,30 @@ footer { margin-top: 4rem; padding-top: 1rem; border-top: 1px solid var(--rule);
   .side, .toc, .top .repo { display: none; }
   .layout { display: block; }
 }
+
+/* Which release of the apps the spec describes: a dropdown under the Specification heading */
+.side li.versions { margin: .3rem 0 .6rem; }
+.side .release { position: relative; }
+.side .release summary {
+  display: flex; align-items: center; gap: .5rem; cursor: pointer; list-style: none;
+  padding: .3rem .6rem; border: 1px solid var(--rule); border-radius: 6px; background: var(--bg);
+}
+.side .release summary::-webkit-details-marker { display: none; }
+.side .release summary:hover { border-color: var(--fg-soft); }
+.side .release summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+.side .release .label { color: var(--fg-soft); font-size: .8rem; }
+.side .release .value { flex: 1; font-weight: 600; font-variant-numeric: tabular-nums; }
+.side .release summary::after {
+  content: ""; width: .4rem; height: .4rem; margin: 0 .15rem .2rem 0;
+  border-right: 2px solid var(--fg-soft); border-bottom: 2px solid var(--fg-soft); transform: rotate(45deg);
+}
+.side .release[open] summary::after { transform: rotate(-135deg); margin: .2rem .15rem 0 0; }
+.side .release ul {
+  position: absolute; z-index: 2; left: 0; right: 0; top: calc(100% + .25rem);
+  padding: .25rem; background: var(--bg); border: 1px solid var(--rule); border-radius: 6px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, .12);
+}
+.side .release li { margin: 0; }
+.side .release a { font-variant-numeric: tabular-nums; }
+.wip.archived { background: var(--accent-soft); border-bottom-color: var(--rule); }
+.wip.archived strong { color: var(--accent); }
