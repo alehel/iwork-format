@@ -172,7 +172,8 @@ Field 11 of a character style or a paragraph style holds the character propertie
 | 2 | Italic | varint: 1 italic |
 | 3 | Size in points | float |
 | 5 | Font name, such as `HelveticaNeue` | text |
-| 7 | Text colour | message: red, green and blue in fields 3, 4 and 5 and alpha in field 6, as floats from 0 to 1, in sRGB (field 1 = 1 RGB, field 12 = 1 probably sRGB); AppleScript reports colours converted to Generic RGB ([0309](../experiments/0309-writing-a-cell-colour.md)) |
+| 7 | Text colour | message: red, green and blue in fields 3, 4 and 5 and alpha in field 6, as floats from 0 to 1, in sRGB (field 1 = 1 RGB, field 12 = 1 probably sRGB); AppleScript reports colours converted to Generic RGB ([0309](../experiments/0309-writing-a-cell-colour.md)). In cell text styles, at least, the colour drawn is 46.1 and this field a copy that the app rewrites from it on saving ([0310](../experiments/0310-writing-a-cell-text-style.md)) |
+| 46 | Text fill | message: field 1 is the text colour as in 7; this is the one drawn, and the app keeps 7 in step with it when saving ([0310](../experiments/0310-writing-a-cell-text-style.md)) |
 | 10 | Baseline position | varint: 1 superscript, 2 subscript ([0203](../experiments/0203-superscript.md), [0204](../experiments/0204-subscript.md)) |
 | 11 | Underline | varint: 1 underlined, 0 not |
 | 12 | Strikethrough | varint: 1 struck through, 0 not |
