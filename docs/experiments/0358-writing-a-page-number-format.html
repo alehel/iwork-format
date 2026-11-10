@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0358: Writing a page number&#x27;s format · iWork file format specification</title>
+<meta name="description" content="iWork file format specification">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
+<p class="wip"><strong>Work in progress.</strong> This specification is incomplete and changes as new experiments run. Each finding says how sure it is: <em>confirmed</em>, <em>likely</em> or <em>unknown</em>. See <a href="../spec/index.html">what each layer covers so far</a>.</p>
+<div class="layout">
+<nav class="side" aria-label="Contents"><details open><summary>Contents</summary><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="../guides/anatomy.html">Reading a Pages document</a></li><li><a href="../guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="../guides/writing.html">Writing a document</a></li><li><a href="../guides/samples.html">Sample files</a></li><li class="group">Specification</li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2–5. Text, styles, objects, layout</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li class="group">Evidence</li><li><a href="index.html">All experiments</a></li></ul></details></nav>
+<main>
+<h1 id="0358-writing-a-page-numbers-format">0358: Writing a page number's format<a class="anchor" href="#0358-writing-a-page-numbers-format" aria-label="Link to this section">#</a></h1>
+<p><strong>Status:</strong> run</p>
+<p>A page number field is an attachment (U+FFFC) pointing at a type-2043 record, whose field 4 is the number format, such as <code>decimal</code>, and field 1.2 chooses page number or page count (<a href="0048-page-number.html">0048</a>, <a href="0201-page-count.html">0201</a>). Unlike a date field (<a href="0357-writing-a-date-field.html">0357</a>), it has no text of its own in the body. This experiment writes other formats into field 4 and reads the exported page's text.</p>
+<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Pages</td><td>15.4</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-10</td></tr><tr><td>Input</td><td><code>samples/0048/page-number.pages</code>: the body <code>Page </code> and a page number field, record 1732717 with field 4 = <code>decimal</code></td></tr><tr><td>Writer</td><td>[<code>recipes/0302-set-path.py</code>](../recipes/0302-set-path.py)</td></tr></tbody></table></div>
+<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section">#</a></h2>
+<pre class="lang-bash"><code>mkdir -p samples/0358
+cp samples/0048/page-number.pages samples/0358/original.pages
+for fmt in upper-roman lower-roman upper-alpha lower-alpha upper-latin lower-latin upper-alphabetic lower-alphabetic upper-letter; do
+  python3 -I recipes/0302-set-path.py samples/0358/original.pages samples/0358/$fmt.pages 1732717 4 string $fmt
+done</code></pre>
+<p>Pages opened each file on its own and exported it as PDF; PDFKit extracted the page's text.</p>
+<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th>Field 4</th><th>Page text</th></tr></thead><tbody><tr><td><code>decimal</code> (original)</td><td><code>Page 1</code></td></tr><tr><td><code>upper-roman</code></td><td><code>Page I</code></td></tr><tr><td><code>lower-roman</code></td><td><code>Page i</code></td></tr><tr><td><code>upper-alpha</code>, <code>lower-alpha</code>, <code>upper-latin</code>, <code>lower-latin</code>, <code>upper-alphabetic</code>, <code>lower-alphabetic</code>, <code>upper-letter</code></td><td><code>Page 1</code></td></tr></tbody></table></div>
+<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section">#</a></h2>
+<p>A page number is made when Pages lays out the page, in the format named by field 4: <code>decimal</code>, <code>upper-roman</code> and <code>lower-roman</code> work, and an unknown name falls back to decimal. Pages also offers letters, but their name wasn't among those tried.</p>
+<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section">#</a></h2>
+<p><em>Confirmed</em>: page-number format names <code>decimal</code>, <code>upper-roman</code> and <code>lower-roman</code>, by writing them.</p>
+<p><em>Unknown</em>: the names of the letter formats.</p>
+<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Last built from <a href="https://github.com/alehel/iwork-format">alehel/iwork-format</a>.</p></footer>
+</main>
+
+</div>
+<script>
+// On narrow screens the contents and on-this-page lists start folded; on wide ones they stay open.
+(function () {
+  var narrow = window.matchMedia("(max-width: 48rem)");
+  var lists = document.querySelectorAll(".side details, .toc details");
+  function fit() { for (var i = 0; i < lists.length; i++) lists[i].open = !narrow.matches; }
+  fit();
+  if (narrow.addEventListener) narrow.addEventListener("change", fit);
+  document.addEventListener("click", function (e) {
+    if (narrow.matches && e.target.closest && e.target.closest(".toc a")) fit();
+  });
+})();
+</script>
+</body>
+</html>
