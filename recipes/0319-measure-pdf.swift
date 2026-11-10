@@ -52,6 +52,18 @@ for path in CommandLine.arguments.dropFirst() {
     let left = bands.map { $0.2 }.min()!, right = bands.map { $0.3 }.max()!
     print("  ink box: left \(pt(left)), top \(pt(bands.first!.0)), right \(pt(right)), bottom \(pt(bands.last!.1))")
     for b in bands {
-        print("  band: top \(pt(b.0)), bottom \(pt(b.1)), left \(pt(b.2)), right \(pt(b.3))")
+        // Horizontal pieces of the band, split where at least 8 points have no ink in any of its rows.
+        var cols = [Bool](repeating: false, count: w)
+        for yy in b.0...b.1 { if let r = rows[yy] { for xx in r.0...r.1 where !cols[xx] {
+            if let c = rep.colorAt(x: xx, y: yy), c.brightnessComponent < 0.6 { cols[xx] = true } } } }
+        var pieces: [String] = [], x = 0
+        while x < w {
+            if !cols[x] { x += 1; continue }
+            let start = x
+            var gap = 0, end = x
+            while x < w && gap < Int(8 * scale) { if cols[x] { end = x; gap = 0 } else { gap += 1 }; x += 1 }
+            pieces.append("\(pt(start))–\(pt(end))")
+        }
+        print("  band: top \(pt(b.0)), bottom \(pt(b.1)), left \(pt(b.2)), right \(pt(b.3)), pieces \(pieces.joined(separator: " "))")
     }
 }
