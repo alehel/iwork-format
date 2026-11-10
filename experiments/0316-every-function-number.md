@@ -32,7 +32,7 @@ Of the 400 numbers, 399 gave a formula; number 337 gave none. In order:
 | 1–167 | Function names in English alphabetical order, ABS to YEAR |
 | 168 | SUM |
 | 169–184 | Operators: `*`, `/`, `^`, `%`, `+`, `-`, `(null)` (175), `+`, `-`, `&`, `<`, `>`, `<=`, `>=`, `=`, `<>` |
-| 185–278, 280, 285–306, 309–325, 328–336, 338, 341–391 | More function names, in no alphabetical order, such as 185 NORMDIST, 193 YIELDMAT, 204 MONTHNAME and 338 SEQUENCE |
+| 185–278, 280, 285–306, 309–325, 328–336, 338, 341–391 | More function names, in no alphabetical order, such as 185 EFFECT, 193 YIELDMAT, 205 MONTHNAME and 338 SEQUENCE |
 | 279 | `:` |
 | 326, 327 | `(null)` |
 | 339, 340 | `@` and `#` |
