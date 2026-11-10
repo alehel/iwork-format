@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0330: Writing a shape&#x27;s fill and stroke, measured on the page · iWork file format specification</title>
+<meta name="description" content="iWork file format specification">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
+<p class="wip"><strong>Work in progress.</strong> This specification is incomplete and changes as new experiments run. Each finding says how sure it is: <em>confirmed</em>, <em>likely</em> or <em>unknown</em>. See <a href="../spec/index.html">what each layer covers so far</a>.</p>
+<div class="layout">
+<nav class="side" aria-label="Contents"><details open><summary>Contents</summary><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="../guides/anatomy.html">Reading a Pages document</a></li><li><a href="../guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="../guides/writing.html">Writing a document</a></li><li><a href="../guides/samples.html">Sample files</a></li><li class="group">Specification</li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2–5. Text, styles, objects, layout</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li class="group">Evidence</li><li><a href="index.html">All experiments</a></li></ul></details></nav>
+<main>
+<h1 id="0330-writing-a-shapes-fill-and-stroke-measured-on-the-page">0330: Writing a shape's fill and stroke, measured on the page<a class="anchor" href="#0330-writing-a-shapes-fill-and-stroke-measured-on-the-page" aria-label="Link to this section">#</a></h1>
+<p><strong>Status:</strong> run</p>
+<p>A shape style keeps its properties one level deeper than text styles, in field 1.11: 1.11.1.1 is the fill colour (<a href="0077-shape-fill.html">0077</a>) and 1.11.2 the stroke, with its width in 1.11.2.2 (<a href="0250-shape-border.html">0250</a>). This experiment writes a fill and a wider stroke into a shape's style and measures the shape on the exported page.</p>
+<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Pages</td><td>15.4</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-10</td></tr><tr><td>Input</td><td><code>samples/0250/border.pages</code>: a 100 × 100 shape at (300, 300) whose own style, record 1732710, holds only a black 5-point stroke; its fill, black, comes from the parent style</td></tr><tr><td>Writer</td><td>[<code>recipes/0302-set-path.py</code>](../recipes/0302-set-path.py)</td></tr></tbody></table></div>
+<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section">#</a></h2>
+<pre class="lang-bash"><code>mkdir -p samples/0330
+cp samples/0250/border.pages samples/0330/original.pages
+python3 -I recipes/0302-set-path.py samples/0330/original.pages samples/0330/written.pages 1732710 \
+  1.11.1.1.1 varint 1 1.11.1.1.3 float 1 1.11.1.1.4 float 0 1.11.1.1.5 float 0 1.11.1.1.6 float 1 \
+  1.11.2.2 float 15</code></pre>
+<p>A first attempt wrote the same values at 11.1 and 11.2, without the leading 1, and nothing changed: the shape style's properties really are under field 1. Each file was opened in Pages on its own and exported as PDF; the page was drawn at 4 pixels per point, the pixel at the shape's centre read, and the inked extent of the row through the centre measured.</p>
+<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th>File</th><th>Centre (sRGB)</th><th>Row through the centre</th></tr></thead><tbody><tr><td><code>original.pages</code></td><td>0, 0, 0</td><td>297.8 – 402.8</td></tr><tr><td><code>written.pages</code></td><td>1, 0, 0</td><td>292.8 – 407.8</td></tr></tbody></table></div>
+<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section">#</a></h2>
+<p>1.11.1.1 is the shape's fill colour and 1.11.2.2 its stroke width in points. The stroke is centred on the outline, so a 15-point stroke reaches 7.5 points outside the 300 – 400 box, against 2.5 for the original 5 points. Writing into the shape's own unnamed style changes only that shape.</p>
+<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section">#</a></h2>
+<p><em>Confirmed</em>: shape style 1.11.1.1 (fill colour) and 1.11.2.2 (stroke width), by writing them and measuring.</p>
+<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Last built from <a href="https://github.com/alehel/iwork-format">alehel/iwork-format</a>.</p></footer>
+</main>
+
+</div>
+<script>
+// On narrow screens the contents and on-this-page lists start folded; on wide ones they stay open.
+(function () {
+  var narrow = window.matchMedia("(max-width: 48rem)");
+  var lists = document.querySelectorAll(".side details, .toc details");
+  function fit() { for (var i = 0; i < lists.length; i++) lists[i].open = !narrow.matches; }
+  fit();
+  if (narrow.addEventListener) narrow.addEventListener("change", fit);
+  document.addEventListener("click", function (e) {
+    if (narrow.matches && e.target.closest && e.target.closest(".toc a")) fit();
+  });
+})();
+</script>
+</body>
+</html>
