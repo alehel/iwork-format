@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0309: Writing a cell&#x27;s background colour, and the colour space · iWork file format specification</title>
+<meta name="description" content="iWork file format specification">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
+<p class="wip"><strong>Work in progress.</strong> This specification is incomplete and changes as new experiments run. Each finding says how sure it is: <em>confirmed</em>, <em>likely</em> or <em>unknown</em>. See <a href="../spec/index.html">what each layer covers so far</a>.</p>
+<div class="layout">
+<nav class="side" aria-label="Contents"><details open><summary>Contents</summary><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="../guides/anatomy.html">Reading a Pages document</a></li><li><a href="../guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="../guides/writing.html">Writing a document</a></li><li><a href="../guides/samples.html">Sample files</a></li><li class="group">Specification</li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2–5. Text, styles, objects, layout</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li class="group">Evidence</li><li><a href="index.html">All experiments</a></li></ul></details></nav>
+<main>
+<h1 id="0309-writing-a-cells-background-colour-and-the-colour-space">0309: Writing a cell's background colour, and the colour space<a class="anchor" href="#0309-writing-a-cells-background-colour-and-the-colour-space" aria-label="Link to this section">#</a></h1>
+<p><strong>Status:</strong> run</p>
+<p><a href="0043-cell-styles.html">0043</a> found a cell's background colour in its cell style (type 6004), field 11.1.1: a colour message with red, green and blue as floats in fields 3, 4 and 5. The spec left the colour space open (<a href="../spec/text.html#styles">text.md</a>). AppleScript reads a cell's <code>background color</code> as three 16-bit numbers. This experiment writes a new colour and compares what Numbers reports with the stored values.</p>
+<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Numbers</td><td>15.4</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-10</td></tr><tr><td>Input</td><td><code>samples/0043/styles.numbers</code>: F2's background is red, set through AppleScript, in an unnamed cell style, record 905274</td></tr><tr><td>Writer</td><td>[<code>recipes/0302-set-path.py</code>](../recipes/0302-set-path.py)</td></tr></tbody></table></div>
+<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section">#</a></h2>
+<pre class="lang-bash"><code>mkdir -p samples/0309
+cp samples/0043/styles.numbers samples/0309/original.numbers
+python3 -I recipes/0302-set-path.py samples/0309/original.numbers samples/0309/written.numbers 905274 \
+  11.1.1.3 float 0.2 11.1.1.4 float 0.4 11.1.1.5 float 0.8</code></pre>
+<p>The cell style's colour was 1.0, 0.1491, 0.0, with field 1 = 1, field 6 (alpha) = 1, field 12 = 1 and field 13 = 1. The script writes 0.2, 0.4, 0.8. Numbers opened each file on its own and read F2's <code>background color</code>, and the written file was saved again. The stored and reported values were then compared, through macOS's own colour conversions, for each pair of the sRGB, Display P3, Generic RGB, device RGB, extended sRGB and Adobe RGB colour spaces.</p>
+<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th>File</th><th>Stored</th><th>AppleScript</th><th>AppleScript / 65535</th></tr></thead><tbody><tr><td><code>original.numbers</code></td><td>1.0, 0.1491, 0.0</td><td>64633, 466, 1797</td><td>0.986, 0.007, 0.027</td></tr><tr><td><code>written.numbers</code></td><td>0.2, 0.4, 0.8</td><td>10112, 20062, 49440</td><td>0.154, 0.306, 0.754</td></tr></tbody></table></div>
+<p>Numbers shows the cell in the new blue. The reported numbers aren't the stored ones scaled, so a conversion takes place. Converting the stored values from sRGB to Generic RGB gives 0.154, 0.306, 0.754 and 0.986, 0.007, 0.027: both matches to three decimals. Device RGB and extended sRGB, which equal sRGB here, convert the same way; no other pair matched.</p>
+<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section">#</a></h2>
+<p>Colours are stored as sRGB components, and AppleScript reports them converted to Generic RGB. Writing the colour message changes the cell's background. Field 1 = 1 marks an RGB colour. Field 12 = 1 is probably the colour space, sRGB, but no colour with another value has been seen yet.</p>
+<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section">#</a></h2>
+<p><em>Confirmed</em>: cell style field 11.1.1 is the background colour, by writing it.</p>
+<p><em>Likely</em>: colour messages hold sRGB components (two colours matched exactly).</p>
+<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Last built from <a href="https://github.com/alehel/iwork-format">alehel/iwork-format</a>.</p></footer>
+</main>
+
+</div>
+<script>
+// On narrow screens the contents and on-this-page lists start folded; on wide ones they stay open.
+(function () {
+  var narrow = window.matchMedia("(max-width: 48rem)");
+  var lists = document.querySelectorAll(".side details, .toc details");
+  function fit() { for (var i = 0; i < lists.length; i++) lists[i].open = !narrow.matches; }
+  fit();
+  if (narrow.addEventListener) narrow.addEventListener("change", fit);
+  document.addEventListener("click", function (e) {
+    if (narrow.matches && e.target.closest && e.target.closest(".toc a")) fit();
+  });
+})();
+</script>
+</body>
+</html>

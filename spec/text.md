@@ -78,7 +78,7 @@ A cell's bytes 8–11 are little-endian flags saying which values and keys follo
 | 0x0004 | A date, as a little-endian double: seconds since 2001-01-01 00:00, with the shown clock time counted as UTC (no time-zone conversion) |
 | 0x0200 | A key into the formula list (model field 4.6), whose entries are formulas as postfix lists of nodes |
 | 0x0008 | A string key ([0021](../experiments/0021-table-cells.md)) |
-| 0x0020 | A key into the style list (list type 4) naming a cell style: type 6004, background colour in field 11.1.1, text wrap in 11.3 (0 off) ([0043](../experiments/0043-cell-styles.md), [0062](../experiments/0062-text-wrap.md)) |
+| 0x0020 | A key into the style list (list type 4) naming a cell style: type 6004, background colour in field 11.1.1 (*confirmed* by writing it, [0309](../experiments/0309-writing-a-cell-colour.md)), text wrap in 11.3 (0 off) ([0043](../experiments/0043-cell-styles.md), [0062](../experiments/0062-text-wrap.md)) |
 | 0x0040 | A key into the style list naming a text style: an unnamed paragraph style (type 2022) with the cell text's character properties and its alignment in 12.1 ([0043](../experiments/0043-cell-styles.md), [0061](../experiments/0061-cell-alignment.md)) |
 | 0x0400 | A key into the cell-control list (list type 12). Its entry's field 12.1 is the control (4 stepper, 5 slider, 6 rating, 8 checkbox) and 12.3, 12.4 and 12.5 the minimum, maximum and step ([0036](../experiments/0036-more-cell-formats.md), [0169](../experiments/0169-unchecked-checkbox.md)–[0172](../experiments/0172-stepper.md)) |
 | 0x1000 | A key into a list not identified yet (*unknown*) |
@@ -172,7 +172,7 @@ Field 11 of a character style or a paragraph style holds the character propertie
 | 2 | Italic | varint: 1 italic |
 | 3 | Size in points | float |
 | 5 | Font name, such as `HelveticaNeue` | text |
-| 7 | Text colour | message: red, green and blue in fields 3, 4 and 5 and alpha in field 6, as floats from 0 to 1; colour space unknown |
+| 7 | Text colour | message: red, green and blue in fields 3, 4 and 5 and alpha in field 6, as floats from 0 to 1, in sRGB (field 1 = 1 RGB, field 12 = 1 probably sRGB); AppleScript reports colours converted to Generic RGB ([0309](../experiments/0309-writing-a-cell-colour.md)) |
 | 10 | Baseline position | varint: 1 superscript, 2 subscript ([0203](../experiments/0203-superscript.md), [0204](../experiments/0204-subscript.md)) |
 | 11 | Underline | varint: 1 underlined, 0 not |
 | 12 | Strikethrough | varint: 1 struck through, 0 not |
