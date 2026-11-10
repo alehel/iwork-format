@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0312: Writing a hidden body placeholder · iWork file format specification</title>
+<meta name="description" content="iWork file format specification">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
+<p class="wip"><strong>Work in progress.</strong> This specification is incomplete and changes as new experiments run. Each finding says how sure it is: <em>confirmed</em>, <em>likely</em> or <em>unknown</em>. See <a href="../spec/index.html">what each layer covers so far</a>.</p>
+<div class="layout">
+<nav class="side" aria-label="Contents"><details open><summary>Contents</summary><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="../guides/anatomy.html">Reading a Pages document</a></li><li><a href="../guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="../guides/writing.html">Writing a document</a></li><li><a href="../guides/samples.html">Sample files</a></li><li class="group">Specification</li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2–5. Text, styles, objects, layout</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li class="group">Evidence</li><li><a href="index.html">All experiments</a></li></ul></details></nav>
+<main>
+<h1 id="0312-writing-a-hidden-body-placeholder">0312: Writing a hidden body placeholder<a class="anchor" href="#0312-writing-a-hidden-body-placeholder" aria-label="Link to this section">#</a></h1>
+<p><strong>Status:</strong> run</p>
+<p><a href="0243-hidden-body.html">0243</a> found that hiding a slide's body placeholder leaves it named in slide field 6 but drops it from the slide's repeated fields 7 and 42, which list what is shown (<a href="0101-hidden-title.html">0101</a> found the same for titles). AppleScript reads a slide's <code>body showing</code>. This experiment hides a body by removing it from the two lists and asks Keynote.</p>
+<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Keynote</td><td>15.4</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-10</td></tr><tr><td>Input</td><td><code>samples/theme/0243/body.key</code>: two slides; slide 2 (record 2655565) names its body placeholder 2655586 in fields 6, 7 and 42</td></tr><tr><td>Writer</td><td>[<code>recipes/0312-hide-object.py</code>](../recipes/0312-hide-object.py), using the writer of <a href="0287-rewriting-a-document.html">0287</a></td></tr></tbody></table></div>
+<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section">#</a></h2>
+<pre class="lang-bash"><code>mkdir -p samples/0312
+cp samples/theme/0243/body.key samples/0312/original.key
+python3 -I recipes/0312-hide-object.py samples/0312/original.key samples/0312/written.key 2655565 2655586</code></pre>
+<p>The script removes the entries naming 2655586 from fields 7 and 42 of slide 2, and leaves field 6 and the placeholder itself. Keynote opened each file on its own and read <code>title showing</code> and <code>body showing</code> through AppleScript, and the written file was saved again.</p>
+<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th>File</th><th>Slide 2 title</th><th>Slide 2 body</th><th>Slide 1 body</th></tr></thead><tbody><tr><td><code>original.key</code></td><td>true</td><td>true</td><td>true</td></tr><tr><td><code>written.key</code></td><td>true</td><td>false</td><td>true</td></tr></tbody></table></div>
+<p>Saved again, slide 2 still names 2655586 in field 6 and lists only the other two objects in 7 and 42, and the placeholder record is still in the slide's part.</p>
+<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section">#</a></h2>
+<p>Whether a placeholder shows is decided by fields 7 and 42 alone: an object named in field 6 but missing from those lists is hidden, and Keynote keeps it, so it can come back with its text.</p>
+<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section">#</a></h2>
+<p><em>Confirmed</em>: a placeholder left out of slide fields 7 and 42 is hidden.</p>
+<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Last built from <a href="https://github.com/alehel/iwork-format">alehel/iwork-format</a>.</p></footer>
+</main>
+
+</div>
+<script>
+// On narrow screens the contents and on-this-page lists start folded; on wide ones they stay open.
+(function () {
+  var narrow = window.matchMedia("(max-width: 48rem)");
+  var lists = document.querySelectorAll(".side details, .toc details");
+  function fit() { for (var i = 0; i < lists.length; i++) lists[i].open = !narrow.matches; }
+  fit();
+  if (narrow.addEventListener) narrow.addEventListener("change", fit);
+  document.addEventListener("click", function (e) {
+    if (narrow.matches && e.target.closest && e.target.closest(".toc a")) fit();
+  });
+})();
+</script>
+</body>
+</html>
