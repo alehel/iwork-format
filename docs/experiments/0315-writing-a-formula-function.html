@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0315: Writing the function a formula calls · iWork file format specification</title>
+<meta name="description" content="iWork file format specification">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
+<p class="wip"><strong>Work in progress.</strong> This specification is incomplete and changes as new experiments run. Each finding says how sure it is: <em>confirmed</em>, <em>likely</em> or <em>unknown</em>. See <a href="../spec/index.html">what each layer covers so far</a>.</p>
+<div class="layout">
+<nav class="side" aria-label="Contents"><details open><summary>Contents</summary><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="../guides/anatomy.html">Reading a Pages document</a></li><li><a href="../guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="../guides/writing.html">Writing a document</a></li><li><a href="../guides/samples.html">Sample files</a></li><li class="group">Specification</li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2–5. Text, styles, objects, layout</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li class="group">Evidence</li><li><a href="index.html">All experiments</a></li></ul></details></nav>
+<main>
+<h1 id="0315-writing-the-function-a-formula-calls">0315: Writing the function a formula calls<a class="anchor" href="#0315-writing-the-function-a-formula-calls" aria-label="Link to this section">#</a></h1>
+<p><strong>Status:</strong> run</p>
+<p>Formulas are kept in the table's formula list as postfix lists of nodes, and a function call is node type 16 with the function's number in field 2: 15 AVERAGE, 126 ROUND, 168 SUM and so on (<a href="0103-round.html">0103</a>, <a href="0104-nested-functions.html">0104</a>, <a href="0223-functions.html">0223</a>). AppleScript reads a cell's <code>formula</code> as text and its <code>value</code>. This experiment changes one function number and asks Numbers.</p>
+<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Numbers</td><td>15.4, in Norwegian</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-10</td></tr><tr><td>Input</td><td><code>samples/0104/nested.numbers</code>: B2 = 4, C2 = 2 and E2 = ROUND(AVERAGE(B2:C2) × 1.5; 0), which is 5</td></tr><tr><td>Writer</td><td>[<code>recipes/0315-formula-function.py</code>](../recipes/0315-formula-function.py), using the writer of <a href="0287-rewriting-a-document.html">0287</a></td></tr></tbody></table></div>
+<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section">#</a></h2>
+<pre class="lang-bash"><code>mkdir -p samples/0315
+cp samples/0104/nested.numbers samples/0315/original.numbers
+python3 -I recipes/0315-formula-function.py samples/0315/original.numbers samples/0315/sum.numbers 904540 15 168</code></pre>
+<p>The formula list (record 904540) holds E2's formula as six nodes: a range (67), function 15 with one argument, the number 1.5, multiplication (3), the number 0 and function 126 with two arguments. The script changes function 15 to 168 and leaves E2's cached value, 5. Numbers opened each file on its own and read the cells through AppleScript; the written file was saved again.</p>
+<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th>File</th><th>E2 formula (as Numbers shows it in Norwegian)</th><th>E2 value</th></tr></thead><tbody><tr><td><code>original.numbers</code></td><td><code>=AVRUND(GJENNOMSNITT(B2:C2)×1,5;0)</code></td><td>5</td></tr><tr><td><code>sum.numbers</code></td><td><code>=AVRUND(SUMMER(B2:C2)×1,5;0)</code></td><td>9</td></tr></tbody></table></div>
+<p>ROUND((4 + 2) × 1.5; 0) = 9. In <code>sum.numbers</code> the cell still caches 5; saved again, it caches 9, as a decimal128 with coefficient 90.</p>
+<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section">#</a></h2>
+<p>Function number 168 is SUM and 15 AVERAGE, and a formula can be changed by writing its nodes. Numbers recalculates formulas when it opens a document, so a writer doesn't have to update the cached result, though other readers that trust the cache will show the old value until the app saves again. The cached 9 was stored as 90 × 10⁻¹: a decimal128 isn't normalised.</p>
+<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section">#</a></h2>
+<p><em>Confirmed</em>: function numbers 15 and 168, and function-call nodes, by writing them; Numbers recalculates on opening.</p>
+<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Last built from <a href="https://github.com/alehel/iwork-format">alehel/iwork-format</a>.</p></footer>
+</main>
+
+</div>
+<script>
+// On narrow screens the contents and on-this-page lists start folded; on wide ones they stay open.
+(function () {
+  var narrow = window.matchMedia("(max-width: 48rem)");
+  var lists = document.querySelectorAll(".side details, .toc details");
+  function fit() { for (var i = 0; i < lists.length; i++) lists[i].open = !narrow.matches; }
+  fit();
+  if (narrow.addEventListener) narrow.addEventListener("change", fit);
+  document.addEventListener("click", function (e) {
+    if (narrow.matches && e.target.closest && e.target.closest(".toc a")) fit();
+  });
+})();
+</script>
+</body>
+</html>
