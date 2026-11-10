@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0369: Writing a tab and a non-breaking space · iWork file format specification</title>
+<meta name="description" content="iWork file format specification">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
+<p class="wip"><strong>Work in progress.</strong> This specification is incomplete and changes as new experiments run. Each finding says how sure it is: <em>confirmed</em>, <em>likely</em> or <em>unknown</em>. See <a href="../spec/index.html">what each layer covers so far</a>.</p>
+<div class="layout">
+<nav class="side" aria-label="Contents"><details open><summary>Contents</summary><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="../guides/anatomy.html">Reading a Pages document</a></li><li><a href="../guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="../guides/writing.html">Writing a document</a></li><li><a href="../guides/samples.html">Sample files</a></li><li class="group">Specification</li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2–5. Text, styles, objects, layout</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li class="group">Evidence</li><li><a href="index.html">All experiments</a></li></ul></details></nav>
+<main>
+<h1 id="0369-writing-a-tab-and-a-non-breaking-space">0369: Writing a tab and a non-breaking space<a class="anchor" href="#0369-writing-a-tab-and-a-non-breaking-space" aria-label="Link to this section">#</a></h1>
+<p><strong>Status:</strong> run</p>
+<p>A tab (U+0009) and a non-breaking space (U+00A0) are plain characters in the text with no runs of their own (<a href="0058-tab-and-nbsp.html">0058</a>). Tab stops fall every 36 points from the margin unless set (<a href="0325-writing-tab-stops.html">0325</a>). This experiment writes each into a body and checks the layout on the exported page.</p>
+<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Pages</td><td>15.4</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-10</td></tr><tr><td>Input</td><td><code>samples/0002/hello.pages</code>, with a left margin of 56.69 points</td></tr><tr><td>Writer</td><td>The writer of <a href="0287-rewriting-a-document.html">0287</a></td></tr></tbody></table></div>
+<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section">#</a></h2>
+<pre class="lang-bash"><code>mkdir -p samples/0369
+W=recipes/0287-iwa-writer.py
+T=$(python3 -c &quot;print(&#x27; &#x27;.join(f&#x27;w{i:02d}&#x27; for i in range(1,61)), end=&#x27;&#x27;)&quot;)
+python3 -I $W samples/0002/hello.pages samples/0369/spaces.pages --text 1732539 &quot;$T&quot;
+python3 -I $W samples/0002/hello.pages samples/0369/nbsp.pages --text 1732539 \
+  &quot;$(python3 -c &quot;import sys; print(sys.argv[1].replace(&#x27;w20 w21&#x27;,&#x27;w20 w21&#x27;), end=&#x27;&#x27;)&quot; &quot;$T&quot;)&quot;
+python3 -I $W samples/0002/hello.pages samples/0369/tab.pages --text 1732539 &quot;$(printf &#x27;w01\tw02 w03&#x27;)&quot;
+python3 -I $W samples/0002/hello.pages samples/0369/no-tab.pages --text 1732539 &quot;w01 w02 w03&quot;</code></pre>
+<p><code>spaces.pages</code> showed where the first line wraps. In <code>nbsp.pages</code> the space at that point, between w20 and w21, is a non-breaking space. Pages opened each file on its own and exported it as PDF. The lines were read with PDFKit and the ink measured with [<code>recipes/0319-measure-pdf.swift</code>](../recipes/0319-measure-pdf.swift).</p>
+<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th>File</th><th>First line</th><th>Second line starts</th></tr></thead><tbody><tr><td><code>spaces.pages</code></td><td>w01 … w20</td><td>w21</td></tr><tr><td><code>nbsp.pages</code></td><td>w01 … w19</td><td>w20 w21</td></tr></tbody></table></div>
+<div class="table"><table><thead><tr><th>File</th><th>Ink pieces on the line, in points from the left edge</th></tr></thead><tbody><tr><td><code>no-tab.pages</code></td><td>57.2–124.2</td></tr><tr><td><code>tab.pages</code></td><td>57.2–75.2 (w01), 93.2–136.5 (w02 w03)</td></tr></tbody></table></div>
+<p>Pages counted 11 characters in both short bodies, so the tab is one character.</p>
+<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section">#</a></h2>
+<p>A non-breaking space keeps its two words on one line: the line breaks before w20 instead of after it. A tab moves the text after it to the next stop, 56.69 + 36 = 92.69 points, where w02's ink starts. Neither needs anything but the character.</p>
+<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section">#</a></h2>
+<p><em>Confirmed</em>: U+0009 as a tab and U+00A0 as a non-breaking space, by writing them.</p>
+<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Last built from <a href="https://github.com/alehel/iwork-format">alehel/iwork-format</a>.</p></footer>
+</main>
+
+</div>
+<script>
+// On narrow screens the contents and on-this-page lists start folded; on wide ones they stay open.
+(function () {
+  var narrow = window.matchMedia("(max-width: 48rem)");
+  var lists = document.querySelectorAll(".side details, .toc details");
+  function fit() { for (var i = 0; i < lists.length; i++) lists[i].open = !narrow.matches; }
+  fit();
+  if (narrow.addEventListener) narrow.addEventListener("change", fit);
+  document.addEventListener("click", function (e) {
+    if (narrow.matches && e.target.closest && e.target.closest(".toc a")) fit();
+  });
+})();
+</script>
+</body>
+</html>
