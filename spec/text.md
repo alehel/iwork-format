@@ -45,7 +45,7 @@ Other section fields hold switches from the Section tab of Pages' Document sideb
 | 28 | Hide header and footer on the section's first page | 0 off (default), 1 on |
 | 30 | The background of the section's pages, a fill like a shape's (a colour in field 1) ([0286](../experiments/0286-section-background.md)) | message |
 
-The document-wide *Facing pages* setting is field 34 of the type-10012 record, which also holds the creation time and template name and is probably the document's settings. *Likely* ([0017](../experiments/0017-section-switches.md))
+The document-wide *Facing pages* setting is field 34 of the type-10012 record, which also holds the creation time and template name and is probably the document's settings. *Confirmed* by writing it ([0017](../experiments/0017-section-switches.md), [0300](../experiments/0300-writing-document-settings.md))
 
 Other fields of the type-10012 document settings:
 
