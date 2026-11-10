@@ -40,10 +40,10 @@ An empty text storage has no field 3, so the text is added as a new field. A fir
 
 ## Conclusion
 
-The header-and-footer set works as read: field 1's first and third texts are the left and right header boxes, aligned to the left and right margins, and field 2's third the right footer box. They are placed in the margins, 1.25 cm from the top and about 1.5 cm from the bottom, the Blank template's distances. Setting document settings field 2 to 0 alone doesn't hide headers that have text. When Pages turns headers off itself, it also replaces the header text records ([0238](0238-no-header.md)), so field 2 is not the whole switch. How Pages decides to hide them isn't settled.
+The header-and-footer set works as read: field 1's first and third texts are the left and right header boxes, aligned to the left and right margins, and field 2's third the right footer box. They are placed in the margins, 1.25 cm from the top and about 1.5 cm from the bottom, the Blank template's distances. Setting document settings field 2 to 0 alone doesn't hide headers that have text. Opened in Pages, `header-off.pages` shows the Document sidebar's Header checkbox off, yet `LEFT` and `RIGHT` are drawn. So field 2 is the setting the sidebar shows, and Pages draws whatever header text exists. When Pages turns headers off itself, it also replaces the header texts with new, empty ones ([0238](0238-no-header.md)), and that is what removes them from the page. A writer that wants no headers must clear their text as well.
 
 ## Confidence
 
 *Confirmed*: header and footer texts and their order in a set, by writing them.
 
-*Unknown*: what hides headers; field 2 = 0 alone doesn't.
+*Likely*: field 2 is only the sidebar's setting; headers disappear because Pages empties them.
