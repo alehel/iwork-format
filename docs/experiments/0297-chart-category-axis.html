@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0297: A chart&#x27;s category axis, series and text styles · iWork file format specification</title>
+<meta name="description" content="iWork file format specification">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
+<p class="wip"><strong>Work in progress.</strong> This specification is incomplete and changes as new experiments run. Each finding says how sure it is: <em>confirmed</em>, <em>likely</em> or <em>unknown</em>. See <a href="../spec/index.html">what each layer covers so far</a>.</p>
+<div class="layout">
+<nav class="side" aria-label="Contents"><details open><summary>Contents</summary><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="../guides/anatomy.html">Reading a Pages document</a></li><li><a href="../guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="../guides/writing.html">Writing a document</a></li><li><a href="../guides/samples.html">Sample files</a></li><li class="group">Specification</li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2–5. Text, styles, objects, layout</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li class="group">Evidence</li><li><a href="index.html">All experiments</a></li></ul></details></nav>
+<main>
+<h1 id="0297-a-charts-category-axis-series-and-text-styles">0297: A chart's category axis, series and text styles<a class="anchor" href="#0297-a-charts-category-axis-series-and-text-styles" aria-label="Link to this section">#</a></h1>
+<p><strong>Status:</strong> run</p>
+<p><a href="0296-chart-axis.html">0296</a> found that a chart names pairs of style and settings records for its parts, the value axis in fields 10000.13 and 10000.14, and left the pair in 10000.15 and 10000.16 unidentified. This experiment turns on the category axis's name, and lists the chart's other style references.</p>
+<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Keynote</td><td>15.4</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-10</td></tr><tr><td>Theme</td><td>The test theme (<a href="0291-test-theme.html">0291</a>)</td></tr><tr><td>Chart</td><td>A 2D vertical bar chart from the <a href="0067-chart.html">0067</a> recipe</td></tr></tbody></table></div>
+<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section">#</a></h2>
+<pre class="lang-bash"><code>mkdir -p samples/0297
+for n in baseline x-axis-name; do
+  IWORK_KEYNOTE_THEME=&#x27;iwork-format test&#x27; osascript recipes/0067-keynote-chart.applescript &quot;$PWD/samples/0297/$n.key&quot;
+done</code></pre>
+<p>In <code>x-axis-name.key</code>, the chart was selected and Axis Name (<em>Aksenavn</em>) turned on in the Format sidebar's Axis tab, Category (X) (<em>Akse, Kategori (X)</em>), and the file saved in place. Value labels (Series tab) were also planned, but their setting is a pop-up menu, which needs the screen, so they weren't tested.</p>
+<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section">#</a></h2>
+<p>Only field 10000.16 changed: it names a new type-5027 record with 10000.13 = 1, plus 10001 = 1 and 10002 = 1, as the value axis's settings did in <a href="0296-chart-axis.html">0296</a>. The value axis's name setting was 10000.14, so each axis has its own field for its name.</p>
+<p>The chart's other references, in the baseline:</p>
+<div class="table"><table><thead><tr><th>Field</th><th>Records</th><th>Named, in the stylesheet</th></tr></thead><tbody><tr><td>10000.17</td><td>6 of type 5028</td><td><code>chart-0-series_0</code> to <code>chart-0-series_5</code></td></tr><tr><td>10000.18, 10000.19</td><td>A reference to 0</td><td></td></tr><tr><td>10000.20</td><td>25 of type 2022</td><td><code>chart-0-paragraphStyle_0</code> and so on</td></tr></tbody></table></div>
+<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section">#</a></h2>
+<p>A chart's category axis is the pair in 10000.15 (style, type 5026) and 10000.16 (settings, type 5027), and its name is shown when setting 10000.13 = 1. The pair in 10000.13 and 10000.14, which has two entries each, holds the value axes. The second is probably the second value axis of a two-axis chart. The chart names six series styles (type 5028), one per series colour of the theme, and 25 paragraph styles (type 2022) for its text, all of them the theme's named styles.</p>
+<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section">#</a></h2>
+<p><em>Likely</em>: 10000.15 and 10000.16 are the category axis, with setting 10000.13 its name switch; 10000.17 the series styles; 10000.20 the chart's paragraph styles.</p>
+<p><em>Unknown</em>: what the second value-axis entries and 10000.18 and 10000.19 are for.</p>
+<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Last built from <a href="https://github.com/alehel/iwork-format">alehel/iwork-format</a>.</p></footer>
+</main>
+
+</div>
+<script>
+// On narrow screens the contents and on-this-page lists start folded; on wide ones they stay open.
+(function () {
+  var narrow = window.matchMedia("(max-width: 48rem)");
+  var lists = document.querySelectorAll(".side details, .toc details");
+  function fit() { for (var i = 0; i < lists.length; i++) lists[i].open = !narrow.matches; }
+  fit();
+  if (narrow.addEventListener) narrow.addEventListener("change", fit);
+  document.addEventListener("click", function (e) {
+    if (narrow.matches && e.target.closest && e.target.closest(".toc a")) fit();
+  });
+})();
+</script>
+</body>
+</html>
