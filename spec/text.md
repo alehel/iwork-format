@@ -117,9 +117,9 @@ In the geometry of any drawable (field 1.1), 1.1.1 is the position and 1.1.2 the
 
 A paragraph break is a character in the text. Pressing Return in Pages writes U+000A (line feed). A U+000D (carriage return) set through AppleScript is kept as given and also starts a paragraph. The last paragraph has no break after it. *Confirmed* for U+000A ([0005](../experiments/0005-paragraphs.md), [0006](../experiments/0006-typing-in-pages.md)); *likely* for U+000D ([0005](../experiments/0005-paragraphs.md)).
 
-Pressing Shift-Return writes U+2028 (line separator), a line break that doesn't start a paragraph. *Likely* ([0006](../experiments/0006-typing-in-pages.md))
+Pressing Shift-Return writes U+2028 (line separator), a line break that doesn't start a paragraph. *Likely* ([0006](../experiments/0006-typing-in-pages.md)); *confirmed* by writing one ([0360](../experiments/0360-writing-line-and-column-breaks.md))
 
-A page break (Insert → Page Break) is the character U+0005, and it also starts a new paragraph (*confirmed* by writing one, [0359](../experiments/0359-writing-a-page-break-and-page-count.md)). *Likely* ([0018](../experiments/0018-page-break-and-left-page.md)) A column break (Insert → Column Break) is U+000C, and also starts a new paragraph. *Likely* ([0210](../experiments/0210-column-break.md))
+A page break (Insert → Page Break) is the character U+0005, and it also starts a new paragraph (*confirmed* by writing one, [0359](../experiments/0359-writing-a-page-break-and-page-count.md)). *Likely* ([0018](../experiments/0018-page-break-and-left-page.md)) A column break (Insert → Column Break) is U+000C, and also starts a new paragraph (*confirmed* by writing one, [0360](../experiments/0360-writing-line-and-column-breaks.md)). *Likely* ([0210](../experiments/0210-column-break.md))
 
 A tab (U+0009) and a non-breaking space (U+00A0) are plain characters with no runs of their own. *Likely* ([0058](../experiments/0058-tab-and-nbsp.md))
 
