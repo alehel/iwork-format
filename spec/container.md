@@ -36,7 +36,9 @@ Identical files are stored once ([0142](../experiments/0142-same-image-twice.md)
 
 `Metadata.iwa` record 2 (type 11006) lists the data in its repeated field 4. Each entry holds the data ID (field 1), the file's SHA-1 (field 2), the original file name (field 3) and the stored file name (field 4). Entries for resources of the template have no file in the package. *Likely* ([0023](../experiments/0023-an-image.md))
 
-In Keynote, a theme's own photos are such entries: field 4 (the stored name) is empty, field 5 is a path to the resource inside the app, such as `21_basicwhite/910457886_1434x1669`, Only a reduced copy, at most 256 pixels on the longer side, is stored in `Data/`, with its own entry, whose field 18 is the file's size in bytes. In every image's entry, stored or not, field 10.100.1 is the image's size in pixels: a message with the width in field 1 and the height in field 2, as floats. *Likely* ([0292](../experiments/0292-test-theme-reruns.md))
+In Keynote, a theme's own photos are such entries: field 4 (the stored name) is empty, field 5 is a path to the resource inside the app, such as `21_basicwhite/910457886_1434x1669`, Only a reduced copy, at most 256 pixels on the longer side, is stored in `Data/`, with its own entry, whose field 18 is the file's size in bytes. In every image's entry, stored or not, field 10.100.1 is the image's size in pixels: a message with the width in field 1 and the height in field 2, as floats.
+
+Each data entry kept as an app resource, and only those, also has a colour: a type-11015 record in `Metadata.iwa` lists entries of a data ID (field 1) and a type-11014 colour (field 2), whose field 1 is RGB (1.1 = 1) with red, green, blue and alpha as floats in 1.3 to 1.6. *Confirmed* for 2,537 entries in 565 documents. The colour isn't the image's average; what it is for is *unknown*. ([0294](../experiments/0294-resource-colours.md)) *Likely* ([0292](../experiments/0292-test-theme-reruns.md))
 
 ## Chunks
 

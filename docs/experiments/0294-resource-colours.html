@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0294: Colours for data kept in the app · iWork file format specification</title>
+<meta name="description" content="iWork file format specification">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
+<p class="wip"><strong>Work in progress.</strong> This specification is incomplete and changes as new experiments run. Each finding says how sure it is: <em>confirmed</em>, <em>likely</em> or <em>unknown</em>. See <a href="../spec/index.html">what each layer covers so far</a>.</p>
+<div class="layout">
+<nav class="side" aria-label="Contents"><details open><summary>Contents</summary><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="../guides/anatomy.html">Reading a Pages document</a></li><li><a href="../guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="../guides/writing.html">Writing a document</a></li><li><a href="../guides/samples.html">Sample files</a></li><li class="group">Specification</li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2–5. Text, styles, objects, layout</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li class="group">Evidence</li><li><a href="index.html">All experiments</a></li></ul></details></nav>
+<main>
+<h1 id="0294-colours-for-data-kept-in-the-app">0294: Colours for data kept in the app<a class="anchor" href="#0294-colours-for-data-kept-in-the-app" aria-label="Link to this section">#</a></h1>
+<p><strong>Status:</strong> run</p>
+<p><a href="0292-test-theme-reruns.html">0292</a> found six type-11014 colour records in every Basic White presentation that the test theme's presentations lack, and guessed they belong to Basic White's photos, which stay inside the app. This experiment finds what lists those colours and tests the guess against every sample.</p>
+<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Apps</td><td>Pages, Keynote and Numbers 15.4</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-10</td></tr><tr><td>Input</td><td>Every sample in <code>samples/</code>, and the test-theme reruns in <code>samples/theme/</code></td></tr><tr><td>Script</td><td>[<code>recipes/0294-resource-colours.py</code>](../recipes/0294-resource-colours.py), using the writer of <a href="0287-rewriting-a-document.html">0287</a></td></tr></tbody></table></div>
+<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section">#</a></h2>
+<pre class="lang-bash"><code>python3 -I recipes/0294-resource-colours.py samples</code></pre>
+<p>The colour records of an empty Basic White presentation (0024) were traced through record headers. The script then compared, in every document, the data IDs that have a colour with the data list's entries that have no stored file but a path inside the app (<a href="../spec/container.html#data-files">container.md</a>).</p>
+<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section">#</a></h2>
+<p>All type-11014 records are listed by one type-11015 record in <code>Metadata.iwa</code>. Its repeated field 1 has an entry per colour: a data ID in field 1 and a reference to a type-11014 record in field 2. A type-11014 record's field 1 is a colour: 1.1 = 1 (RGB), then red, green, blue and alpha as floats in fields 1.3 to 1.6.</p>
+<p>In the empty Basic White presentation, the ten entries name Basic White's six photos and four more resources: two paper textures (<code>tile_paper_medgray.jpeg</code>, <code>tile_paper_ltgray.jpeg</code>), a bullet image (<code>bullet_circle-blk.pdf</code>) and <code>blankMoviePosterImage.png</code>. With the test theme, the six photos are gone and the other four remain. A blank Pages document has four entries of its own kind (<code>ginger/00b_theme/tile_paper_medgray</code> and others). The project's own red image in 0023 has none.</p>
+<p>Across 565 documents, the data IDs with a colour and the data entries kept as app resources were the same set in every document: 2,537 of each.</p>
+<p>The colours aren't the images' average colours. The averages of Basic White's stored reduced copies are 0.63 to 0.82 grey-beige, against listed colours from 0.45 to 0.85. Two crops of the same photo, <code>660384004_1290x1720</code> and <code>660384004_rotate_1964x1473</code>, have the same average but listed colours of 0.45 and 0.56.</p>
+<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section">#</a></h2>
+<p>A document keeps a colour for each data file that stays inside the app, and only for those: type 11015 maps the data ID to a type-11014 colour. It is probably what an app shows in place of the resource when it isn't available, but it isn't the image's average colour, so how it is chosen is <em>unknown</em>. The six colours the test theme lacks are the six Basic White photos it replaced with stored cards.</p>
+<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section">#</a></h2>
+<p><em>Confirmed</em>: a colour exists for exactly the data entries kept as app resources (2,537 in 565 documents).</p>
+<p><em>Likely</em>: the type-11015 and type-11014 layout above.</p>
+<p><em>Unknown</em>: what the colour is used for and how it is chosen.</p>
+<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Last built from <a href="https://github.com/alehel/iwork-format">alehel/iwork-format</a>.</p></footer>
+</main>
+
+</div>
+<script>
+// On narrow screens the contents and on-this-page lists start folded; on wide ones they stay open.
+(function () {
+  var narrow = window.matchMedia("(max-width: 48rem)");
+  var lists = document.querySelectorAll(".side details, .toc details");
+  function fit() { for (var i = 0; i < lists.length; i++) lists[i].open = !narrow.matches; }
+  fit();
+  if (narrow.addEventListener) narrow.addEventListener("change", fit);
+  document.addEventListener("click", function (e) {
+    if (narrow.matches && e.target.closest && e.target.closest(".toc a")) fit();
+  });
+})();
+</script>
+</body>
+</html>

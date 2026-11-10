@@ -68,4 +68,4 @@ A theme's photos can stay inside the app. Keynote then stores only a reduced cop
 - A theme photo can stay in the app, with only a path and a reduced copy in the file.
 - An image's data entry holds its size in pixels in field 10.100.1.
 
-*Unknown*: type 11014's link to the photos; why the type-4009 lists differ.
+*Unknown*: type 11014's link to the photos (since found in [0294](0294-resource-colours.md)); why the type-4009 lists differ.
