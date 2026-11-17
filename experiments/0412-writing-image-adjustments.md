@@ -12,7 +12,7 @@ Image adjustments are stored twice: as settings in image field 14 (exposure in 1
 | macOS | 26.5.2 (25F84) |
 | Date | 2026-11-18 |
 | Input | `samples/0284/adjusted.pages`: the red PNG of [0023](0023-an-image.md), 200 × 100 at (300, 300), image record 1732665, with exposure +30% and saturation −40% (14.1 = 0.3, 14.2 = −0.4) and field 15 naming `Data/red-8x4-filtered-26.jpeg` |
-| Writer | [`recipes/0302-set-path.py`](../recipes/0302-set-path.py), and the writer of [0287](0287-rewriting-a-document.md) to drop field 15; exported with [`recipes/0372-in-app.sh`](../recipes/0372-in-app.sh) and read with [`recipes/0384-pdf-colours.swift`](../recipes/0384-pdf-colours.swift) |
+| Writer | [`recipes/0302-set-path.py`](../recipes/0302-set-path.py) and the new [`recipes/0412-drop-field.py`](../recipes/0412-drop-field.py); exported with [`recipes/0372-in-app.sh`](../recipes/0372-in-app.sh) and read with [`recipes/0384-pdf-colours.swift`](../recipes/0384-pdf-colours.swift) |
 
 ## Recipe
 
@@ -22,7 +22,7 @@ R=recipes/0302-set-path.py
 F=samples/0284/adjusted.pages
 O=samples/0412
 cp $F $O/original.pages
-# no-filtered-copy.pages: $F with field 15 of record 1732665 removed, re-encoded by the 0287 writer
+python3 -I recipes/0412-drop-field.py $F $O/no-filtered-copy.pages 1732665 15
 python3 -I $R $F $O/exposure-minus.pages 1732665 14.1 float -0.8
 python3 -I $R $O/no-filtered-copy.pages $O/exposure-minus-no-copy.pages 1732665 14.1 float -0.8
 for f in original no-filtered-copy exposure-minus exposure-minus-no-copy; do

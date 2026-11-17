@@ -17,14 +17,14 @@
 <p><strong>Status:</strong> run</p>
 <p>Image adjustments are stored twice: as settings in image field 14 (exposure in 14.1 and saturation in 14.2, as fractions), and as a rendered JPEG, <code>…-filtered-N</code>, that field 15 names by data ID (<a href="0284-image-adjustments.html">0284</a>). This experiment removes the rendered copy's reference and changes the settings, and reads the colour Pages draws.</p>
 <h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section">#</a></h2>
-<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Pages</td><td>15.4</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-18</td></tr><tr><td>Input</td><td><code>samples/0284/adjusted.pages</code>: the red PNG of <a href="0023-an-image.html">0023</a>, 200 × 100 at (300, 300), image record 1732665, with exposure +30% and saturation −40% (14.1 = 0.3, 14.2 = −0.4) and field 15 naming <code>Data/red-8x4-filtered-26.jpeg</code></td></tr><tr><td>Writer</td><td>[<code>recipes/0302-set-path.py</code>](../recipes/0302-set-path.py), and the writer of <a href="0287-rewriting-a-document.html">0287</a> to drop field 15; exported with [<code>recipes/0372-in-app.sh</code>](../recipes/0372-in-app.sh) and read with [<code>recipes/0384-pdf-colours.swift</code>](../recipes/0384-pdf-colours.swift)</td></tr></tbody></table></div>
+<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Pages</td><td>15.4</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-18</td></tr><tr><td>Input</td><td><code>samples/0284/adjusted.pages</code>: the red PNG of <a href="0023-an-image.html">0023</a>, 200 × 100 at (300, 300), image record 1732665, with exposure +30% and saturation −40% (14.1 = 0.3, 14.2 = −0.4) and field 15 naming <code>Data/red-8x4-filtered-26.jpeg</code></td></tr><tr><td>Writer</td><td>[<code>recipes/0302-set-path.py</code>](../recipes/0302-set-path.py) and the new [<code>recipes/0412-drop-field.py</code>](../recipes/0412-drop-field.py); exported with [<code>recipes/0372-in-app.sh</code>](../recipes/0372-in-app.sh) and read with [<code>recipes/0384-pdf-colours.swift</code>](../recipes/0384-pdf-colours.swift)</td></tr></tbody></table></div>
 <h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section">#</a></h2>
 <pre class="lang-bash"><code>mkdir -p samples/0412
 R=recipes/0302-set-path.py
 F=samples/0284/adjusted.pages
 O=samples/0412
 cp $F $O/original.pages
-# no-filtered-copy.pages: $F with field 15 of record 1732665 removed, re-encoded by the 0287 writer
+python3 -I recipes/0412-drop-field.py $F $O/no-filtered-copy.pages 1732665 15
 python3 -I $R $F $O/exposure-minus.pages 1732665 14.1 float -0.8
 python3 -I $R $O/no-filtered-copy.pages $O/exposure-minus-no-copy.pages 1732665 14.1 float -0.8
 for f in original no-filtered-copy exposure-minus exposure-minus-no-copy; do
