@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0375: Writing a comment&#x27;s text, time and author · iWork file format specification</title>
+<meta name="description" content="iWork file format specification">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
+<p class="wip"><strong>Work in progress.</strong> This specification is incomplete and changes as new experiments run. Each finding says how sure it is: <em>confirmed</em>, <em>likely</em> or <em>unknown</em>. See <a href="../spec/index.html">what each layer covers so far</a>.</p>
+<div class="layout">
+<nav class="side" aria-label="Contents"><details open><summary>Contents</summary><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="../guides/anatomy.html">Reading a Pages document</a></li><li><a href="../guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="../guides/writing.html">Writing a document</a></li><li><a href="../guides/samples.html">Sample files</a></li><li class="group">Specification</li><li class="versions"><details class="release"><summary><span class="label">App release</span><span class="value">15.4 (current)</span></summary><ul><li><a class="current" aria-current="page" href="../spec/index.html">15.4 (current)</a></li></ul></details></li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2–5. Text, styles, objects, layout</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li class="group">Evidence</li><li><a href="index.html">All experiments</a></li></ul></details></nav>
+<main>
+<h1 id="0375-writing-a-comments-text-time-and-author">0375: Writing a comment's text, time and author<a class="anchor" href="#0375-writing-a-comments-text-time-and-author" aria-label="Link to this section">#</a></h1>
+<p><strong>Status:</strong> run</p>
+<p>A comment is an entry in run table 23 pointing at a type-2013 record, which points at a type-3056 record: the text in field 1, a time in field 2.1 (seconds since 2001), the author in field 3 and an ID in field 5. Authors are type-212 records in <code>AnnotationAuthorStorage</code>, with their name in field 1 (<a href="0249-comment.html">0249</a>, <a href="0193-tracked-insertion.html">0193</a>). AppleScript can't read comments, but Pages can export them to PDF, where it lists them in the margin. This experiment writes each value and reads the exported page.</p>
+<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Pages</td><td>15.4, in Norwegian</td></tr><tr><td>macOS</td><td>26.5.2 (25F84), time zone Europe/Oslo</td></tr><tr><td>Date</td><td>2026-11-17</td></tr><tr><td>Input</td><td><code>samples/0249/comment.pages</code>: the comment <code>Note</code> on the word <code>One</code>, in record 1732721, by author 1732718 (the project owner)</td></tr><tr><td>Writer</td><td>[<code>recipes/0302-set-path.py</code>](../recipes/0302-set-path.py); exported with [<code>recipes/0372-in-app.sh</code>](../recipes/0372-in-app.sh) and read with [<code>recipes/0374-pdf-text.swift</code>](../recipes/0374-pdf-text.swift)</td></tr></tbody></table></div>
+<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section">#</a></h2>
+<pre class="lang-bash"><code>mkdir -p samples/0375
+R=recipes/0302-set-path.py
+F=samples/0249/comment.pages
+python3 -I $R $F samples/0375/text.pages 1732721 1 string &quot;Written comment&quot;
+python3 -I $R $F samples/0375/time.pages 1732721 2.1 double 771681600
+python3 -I $R $F samples/0375/author.pages 1732718 1 string &quot;Test Author&quot;
+for f in text time author; do
+  sh recipes/0372-in-app.sh Pages samples/0375/$f.pages \
+    &quot;export d to POSIX file \&quot;$PWD/samples/0375/$f.pdf\&quot; as PDF with properties {include comments:true}&quot;
+done
+swift recipes/0374-pdf-text.swift samples/0375/*.pdf</code></pre>
+<p>771,681,600 seconds after the start of 2001 (UTC) is 15 June 2025, 12:00 UTC.</p>
+<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section">#</a></h2>
+<p>Each page lists the comment in its margin as a number, the author, the time and the text. The PDF has no annotations: the comments are drawn as text.</p>
+<div class="table"><table><thead><tr><th>File</th><th>Written</th><th>Margin</th></tr></thead><tbody><tr><td><code>comment.pages</code></td><td>nothing</td><td>1. (owner's name) / 9. november 2026 kl. 20:58:43 / Note</td></tr><tr><td><code>text.pages</code></td><td>3056 field 1 = <code>Written comment</code></td><td>1. (owner's name) / 9. november 2026 kl. 20:58:43 / Written comment</td></tr><tr><td><code>time.pages</code></td><td>3056 field 2.1 = 771681600</td><td>1. (owner's name) / 15. juni 2025 kl. 14:00:00 / Note</td></tr><tr><td><code>author.pages</code></td><td>212 field 1 = <code>Test Author</code></td><td>1. Test Author / 9. november 2026 kl. 20:58:43 / Note</td></tr></tbody></table></div>
+<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section">#</a></h2>
+<p>Field 1 of the type-3056 record is the comment's text, field 2.1 its time in seconds since 1 January 2001 UTC (shown in local time, two hours ahead in June in Oslo), and field 1 of the author's type-212 record the name shown. The name lives only in the author record, so renaming that record renames every comment that points at it.</p>
+<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section">#</a></h2>
+<p><em>Confirmed</em>: a comment's text and time, and an author's name, by writing them.</p>
+<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Last built from <a href="https://github.com/alehel/iwork-format">alehel/iwork-format</a>.</p></footer>
+</main>
+
+</div>
+<script>
+// On narrow screens the contents and on-this-page lists start folded; on wide ones they stay open.
+(function () {
+  var narrow = window.matchMedia("(max-width: 48rem)");
+  var lists = document.querySelectorAll(".side > details, .toc > details");
+  function fit() { for (var i = 0; i < lists.length; i++) lists[i].open = !narrow.matches; }
+  fit();
+  if (narrow.addEventListener) narrow.addEventListener("change", fit);
+  // The release dropdown closes when you click anywhere else.
+  document.addEventListener("click", function (e) {
+    var release = document.querySelector(".side .release[open]");
+    if (release && !release.contains(e.target)) release.open = false;
+  });
+  document.addEventListener("keydown", function (e) {
+    var release = document.querySelector(".side .release[open]");
+    if (release && e.key === "Escape") { release.open = false; release.querySelector("summary").focus(); }
+  });
+  document.addEventListener("click", function (e) {
+    if (narrow.matches && e.target.closest && e.target.closest(".toc a")) fit();
+  });
+})();
+</script>
+</body>
+</html>
