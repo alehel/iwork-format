@@ -201,7 +201,7 @@ A paragraph style also has a field 12 for paragraph properties. *Likely* ([0008]
 
 Values 0 to 3 are *confirmed* ([0010](../experiments/0010-alignment.md), [0011](../experiments/0011-left-alignment.md)); 4 as natural alignment is *likely*.
 
-Named styles such as Body set every property; unnamed ones set only what differs from their parent (field 1.3). *Likely* ([0010](../experiments/0010-alignment.md))
+Named styles such as Body set every property; unnamed ones set only what differs from their parent (field 1.3). *Likely* ([0010](../experiments/0010-alignment.md)). That an unnamed style takes what it leaves out from the style in its field 1.3 is *confirmed* by writing another parent there ([0393](../experiments/0393-writing-a-style-parent.md)).
 
 Field 10 has equalled the number of properties set in every unnamed style so far, and is 57 in the named paragraph styles, which set 59. It doesn't count edits. *Unknown* ([0010](../experiments/0010-alignment.md), [0011](../experiments/0011-left-alignment.md), [0152](../experiments/0152-size-and-colour.md))
 
