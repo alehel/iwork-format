@@ -55,7 +55,7 @@ Other fields of the type-10012 document settings:
 | 1 | Document body: 1 word processing (default), 0 page layout ([0240](../experiments/0240-no-document-body.md); *confirmed* by writing it both ways; written 0 alone, Pages still draws whatever text the body holds, while Pages itself also empties the body, [0419](../experiments/0419-writing-the-document-body-setting.md)) |
 | 2 | Show headers, 1 on (default) ([0238](../experiments/0238-no-header.md)); writing 0 alone turns the sidebar's checkbox off but doesn't hide headers that have text: Pages hides headers by also replacing their texts with empty ones ([0327](../experiments/0327-writing-headers-and-footers.md)) |
 | 3 | Show footers, 1 on (default) ([0239](../experiments/0239-no-footer.md)) |
-| 9 | Hyphenate the whole document, 1 on ([0236](../experiments/0236-hyphenation.md)) |
+| 9 | Hyphenate the whole document, 1 on ([0236](../experiments/0236-hyphenation.md); *confirmed* by writing it, [0420](../experiments/0420-writing-hyphenation.md)) |
 | 10 | Use ligatures, 1 on (default) ([0237](../experiments/0237-document-ligatures.md)) |
 
 ## Objects in the text
