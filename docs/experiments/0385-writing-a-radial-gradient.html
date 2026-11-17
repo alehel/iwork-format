@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0385: Writing a radial gradient&#x27;s angle · iWork file format specification</title>
+<meta name="description" content="iWork file format specification">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
+<p class="wip"><strong>Work in progress.</strong> This specification is incomplete and changes as new experiments run. Each finding says how sure it is: <em>confirmed</em>, <em>likely</em> or <em>unknown</em>. See <a href="../spec/index.html">what each layer covers so far</a>.</p>
+<div class="layout">
+<nav class="side" aria-label="Contents"><details open><summary>Contents</summary><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="../guides/anatomy.html">Reading a Pages document</a></li><li><a href="../guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="../guides/writing.html">Writing a document</a></li><li><a href="../guides/samples.html">Sample files</a></li><li class="group">Specification</li><li class="versions"><details class="release"><summary><span class="label">App release</span><span class="value">15.4 (current)</span></summary><ul><li><a class="current" aria-current="page" href="../spec/index.html">15.4 (current)</a></li></ul></details></li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2–5. Text, styles, objects, layout</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li class="group">Evidence</li><li><a href="index.html">All experiments</a></li></ul></details></nav>
+<main>
+<h1 id="0385-writing-a-radial-gradients-angle">0385: Writing a radial gradient's angle<a class="anchor" href="#0385-writing-a-radial-gradients-angle" aria-label="Link to this section">#</a></h1>
+<p><strong>Status:</strong> run</p>
+<p>A radial gradient has kind 1 in gradient field 1, field 4 set to 1, and an angle of 315° in 5.2 (<a href="0275-radial-gradient.html">0275</a>). Writing only the kind into a linear gradient at 270° gave a radial gradient that wasn't centred on the shape (<a href="0384-writing-a-gradient.html">0384</a>). This experiment writes the other two fields and reads the colours over a grid.</p>
+<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Pages</td><td>15.4</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-17</td></tr><tr><td>Input</td><td><code>samples/0384/radial.pages</code>: shape 1732647, 100 × 100 at (300, 300), with a red-to-green gradient of kind 1 at 270°, in style 1732719. <code>samples/0275/radial.pages</code>: a radial gradient Pages made, light blue to dark blue</td></tr><tr><td>Writer</td><td>[<code>recipes/0383-set-nth-path.py</code>](../recipes/0383-set-nth-path.py); exported with [<code>recipes/0372-in-app.sh</code>](../recipes/0372-in-app.sh) and read with [<code>recipes/0384-pdf-colours.swift</code>](../recipes/0384-pdf-colours.swift)</td></tr></tbody></table></div>
+<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section">#</a></h2>
+<pre class="lang-bash"><code>mkdir -p samples/0385
+N=recipes/0383-set-nth-path.py
+O=samples/0385
+G=1.11.1.2
+cp samples/0275/radial.pages $O/pages-radial.pages
+cp samples/0384/radial.pages $O/written-radial.pages
+python3 -I $N samples/0384/radial.pages $O/radial-advanced.pages 1732719 $G.4 varint 1
+python3 -I $N samples/0384/radial.pages $O/radial-315.pages 1732719 $G.5.2 float 5.497787
+python3 -I $N samples/0384/radial.pages $O/radial-90.pages 1732719 $G.5.2 float 1.570796
+pts=&quot;&quot;; for y in 305 325 350 375 395; do for x in 305 325 350 375 395; do pts=&quot;$pts $x,$y&quot;; done; done
+for f in pages-radial written-radial radial-advanced radial-315 radial-90; do
+  sh recipes/0372-in-app.sh Pages $O/$f.pages &quot;export d to POSIX file \&quot;$PWD/$O/$f.pdf\&quot; as PDF&quot;
+  swift recipes/0384-pdf-colours.swift $O/$f.pdf $pts
+done</code></pre>
+<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section">#</a></h2>
+<p>The red component over a 5 × 5 grid of the shape, from (305, 305) at the top left to (395, 395) at the bottom right. For the written gradients red is 1 at the first stop and 0 at the second; for Pages' own, the first stop's red is 0.34 and the second's 0.</p>
+<pre><code>pages-radial (315°)          written-radial (270°)        radial-315                   radial-90
+.04 .09 .13 .10 .04          .00 .15 .41 .53 .45          .12 .29 .37 .30 .12          .00 .00 .00 .00 .00
+.10 .17 .22 .18 .10          .00 .26 .60 .80 .67          .28 .51 .65 .51 .30          .00 .00 .00 .00 .00
+.13 .22 .33 .22 .12          .01 .28 .61 .85 .69          .37 .65 .99 .66 .37          .00 .00 .08 .15 .11
+.09 .17 .22 .17 .10          .00 .14 .38 .50 .43          .28 .51 .65 .51 .29          .00 .13 .38 .49 .42
+.04 .09 .13 .10 .04          .00 .00 .15 .23 .18          .11 .28 .37 .29 .12          .00 .26 .57 .77 .65</code></pre>
+<p><code>radial-advanced.pages</code>, with field 4 set to 1, gave exactly the same colours as <code>written-radial.pages</code>.</p>
+<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section">#</a></h2>
+<p>For a radial gradient the angle in 5.2 doesn't only turn it: it moves the centre. At 315°, the angle Pages uses, the first stop's colour is at the middle of the shape and the gradient falls off evenly towards the corners, as in Pages' own radial gradient. At 270° the centre moved right of the middle, and at 90° to the bottom right, partly outside the shape. Field 4 changes nothing that is drawn, which fits its reading as a mark of the advanced editor. So a writer should give a radial gradient the angle 315° to centre it. How the angle places the centre in general wasn't worked out.</p>
+<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section">#</a></h2>
+<p><em>Confirmed</em>: a radial gradient (kind 1) at 315° is centred on the shape, and field 4 doesn't change the drawing, by writing them. How other angles place the centre is <em>unknown</em>; a finer grid over more angles would settle it.</p>
+<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Last built from <a href="https://github.com/alehel/iwork-format">alehel/iwork-format</a>.</p></footer>
+</main>
+
+</div>
+<script>
+// On narrow screens the contents and on-this-page lists start folded; on wide ones they stay open.
+(function () {
+  var narrow = window.matchMedia("(max-width: 48rem)");
+  var lists = document.querySelectorAll(".side > details, .toc > details");
+  function fit() { for (var i = 0; i < lists.length; i++) lists[i].open = !narrow.matches; }
+  fit();
+  if (narrow.addEventListener) narrow.addEventListener("change", fit);
+  // The release dropdown closes when you click anywhere else.
+  document.addEventListener("click", function (e) {
+    var release = document.querySelector(".side .release[open]");
+    if (release && !release.contains(e.target)) release.open = false;
+  });
+  document.addEventListener("keydown", function (e) {
+    var release = document.querySelector(".side .release[open]");
+    if (release && e.key === "Escape") { release.open = false; release.querySelector("summary").focus(); }
+  });
+  document.addEventListener("click", function (e) {
+    if (narrow.matches && e.target.closest && e.target.closest(".toc a")) fit();
+  });
+})();
+</script>
+</body>
+</html>
