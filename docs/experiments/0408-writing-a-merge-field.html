@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0408: Writing a merge field&#x27;s property · iWork file format specification</title>
+<meta name="description" content="iWork file format specification">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
+<p class="wip"><strong>Work in progress.</strong> This specification is incomplete and changes as new experiments run. Each finding says how sure it is: <em>confirmed</em>, <em>likely</em> or <em>unknown</em>. See <a href="../spec/index.html">what each layer covers so far</a>.</p>
+<div class="layout">
+<nav class="side" aria-label="Contents"><details open><summary>Contents</summary><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="../guides/anatomy.html">Reading a Pages document</a></li><li><a href="../guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="../guides/writing.html">Writing a document</a></li><li><a href="../guides/samples.html">Sample files</a></li><li class="group">Specification</li><li class="versions"><details class="release"><summary><span class="label">App release</span><span class="value">15.4 (current)</span></summary><ul><li><a class="current" aria-current="page" href="../spec/index.html">15.4 (current)</a></li></ul></details></li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2–5. Text, styles, objects, layout</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li class="group">Evidence</li><li><a href="index.html">All experiments</a></li></ul></details></nav>
+<main>
+<h1 id="0408-writing-a-merge-fields-property">0408: Writing a merge field's property<a class="anchor" href="#0408-writing-a-merge-fields-property" aria-label="Link to this section">#</a></h1>
+<p><strong>Status:</strong> run</p>
+<p>A merge field is a type-2036 smart field whose field 2 names a property of a contact, such as <code>emailAddresses</code>; AppleScript lists merge fields among the <code>placeholder texts</code> and reports that key as their <code>tag</code> (<a href="0199-letter-merge-fields.html">0199</a>). This experiment writes another key.</p>
+<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Pages</td><td>15.4, in Norwegian</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-18</td></tr><tr><td>Input</td><td><code>samples/0199/letter.pages</code>, a letter from a template, with eight merge fields; record 2489890 is the sender's <code>emailAddresses</code></td></tr><tr><td>Writer</td><td>[<code>recipes/0302-set-path.py</code>](../recipes/0302-set-path.py); read back with [<code>recipes/0372-in-app.sh</code>](../recipes/0372-in-app.sh)</td></tr></tbody></table></div>
+<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section">#</a></h2>
+<pre class="lang-bash"><code>mkdir -p samples/0408
+R=recipes/0302-set-path.py
+F=samples/0199/letter.pages
+O=samples/0408
+cp $F $O/original.pages
+python3 -I $R $F $O/email-to-phone.pages 2489890 2 string phoneNumbers
+python3 -I $R $F $O/email-to-custom.pages 2489890 2 string someMadeUpKey
+for f in original email-to-phone email-to-custom; do
+  sh recipes/0372-in-app.sh Pages $O/$f.pages &#x27;set out to {}
+repeat with p in placeholder texts of d
+  set end of out to tag of p
+end repeat
+return out&#x27;
+done</code></pre>
+<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section">#</a></h2>
+<p>The first four tags, which belong to the sender block, in order:</p>
+<div class="table"><table><thead><tr><th>File</th><th>Field 2 of 2489890</th><th>Tags</th></tr></thead><tbody><tr><td><code>original.pages</code></td><td><code>emailAddresses</code></td><td>full name, <code>postalAddresses</code>, <code>phoneNumbers</code>, <code>emailAddresses</code></td></tr><tr><td><code>email-to-phone.pages</code></td><td><code>phoneNumbers</code></td><td>full name, <code>postalAddresses</code>, <code>phoneNumbers</code>, <code>phoneNumbers</code></td></tr><tr><td><code>email-to-custom.pages</code></td><td><code>someMadeUpKey</code></td><td>full name, <code>postalAddresses</code>, <code>phoneNumbers</code>, <code>someMadeUpKey</code></td></tr></tbody></table></div>
+<p>(The full name's tag is <code>TPMailMerge_FullNamePseudoProperty</code>.) The other tags, and the text of the letter, were the same in all three.</p>
+<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section">#</a></h2>
+<p>Field 2 of a merge field is the property key Pages reports and merges by, and Pages keeps a key it doesn't know rather than rejecting the field. Which values a key can take is up to the Contacts framework; a reader only needs to show the field's current text, which is in the body.</p>
+<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section">#</a></h2>
+<p><em>Confirmed</em>: field 2 of type 2036 as the merge field's property key, by writing it.</p>
+<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Last built from <a href="https://github.com/alehel/iwork-format">alehel/iwork-format</a>.</p></footer>
+</main>
+
+</div>
+<script>
+// On narrow screens the contents and on-this-page lists start folded; on wide ones they stay open.
+(function () {
+  var narrow = window.matchMedia("(max-width: 48rem)");
+  var lists = document.querySelectorAll(".side > details, .toc > details");
+  function fit() { for (var i = 0; i < lists.length; i++) lists[i].open = !narrow.matches; }
+  fit();
+  if (narrow.addEventListener) narrow.addEventListener("change", fit);
+  // The release dropdown closes when you click anywhere else.
+  document.addEventListener("click", function (e) {
+    var release = document.querySelector(".side .release[open]");
+    if (release && !release.contains(e.target)) release.open = false;
+  });
+  document.addEventListener("keydown", function (e) {
+    var release = document.querySelector(".side .release[open]");
+    if (release && e.key === "Escape") { release.open = false; release.querySelector("summary").focus(); }
+  });
+  document.addEventListener("click", function (e) {
+    if (narrow.matches && e.target.closest && e.target.closest(".toc a")) fit();
+  });
+})();
+</script>
+</body>
+</html>
