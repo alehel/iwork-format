@@ -1,6 +1,6 @@
 # 0383: Writing a filter's value and its hidden rows
 
-**Status:** run
+**Status:** run; its conclusion is corrected by [0391](0391-writing-a-rule-value.md), which found the value Numbers uses in a field this experiment didn't write, 7.1.5.2.2
 
 A filter's rule is a formula in two type-6220 records, `cell > 2` with the 2 as a number node, and the rows it hides are listed by ID in table model field 70.2.3, each with field 3 set to 1 ([0258](0258-filter.md)). Numbers' AppleScript can turn a table's filters on and off (`filtered`), and its exported PDF leaves out hidden rows. This experiment writes a new value into the rule, clears the hidden flags, and reads which rows Numbers shows.
 
