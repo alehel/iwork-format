@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0426: Writing a merge over a value that isn&#x27;t in its first cell · iWork file format specification</title>
+<meta name="description" content="iWork file format specification">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
+<p class="wip"><strong>Work in progress.</strong> This specification is incomplete and changes as new experiments run. Each finding says how sure it is: <em>confirmed</em>, <em>likely</em> or <em>unknown</em>. See <a href="../spec/index.html">what each layer covers so far</a>.</p>
+<div class="layout">
+<nav class="side" aria-label="Contents"><details open><summary>Contents</summary><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="../guides/anatomy.html">Reading a Pages document</a></li><li><a href="../guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="../guides/writing.html">Writing a document</a></li><li><a href="../guides/samples.html">Sample files</a></li><li class="group">Specification</li><li class="versions"><details class="release"><summary><span class="label">App release</span><span class="value">15.4 (current)</span></summary><ul><li><a class="current" aria-current="page" href="../spec/index.html">15.4 (current)</a></li></ul></details></li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2–5. Text, styles, objects, layout</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li class="group">Evidence</li><li><a href="index.html">All experiments</a></li></ul></details></nav>
+<main>
+<h1 id="0426-writing-a-merge-over-a-value-that-isnt-in-its-first-cell">0426: Writing a merge over a value that isn't in its first cell<a class="anchor" href="#0426-writing-a-merge-over-a-value-that-isnt-in-its-first-cell" aria-label="Link to this section">#</a></h1>
+<p><strong>Status:</strong> run</p>
+<p>A merged cell keeps its value in its top-left cell, and the other cells of the range are absent from the tile (<a href="0044-merged-cells.html">0044</a>). A merge's bounds are columns in 40.3 and rows in 40.4 of its range node (<a href="0382-writing-merged-cells.html">0382</a>). This experiment writes merges in which the only value, 42 in B2, isn't the top-left cell.</p>
+<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Numbers</td><td>15.4, in Norwegian</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-18</td></tr><tr><td>Input</td><td><code>samples/0044/merged.numbers</code>: 42 in B2 and a merge of C2:C3, in table model 904595. Row 1 is a header row and column A a header column</td></tr><tr><td>Writer</td><td>[<code>recipes/0302-set-path.py</code>](../recipes/0302-set-path.py); exported with [<code>recipes/0372-in-app.sh</code>](../recipes/0372-in-app.sh) and looked at as pictures</td></tr></tbody></table></div>
+<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section">#</a></h2>
+<pre class="lang-bash"><code>mkdir -p samples/0426
+R=recipes/0302-set-path.py
+O=samples/0426
+B=47.2.3.2.1.1.40
+python3 -I $R samples/0044/merged.numbers $O/b2-b3.numbers 904595 $B.3.1 varint 1
+python3 -I $R $O/b2-b3.numbers $O/b1-b2.numbers 904595 $B.4.1 varint 0 $B.4.2 varint 1
+python3 -I $R $O/b2-b3.numbers $O/a2-b3.numbers 904595 $B.3.1 varint 0 $B.3.2 varint 1
+for f in b2-b3 b1-b2 a2-b3; do
+  sh recipes/0372-in-app.sh Numbers $O/$f.numbers &quot;export d to POSIX file \&quot;$PWD/$O/$f.pdf\&quot; as PDF&quot;
+  sips -s format png $O/$f.pdf --out $O/$f.png
+done</code></pre>
+<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th>File</th><th>Merge written</th><th>Top-left cell</th><th>Where 42 is drawn</th></tr></thead><tbody><tr><td><code>b2-b3.numbers</code></td><td>B2:B3</td><td>B2, holding 42</td><td>in the merged cell, in the body's style</td></tr><tr><td><code>b1-b2.numbers</code></td><td>B1:B2</td><td>B1, empty, in the header row</td><td>in the merged cell, grey like the header row</td></tr><tr><td><code>a2-b3.numbers</code></td><td>A2:B3</td><td>A2, empty, in the header column</td><td>in the merged cell, grey like the header column</td></tr></tbody></table></div>
+<p>The PDF's text is <code>42</code> and the table's name in all three; no cell lost its value.</p>
+<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section">#</a></h2>
+<p>A merged cell shows the value of the range even when it isn't stored in the range's top-left cell: with B2 in the middle or bottom of a merge whose first cell is empty, Numbers still draws 42 in the merged cell. The merged cell takes its look from its top-left cell, here a header row or column. Numbers itself stores a merged cell's value in the top-left cell, so a reader of a file Numbers made can keep looking there; with only one value in the range, which cell holds it doesn't matter. Which value wins when several cells of a merge hold one wasn't tested.</p>
+<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section">#</a></h2>
+<p><em>Confirmed</em>: a merged cell shows a value stored in another cell of the range when the top-left is empty, and takes its look from the top-left, by writing it.</p>
+<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Last built from <a href="https://github.com/alehel/iwork-format">alehel/iwork-format</a>.</p></footer>
+</main>
+
+</div>
+<script>
+// On narrow screens the contents and on-this-page lists start folded; on wide ones they stay open.
+(function () {
+  var narrow = window.matchMedia("(max-width: 48rem)");
+  var lists = document.querySelectorAll(".side > details, .toc > details");
+  function fit() { for (var i = 0; i < lists.length; i++) lists[i].open = !narrow.matches; }
+  fit();
+  if (narrow.addEventListener) narrow.addEventListener("change", fit);
+  // The release dropdown closes when you click anywhere else.
+  document.addEventListener("click", function (e) {
+    var release = document.querySelector(".side .release[open]");
+    if (release && !release.contains(e.target)) release.open = false;
+  });
+  document.addEventListener("keydown", function (e) {
+    var release = document.querySelector(".side .release[open]");
+    if (release && e.key === "Escape") { release.open = false; release.querySelector("summary").focus(); }
+  });
+  document.addEventListener("click", function (e) {
+    if (narrow.matches && e.target.closest && e.target.closest(".toc a")) fit();
+  });
+})();
+</script>
+</body>
+</html>
