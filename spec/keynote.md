@@ -44,7 +44,7 @@ A build is a type-8 record listed in slide field 2: field 1 names the object, fi
 
 A slide's background is the fill in its slide style (type 9, property 11.1); a colour in 11.1.1 is *confirmed* by writing it ([0346](../experiments/0346-writing-a-slide-background.md)). A dynamic background is an image fill (field 3) showing a pre-rendered still, a `motionBackground-…` data file (the same file whatever the preset's angle, scale and speed, [0292](../experiments/0292-test-theme-reruns.md)), plus field 200 naming a type-26 motion background style. That style holds the generator's name, such as `KNGradientLinearBase`, colour stops as in a gradient fill, and parameters such as the scale (64) and speed (70). *Likely* ([0271](../experiments/0271-dynamic-background.md))
 
-Bulleted body text uses the same text records and list styles as Pages; the theme's default body list style is a bullet (`•` in field 16). *Likely* ([0072](../experiments/0072-keynote-bullets.md))
+Bulleted body text uses the same text records and list styles as Pages; the theme's default body list style is a bullet (`•` in field 16, repeated once per level). *Likely* ([0072](../experiments/0072-keynote-bullets.md)). Field 16 as the bullet Keynote draws is *confirmed* by writing it ([0414](../experiments/0414-writing-a-keynote-bullet.md)).
 
 ## Charts
 

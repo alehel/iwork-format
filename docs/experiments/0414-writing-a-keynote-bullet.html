@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0414: Writing a Keynote bullet · iWork file format specification</title>
+<meta name="description" content="iWork file format specification">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
+<p class="wip"><strong>Work in progress.</strong> This specification is incomplete and changes as new experiments run. Each finding says how sure it is: <em>confirmed</em>, <em>likely</em> or <em>unknown</em>. See <a href="../spec/index.html">what each layer covers so far</a>.</p>
+<div class="layout">
+<nav class="side" aria-label="Contents"><details open><summary>Contents</summary><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="../guides/anatomy.html">Reading a Pages document</a></li><li><a href="../guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="../guides/writing.html">Writing a document</a></li><li><a href="../guides/samples.html">Sample files</a></li><li class="group">Specification</li><li class="versions"><details class="release"><summary><span class="label">App release</span><span class="value">15.4 (current)</span></summary><ul><li><a class="current" aria-current="page" href="../spec/index.html">15.4 (current)</a></li></ul></details></li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2–5. Text, styles, objects, layout</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li class="group">Evidence</li><li><a href="index.html">All experiments</a></li></ul></details></nav>
+<main>
+<h1 id="0414-writing-a-keynote-bullet">0414: Writing a Keynote bullet<a class="anchor" href="#0414-writing-a-keynote-bullet" aria-label="Link to this section">#</a></h1>
+<p><strong>Status:</strong> run</p>
+<p>Keynote's bulleted body text uses the same list styles as Pages, and the theme's default body list style, <code>Punkttegn</code> (<code>text-1-liststyle-Bullet</code>), has the bullet <code>•</code> in field 16 (<a href="0072-keynote-bullets.html">0072</a>). In Pages, list markers were confirmed by writing them (<a href="0334-writing-list-markers.html">0334</a>). This experiment writes Keynote's bullet and reads the exported slide's text.</p>
+<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Keynote</td><td>15.4, in Norwegian</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-18</td></tr><tr><td>Input</td><td><code>samples/theme/0072/bullets.key</code>: a body of three bulleted lines, <code>one</code>, <code>two</code> and <code>three</code>, in list style 2651121, whose field 16 is repeated nine times, <code>•</code> each time, one per level</td></tr><tr><td>Writer</td><td>[<code>recipes/0334-set-repeated.py</code>](../recipes/0334-set-repeated.py); exported with [<code>recipes/0372-in-app.sh</code>](../recipes/0372-in-app.sh) and read with [<code>recipes/0374-pdf-text.swift</code>](../recipes/0374-pdf-text.swift)</td></tr></tbody></table></div>
+<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section">#</a></h2>
+<pre class="lang-bash"><code>mkdir -p samples/0414
+S=recipes/0334-set-repeated.py
+F=samples/theme/0072/bullets.key
+O=samples/0414
+cp $F $O/original.key
+python3 -I $S $F $O/arrow-level0.key 2651121 16 string &quot;→&quot; 1
+python3 -I $S $F $O/star-all.key 2651121 16 string &quot;*&quot;
+for f in original arrow-level0 star-all; do
+  sh recipes/0372-in-app.sh Keynote $O/$f.key &quot;export d to POSIX file \&quot;$PWD/$O/$f.pdf\&quot; as PDF&quot;
+  swift recipes/0374-pdf-text.swift $O/$f.pdf
+done</code></pre>
+<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th>File</th><th>Field 16 written</th><th>Text of the slide</th></tr></thead><tbody><tr><td><code>original.key</code></td><td></td><td>• one / • two / • three</td></tr><tr><td><code>arrow-level0.key</code></td><td>the first only: <code>→</code></td><td>→one / → two / →three</td></tr><tr><td><code>star-all.key</code></td><td>all nine: <code>*</code></td><td>* one / * two / * three</td></tr></tbody></table></div>
+<p>(The spacing after the marker is as PDFKit extracts it.)</p>
+<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section">#</a></h2>
+<p>The first field 16 of a list style is the marker of its first level, and Keynote draws whatever text is written there, as Pages does. All three lines are at the first level, so writing only the first occurrence changed every marker. A reader can take a Keynote slide's bullets from the list style exactly as in Pages.</p>
+<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section">#</a></h2>
+<p><em>Confirmed</em>: list style field 16 as the bullet, per level, in Keynote, by writing it.</p>
+<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Last built from <a href="https://github.com/alehel/iwork-format">alehel/iwork-format</a>.</p></footer>
+</main>
+
+</div>
+<script>
+// On narrow screens the contents and on-this-page lists start folded; on wide ones they stay open.
+(function () {
+  var narrow = window.matchMedia("(max-width: 48rem)");
+  var lists = document.querySelectorAll(".side > details, .toc > details");
+  function fit() { for (var i = 0; i < lists.length; i++) lists[i].open = !narrow.matches; }
+  fit();
+  if (narrow.addEventListener) narrow.addEventListener("change", fit);
+  // The release dropdown closes when you click anywhere else.
+  document.addEventListener("click", function (e) {
+    var release = document.querySelector(".side .release[open]");
+    if (release && !release.contains(e.target)) release.open = false;
+  });
+  document.addEventListener("keydown", function (e) {
+    var release = document.querySelector(".side .release[open]");
+    if (release && e.key === "Escape") { release.open = false; release.querySelector("summary").focus(); }
+  });
+  document.addEventListener("click", function (e) {
+    if (narrow.matches && e.target.closest && e.target.closest(".toc a")) fit();
+  });
+})();
+</script>
+</body>
+</html>
