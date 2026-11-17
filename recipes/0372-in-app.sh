@@ -32,9 +32,15 @@ on run argv
     end repeat
     if d is missing value then error "document did not open: " & target
   end tell
+  set r to ""
   try
     tell application appName to set docId to id of d
     set r to run script (POSIX file inner) with parameters {docId}
+    try
+      r
+    on error
+      set r to ""
+    end try
   on error e
     set r to "error: " & e
   end try
