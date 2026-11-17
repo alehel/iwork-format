@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0389: Writing a bookmark and a link to it · iWork file format specification</title>
+<meta name="description" content="iWork file format specification">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
+<p class="wip"><strong>Work in progress.</strong> This specification is incomplete and changes as new experiments run. Each finding says how sure it is: <em>confirmed</em>, <em>likely</em> or <em>unknown</em>. See <a href="../spec/index.html">what each layer covers so far</a>.</p>
+<div class="layout">
+<nav class="side" aria-label="Contents"><details open><summary>Contents</summary><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="../guides/anatomy.html">Reading a Pages document</a></li><li><a href="../guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="../guides/writing.html">Writing a document</a></li><li><a href="../guides/samples.html">Sample files</a></li><li class="group">Specification</li><li class="versions"><details class="release"><summary><span class="label">App release</span><span class="value">15.4 (current)</span></summary><ul><li><a class="current" aria-current="page" href="../spec/index.html">15.4 (current)</a></li></ul></details></li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2–5. Text, styles, objects, layout</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li class="group">Evidence</li><li><a href="index.html">All experiments</a></li></ul></details></nav>
+<main>
+<h1 id="0389-writing-a-bookmark-and-a-link-to-it">0389: Writing a bookmark and a link to it<a class="anchor" href="#0389-writing-a-bookmark-and-a-link-to-it" aria-label="Link to this section">#</a></h1>
+<p><strong>Status:</strong> run</p>
+<p>A bookmark is a type-2035 record placed by run table 15, identified by the UUID in its field 1.1. A link to it is a type-2039 smart field whose field 2 is <code>#</code> and that UUID (<a href="0191-bookmark.html">0191</a>, <a href="0192-link-to-bookmark.html">0192</a>). Pages exports such a link to PDF as a link annotation that goes to a point on a page. This experiment moves the bookmark, changes the UUIDs, and reads the annotation's target.</p>
+<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Pages</td><td>15.4</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-17</td></tr><tr><td>Input</td><td><code>samples/0192/bookmark-link.pages</code>: <code>one two</code> in text 1732539, with <code>one</code> linked (record 1732745) to a bookmark on <code>two</code> (record 1732700, placed at position 4 by run table 15)</td></tr><tr><td>Writer</td><td>[<code>recipes/0302-set-path.py</code>](../recipes/0302-set-path.py) and [<code>recipes/0383-set-nth-path.py</code>](../recipes/0383-set-nth-path.py); exported with [<code>recipes/0372-in-app.sh</code>](../recipes/0372-in-app.sh) and read with [<code>recipes/0374-pdf-text.swift</code>](../recipes/0374-pdf-text.swift), which now prints a link's target</td></tr></tbody></table></div>
+<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section">#</a></h2>
+<pre class="lang-bash"><code>mkdir -p samples/0389
+R=recipes/0302-set-path.py
+N=recipes/0383-set-nth-path.py
+F=samples/0192/bookmark-link.pages
+O=samples/0389
+U=11111111-2222-3333-4444-555555555555
+cp $F $O/original.pages
+python3 -I $N $F $O/moved.pages 1732539 15.1:2.1 varint 2
+python3 -I $R $F $O/link-elsewhere.pages 1732745 2 string &quot;#$U&quot;
+python3 -I $R $O/link-elsewhere.pages $O/both-renamed.pages 1732700 1.1 string &quot;$U&quot;
+for f in original moved link-elsewhere both-renamed; do
+  sh recipes/0372-in-app.sh Pages $O/$f.pages &quot;export d to POSIX file \&quot;$PWD/$O/$f.pdf\&quot; as PDF&quot;
+  swift recipes/0374-pdf-text.swift $O/$f.pdf
+done</code></pre>
+<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section">#</a></h2>
+<p>Each PDF has one link annotation over <code>one</code> (57, 774, 18 × 12, from the page's bottom-left corner):</p>
+<div class="table"><table><thead><tr><th>File</th><th>Written</th><th>Link goes to</th></tr></thead><tbody><tr><td><code>original.pages</code></td><td>nothing</td><td>page 1 at 78, 785 (the start of <code>two</code>)</td></tr><tr><td><code>moved.pages</code></td><td>bookmark entry at position 2 instead of 4</td><td>page 1 at 69, 785 (the <code>e</code> of <code>one</code>)</td></tr><tr><td><code>link-elsewhere.pages</code></td><td>link field 2 = <code>#</code> and a UUID no bookmark has</td><td>nowhere</td></tr><tr><td><code>both-renamed.pages</code></td><td>that UUID in the link and in bookmark field 1.1</td><td>page 1 at 78, 785</td></tr></tbody></table></div>
+<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section">#</a></h2>
+<p>The bookmark is where its run-table-15 entry puts it: moving the entry moves the link's destination with it. The link finds its bookmark only by the UUID after the <code>#</code>: with no bookmark of that UUID it goes nowhere, and when both are renamed alike it works as before, so the UUID needn't be one Pages made.</p>
+<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section">#</a></h2>
+<p><em>Confirmed</em>: run table 15 as a bookmark's position, bookmark field 1.1 as its UUID, and link field 2 as <code>#</code> and that UUID, by writing them.</p>
+<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Last built from <a href="https://github.com/alehel/iwork-format">alehel/iwork-format</a>.</p></footer>
+</main>
+
+</div>
+<script>
+// On narrow screens the contents and on-this-page lists start folded; on wide ones they stay open.
+(function () {
+  var narrow = window.matchMedia("(max-width: 48rem)");
+  var lists = document.querySelectorAll(".side > details, .toc > details");
+  function fit() { for (var i = 0; i < lists.length; i++) lists[i].open = !narrow.matches; }
+  fit();
+  if (narrow.addEventListener) narrow.addEventListener("change", fit);
+  // The release dropdown closes when you click anywhere else.
+  document.addEventListener("click", function (e) {
+    var release = document.querySelector(".side .release[open]");
+    if (release && !release.contains(e.target)) release.open = false;
+  });
+  document.addEventListener("keydown", function (e) {
+    var release = document.querySelector(".side .release[open]");
+    if (release && e.key === "Escape") { release.open = false; release.querySelector("summary").focus(); }
+  });
+  document.addEventListener("click", function (e) {
+    if (narrow.matches && e.target.closest && e.target.closest(".toc a")) fit();
+  });
+})();
+</script>
+</body>
+</html>
