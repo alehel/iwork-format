@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0372: Writing a group&#x27;s position and a member&#x27;s offset · iWork file format specification</title>
+<meta name="description" content="iWork file format specification">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
+<p class="wip"><strong>Work in progress.</strong> This specification is incomplete and changes as new experiments run. Each finding says how sure it is: <em>confirmed</em>, <em>likely</em> or <em>unknown</em>. See <a href="../spec/index.html">what each layer covers so far</a>.</p>
+<div class="layout">
+<nav class="side" aria-label="Contents"><details open><summary>Contents</summary><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="../guides/anatomy.html">Reading a Pages document</a></li><li><a href="../guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="../guides/writing.html">Writing a document</a></li><li><a href="../guides/samples.html">Sample files</a></li><li class="group">Specification</li><li class="versions"><details class="release"><summary><span class="label">App release</span><span class="value">15.4 (current)</span></summary><ul><li><a class="current" aria-current="page" href="../spec/index.html">15.4 (current)</a></li></ul></details></li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2–5. Text, styles, objects, layout</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li class="group">Evidence</li><li><a href="index.html">All experiments</a></li></ul></details></nav>
+<main>
+<h1 id="0372-writing-a-groups-position-and-a-members-offset">0372: Writing a group's position and a member's offset<a class="anchor" href="#0372-writing-a-groups-position-and-a-members-offset" aria-label="Link to this section">#</a></h1>
+<p><strong>Status:</strong> run</p>
+<p>A group is a type-3008 drawable that lists its members in field 2. Each member names the group in its field 1.2 and is positioned relative to the group's top-left corner (<a href="0216-group.html">0216</a>). AppleScript's <code>group</code> class lists a group's items with their positions on the page. This experiment moves the group, then moves one member within it, and reads the positions back from Pages.</p>
+<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Pages</td><td>15.4</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-17</td></tr><tr><td>Input</td><td><code>samples/0216/group.pages</code>: two 100 × 100 shapes, grouped. The group (1732829) is at 300, 300 and 250 × 100; the members 1732821 and 1732823 are at 0, 0 and 150, 0 within it</td></tr><tr><td>Writer</td><td>[<code>recipes/0302-set-path.py</code>](../recipes/0302-set-path.py); read back with the new [<code>recipes/0372-in-app.sh</code>](../recipes/0372-in-app.sh)</td></tr></tbody></table></div>
+<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section">#</a></h2>
+<pre class="lang-bash"><code>mkdir -p samples/0372
+R=recipes/0302-set-path.py
+G=samples/0216/group.pages
+python3 -I $R $G samples/0372/group-moved.pages 1732829 1.1.1.1 float 100 1.1.1.2 float 400
+python3 -I $R $G samples/0372/member.pages 1732823 1.1.1.1.1 float 50 1.1.1.1.2 float 60
+sh recipes/0372-in-app.sh Pages samples/0372/member.pages &#x27;set out to {}
+repeat with g in groups of d
+  set end of out to {position of g, width of g, height of g}
+  repeat with i in iWork items of g
+    set end of out to position of i
+  end repeat
+end repeat
+return out&#x27;</code></pre>
+<p><code>recipes/0372-in-app.sh</code> opens a document through Launch Services, runs the given AppleScript with <code>d</code> set to that document, and closes it without saving. The group's geometry is in its payload's field 1.1, but a shape's drawable sits one level deeper, so a member's position is at 1.1.1.1.</p>
+<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th>File</th><th>Written</th><th>Group (position, size)</th><th>Members on the page</th></tr></thead><tbody><tr><td><code>group.pages</code></td><td>nothing</td><td>300, 300; 250 × 100</td><td>300, 300 and 450, 300</td></tr><tr><td><code>group-moved.pages</code></td><td>group 1.1.1 = 100, 400</td><td>100, 400; 250 × 100</td><td>100, 400 and 250, 400</td></tr><tr><td><code>member.pages</code></td><td>second member 1.1.1 = 50, 60</td><td>300, 300; 150 × 160</td><td>300, 300 and 350, 360</td></tr></tbody></table></div>
+<p>In both written files Pages still shows one item on the page, the group.</p>
+<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section">#</a></h2>
+<p>A member's position is an offset from the group's corner: moving the group moves both members with it, and the member written at 50, 60 is drawn at 300 + 50, 300 + 60. The group's size isn't taken from the file as written: after the member moved, Pages gave the group the box around its members, 150 × 160, though field 1.1.2 still said 250 × 100. A writer should still keep the group's box in step with its members.</p>
+<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section">#</a></h2>
+<p><em>Confirmed</em>: a group's position, and its members' positions relative to it, by writing them.</p>
+<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Last built from <a href="https://github.com/alehel/iwork-format">alehel/iwork-format</a>.</p></footer>
+</main>
+
+</div>
+<script>
+// On narrow screens the contents and on-this-page lists start folded; on wide ones they stay open.
+(function () {
+  var narrow = window.matchMedia("(max-width: 48rem)");
+  var lists = document.querySelectorAll(".side > details, .toc > details");
+  function fit() { for (var i = 0; i < lists.length; i++) lists[i].open = !narrow.matches; }
+  fit();
+  if (narrow.addEventListener) narrow.addEventListener("change", fit);
+  // The release dropdown closes when you click anywhere else.
+  document.addEventListener("click", function (e) {
+    var release = document.querySelector(".side .release[open]");
+    if (release && !release.contains(e.target)) release.open = false;
+  });
+  document.addEventListener("keydown", function (e) {
+    var release = document.querySelector(".side .release[open]");
+    if (release && e.key === "Escape") { release.open = false; release.querySelector("summary").focus(); }
+  });
+  document.addEventListener("click", function (e) {
+    if (narrow.matches && e.target.closest && e.target.closest(".toc a")) fit();
+  });
+})();
+</script>
+</body>
+</html>
