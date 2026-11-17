@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0427: Writing paragraph runs without a style · iWork file format specification</title>
+<meta name="description" content="iWork file format specification">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
+<p class="wip"><strong>Work in progress.</strong> This specification is incomplete and changes as new experiments run. Each finding says how sure it is: <em>confirmed</em>, <em>likely</em> or <em>unknown</em>. See <a href="../spec/index.html">what each layer covers so far</a>.</p>
+<div class="layout">
+<nav class="side" aria-label="Contents"><details open><summary>Contents</summary><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="../guides/anatomy.html">Reading a Pages document</a></li><li><a href="../guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="../guides/writing.html">Writing a document</a></li><li><a href="../guides/samples.html">Sample files</a></li><li class="group">Specification</li><li class="versions"><details class="release"><summary><span class="label">App release</span><span class="value">15.4 (current)</span></summary><ul><li><a class="current" aria-current="page" href="../spec/index.html">15.4 (current)</a></li></ul></details></li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2–5. Text, styles, objects, layout</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li class="group">Evidence</li><li><a href="index.html">All experiments</a></li></ul></details></nav>
+<main>
+<h1 id="0427-writing-paragraph-runs-without-a-style">0427: Writing paragraph runs without a style<a class="anchor" href="#0427-writing-paragraph-runs-without-a-style" aria-label="Link to this section">#</a></h1>
+<p><strong>Status:</strong> run</p>
+<p>Run table 5 attaches paragraph styles: one entry per paragraph, at its first character, even when the style doesn't change, and each entry's style was confirmed by writing it (<a href="0151-thousand-paragraphs.html">0151</a>, <a href="0352-writing-paragraph-style-runs.html">0352</a>). An entry with no field 2 seemed to keep the previous paragraph's style (<a href="0034-mixed-paragraph-styles.html">0034</a>). This experiment writes such entries, and a table with fewer entries than paragraphs.</p>
+<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Pages</td><td>15.4, in Norwegian</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-18</td></tr><tr><td>Input</td><td><code>samples/0002/hello.pages</code>, with its body (1732539) replaced by three paragraphs, <code>one</code>, <code>two</code> and <code>three</code>, which start at 0, 4 and 8. The template's <em>Tittel</em> (1731491) is 30-point bold and <em>Brødtekst</em> (1731511) 11-point</td></tr><tr><td>Writer</td><td>The writer of <a href="0287-rewriting-a-document.html">0287</a> for the text and [<code>recipes/0351-add-run.py</code>](../recipes/0351-add-run.py) for the run table; read back with [<code>recipes/0372-in-app.sh</code>](../recipes/0372-in-app.sh)</td></tr></tbody></table></div>
+<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section">#</a></h2>
+<pre class="lang-bash"><code>mkdir -p samples/0427
+A=recipes/0351-add-run.py
+O=samples/0427
+python3 -I recipes/0287-iwa-writer.py samples/0002/hello.pages $O/text.pages --text 1732539 &quot;$(printf &#x27;one\ntwo\nthree&#x27;)&quot;
+python3 -I $A $O/text.pages $O/title-none-body.pages 1732539 5 0 1731491 4 0 8 1731511
+python3 -I $A $O/text.pages $O/title-body-none.pages 1732539 5 0 1731491 4 1731511 8 0
+python3 -I $A $O/text.pages $O/title-only.pages 1732539 5 0 1731491
+for f in text title-none-body title-body-none title-only; do
+  sh recipes/0372-in-app.sh Pages $O/$f.pages &#x27;set out to {}
+repeat with p in paragraphs of body text of d
+  set end of out to {(p as text), font of p, size of p}
+end repeat
+return out&#x27;
+done</code></pre>
+<p>A style of 0 in <code>recipes/0351-add-run.py</code> writes an entry with no field 2. <code>text.pages</code> keeps <code>hello</code>'s single entry, at 0, for three paragraphs.</p>
+<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th>File</th><th>Table 5</th><th><code>one</code></th><th><code>two</code></th><th><code>three</code></th></tr></thead><tbody><tr><td><code>text.pages</code></td><td>0 <em>Brødtekst</em> (as in <code>hello.pages</code>)</td><td>12-point regular</td><td>12-point regular</td><td>12-point regular</td></tr><tr><td><code>title-only.pages</code></td><td>0 <em>Tittel</em></td><td>12-point regular</td><td>12-point regular</td><td>12-point regular</td></tr><tr><td><code>title-none-body.pages</code></td><td>0 <em>Tittel</em>, 4 none, 8 <em>Brødtekst</em></td><td>30-point bold</td><td>30-point bold</td><td>11-point regular</td></tr><tr><td><code>title-body-none.pages</code></td><td>0 <em>Tittel</em>, 4 <em>Brødtekst</em>, 8 none</td><td>30-point bold</td><td>11-point regular</td><td>11-point regular</td></tr></tbody></table></div>
+<p>The font is Helvetica Neue throughout.</p>
+<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section">#</a></h2>
+<p>An entry with no style gives its paragraph the previous paragraph's style, whichever that is. A table with fewer entries than the text has paragraphs is ignored altogether: with one entry for three paragraphs, every paragraph took 12-point text, which is neither the entry's style nor <em>Brødtekst</em>, and is probably the document's default paragraph style. So a writer must give every paragraph its own entry, as Pages does, and a reader meeting a short table can't trust its entries.</p>
+<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section">#</a></h2>
+<p><em>Confirmed</em>: a table-5 entry without a style keeps the previous paragraph's style, and a table with fewer entries than paragraphs isn't used, by writing them. <em>Likely</em>: the 12-point fallback is the document's default paragraph style.</p>
+<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Last built from <a href="https://github.com/alehel/iwork-format">alehel/iwork-format</a>.</p></footer>
+</main>
+
+</div>
+<script>
+// On narrow screens the contents and on-this-page lists start folded; on wide ones they stay open.
+(function () {
+  var narrow = window.matchMedia("(max-width: 48rem)");
+  var lists = document.querySelectorAll(".side > details, .toc > details");
+  function fit() { for (var i = 0; i < lists.length; i++) lists[i].open = !narrow.matches; }
+  fit();
+  if (narrow.addEventListener) narrow.addEventListener("change", fit);
+  // The release dropdown closes when you click anywhere else.
+  document.addEventListener("click", function (e) {
+    var release = document.querySelector(".side .release[open]");
+    if (release && !release.contains(e.target)) release.open = false;
+  });
+  document.addEventListener("keydown", function (e) {
+    var release = document.querySelector(".side .release[open]");
+    if (release && e.key === "Escape") { release.open = false; release.querySelector("summary").focus(); }
+  });
+  document.addEventListener("click", function (e) {
+    if (narrow.matches && e.target.closest && e.target.closest(".toc a")) fit();
+  });
+})();
+</script>
+</body>
+</html>
