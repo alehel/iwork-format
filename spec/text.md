@@ -40,7 +40,7 @@ Other section fields hold switches from the Section tab of Pages' Document sideb
 
 | Section field | Switch | Values |
 | --- | --- | --- |
-| 17 | Same as previous section | 1 on (default), 0 off |
+| 17 | Same as previous section: when on, the section's pages use the previous section's headers and footers and its own sets are ignored | 1 on (default), 0 off; *confirmed* by writing ([0387](../experiments/0387-writing-same-as-previous-section.md)) |
 | 18 | First page uses its own header-and-footer set (field 23) | 0 off (default), 1 on; *confirmed* by writing ([0362](../experiments/0362-writing-first-page-headers.md)) |
 | 19 | Left and right pages are different: odd pages use the set in field 25 and even pages the set in field 24. Pages shows the switch only with facing pages on, but it applies with facing pages off too | 0 off (default), 1 on ([0019](../experiments/0019-left-and-right-pages.md)); *confirmed* by writing ([0386](../experiments/0386-writing-left-and-right-pages.md)) |
 | 28 | Hide header and footer on the section's first page | 0 off (default), 1 on; *confirmed* by writing ([0362](../experiments/0362-writing-first-page-headers.md)) |
