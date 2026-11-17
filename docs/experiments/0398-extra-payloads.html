@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0398: Header versions and extra payloads · iWork file format specification</title>
+<meta name="description" content="iWork file format specification">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
+<p class="wip"><strong>Work in progress.</strong> This specification is incomplete and changes as new experiments run. Each finding says how sure it is: <em>confirmed</em>, <em>likely</em> or <em>unknown</em>. See <a href="../spec/index.html">what each layer covers so far</a>.</p>
+<div class="layout">
+<nav class="side" aria-label="Contents"><details open><summary>Contents</summary><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="../guides/anatomy.html">Reading a Pages document</a></li><li><a href="../guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="../guides/writing.html">Writing a document</a></li><li><a href="../guides/samples.html">Sample files</a></li><li class="group">Specification</li><li class="versions"><details class="release"><summary><span class="label">App release</span><span class="value">15.4 (current)</span></summary><ul><li><a class="current" aria-current="page" href="../spec/index.html">15.4 (current)</a></li></ul></details></li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2–5. Text, styles, objects, layout</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li class="group">Evidence</li><li><a href="index.html">All experiments</a></li></ul></details></nav>
+<main>
+<h1 id="0398-header-versions-and-extra-payloads">0398: Header versions and extra payloads<a class="anchor" href="#0398-header-versions-and-extra-payloads" aria-label="Link to this section">#</a></h1>
+<p><strong>Status:</strong> run</p>
+<p>Header field 2.2 holds three packed varints, most often <code>1 0 5</code>, and Pages doesn't check it when opening (<a href="0396-writing-record-headers.html">0396</a>). A few records have more than one payload (<a href="0001-empty-document.html">0001</a>). This experiment surveys 2.2 and the extra payloads across all samples, and writes the extra payload of a chart.</p>
+<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Pages</td><td>15.4, in Norwegian</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-18</td></tr><tr><td>Input</td><td>Every sample document on this machine for the survey; <code>samples/0224/donut.pages</code> for writing: a donut chart, record 1732688 (type 5021), whose 10000.1 is 25 (donut) and which has a second payload</td></tr><tr><td>Writer</td><td>The new [<code>recipes/0398-payload.py</code>](../recipes/0398-payload.py) and [<code>recipes/0383-set-nth-path.py</code>](../recipes/0383-set-nth-path.py); exported with [<code>recipes/0372-in-app.sh</code>](../recipes/0372-in-app.sh) and drawn with [<code>recipes/0373-draw-pdf.swift</code>](../recipes/0373-draw-pdf.swift)</td></tr></tbody></table></div>
+<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section">#</a></h2>
+<pre class="lang-bash"><code>mkdir -p samples/0398
+X=recipes/0398-payload.py
+N=recipes/0383-set-nth-path.py
+F=samples/0224/donut.pages
+O=samples/0398
+cp $F $O/donut.pages
+python3 -I $X $F $O/donut-no-extra.pages 1732688 2 drop
+python3 -I $X $F $O/donut-extra-bar.pages 1732688 2 0801
+python3 -I $N $F $O/donut-main-pie.pages 1732688 10000.1 varint 5
+python3 -I $N $O/donut-no-extra.pages $O/pie-no-extra.pages 1732688 10000.1 varint 5
+for f in donut donut-no-extra donut-extra-bar donut-main-pie pie-no-extra; do
+  sh recipes/0372-in-app.sh Pages $O/$f.pages &quot;export d to POSIX file \&quot;$PWD/$O/$f.pdf\&quot; as PDF&quot;
+  swift recipes/0373-draw-pdf.swift $O/$f.pdf 166 129 263 263 14
+done</code></pre>
+<p>The chart is 263 × 263 at (166, 129).</p>
+<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section">#</a></h2>
+<p><strong>Field 2.2.</strong> Over all payloads of all samples, 2.2 depends only on the record's type:</p>
+<div class="table"><table><thead><tr><th>2.2</th><th>Payloads</th><th>Types</th></tr></thead><tbody><tr><td>1, 0, 5</td><td>610,186</td><td>most types</td></tr><tr><td>10, 1, 0</td><td>37,707</td><td>3097 (placeholders), 633 and 634 (captions and titles)</td></tr><tr><td>3, 2, 10</td><td>8,156</td><td>4008, 6005, 6001, 6316–6318 (the calculation engine and tables)</td></tr><tr><td>2, 4, 0 and 2, 0, 0</td><td>5,724 each</td><td>6247, the first and second payloads of the same records</td></tr><tr><td>11, 2, 4</td><td>488</td><td>184 and 185</td></tr><tr><td>1, 1, 0</td><td>415</td><td>10016</td></tr><tr><td>65535, 65535, 4294967295</td><td>905</td><td>type 0, the extra payloads below</td></tr></tbody></table></div>
+<p><strong>Extra payloads.</strong> Besides the type-6247 records, two kinds of record have extra payloads of type 0: Numbers' view state (type 12026, with three) and Pages' donut and radar charts (type 5021, with one). An extra payload's header has 2.2 = 65535, 65535, 4294967295, and fields not seen elsewhere: 7 (0), 8 (three varints, such as 2, 3, 4294967295 or 11, 1, 4294967295), 9 (in the charts, <code>{ 1: [10000] }</code>, a field path), 10 (10, 1, 28, in the view state) and 11 (2, 0, 25, the main payload's own 2.2). The donut's extra payload is <code>{ 1: 5 }</code>, and the radar's <code>{ 1: 2 }</code>, while their main payloads have 10000.1 = 25 (donut) and 27 (radar).</p>
+<p><strong>Writing the donut:</strong></p>
+<pre><code>donut, donut-no-extra, donut-extra-bar    donut-main-pie, pie-no-extra
+..oooo.......oooo..                       ..ooooooooooooooo..
+.ooo..........ooo..                       .oooooooooooooooo..
+.oo.............oo.                       .ooooooooooooooooo.
+ooo.............ooo                       ooooooooooooooooooo
+................ooo                       .........oooooooooo
+...............ooo.                       ....oooooooooooooo.
+..oooo.......oooo..                       ..ooooooooooooooo..</code></pre>
+<p>(Seven of the thirteen rows drawn; <code>o</code> is coloured, <code>.</code> white. The white wedge on the pie's left is its palest slice.) All three files on the left drew the same donut, including the one whose extra payload was rewritten as <code>{ 1: 1 }</code>. Writing 5 into the main payload's 10000.1 drew a pie, with or without the extra payload.</p>
+<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section">#</a></h2>
+<p>Field 2.2 is fixed for each record type, so it reads as the version of that type's layout. It rises for types that changed more often, such as the placeholders at 10, 1, 0. Pages 15.4 doesn't check it (<a href="0396-writing-record-headers.html">0396</a>).</p>
+<p>An extra payload of type 0 is ignored by Pages 15.4. The donut's main payload already holds its type, 25, and the extra one holds 5, a pie: the nearest type that existed before donuts. Its header names a place in the main payload (9, the path 10000) and versions (8 and 11). So it is most likely a fallback for older versions of the apps, which would put 5 into 10000.1 in place of a type they don't know. A reader for current documents can skip payloads of type 0 and read the first payload.</p>
+<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section">#</a></h2>
+<p><em>Confirmed</em>: 2.2 is the same for every record of a type, across all samples, and Pages 15.4 ignores a type-0 extra payload, by writing it. <em>Likely</em>: an extra payload is a fallback for older versions, placed at the path in its field 9.</p>
+<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Last built from <a href="https://github.com/alehel/iwork-format">alehel/iwork-format</a>.</p></footer>
+</main>
+
+</div>
+<script>
+// On narrow screens the contents and on-this-page lists start folded; on wide ones they stay open.
+(function () {
+  var narrow = window.matchMedia("(max-width: 48rem)");
+  var lists = document.querySelectorAll(".side > details, .toc > details");
+  function fit() { for (var i = 0; i < lists.length; i++) lists[i].open = !narrow.matches; }
+  fit();
+  if (narrow.addEventListener) narrow.addEventListener("change", fit);
+  // The release dropdown closes when you click anywhere else.
+  document.addEventListener("click", function (e) {
+    var release = document.querySelector(".side .release[open]");
+    if (release && !release.contains(e.target)) release.open = false;
+  });
+  document.addEventListener("keydown", function (e) {
+    var release = document.querySelector(".side .release[open]");
+    if (release && e.key === "Escape") { release.open = false; release.querySelector("summary").focus(); }
+  });
+  document.addEventListener("click", function (e) {
+    if (narrow.matches && e.target.closest && e.target.closest(".toc a")) fit();
+  });
+})();
+</script>
+</body>
+</html>

@@ -73,13 +73,15 @@ The header's fields:
 | 1 | Object ID, a varint. Unique across the whole document. | *Confirmed* that it's unique ([0001](../experiments/0001-empty-document.md), [0002](../experiments/0002-one-word.md)); that it identifies an object is *likely*, since other records refer to these numbers ([0002](../experiments/0002-one-word.md)). |
 | 2 | One message per payload (repeated) | *Confirmed* |
 | 2.1 | The payload's type, a varint: Pages decodes the payload by it, skips a record of a type it doesn't know, and calls the document damaged when the payload doesn't fit the type | *Confirmed* by writing it ([0396](../experiments/0396-writing-record-headers.md)) |
-| 2.2 | Three packed varints, such as `1 0 5`, most often that; records with two payloads have `2 0 0` and `2 4 0`. Probably a version, but Pages doesn't check it on opening: a higher, lower or missing value changes nothing ([0396](../experiments/0396-writing-record-headers.md)) | *Unknown* |
+| 2.2 | Three packed varints, such as `1 0 5`: the same for every record of a type, so probably the version of that type's layout (`10 1 0` for placeholders, `3 2 10` for the calculation engine). Pages doesn't check it on opening: a higher, lower or missing value changes nothing | *Likely* ([0396](../experiments/0396-writing-record-headers.md), [0398](../experiments/0398-extra-payloads.md)) |
 | 2.3 | The payload's length in bytes | *Confirmed* |
 | 2.5 | Packed varints: IDs of objects the payload refers to. Pages doesn't need them to load a document ([0396](../experiments/0396-writing-record-headers.md)) | *Likely* ([0022](../experiments/0022-header-references.md)) |
 | 2.4 | Repeated; field 4 of each entry holds more referenced IDs as packed varints, and field 1 is probably the field path that holds them | *Likely* ([0022](../experiments/0022-header-references.md)) |
 | 2.6 | Packed varints: the data IDs of the files the payload uses, once per use (an image its own file, a list style its bullet image once per level). Present only on records that use data. Pages rebuilds it on saving and doesn't need it to open | *Confirmed* against 952 documents and by writing it ([0397](../experiments/0397-the-data-references-field.md)) |
 
 Most records have one payload. In a new document, six records in `Document.iwa` have two, with the same 2.1 value and different 2.2 values. *Likely* ([0001](../experiments/0001-empty-document.md))
+
+A payload of type 0, with 2.2 = 65535, 65535, 4294967295 and header fields 7 to 11, is an extra payload that Pages 15.4 ignores: Pages' donut and radar charts carry one, and Numbers' view state three. In a chart it holds an older chart type (5, a pie, for a donut) and its field 9 names the place it belongs (10000), so it is most likely a fallback for older versions of the apps. A reader can skip type-0 payloads. *Likely* ([0398](../experiments/0398-extra-payloads.md))
 
 ## Following references
 
