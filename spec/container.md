@@ -77,7 +77,7 @@ The header's fields:
 | 2.3 | The payload's length in bytes | *Confirmed* |
 | 2.5 | Packed varints: IDs of objects the payload refers to. Pages doesn't need them to load a document ([0396](../experiments/0396-writing-record-headers.md)) | *Likely* ([0022](../experiments/0022-header-references.md)) |
 | 2.4 | Repeated; field 4 of each entry holds more referenced IDs as packed varints, and field 1 is probably the field path that holds them | *Likely* ([0022](../experiments/0022-header-references.md)) |
-| 2.6 | Present in some headers; meaning not established | *Unknown* |
+| 2.6 | Packed varints: the data IDs of the files the payload uses, once per use (an image its own file, a list style its bullet image once per level). Present only on records that use data. Pages rebuilds it on saving and doesn't need it to open | *Confirmed* against 952 documents and by writing it ([0397](../experiments/0397-the-data-references-field.md)) |
 
 Most records have one payload. In a new document, six records in `Document.iwa` have two, with the same 2.1 value and different 2.2 values. *Likely* ([0001](../experiments/0001-empty-document.md))
 

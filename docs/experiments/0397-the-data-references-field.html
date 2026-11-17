@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0397: Header field 2.6, the data a payload uses · iWork file format specification</title>
+<meta name="description" content="iWork file format specification">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
+<p class="wip"><strong>Work in progress.</strong> This specification is incomplete and changes as new experiments run. Each finding says how sure it is: <em>confirmed</em>, <em>likely</em> or <em>unknown</em>. See <a href="../spec/index.html">what each layer covers so far</a>.</p>
+<div class="layout">
+<nav class="side" aria-label="Contents"><details open><summary>Contents</summary><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="../guides/anatomy.html">Reading a Pages document</a></li><li><a href="../guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="../guides/writing.html">Writing a document</a></li><li><a href="../guides/samples.html">Sample files</a></li><li class="group">Specification</li><li class="versions"><details class="release"><summary><span class="label">App release</span><span class="value">15.4 (current)</span></summary><ul><li><a class="current" aria-current="page" href="../spec/index.html">15.4 (current)</a></li></ul></details></li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2–5. Text, styles, objects, layout</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li class="group">Evidence</li><li><a href="index.html">All experiments</a></li></ul></details></nav>
+<main>
+<h1 id="0397-header-field-26-the-data-a-payload-uses">0397: Header field 2.6, the data a payload uses<a class="anchor" href="#0397-header-field-26-the-data-a-payload-uses" aria-label="Link to this section">#</a></h1>
+<p><strong>Status:</strong> run</p>
+<p>Some record headers have a field 2.6 whose meaning wasn't known (<a href="0001-empty-document.html">0001</a>, <a href="0396-writing-record-headers.html">0396</a>). This experiment surveys where it appears, compares its values with the data IDs in <code>Metadata.iwa</code>, and writes it.</p>
+<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Pages</td><td>15.4, in Norwegian</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-18</td></tr><tr><td>Input</td><td>Every sample document on this machine for the survey; <code>samples/0023/image.pages</code> for writing: a red 8 × 4 PNG, data ID 24, in image record 1732647, whose header has 2.6 = 24</td></tr><tr><td>Writer</td><td>[<code>recipes/0396-record-header.py</code>](../recipes/0396-record-header.py); exported and saved with [<code>recipes/0372-in-app.sh</code>](../recipes/0372-in-app.sh)</td></tr></tbody></table></div>
+<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section">#</a></h2>
+<p>The survey read every payload message in every record header of the samples, and for each document the data IDs in <code>Metadata.iwa</code> record 2, field 4.1 (<a href="../spec/container.html#data-files">container.md</a>). Then:</p>
+<pre class="lang-bash"><code>mkdir -p samples/0397
+R=recipes/0396-record-header.py
+F=samples/0023/image.pages
+O=samples/0397
+cp $F $O/original.pages
+python3 -I $R $F $O/image-no-data-refs.pages 1732647 1 6 -
+python3 -I $R $F $O/image-other-data-ref.pages 1732647 1 6 8
+for f in original image-no-data-refs image-other-data-ref; do
+  sh recipes/0372-in-app.sh Pages $O/$f.pages &quot;export d to POSIX file \&quot;$PWD/$O/$f.pdf\&quot; as PDF
+save d in POSIX file \&quot;$PWD/$O/$f-saved.pages\&quot;&quot;
+  swift recipes/0384-pdf-colours.swift $O/$f.pdf 291,400
+done</code></pre>
+<p>Data ID 8 is one of the template's background images, which the document lists but doesn't store.</p>
+<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section">#</a></h2>
+<p>Field 2.6 appears in the headers of records of types 4 (a slide node), 9, 10, 26, 2023 (a list style), 3005 (an image), 3007 (a sound or movie), 10001 and 12009, as packed varints. In 952 documents, all 23,373 values are data IDs that the document lists. Examples from <code>image.pages</code>:</p>
+<div class="table"><table><thead><tr><th>Record</th><th>Type</th><th>2.6</th><th>Data</th></tr></thead><tbody><tr><td>1732647</td><td>3005, the image</td><td>24</td><td><code>red-8x4.png</code></td></tr><tr><td>1731484</td><td>2023, a list style</td><td>23, nine times</td><td><code>bullet_circle-blk-resize.pdf</code>, the bullet image, once per level</td></tr><tr><td>1731489</td><td>2023</td><td>14, twice</td><td>another bullet image</td></tr><tr><td>1731480</td><td>10001</td><td>8, 9, 9, 9, 9, 9</td><td>the template's paper textures</td></tr></tbody></table></div>
+<p>Writing it:</p>
+<div class="table"><table><thead><tr><th>File</th><th>Image's 2.6 written</th><th>Drawn</th><th>Saved copy's <code>Data/</code></th><th>Saved copy's 2.6</th></tr></thead><tbody><tr><td><code>original.pages</code></td><td>24</td><td>red</td><td><code>red-8x4-24.png</code></td><td>24</td></tr><tr><td><code>image-no-data-refs.pages</code></td><td>removed</td><td>red</td><td><code>red-8x4-24.png</code></td><td>24</td></tr><tr><td><code>image-other-data-ref.pages</code></td><td>8</td><td>red</td><td><code>red-8x4-24.png</code></td><td>24</td></tr></tbody></table></div>
+<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section">#</a></h2>
+<p>Field 2.6 lists the data files a payload uses, by data ID, once for each place in the payload that names one, much as 2.5 lists the objects it refers to. Pages doesn't rely on it: the image is drawn and kept on saving whatever 2.6 says, and on saving Pages writes 2.6 again from the payload. A reader can use it to find the files a record needs without decoding the payload, and a writer should fill it as Pages does.</p>
+<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section">#</a></h2>
+<p><em>Confirmed</em>: header field 2.6 as the data IDs the payload uses, against every sample, and that Pages rebuilds it on saving. <em>Likely</em>: Pages doesn't read it when opening.</p>
+<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Last built from <a href="https://github.com/alehel/iwork-format">alehel/iwork-format</a>.</p></footer>
+</main>
+
+</div>
+<script>
+// On narrow screens the contents and on-this-page lists start folded; on wide ones they stay open.
+(function () {
+  var narrow = window.matchMedia("(max-width: 48rem)");
+  var lists = document.querySelectorAll(".side > details, .toc > details");
+  function fit() { for (var i = 0; i < lists.length; i++) lists[i].open = !narrow.matches; }
+  fit();
+  if (narrow.addEventListener) narrow.addEventListener("change", fit);
+  // The release dropdown closes when you click anywhere else.
+  document.addEventListener("click", function (e) {
+    var release = document.querySelector(".side .release[open]");
+    if (release && !release.contains(e.target)) release.open = false;
+  });
+  document.addEventListener("keydown", function (e) {
+    var release = document.querySelector(".side .release[open]");
+    if (release && e.key === "Escape") { release.open = false; release.querySelector("summary").focus(); }
+  });
+  document.addEventListener("click", function (e) {
+    if (narrow.matches && e.target.closest && e.target.closest(".toc a")) fit();
+  });
+})();
+</script>
+</body>
+</html>
