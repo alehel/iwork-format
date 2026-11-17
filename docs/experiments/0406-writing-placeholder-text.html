@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0406: Writing placeholder text · iWork file format specification</title>
+<meta name="description" content="iWork file format specification">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
+<p class="wip"><strong>Work in progress.</strong> This specification is incomplete and changes as new experiments run. Each finding says how sure it is: <em>confirmed</em>, <em>likely</em> or <em>unknown</em>. See <a href="../spec/index.html">what each layer covers so far</a>.</p>
+<div class="layout">
+<nav class="side" aria-label="Contents"><details open><summary>Contents</summary><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="../guides/anatomy.html">Reading a Pages document</a></li><li><a href="../guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="../guides/writing.html">Writing a document</a></li><li><a href="../guides/samples.html">Sample files</a></li><li class="group">Specification</li><li class="versions"><details class="release"><summary><span class="label">App release</span><span class="value">15.4 (current)</span></summary><ul><li><a class="current" aria-current="page" href="../spec/index.html">15.4 (current)</a></li></ul></details></li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2–5. Text, styles, objects, layout</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li class="group">Evidence</li><li><a href="index.html">All experiments</a></li></ul></details></nav>
+<main>
+<h1 id="0406-writing-placeholder-text">0406: Writing placeholder text<a class="anchor" href="#0406-writing-placeholder-text" aria-label="Link to this section">#</a></h1>
+<p><strong>Status:</strong> run</p>
+<p>Placeholder text is a type-2031 smart field in run table 11, over the text of its prompt. Its field 1 holds a UUID, and field 2 is 0 for a placeholder made in the document and 1 in templates (<a href="0212-placeholder-text.html">0212</a>). Pages' AppleScript lists a document's <code>placeholder texts</code>, each with a <code>tag</code>. This experiment writes the run and the record.</p>
+<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Pages</td><td>15.4, in Norwegian</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-18</td></tr><tr><td>Input</td><td><code>samples/0212/placeholder.pages</code>: <code>One two</code> in text 1732539, with <code>two</code> a placeholder: run table 11 has an entry at 0 with no field and one at 4 naming record 1732700</td></tr><tr><td>Writer</td><td>[<code>recipes/0351-add-run.py</code>](../recipes/0351-add-run.py) for the run table, [<code>recipes/0302-set-path.py</code>](../recipes/0302-set-path.py) for the record; read back with [<code>recipes/0372-in-app.sh</code>](../recipes/0372-in-app.sh)</td></tr></tbody></table></div>
+<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section">#</a></h2>
+<pre class="lang-bash"><code>mkdir -p samples/0406
+A=recipes/0351-add-run.py
+R=recipes/0302-set-path.py
+F=samples/0212/placeholder.pages
+O=samples/0406
+cp $F $O/original.pages
+python3 -I $A $F $O/whole.pages 1732539 11 0 1732700
+python3 -I $A $F $O/first-word.pages 1732539 11 0 1732700 3 0
+python3 -I $A $F $O/none.pages 1732539 11 0 0
+python3 -I $R $F $O/field3.pages 1732700 3 string mytag
+python3 -I $R $F $O/template-kind.pages 1732700 2 varint 1
+for f in original whole first-word none field3 template-kind; do
+  sh recipes/0372-in-app.sh Pages $O/$f.pages &#x27;set out to {}
+repeat with p in placeholder texts of d
+  set end of out to {tag of p, (p as text)}
+end repeat
+return {body text of d, count of placeholder texts of d, out}&#x27;
+done</code></pre>
+<p>A style of 0 in <code>recipes/0351-add-run.py</code> writes an entry with no field 2.</p>
+<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th>File</th><th>Written</th><th>Body</th><th>Placeholders</th><th>Tag, text</th></tr></thead><tbody><tr><td><code>original.pages</code></td><td></td><td>One two</td><td>1</td><td>two, two</td></tr><tr><td><code>whole.pages</code></td><td>table 11: 0 → 1732700</td><td>One two</td><td>1</td><td>One two, One two</td></tr><tr><td><code>first-word.pages</code></td><td>0 → 1732700, 3 → none</td><td>One two</td><td>1</td><td>One, One</td></tr><tr><td><code>none.pages</code></td><td>0 → none</td><td>One two</td><td>0</td><td></td></tr><tr><td><code>field3.pages</code></td><td>2031 field 3 = <code>mytag</code></td><td>One two</td><td>1</td><td>mytag, two</td></tr><tr><td><code>template-kind.pages</code></td><td>2031 field 2 = 1</td><td>One two</td><td>1</td><td>two, two</td></tr></tbody></table></div>
+<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section">#</a></h2>
+<p>A placeholder is exactly the range its table-11 run covers: moving the run's ends moves the placeholder, and without the run there is none, while the body text stays the same. Field 3 of the type-2031 record is the placeholder's script tag, a string, which AppleScript reports as <code>tag</code>; with no field 3, the tag is the placeholder's own text. Field 2 made no difference that AppleScript shows.</p>
+<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section">#</a></h2>
+<p><em>Confirmed</em>: the table-11 run as the placeholder's range and field 3 of type 2031 as its script tag, by writing them. What field 2 changes is <em>unknown</em>.</p>
+<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Last built from <a href="https://github.com/alehel/iwork-format">alehel/iwork-format</a>.</p></footer>
+</main>
+
+</div>
+<script>
+// On narrow screens the contents and on-this-page lists start folded; on wide ones they stay open.
+(function () {
+  var narrow = window.matchMedia("(max-width: 48rem)");
+  var lists = document.querySelectorAll(".side > details, .toc > details");
+  function fit() { for (var i = 0; i < lists.length; i++) lists[i].open = !narrow.matches; }
+  fit();
+  if (narrow.addEventListener) narrow.addEventListener("change", fit);
+  // The release dropdown closes when you click anywhere else.
+  document.addEventListener("click", function (e) {
+    var release = document.querySelector(".side .release[open]");
+    if (release && !release.contains(e.target)) release.open = false;
+  });
+  document.addEventListener("keydown", function (e) {
+    var release = document.querySelector(".side .release[open]");
+    if (release && e.key === "Escape") { release.open = false; release.querySelector("summary").focus(); }
+  });
+  document.addEventListener("click", function (e) {
+    if (narrow.matches && e.target.closest && e.target.closest(".toc a")) fit();
+  });
+})();
+</script>
+</body>
+</html>
