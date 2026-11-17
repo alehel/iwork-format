@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0425: Writing the stacking order of the page · iWork file format specification</title>
+<meta name="description" content="iWork file format specification">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
+<p class="wip"><strong>Work in progress.</strong> This specification is incomplete and changes as new experiments run. Each finding says how sure it is: <em>confirmed</em>, <em>likely</em> or <em>unknown</em>. See <a href="../spec/index.html">what each layer covers so far</a>.</p>
+<div class="layout">
+<nav class="side" aria-label="Contents"><details open><summary>Contents</summary><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="../guides/anatomy.html">Reading a Pages document</a></li><li><a href="../guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="../guides/writing.html">Writing a document</a></li><li><a href="../guides/samples.html">Sample files</a></li><li class="group">Specification</li><li class="versions"><details class="release"><summary><span class="label">App release</span><span class="value">15.4 (current)</span></summary><ul><li><a class="current" aria-current="page" href="../spec/index.html">15.4 (current)</a></li></ul></details></li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2–5. Text, styles, objects, layout</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li class="group">Evidence</li><li><a href="index.html">All experiments</a></li></ul></details></nav>
+<main>
+<h1 id="0425-writing-the-stacking-order-of-the-page">0425: Writing the stacking order of the page<a class="anchor" href="#0425-writing-the-stacking-order-of-the-page" aria-label="Link to this section">#</a></h1>
+<p><strong>Status:</strong> run</p>
+<p>A type-10015 record lists what is drawn on the page in its field 1, the body's text among them; reordering a shape that didn't overlap anything changed nothing visible (<a href="0424-writing-the-page-objects-list.html">0424</a>). This experiment moves a blue square over the body's first word and puts it after and before the body in the list.</p>
+<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Pages</td><td>15.4</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-18</td></tr><tr><td>Input</td><td><code>samples/0213/plain-shape.pages</code>: the body <code>One</code> and square 1732647; record 1732364 lists the body's text, then the square</td></tr><tr><td>Writer</td><td>[<code>recipes/0302-set-path.py</code>](../recipes/0302-set-path.py) and [<code>recipes/0416-reorder.py</code>](../recipes/0416-reorder.py); exported with [<code>recipes/0372-in-app.sh</code>](../recipes/0372-in-app.sh) and drawn with [<code>recipes/0373-draw-pdf.swift</code>](../recipes/0373-draw-pdf.swift)</td></tr></tbody></table></div>
+<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section">#</a></h2>
+<pre class="lang-bash"><code>mkdir -p samples/0425
+O=samples/0425
+python3 -I recipes/0302-set-path.py samples/0213/plain-shape.pages $O/over-text.pages 1732647 \
+  1.1.1.1.1 float 40 1.1.1.1.2 float 40 1.2.1 varint 1731554
+python3 -I recipes/0416-reorder.py $O/over-text.pages $O/shape-first.pages 1732364 1 2,1
+for f in over-text shape-first; do
+  sh recipes/0372-in-app.sh Pages $O/$f.pages &quot;export d to POSIX file \&quot;$PWD/$O/$f.pdf\&quot; as PDF&quot;
+  swift recipes/0373-draw-pdf.swift $O/$f.pdf 54 56 26 12 1
+done</code></pre>
+<p>The square is moved to (40, 40), over where <code>One</code> starts (57, 58), and given the blue preset style (<code>shape-1-shapestyle</code>, <a href="0413-writing-a-shape-style-preset.html">0413</a>). PDFKit gave each file's position of <code>One</code>.</p>
+<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th>File</th><th>Field 1</th><th>Where <code>One</code> is drawn</th><th>At (54–80, 56–68)</th></tr></thead><tbody><tr><td><code>over-text.pages</code></td><td>body, square</td><td>x = 152, right of the square</td><td>blue: the square</td></tr><tr><td><code>shape-first.pages</code></td><td>square, body</td><td>x = 56, where it was</td><td>the black word over the blue square</td></tr></tbody></table></div>
+<p>The square is 100 points wide, from x = 40 to 140.</p>
+<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section">#</a></h2>
+<p>The list is the stacking order from back to front, and where the body's text stands in it matters. A shape listed after the body is in front of the text, and the text wraps around it, so <code>One</code> moved to the right of the square. A shape listed before the body is behind the text: the text is drawn over it and doesn't wrap. A reader should draw the page's objects in the list's order and wrap the body's text only around objects that come after it.</p>
+<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section">#</a></h2>
+<p><em>Confirmed</em>: type 10015's field 1 as the stacking order, back to front, with text wrapping only around objects in front of the body, by writing it.</p>
+<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Last built from <a href="https://github.com/alehel/iwork-format">alehel/iwork-format</a>.</p></footer>
+</main>
+
+</div>
+<script>
+// On narrow screens the contents and on-this-page lists start folded; on wide ones they stay open.
+(function () {
+  var narrow = window.matchMedia("(max-width: 48rem)");
+  var lists = document.querySelectorAll(".side > details, .toc > details");
+  function fit() { for (var i = 0; i < lists.length; i++) lists[i].open = !narrow.matches; }
+  fit();
+  if (narrow.addEventListener) narrow.addEventListener("change", fit);
+  // The release dropdown closes when you click anywhere else.
+  document.addEventListener("click", function (e) {
+    var release = document.querySelector(".side .release[open]");
+    if (release && !release.contains(e.target)) release.open = false;
+  });
+  document.addEventListener("keydown", function (e) {
+    var release = document.querySelector(".side .release[open]");
+    if (release && e.key === "Escape") { release.open = false; release.querySelector("summary").focus(); }
+  });
+  document.addEventListener("click", function (e) {
+    if (narrow.matches && e.target.closest && e.target.closest(".toc a")) fit();
+  });
+})();
+</script>
+</body>
+</html>
