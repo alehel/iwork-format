@@ -31,7 +31,7 @@ A pivot table is an ordinary table model whose cells hold the current summary, s
 
 ## Filters
 
-A filter doesn't change any cells. Its rule is a formula in the node form of cell formulas, comparing the tested cell with a value (`cell > 2` is a reference, the number 2 and comparison node 7), held in type-6220 records. The rows the filter hides are listed by their IDs in table model field 70.2.3, each with field 3 set to 1. *Likely* ([0258](../experiments/0258-filter.md))
+A filter doesn't change any cells. Its rule is a formula in the node form of cell formulas, comparing the tested cell with a value (`cell > 2` is a reference, the number 2 and comparison node 7), held in type-6220 records. The rows the filter hides are listed by their IDs in table model field 70.2.3, each with field 3 set to 1. *Likely* ([0258](../experiments/0258-filter.md)). But neither decides what Numbers shows: writing a new value into the rule, or clearing every hidden flag, left the same rows hidden, even after filters were turned off and on by script. Where Numbers keeps the hidden rows is *unknown* ([0383](../experiments/0383-writing-a-filter.md)).
 
 ## Conditional highlighting
 

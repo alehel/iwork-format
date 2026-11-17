@@ -5,7 +5,8 @@
 #
 # APP is Pages, Numbers or Keynote. FILE is opened through Launch Services (CONTRIBUTING.md), then
 # SCRIPT runs inside `tell application ...` with `d` set to that document, found by its file, and
-# whatever it returns is printed. Other open documents are left alone. Waits up to 30 seconds for
+# whatever it returns is printed. Other open documents are left alone. The document is closed
+# without saving, but an app may autosave a change a script makes first, so run such scripts on copies. Waits up to 30 seconds for
 # the document to open.
 set -eu
 app="$1 Creator Studio"
