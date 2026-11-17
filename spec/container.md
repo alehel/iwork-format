@@ -72,10 +72,10 @@ The header's fields:
 | --- | --- | --- |
 | 1 | Object ID, a varint. Unique across the whole document. | *Confirmed* that it's unique ([0001](../experiments/0001-empty-document.md), [0002](../experiments/0002-one-word.md)); that it identifies an object is *likely*, since other records refer to these numbers ([0002](../experiments/0002-one-word.md)). |
 | 2 | One message per payload (repeated) | *Confirmed* |
-| 2.1 | A varint that differs between records with differently shaped payloads. Probably the payload's type. | *Unknown* |
-| 2.2 | Three packed varints, such as `1 0 5`. Probably a version. | *Unknown* |
+| 2.1 | The payload's type, a varint: Pages decodes the payload by it, skips a record of a type it doesn't know, and calls the document damaged when the payload doesn't fit the type | *Confirmed* by writing it ([0396](../experiments/0396-writing-record-headers.md)) |
+| 2.2 | Three packed varints, such as `1 0 5`, most often that; records with two payloads have `2 0 0` and `2 4 0`. Probably a version, but Pages doesn't check it on opening: a higher, lower or missing value changes nothing ([0396](../experiments/0396-writing-record-headers.md)) | *Unknown* |
 | 2.3 | The payload's length in bytes | *Confirmed* |
-| 2.5 | Packed varints: IDs of objects the payload refers to | *Likely* ([0022](../experiments/0022-header-references.md)) |
+| 2.5 | Packed varints: IDs of objects the payload refers to. Pages doesn't need them to load a document ([0396](../experiments/0396-writing-record-headers.md)) | *Likely* ([0022](../experiments/0022-header-references.md)) |
 | 2.4 | Repeated; field 4 of each entry holds more referenced IDs as packed varints, and field 1 is probably the field path that holds them | *Likely* ([0022](../experiments/0022-header-references.md)) |
 | 2.6 | Present in some headers; meaning not established | *Unknown* |
 
