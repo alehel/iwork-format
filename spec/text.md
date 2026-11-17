@@ -165,7 +165,7 @@ Formatting a whole paragraph instead creates an unnamed paragraph style (type 20
 
 Several properties set on one range go into one style ([0152](../experiments/0152-size-and-colour.md)). Setting a property to the value it already has makes no style ([0153](../experiments/0153-same-size-again.md)), and styles nothing uses are dropped on save ([0154](../experiments/0154-replaced-text.md)). A template's styles are copied into the document with their own values, such as white text in the black template ([0157](../experiments/0157-black-template.md)). *Likely*
 
-Field 11 of a character style or a paragraph style holds the character properties it sets. A property that is left out is inherited, and one set to 0 is turned off. *Likely* ([0004](../experiments/0004-larger-word.md), [0007](../experiments/0007-bold-and-italic.md), [0008](../experiments/0008-runs-and-shared-styles.md))
+Field 11 of a character style or a paragraph style holds the character properties it sets. A property that is left out is inherited, and one set to 0 is turned off (*confirmed* by writing both into a character style over a paragraph style, [0392](../experiments/0392-writing-inherited-properties.md)). *Likely* ([0004](../experiments/0004-larger-word.md), [0007](../experiments/0007-bold-and-italic.md), [0008](../experiments/0008-runs-and-shared-styles.md))
 
 | Field 11.n | Property | Encoding |
 | --- | --- | --- |
