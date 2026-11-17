@@ -56,7 +56,7 @@ Other fields of the type-10012 document settings:
 | 2 | Show headers, 1 on (default) ([0238](../experiments/0238-no-header.md)); writing 0 alone turns the sidebar's checkbox off but doesn't hide headers that have text: Pages hides headers by also replacing their texts with empty ones ([0327](../experiments/0327-writing-headers-and-footers.md)) |
 | 3 | Show footers, 1 on (default) ([0239](../experiments/0239-no-footer.md)) |
 | 9 | Hyphenate the whole document, 1 on ([0236](../experiments/0236-hyphenation.md); *confirmed* by writing it, [0420](../experiments/0420-writing-hyphenation.md)) |
-| 10 | Use ligatures, 1 on (default) ([0237](../experiments/0237-document-ligatures.md)) |
+| 10 | Use ligatures, 1 on (default) ([0237](../experiments/0237-document-ligatures.md); *confirmed* by writing it, [0421](../experiments/0421-writing-document-ligatures.md)) |
 
 ## Objects in the text
 
