@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0411: Writing a category&#x27;s value and rows · iWork file format specification</title>
+<meta name="description" content="iWork file format specification">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
+<p class="wip"><strong>Work in progress.</strong> This specification is incomplete and changes as new experiments run. Each finding says how sure it is: <em>confirmed</em>, <em>likely</em> or <em>unknown</em>. See <a href="../spec/index.html">what each layer covers so far</a>.</p>
+<div class="layout">
+<nav class="side" aria-label="Contents"><details open><summary>Contents</summary><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="../guides/anatomy.html">Reading a Pages document</a></li><li><a href="../guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="../guides/writing.html">Writing a document</a></li><li><a href="../guides/samples.html">Sample files</a></li><li class="group">Specification</li><li class="versions"><details class="release"><summary><span class="label">App release</span><span class="value">15.4 (current)</span></summary><ul><li><a class="current" aria-current="page" href="../spec/index.html">15.4 (current)</a></li></ul></details></li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2–5. Text, styles, objects, layout</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li class="group">Evidence</li><li><a href="index.html">All experiments</a></li></ul></details></nav>
+<main>
+<h1 id="0411-writing-a-categorys-value-and-rows">0411: Writing a category's value and rows<a class="anchor" href="#0411-writing-a-categorys-value-and-rows" aria-label="Link to this section">#</a></h1>
+<p><strong>Status:</strong> run</p>
+<p>Grouping a table's rows by a column (a category) moves no cells: the groups are a tree of type-6383 records, each with an ID (field 1), its value as a typed cell value (field 6), its rows (field 9) and its child groups (field 10) (<a href="0226-category.html">0226</a>). This experiment writes a group's value and rows and reads the grouped table from the exported sheet.</p>
+<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Numbers</td><td>15.4, in Norwegian</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-18</td></tr><tr><td>Input</td><td><code>samples/0226/category.numbers</code>: <code>kind</code> a, b, a, b and <code>n</code> 1, 2, 3, 4 in rows 2–5, grouped by <code>kind</code>. The root group 904758 has three children: 905559 for the empty rows 5–21, 905560 for <code>a</code> with rows 1 and 3, and 905561 for <code>b</code> with rows 2 and 4. Each of the last two holds its value twice, in field 6 (6.1.5.1, beside the rows again in 6.4) and in field 7 (7.5.1)</td></tr><tr><td>Writer</td><td>[<code>recipes/0302-set-path.py</code>](../recipes/0302-set-path.py) and [<code>recipes/0383-set-nth-path.py</code>](../recipes/0383-set-nth-path.py); exported with [<code>recipes/0372-in-app.sh</code>](../recipes/0372-in-app.sh) and read with [<code>recipes/0374-pdf-text.swift</code>](../recipes/0374-pdf-text.swift)</td></tr></tbody></table></div>
+<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section">#</a></h2>
+<pre class="lang-bash"><code>mkdir -p samples/0411
+N=recipes/0383-set-nth-path.py
+F=samples/0226/category.numbers
+O=samples/0411
+cp $F $O/original.numbers
+python3 -I $N $F $O/value-z.numbers 905560 6.1.5.1 string z 7.5.1 string z
+python3 -I recipes/0302-set-path.py $F $O/value-z-6-only.numbers 905560 6.1.5.1 string z
+python3 -I $N $F $O/x.numbers 905560 9.1:1.1 varint 2 9.1:2.1 varint 4
+python3 -I $N $O/x.numbers $O/rows-swapped.numbers 905561 9.1:1.1 varint 1 9.1:2.1 varint 3
+rm $O/x.numbers
+for f in original value-z value-z-6-only rows-swapped; do
+  sh recipes/0372-in-app.sh Numbers $O/$f.numbers &quot;export d to POSIX file \&quot;$PWD/$O/$f.pdf\&quot; as PDF&quot;
+  swift recipes/0374-pdf-text.swift $O/$f.pdf
+done</code></pre>
+<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section">#</a></h2>
+<p>The table in each exported sheet, after its header row (each group's heading, then its rows):</p>
+<div class="table"><table><thead><tr><th>File</th><th>Written</th><th>Table</th></tr></thead><tbody><tr><td><code>original.pdf</code></td><td></td><td><strong>a</strong>: a 1, a 3; <strong>b</strong>: b 2, b 4; <strong>(tom)</strong></td></tr><tr><td><code>value-z.pdf</code></td><td>a's value in 6 and 7: <code>z</code></td><td><strong>z</strong>: a 1, a 3; <strong>b</strong>: b 2, b 4; <strong>(tom)</strong></td></tr><tr><td><code>value-z-6-only.pdf</code></td><td>a's value in 6 only: <code>z</code></td><td>the same as <code>original.pdf</code>, pixel for pixel</td></tr><tr><td><code>rows-swapped.pdf</code></td><td>a's rows 2 and 4, b's rows 1 and 3</td><td><strong>a</strong>: b 2, b 4; <strong>b</strong>: a 1, a 3; <strong>(tom)</strong></td></tr></tbody></table></div>
+<p><em>(tom)</em> is "(empty)", the group of rows with no value.</p>
+<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section">#</a></h2>
+<p>Numbers draws a category from its stored tree and doesn't regroup the rows by their values when it opens a document. A group's heading is the value in its field 7. Field 6, the same value with the group's rows, didn't change the heading when written alone; it is probably the grouping key. The rows under a group are those in its field 9, whatever their cells hold: written so, group <code>a</code> showed the rows whose kind is <code>b</code>. A reader can show a category from the tree as stored.</p>
+<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section">#</a></h2>
+<p><em>Confirmed</em>: a group's heading as its field 7 and its rows as field 9, and that Numbers doesn't regroup on opening, by writing them. What Numbers uses field 6 for is <em>unknown</em>.</p>
+<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Last built from <a href="https://github.com/alehel/iwork-format">alehel/iwork-format</a>.</p></footer>
+</main>
+
+</div>
+<script>
+// On narrow screens the contents and on-this-page lists start folded; on wide ones they stay open.
+(function () {
+  var narrow = window.matchMedia("(max-width: 48rem)");
+  var lists = document.querySelectorAll(".side > details, .toc > details");
+  function fit() { for (var i = 0; i < lists.length; i++) lists[i].open = !narrow.matches; }
+  fit();
+  if (narrow.addEventListener) narrow.addEventListener("change", fit);
+  // The release dropdown closes when you click anywhere else.
+  document.addEventListener("click", function (e) {
+    var release = document.querySelector(".side .release[open]");
+    if (release && !release.contains(e.target)) release.open = false;
+  });
+  document.addEventListener("keydown", function (e) {
+    var release = document.querySelector(".side .release[open]");
+    if (release && e.key === "Escape") { release.open = false; release.querySelector("summary").focus(); }
+  });
+  document.addEventListener("click", function (e) {
+    if (narrow.matches && e.target.closest && e.target.closest(".toc a")) fit();
+  });
+})();
+</script>
+</body>
+</html>

@@ -23,7 +23,7 @@ A new spreadsheet has the seven `.iwa` parts that Pages documents have, without 
 
 ## Categories
 
-Grouping rows by a column's values (Organise → Add Category) moves no cells. The groups are a tree of type-6383 records in `CalculationEngine.iwa`: each group has a 128-bit ID (field 1), its value as a typed cell value (field 6), its rows (field 9, single row numbers `{ 1: n }` or ranges `{ 1: first, 2: last }`) and its child groups (field 10). Table model field 81.2.6 becomes 1. The summary rows Numbers shows aren't stored. *Likely* ([0226](../experiments/0226-category.md))
+Grouping rows by a column's values (Organise → Add Category) moves no cells. The groups are a tree of type-6383 records in `CalculationEngine.iwa`: each group has a 128-bit ID (field 1), its value as a typed cell value (field 6), its rows (field 9, single row numbers `{ 1: n }` or ranges `{ 1: first, 2: last }`) and its child groups (field 10). Table model field 81.2.6 becomes 1. The summary rows Numbers shows aren't stored. *Likely* ([0226](../experiments/0226-category.md)). Numbers draws the groups from the tree as stored, without regrouping on opening: a group's heading is the value in its field 7 (the same value is in field 6, with the rows again, which alone doesn't change the heading), and its rows are those in field 9, *confirmed* by writing them ([0411](../experiments/0411-writing-categories.md)).
 
 ## Pivot tables
 
