@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0403: Writing a line&#x27;s rotation and width · iWork file format specification</title>
+<meta name="description" content="iWork file format specification">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
+<p class="wip"><strong>Work in progress.</strong> This specification is incomplete and changes as new experiments run. Each finding says how sure it is: <em>confirmed</em>, <em>likely</em> or <em>unknown</em>. See <a href="../spec/index.html">what each layer covers so far</a>.</p>
+<div class="layout">
+<nav class="side" aria-label="Contents"><details open><summary>Contents</summary><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="../guides/anatomy.html">Reading a Pages document</a></li><li><a href="../guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="../guides/writing.html">Writing a document</a></li><li><a href="../guides/samples.html">Sample files</a></li><li class="group">Specification</li><li class="versions"><details class="release"><summary><span class="label">App release</span><span class="value">15.4 (current)</span></summary><ul><li><a class="current" aria-current="page" href="../spec/index.html">15.4 (current)</a></li></ul></details></li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2–5. Text, styles, objects, layout</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li class="group">Evidence</li><li><a href="index.html">All experiments</a></li></ul></details></nav>
+<main>
+<h1 id="0403-writing-a-lines-rotation-and-width">0403: Writing a line's rotation and width<a class="anchor" href="#0403-writing-a-lines-rotation-and-width" aria-label="Link to this section">#</a></h1>
+<p><strong>Status:</strong> run</p>
+<p>A line is a shape (type 2011) whose box has zero height and is rotated: a line from (100, 100) to (300, 200) is a box at (88.2, 150), 223.6 wide, rotated 333.43° (<a href="0051-line.html">0051</a>). Pages' AppleScript gives a line's <code>start point</code> and <code>end point</code>. This experiment writes the rotation and the width.</p>
+<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Pages</td><td>15.4</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-18</td></tr><tr><td>Input</td><td><code>samples/0051/line.pages</code>: line 1732647, from (100, 100) to (300, 200)</td></tr><tr><td>Writer</td><td>[<code>recipes/0302-set-path.py</code>](../recipes/0302-set-path.py); read back with [<code>recipes/0372-in-app.sh</code>](../recipes/0372-in-app.sh)</td></tr></tbody></table></div>
+<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section">#</a></h2>
+<pre class="lang-bash"><code>mkdir -p samples/0403
+R=recipes/0302-set-path.py
+F=samples/0051/line.pages
+O=samples/0403
+cp $F $O/original.pages
+for r in 0 90 180; do python3 -I $R $F $O/rot-$r.pages 1732647 1.1.1.4 float $r; done
+python3 -I $R $F $O/width-100.pages 1732647 1.1.1.2.1 float 100
+for f in original rot-0 rot-90 rot-180 width-100; do
+  sh recipes/0372-in-app.sh Pages $O/$f.pages &#x27;set l to line 1 of d
+return {start point of l, end point of l, rotation of l, width of l, position of l}&#x27;
+done</code></pre>
+<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th>File</th><th>Written</th><th>Start</th><th>End</th><th><code>rotation</code></th><th><code>width</code></th></tr></thead><tbody><tr><td><code>original.pages</code></td><td></td><td>100, 100</td><td>300, 200</td><td>333</td><td>224</td></tr><tr><td><code>rot-0.pages</code></td><td>1.1.4 = 0</td><td>88, 150</td><td>312, 150</td><td>0</td><td>224</td></tr><tr><td><code>rot-90.pages</code></td><td>1.1.4 = 90</td><td>200, 262</td><td>200, 38</td><td>90</td><td>224</td></tr><tr><td><code>rot-180.pages</code></td><td>1.1.4 = 180</td><td>312, 150</td><td>88, 150</td><td>180</td><td>224</td></tr><tr><td><code>width-100.pages</code></td><td>1.1.2 width = 100</td><td>93, 128</td><td>293, 228</td><td>333</td><td>224</td></tr></tbody></table></div>
+<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section">#</a></h2>
+<p>A line runs through the middle of its box, from the box's left end to its right end, turned about the box's centre (200, 150) by the rotation, counter-clockwise on the page: at 0° it runs left to right, at 90° from bottom to top, and at 180° right to left. So a reader finds the ends by rotating (±width/2, 0) about the centre.</p>
+<p>The width alone doesn't set a line's length: written as 100, the line kept its length of 224 and moved. Pages takes the length from the line's path (field 1.3), as it takes a mask's size from its path (<a href="0390-writing-an-image-mask.html">0390</a>). A writer changing a line's length must change its path too.</p>
+<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section">#</a></h2>
+<p><em>Confirmed</em>: a line as its box's horizontal middle turned by the rotation, by writing the rotation. <em>Likely</em>: a line's length comes from its path, not its width.</p>
+<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Last built from <a href="https://github.com/alehel/iwork-format">alehel/iwork-format</a>.</p></footer>
+</main>
+
+</div>
+<script>
+// On narrow screens the contents and on-this-page lists start folded; on wide ones they stay open.
+(function () {
+  var narrow = window.matchMedia("(max-width: 48rem)");
+  var lists = document.querySelectorAll(".side > details, .toc > details");
+  function fit() { for (var i = 0; i < lists.length; i++) lists[i].open = !narrow.matches; }
+  fit();
+  if (narrow.addEventListener) narrow.addEventListener("change", fit);
+  // The release dropdown closes when you click anywhere else.
+  document.addEventListener("click", function (e) {
+    var release = document.querySelector(".side .release[open]");
+    if (release && !release.contains(e.target)) release.open = false;
+  });
+  document.addEventListener("keydown", function (e) {
+    var release = document.querySelector(".side .release[open]");
+    if (release && e.key === "Escape") { release.open = false; release.querySelector("summary").focus(); }
+  });
+  document.addEventListener("click", function (e) {
+    if (narrow.matches && e.target.closest && e.target.closest(".toc a")) fit();
+  });
+})();
+</script>
+</body>
+</html>
