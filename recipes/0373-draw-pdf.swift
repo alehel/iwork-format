@@ -3,8 +3,8 @@
 // Usage: swift recipes/0373-draw-pdf.swift FILE.pdf X Y WIDTH HEIGHT [STEP]
 //
 // X, Y, WIDTH and HEIGHT are a box in points from the page's top-left corner. Every STEP points
-// (default 5) across and down, prints `#` where the page is dark (brightness below 0.5) and `.`
-// elsewhere. Only macOS's own frameworks are used.
+// (default 5) across and down, prints `#` where the page is dark (brightness below 0.5), `o` where
+// it is coloured (saturation above 0.4) and `.` elsewhere. Only macOS's own frameworks are used.
 import AppKit
 import Foundation
 
@@ -32,7 +32,9 @@ while y < y0 + h {
     var x = x0 + step / 2
     while x < x0 + w {
         let c = rep.colorAt(x: Int(x * scale), y: Int(y * scale))?.usingColorSpace(.deviceRGB)
-        line += (c?.brightnessComponent ?? 1) < 0.5 ? "#" : "."
+        if (c?.brightnessComponent ?? 1) < 0.5 { line += "#" }
+        else if (c?.saturationComponent ?? 0) > 0.4 { line += "o" }
+        else { line += "." }
         x += step
     }
     print(line)
