@@ -27,7 +27,7 @@ Grouping rows by a column's values (Organise → Add Category) moves no cells. T
 
 ## Pivot tables
 
-A pivot table is an ordinary table model whose cells hold the current summary, so it reads like any table. Numbers also adds a hidden table model with a copy of the source data, named after the source with ` as Pivot Source Table`, and new record types (6369, 6370, 6374, 6382). Type 6370 names the source table in field 12 and holds the last update time in field 9. Its field 3 lists the row fields and field 5 the value fields, each with a summary function code in 5.1.3 (2 sum, 18 average), its own list rather than formula function numbers ([0279](../experiments/0279-pivot-average.md)). *Likely* ([0227](../experiments/0227-pivot-table.md))
+A pivot table is an ordinary table model whose cells hold the current summary, so it reads like any table: Numbers shows those cells as stored, and doesn't recompute them on opening or when the source changes, only when refreshed (*confirmed* by writing its summary function, [0410](../experiments/0410-writing-a-pivot-summary.md)). Numbers also adds a hidden table model with a copy of the source data, named after the source with ` as Pivot Source Table`, and new record types (6369, 6370, 6374, 6382). Type 6370 names the source table in field 12 and holds the last update time in field 9. Its field 3 lists the row fields and field 5 the value fields, each with a summary function code in 5.1.3 (2 sum, 18 average), its own list rather than formula function numbers ([0279](../experiments/0279-pivot-average.md)). *Likely* ([0227](../experiments/0227-pivot-table.md))
 
 ## Filters
 
