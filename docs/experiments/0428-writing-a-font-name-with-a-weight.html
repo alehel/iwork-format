@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0428: Writing a font name with a weight · iWork file format specification</title>
+<meta name="description" content="iWork file format specification">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
+<p class="wip"><strong>Work in progress.</strong> This specification is incomplete and changes as new experiments run. Each finding says how sure it is: <em>confirmed</em>, <em>likely</em> or <em>unknown</em>. See <a href="../spec/index.html">what each layer covers so far</a>.</p>
+<div class="layout">
+<nav class="side" aria-label="Contents"><details open><summary>Contents</summary><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="../guides/anatomy.html">Reading a Pages document</a></li><li><a href="../guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="../guides/writing.html">Writing a document</a></li><li><a href="../guides/samples.html">Sample files</a></li><li class="group">Specification</li><li class="versions"><details class="release"><summary><span class="label">App release</span><span class="value">15.4 (current)</span></summary><ul><li><a class="current" aria-current="page" href="../spec/index.html">15.4 (current)</a></li></ul></details></li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2–5. Text, styles, objects, layout</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li class="group">Evidence</li><li><a href="index.html">All experiments</a></li></ul></details></nav>
+<main>
+<h1 id="0428-writing-a-font-name-with-a-weight">0428: Writing a font name with a weight<a class="anchor" href="#0428-writing-a-font-name-with-a-weight" aria-label="Link to this section">#</a></h1>
+<p><strong>Status:</strong> run</p>
+<p>A style's font is in 11.5, and its bold and italic in 11.1 and 11.2. A font name may already include a weight, such as <code>HelveticaNeue-Bold</code>, which Pages wrote in some styles (<a href="../spec/text.html#styles">text.md</a>). This experiment writes font names with weights into the body's style, with and without the bold flag.</p>
+<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Pages</td><td>15.4, in Norwegian</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-18</td></tr><tr><td>Input</td><td><code>samples/0002/hello.pages</code>: the body <code>hello</code> in <em>Brødtekst</em> (1731511), which sets 11.5 = <code>HelveticaNeue</code> and 11.1 = 0</td></tr><tr><td>Writer</td><td>[<code>recipes/0302-set-path.py</code>](../recipes/0302-set-path.py); read back with [<code>recipes/0372-in-app.sh</code>](../recipes/0372-in-app.sh) and compared with [<code>recipes/0399-pdf-diff.swift</code>](../recipes/0399-pdf-diff.swift)</td></tr></tbody></table></div>
+<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section">#</a></h2>
+<pre class="lang-bash"><code>mkdir -p samples/0428
+R=recipes/0302-set-path.py
+F=samples/0002/hello.pages
+O=samples/0428
+cp $F $O/original.pages
+python3 -I $R $F $O/font-bold-name.pages 1731511 11.5 string HelveticaNeue-Bold
+python3 -I $R $F $O/font-bold-name-and-flag.pages 1731511 11.5 string HelveticaNeue-Bold 11.1 varint 1
+python3 -I $R $F $O/font-light-name-and-flag.pages 1731511 11.5 string HelveticaNeue-Light 11.1 varint 1
+python3 -I $R $F $O/font-italic-name.pages 1731511 11.5 string HelveticaNeue-Italic
+for f in original font-bold-name font-bold-name-and-flag font-light-name-and-flag font-italic-name; do
+  sh recipes/0372-in-app.sh Pages $O/$f.pages &quot;export d to POSIX file \&quot;$PWD/$O/$f.pdf\&quot; as PDF
+return font of word 1 of body text of d&quot;
+done
+swift recipes/0399-pdf-diff.swift $O/font-bold-name.pdf $O/font-bold-name-and-flag.pdf</code></pre>
+<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th>File</th><th>11.5</th><th>11.1</th><th>Font of <code>hello</code></th></tr></thead><tbody><tr><td><code>original.pages</code></td><td>HelveticaNeue</td><td>0</td><td>HelveticaNeue</td></tr><tr><td><code>font-bold-name.pages</code></td><td>HelveticaNeue-Bold</td><td>0</td><td>HelveticaNeue</td></tr><tr><td><code>font-bold-name-and-flag.pages</code></td><td>HelveticaNeue-Bold</td><td>1</td><td>HelveticaNeue-Bold</td></tr><tr><td><code>font-light-name-and-flag.pages</code></td><td>HelveticaNeue-Light</td><td>1</td><td>HelveticaNeue-Bold</td></tr><tr><td><code>font-italic-name.pages</code></td><td>HelveticaNeue-Italic</td><td>0</td><td>HelveticaNeue</td></tr></tbody></table></div>
+<p><code>font-bold-name.pdf</code> and <code>font-bold-name-and-flag.pdf</code> differ in the word's 562 pixels: the first is drawn regular.</p>
+<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section">#</a></h2>
+<p>Pages takes the font's family from 11.5 and its weight and slant from the bold and italic flags, not from the name. A name with a weight or slant in it is drawn without that weight when the style's flag is 0, and a light face with bold set is drawn in the family's bold. So a reader should reduce the name in 11.5 to its family and apply 11.1 and 11.2, as the rule for combining styles already does with the flags. In the styles Pages writes, a name with <code>-Bold</code> comes with bold set, so either reading gives the same result there.</p>
+<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section">#</a></h2>
+<p><em>Confirmed</em>: the bold and italic flags decide the face, over a weight or slant in the font's name, by writing them.</p>
+<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Last built from <a href="https://github.com/alehel/iwork-format">alehel/iwork-format</a>.</p></footer>
+</main>
+
+</div>
+<script>
+// On narrow screens the contents and on-this-page lists start folded; on wide ones they stay open.
+(function () {
+  var narrow = window.matchMedia("(max-width: 48rem)");
+  var lists = document.querySelectorAll(".side > details, .toc > details");
+  function fit() { for (var i = 0; i < lists.length; i++) lists[i].open = !narrow.matches; }
+  fit();
+  if (narrow.addEventListener) narrow.addEventListener("change", fit);
+  // The release dropdown closes when you click anywhere else.
+  document.addEventListener("click", function (e) {
+    var release = document.querySelector(".side .release[open]");
+    if (release && !release.contains(e.target)) release.open = false;
+  });
+  document.addEventListener("keydown", function (e) {
+    var release = document.querySelector(".side .release[open]");
+    if (release && e.key === "Escape") { release.open = false; release.querySelector("summary").focus(); }
+  });
+  document.addEventListener("click", function (e) {
+    if (narrow.matches && e.target.closest && e.target.closest(".toc a")) fit();
+  });
+})();
+</script>
+</body>
+</html>
