@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0429: Writing breaks in a Keynote title · iWork file format specification</title>
+<meta name="description" content="iWork file format specification">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
+<p class="wip"><strong>Work in progress.</strong> This specification is incomplete and changes as new experiments run. Each finding says how sure it is: <em>confirmed</em>, <em>likely</em> or <em>unknown</em>. See <a href="../spec/index.html">what each layer covers so far</a>.</p>
+<div class="layout">
+<nav class="side" aria-label="Contents"><details open><summary>Contents</summary><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="../guides/anatomy.html">Reading a Pages document</a></li><li><a href="../guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="../guides/writing.html">Writing a document</a></li><li><a href="../guides/samples.html">Sample files</a></li><li class="group">Specification</li><li class="versions"><details class="release"><summary><span class="label">App release</span><span class="value">15.4 (current)</span></summary><ul><li><a class="current" aria-current="page" href="../spec/index.html">15.4 (current)</a></li></ul></details></li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2–5. Text, styles, objects, layout</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li class="group">Evidence</li><li><a href="index.html">All experiments</a></li></ul></details></nav>
+<main>
+<h1 id="0429-writing-breaks-in-a-keynote-title">0429: Writing breaks in a Keynote title<a class="anchor" href="#0429-writing-breaks-in-a-keynote-title" aria-label="Link to this section">#</a></h1>
+<p><strong>Status:</strong> run</p>
+<p>Line feeds in Keynote titles and presenter notes are paragraph breaks (<a href="0163-multi-paragraph-notes.html">0163</a>, <a href="0164-two-line-title.html">0164</a>). In Pages, a paragraph can end in a line feed or a carriage return, and U+2028 is a line break within a paragraph (<a href="0005-paragraphs.html">0005</a>, <a href="0360-writing-line-and-column-breaks.html">0360</a>). This experiment writes each into a slide's title.</p>
+<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Keynote</td><td>15.4, in Norwegian</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-18</td></tr><tr><td>Input</td><td><code>samples/theme/0025/hello.key</code>: one slide titled <code>hello</code>, in text record 2655470, whose run table 5 has one entry, at 0, naming paragraph style 2651125</td></tr><tr><td>Writer</td><td>[<code>recipes/0302-set-path.py</code>](../recipes/0302-set-path.py) for the text and [<code>recipes/0351-add-run.py</code>](../recipes/0351-add-run.py) for the paragraph runs; exported with [<code>recipes/0372-in-app.sh</code>](../recipes/0372-in-app.sh) and measured with [<code>recipes/0319-measure-pdf.swift</code>](../recipes/0319-measure-pdf.swift)</td></tr></tbody></table></div>
+<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section">#</a></h2>
+<pre class="lang-bash"><code>mkdir -p samples/0429
+R=recipes/0302-set-path.py
+A=recipes/0351-add-run.py
+F=samples/theme/0025/hello.key
+O=samples/0429
+cp $F $O/original.key
+python3 -I $R $F $O/x.key 2655470 3 string &quot;$(printf &#x27;hello\nworld&#x27;)&quot;
+python3 -I $A $O/x.key $O/lf.key 2655470 5 0 2651125 6 2651125
+python3 -I $R $F $O/x.key 2655470 3 string &quot;$(printf &#x27;hello\rworld&#x27;)&quot;
+python3 -I $A $O/x.key $O/cr.key 2655470 5 0 2651125 6 2651125
+python3 -I $R $F $O/x.key 2655470 3 string &quot;$(printf &#x27;hello\xe2\x80\xa8world&#x27;)&quot;
+python3 -I $A $O/x.key $O/line-sep.key 2655470 5 0 2651125
+rm $O/x.key
+for f in original lf cr line-sep; do
+  sh recipes/0372-in-app.sh Keynote $O/$f.key &quot;export d to POSIX file \&quot;$PWD/$O/$f.pdf\&quot; as PDF
+set t to object text of default title item of slide 1 of d
+return {count of paragraphs of t, count of words of t}&quot;
+  swift recipes/0319-measure-pdf.swift $O/$f.pdf
+done</code></pre>
+<p>Each new paragraph is given its own entry in run table 5, since a table with fewer entries than paragraphs isn't used (<a href="0427-writing-paragraph-runs-without-a-style.html">0427</a>).</p>
+<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th>File</th><th>Between the words</th><th>Paragraphs</th><th>Words</th><th>Lines drawn</th></tr></thead><tbody><tr><td><code>original.key</code></td><td></td><td>1</td><td>1</td><td>1</td></tr><tr><td><code>lf.key</code></td><td>U+000A</td><td>2</td><td>2</td><td>2</td></tr><tr><td><code>cr.key</code></td><td>U+000D</td><td>2</td><td>2</td><td>2</td></tr><tr><td><code>line-sep.key</code></td><td>U+2028</td><td>1</td><td>2</td><td>2</td></tr></tbody></table></div>
+<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section">#</a></h2>
+<p>Keynote's text breaks work as in Pages: a line feed or a carriage return ends a paragraph, and U+2028 starts a new line within the same paragraph. A reader can split Keynote text into paragraphs and lines by the same rules as Pages text.</p>
+<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section">#</a></h2>
+<p><em>Confirmed</em>: line feeds and carriage returns as paragraph breaks and U+2028 as a line break in Keynote text, by writing them.</p>
+<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Last built from <a href="https://github.com/alehel/iwork-format">alehel/iwork-format</a>.</p></footer>
+</main>
+
+</div>
+<script>
+// On narrow screens the contents and on-this-page lists start folded; on wide ones they stay open.
+(function () {
+  var narrow = window.matchMedia("(max-width: 48rem)");
+  var lists = document.querySelectorAll(".side > details, .toc > details");
+  function fit() { for (var i = 0; i < lists.length; i++) lists[i].open = !narrow.matches; }
+  fit();
+  if (narrow.addEventListener) narrow.addEventListener("change", fit);
+  // The release dropdown closes when you click anywhere else.
+  document.addEventListener("click", function (e) {
+    var release = document.querySelector(".side .release[open]");
+    if (release && !release.contains(e.target)) release.open = false;
+  });
+  document.addEventListener("keydown", function (e) {
+    var release = document.querySelector(".side .release[open]");
+    if (release && e.key === "Escape") { release.open = false; release.querySelector("summary").focus(); }
+  });
+  document.addEventListener("click", function (e) {
+    if (narrow.matches && e.target.closest && e.target.closest(".toc a")) fit();
+  });
+})();
+</script>
+</body>
+</html>
