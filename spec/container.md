@@ -14,7 +14,7 @@ Part names aren't fixed: after a document is saved again, a part can be renamed 
 
 The names come from a list of components in `Metadata.iwa` record 2, its repeated field 3: field 1 is the ID of the part's first record, field 2 the component's name, and field 3, only when it differs, the name it is stored under. A part is `Index/` plus field 3 (or field 2) plus `.iwa`. Any name works if the list says so, and a part renamed without its entry makes the document damaged, so a writer that renames or adds a part must update the list. *Confirmed* ([0394](../experiments/0394-renaming-a-part.md))
 
-Its entries are stored without ZIP compression. *Confirmed* ([0001](../experiments/0001-empty-document.md), [0002](../experiments/0002-one-word.md))
+Its entries are stored without ZIP compression. *Confirmed* ([0001](../experiments/0001-empty-document.md), [0002](../experiments/0002-one-word.md)). Pages also opens a document whose entries are Deflate-compressed, so a reader must handle both methods and a writer may compress (*confirmed* by writing them, [0432](../experiments/0432-writing-compressed-zip-entries.md)).
 
 A new document holds these 13 parts. *Confirmed* ([0001](../experiments/0001-empty-document.md), [0002](../experiments/0002-one-word.md))
 
