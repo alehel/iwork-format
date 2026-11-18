@@ -32,7 +32,7 @@ for f in plain build stage-twice no-stages no-builds; do
 done
 ```
 
-Each image was compared with `plain.key`'s, every second pixel, counting pixels that differ.
+Each image was compared with `plain.key`'s with [`recipes/0449-image-diff.swift`](../recipes/0449-image-diff.swift), added in the next experiment, which counts differing pixels over every second pixel.
 
 ## Observation
 

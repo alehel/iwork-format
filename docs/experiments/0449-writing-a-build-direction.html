@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0449: Writing a build&#x27;s direction · iWork file format specification</title>
+<meta name="description" content="iWork file format specification">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
+<p class="wip"><strong>Work in progress.</strong> This specification is incomplete and changes as new experiments run. Each finding says how sure it is: <em>confirmed</em>, <em>likely</em> or <em>unknown</em>. See <a href="../spec/index.html">what each layer covers so far</a>.</p>
+<div class="layout">
+<nav class="side" aria-label="Contents"><details open><summary>Contents</summary><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="../guides/anatomy.html">Reading a Pages document</a></li><li><a href="../guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="../guides/writing.html">Writing a document</a></li><li><a href="../guides/samples.html">Sample files</a></li><li class="group">Specification</li><li class="versions"><details class="release"><summary><span class="label">App release</span><span class="value">15.4 (current)</span></summary><ul><li><a class="current" aria-current="page" href="../spec/index.html">15.4 (current)</a></li></ul></details></li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2–5. Text, styles, objects, layout</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li class="group">Evidence</li><li><a href="index.html">All experiments</a></li></ul></details></nav>
+<main>
+<h1 id="0449-writing-a-builds-direction">0449: Writing a build's direction<a class="anchor" href="#0449-writing-a-builds-direction" aria-label="Link to this section">#</a></h1>
+<p><strong>Status:</strong> run</p>
+<p>A build's effect is in its field 4.18, with <code>In</code>, <code>Out</code> or <code>Action</code> in 4.18.1 for a build-in, build-out or action (<a href="0263-build-out.html">0263</a>, <a href="0264-action-build.html">0264</a>). This experiment turns a build-in into a build-out by writing that text, and compares the exported stages with the slide without a build.</p>
+<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Keynote</td><td>15.4, in Norwegian</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-18</td></tr><tr><td>Input</td><td><code>samples/theme/0257/build.key</code>: a slide whose title builds in, build 2655727 with 4.18.1 = <code>In</code> and the effect <code>apple:dissolve character</code>. <code>samples/theme/0257/plain.key</code>: the same slide without a build</td></tr><tr><td>Writer</td><td>[<code>recipes/0302-set-path.py</code>](../recipes/0302-set-path.py); exported with [<code>recipes/0372-in-app.sh</code>](../recipes/0372-in-app.sh) and compared with the new [<code>recipes/0449-image-diff.swift</code>](../recipes/0449-image-diff.swift)</td></tr></tbody></table></div>
+<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section">#</a></h2>
+<pre class="lang-bash"><code>mkdir -p samples/0449
+O=samples/0449
+cp samples/theme/0257/plain.key $O/plain.key
+python3 -I recipes/0302-set-path.py samples/theme/0257/build.key $O/out.key 2655727 4.18.1 string Out
+for f in plain out; do
+  mkdir -p $O/img-$f
+  sh recipes/0372-in-app.sh Keynote $O/$f.key \
+    &quot;export d to POSIX file \&quot;$PWD/$O/img-$f\&quot; as slide images with properties {image format:PNG, all stages:true}&quot;
+done
+swift recipes/0449-image-diff.swift $O/img-plain/*.png $O/img-out/*.png</code></pre>
+<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th>Images</th><th>Compared with the plain slide</th></tr></thead><tbody><tr><td><code>img-out.001.png</code></td><td>the same: the title is shown</td></tr><tr><td><code>img-out.002.png</code></td><td>2,253 sampled pixels differ: the title is gone</td></tr></tbody></table></div>
+<p>As a build-in (<a href="0448-writing-a-build-s-stages.html">0448</a>), the same build gave the opposite: no title in the first image, the title in the second.</p>
+<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section">#</a></h2>
+<p>Field 4.18.1 decides the build's direction: written <code>Out</code>, the title is on the slide at first and the build takes it away, where <code>In</code> brings it on. The effect, its identifier in 4.18.2, stays the same, so the same dissolve plays either way. A reader showing a slide's starting or final state must apply builds by their direction.</p>
+<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section">#</a></h2>
+<p><em>Confirmed</em>: field 4.18.1 as the build's direction, by writing <code>Out</code> into a build-in.</p>
+<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Last built from <a href="https://github.com/alehel/iwork-format">alehel/iwork-format</a>.</p></footer>
+</main>
+
+</div>
+<script>
+// On narrow screens the contents and on-this-page lists start folded; on wide ones they stay open.
+(function () {
+  var narrow = window.matchMedia("(max-width: 48rem)");
+  var lists = document.querySelectorAll(".side > details, .toc > details");
+  function fit() { for (var i = 0; i < lists.length; i++) lists[i].open = !narrow.matches; }
+  fit();
+  if (narrow.addEventListener) narrow.addEventListener("change", fit);
+  // The release dropdown closes when you click anywhere else.
+  document.addEventListener("click", function (e) {
+    var release = document.querySelector(".side .release[open]");
+    if (release && !release.contains(e.target)) release.open = false;
+  });
+  document.addEventListener("keydown", function (e) {
+    var release = document.querySelector(".side .release[open]");
+    if (release && e.key === "Escape") { release.open = false; release.querySelector("summary").focus(); }
+  });
+  document.addEventListener("click", function (e) {
+    if (narrow.matches && e.target.closest && e.target.closest(".toc a")) fit();
+  });
+})();
+</script>
+</body>
+</html>

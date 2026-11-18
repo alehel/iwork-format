@@ -32,7 +32,7 @@ for f in plain build stage-twice no-stages no-builds; do
   sh recipes/0372-in-app.sh Keynote $O/$f.key \
     &quot;export d to POSIX file \&quot;$PWD/$O/img-$f\&quot; as slide images with properties {image format:PNG, all stages:true}&quot;
 done</code></pre>
-<p>Each image was compared with <code>plain.key</code>'s, every second pixel, counting pixels that differ.</p>
+<p>Each image was compared with <code>plain.key</code>'s with [<code>recipes/0449-image-diff.swift</code>](../recipes/0449-image-diff.swift), added in the next experiment, which counts differing pixels over every second pixel.</p>
 <h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section">#</a></h2>
 <div class="table"><table><thead><tr><th>File</th><th>Written</th><th>Images</th><th>Image 1</th><th>Image 2</th></tr></thead><tbody><tr><td><code>plain.key</code></td><td>(no build)</td><td>1</td><td></td><td></td></tr><tr><td><code>build.key</code></td><td>(as made)</td><td>2</td><td>2,253 sampled pixels differ: no title</td><td>same as plain</td></tr><tr><td><code>stage-twice.key</code></td><td>2655732 twice in field 43</td><td>2</td><td>as <code>build.key</code></td><td>same as plain</td></tr><tr><td><code>no-stages.key</code></td><td>field 43 removed</td><td>1</td><td>same as plain</td><td></td></tr><tr><td><code>no-builds.key</code></td><td>field 2 removed</td><td>1</td><td>same as plain</td><td></td></tr></tbody></table></div>
 <h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section">#</a></h2>
