@@ -25,7 +25,9 @@ on run argv
     repeat 60 times
       repeat with x in documents
         try
-          if POSIX path of (file of x as alias) is target then set d to contents of x
+          set p to POSIX path of (file of x as alias)
+          if p ends with "/" then set p to text 1 thru -2 of p
+          if p is target then set d to contents of x
         end try
       end repeat
       if d is not missing value then exit repeat

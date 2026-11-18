@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0438: Writing a document as a package · iWork file format specification</title>
+<meta name="description" content="iWork file format specification">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
+<p class="wip"><strong>Work in progress.</strong> This specification is incomplete and changes as new experiments run. Each finding says how sure it is: <em>confirmed</em>, <em>likely</em> or <em>unknown</em>. See <a href="../spec/index.html">what each layer covers so far</a>.</p>
+<div class="layout">
+<nav class="side" aria-label="Contents"><details open><summary>Contents</summary><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="../guides/anatomy.html">Reading a Pages document</a></li><li><a href="../guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="../guides/writing.html">Writing a document</a></li><li><a href="../guides/samples.html">Sample files</a></li><li class="group">Specification</li><li class="versions"><details class="release"><summary><span class="label">App release</span><span class="value">15.4 (current)</span></summary><ul><li><a class="current" aria-current="page" href="../spec/index.html">15.4 (current)</a></li></ul></details></li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2–5. Text, styles, objects, layout</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li class="group">Evidence</li><li><a href="index.html">All experiments</a></li></ul></details></nav>
+<main>
+<h1 id="0438-writing-a-document-as-a-package">0438: Writing a document as a package<a class="anchor" href="#0438-writing-a-document-as-a-package" aria-label="Link to this section">#</a></h1>
+<p><strong>Status:</strong> run</p>
+<p>A document can also be a folder, a package: the metadata files and previews are files in the folder, the <code>.iwa</code> parts are inside an <code>Index.zip</code> in it under the same <code>Index/</code> names, and data files are in a <code>Data/</code> folder (<a href="0076-package-format.html">0076</a>). This experiment builds a package from a ZIP document by that description alone and opens it.</p>
+<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Pages</td><td>15.4</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-18</td></tr><tr><td>Input</td><td><code>samples/0023/image.pages</code>: the body <code>one</code> and a red PNG, as a ZIP</td></tr><tr><td>Writer</td><td>The new [<code>recipes/0438-to-package.py</code>](../recipes/0438-to-package.py); opened with [<code>recipes/0372-in-app.sh</code>](../recipes/0372-in-app.sh), which now also finds a package, whose path Pages reports with a trailing slash</td></tr></tbody></table></div>
+<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section">#</a></h2>
+<pre class="lang-bash"><code>mkdir -p samples/0438
+O=samples/0438
+python3 -I recipes/0438-to-package.py samples/0023/image.pages $O/image-package.pages
+sh recipes/0372-in-app.sh Pages $O/image-package.pages &quot;export d to POSIX file \&quot;$PWD/$O/image-package.pdf\&quot; as PDF
+return {body text of d, file name of image 1 of d}&quot;
+swift recipes/0384-pdf-colours.swift $O/image-package.pdf 291,400</code></pre>
+<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section">#</a></h2>
+<p>The package holds <code>Index.zip</code> (the seven parts, 72,080 bytes, stored), <code>Data/red-8x4-24.png</code>, <code>Metadata/</code> with its three files, and the three previews. Pages opened it as <code>image-package.pages</code> without an alert, with the body <code>one</code>, the image <code>red-8x4.png</code>, and the image drawn red at its place.</p>
+<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section">#</a></h2>
+<p>The folder form works as described: a writer can produce a package by moving the <code>Index/</code> entries into <code>Index.zip</code>, the data files into <code>Data/</code> and the rest into the folder, with nothing else to change. The parts' names inside <code>Index.zip</code>, <code>Metadata.iwa</code>'s lists and the data names are the same in both forms.</p>
+<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section">#</a></h2>
+<p><em>Confirmed</em>: the package layout, by writing one from a ZIP document.</p>
+<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Last built from <a href="https://github.com/alehel/iwork-format">alehel/iwork-format</a>.</p></footer>
+</main>
+
+</div>
+<script>
+// On narrow screens the contents and on-this-page lists start folded; on wide ones they stay open.
+(function () {
+  var narrow = window.matchMedia("(max-width: 48rem)");
+  var lists = document.querySelectorAll(".side > details, .toc > details");
+  function fit() { for (var i = 0; i < lists.length; i++) lists[i].open = !narrow.matches; }
+  fit();
+  if (narrow.addEventListener) narrow.addEventListener("change", fit);
+  // The release dropdown closes when you click anywhere else.
+  document.addEventListener("click", function (e) {
+    var release = document.querySelector(".side .release[open]");
+    if (release && !release.contains(e.target)) release.open = false;
+  });
+  document.addEventListener("keydown", function (e) {
+    var release = document.querySelector(".side .release[open]");
+    if (release && e.key === "Escape") { release.open = false; release.querySelector("summary").focus(); }
+  });
+  document.addEventListener("click", function (e) {
+    if (narrow.matches && e.target.closest && e.target.closest(".toc a")) fit();
+  });
+})();
+</script>
+</body>
+</html>
