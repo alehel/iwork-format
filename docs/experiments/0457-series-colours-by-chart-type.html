@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0457: A series&#x27; colours by chart type · iWork file format specification</title>
+<meta name="description" content="iWork file format specification">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
+<p class="wip"><strong>Work in progress.</strong> This specification is incomplete and changes as new experiments run. Each finding says how sure it is: <em>confirmed</em>, <em>likely</em> or <em>unknown</em>. See <a href="../spec/index.html">what each layer covers so far</a>.</p>
+<div class="layout">
+<nav class="side" aria-label="Contents"><details open><summary>Contents</summary><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="../guides/anatomy.html">Reading a Pages document</a></li><li><a href="../guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="../guides/writing.html">Writing a document</a></li><li><a href="../guides/samples.html">Sample files</a></li><li class="group">Specification</li><li class="versions"><details class="release"><summary><span class="label">App release</span><span class="value">15.4 (current)</span></summary><ul><li><a class="current" aria-current="page" href="../spec/index.html">15.4 (current)</a></li></ul></details></li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2–5. Text, styles, objects, layout</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li class="group">Evidence</li><li><a href="index.html">All experiments</a></li></ul></details></nav>
+<main>
+<h1 id="0457-a-series-colours-by-chart-type">0457: A series' colours by chart type<a class="anchor" href="#0457-a-series-colours-by-chart-type" aria-label="Link to this section">#</a></h1>
+<p><strong>Status:</strong> run</p>
+<p>A series style has twelve colour properties, 6 to 17, all the same colour in the theme, and property 13 is the fill of a column chart's bars (<a href="0456-writing-a-series-colour.html">0456</a>). This experiment gives each of the twelve its own colour and draws the chart as other types.</p>
+<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Keynote</td><td>15.4, in Norwegian</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-18</td></tr><tr><td>Input</td><td><code>samples/0296/baseline.key</code>: chart 2655552 in the test theme, two series; the first series' style is 2651484</td></tr><tr><td>Writer</td><td>[<code>recipes/0302-set-path.py</code>](../recipes/0302-set-path.py); exported with [<code>recipes/0372-in-app.sh</code>](../recipes/0372-in-app.sh), looked at as pictures and read with [<code>recipes/0384-pdf-colours.swift</code>](../recipes/0384-pdf-colours.swift)</td></tr></tbody></table></div>
+<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section">#</a></h2>
+<p>Each property gets a colour of its own, in sRGB (its field 12 set to 0):</p>
+<div class="table"><table><thead><tr><th>Property</th><th>6</th><th>7</th><th>8</th><th>9</th><th>10</th><th>11</th><th>12</th><th>13</th><th>14</th><th>15</th><th>16</th><th>17</th></tr></thead><tbody><tr><td>Colour</td><td>red</td><td>green</td><td>blue</td><td>yellow</td><td>magenta</td><td>cyan</td><td>dark red</td><td>dark green</td><td>navy</td><td>olive</td><td>purple</td><td>teal</td></tr></tbody></table></div>
+<pre class="lang-bash"><code>mkdir -p samples/0457
+O=samples/0457
+args=()
+while read k r g b; do
+  args+=(10000.$k.1.3 float $r 10000.$k.1.4 float $g 10000.$k.1.5 float $b 10000.$k.1.12 varint 0)
+done &lt;&lt;EOF
+6 1 0 0
+7 0 1 0
+8 0 0 1
+9 1 1 0
+10 1 0 1
+11 0 1 1
+12 0.5 0 0
+13 0 0.5 0
+14 0 0 0.5
+15 0.5 0.5 0
+16 0.5 0 0.5
+17 0 0.5 0.5
+EOF
+python3 -I recipes/0302-set-path.py samples/0296/baseline.key $O/palette.key 2651484 &quot;${args[@]}&quot;
+for t in 1 3 4 5 9; do
+  python3 -I recipes/0302-set-path.py $O/palette.key $O/type-$t.key 2655552 10000.1 varint $t
+  sh recipes/0372-in-app.sh Keynote $O/type-$t.key &quot;export d to POSIX file \&quot;$PWD/$O/type-$t.pdf\&quot; as PDF&quot;
+done</code></pre>
+<p>Chart types: 1 column, 3 line, 4 area, 5 pie, 9 scatter (<a href="../spec/keynote.html#charts">keynote.md</a>).</p>
+<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th>Type</th><th>The first series is drawn</th><th>Colour</th><th>Property</th></tr></thead><tbody><tr><td>1, column</td><td>bars</td><td>0, 0.5, 0, dark green</td><td>13</td></tr><tr><td>4, area</td><td>an area</td><td>0, 1, 1, cyan</td><td>11</td></tr><tr><td>5, pie</td><td>the first wedge</td><td>0, 0.5, 0.5, teal</td><td>17</td></tr><tr><td>3, line</td><td>a line</td><td>the theme's blue, unchanged</td><td>none of 6–17</td></tr><tr><td>9, scatter</td><td>points</td><td>the theme's blue, unchanged</td><td>none of 6–17</td></tr></tbody></table></div>
+<p>The second series kept its green throughout, since only the first series' style was written.</p>
+<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section">#</a></h2>
+<p>The twelve colour properties are fills, one per kind of shape a series can be drawn as: 13 for bars, 11 for areas and 17 for pie wedges. Lines and points don't take their colour from any of them; they are probably in the style's stroke properties (the 86-byte properties 4, 5 and 45 to 53) and symbol properties. Which fill the other nine properties are, presumably for the other chart types such as 3D and bubble charts, is <em>unknown</em>.</p>
+<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section">#</a></h2>
+<p><em>Confirmed</em>: series style properties 13, 11 and 17 as the fill of bars, areas and pie wedges, by writing them. <em>Likely</em>: lines and points are coloured by other properties.</p>
+<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Last built from <a href="https://github.com/alehel/iwork-format">alehel/iwork-format</a>.</p></footer>
+</main>
+
+</div>
+<script>
+// On narrow screens the contents and on-this-page lists start folded; on wide ones they stay open.
+(function () {
+  var narrow = window.matchMedia("(max-width: 48rem)");
+  var lists = document.querySelectorAll(".side > details, .toc > details");
+  function fit() { for (var i = 0; i < lists.length; i++) lists[i].open = !narrow.matches; }
+  fit();
+  if (narrow.addEventListener) narrow.addEventListener("change", fit);
+  // The release dropdown closes when you click anywhere else.
+  document.addEventListener("click", function (e) {
+    var release = document.querySelector(".side .release[open]");
+    if (release && !release.contains(e.target)) release.open = false;
+  });
+  document.addEventListener("keydown", function (e) {
+    var release = document.querySelector(".side .release[open]");
+    if (release && e.key === "Escape") { release.open = false; release.querySelector("summary").focus(); }
+  });
+  document.addEventListener("click", function (e) {
+    if (narrow.matches && e.target.closest && e.target.closest(".toc a")) fit();
+  });
+})();
+</script>
+</body>
+</html>
