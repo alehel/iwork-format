@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0433: Writing other chunk sizes · iWork file format specification</title>
+<meta name="description" content="iWork file format specification">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
+<p class="wip"><strong>Work in progress.</strong> This specification is incomplete and changes as new experiments run. Each finding says how sure it is: <em>confirmed</em>, <em>likely</em> or <em>unknown</em>. See <a href="../spec/index.html">what each layer covers so far</a>.</p>
+<div class="layout">
+<nav class="side" aria-label="Contents"><details open><summary>Contents</summary><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="../guides/anatomy.html">Reading a Pages document</a></li><li><a href="../guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="../guides/writing.html">Writing a document</a></li><li><a href="../guides/samples.html">Sample files</a></li><li class="group">Specification</li><li class="versions"><details class="release"><summary><span class="label">App release</span><span class="value">15.4 (current)</span></summary><ul><li><a class="current" aria-current="page" href="../spec/index.html">15.4 (current)</a></li></ul></details></li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2–5. Text, styles, objects, layout</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li class="group">Evidence</li><li><a href="index.html">All experiments</a></li></ul></details></nav>
+<main>
+<h1 id="0433-writing-other-chunk-sizes">0433: Writing other chunk sizes<a class="anchor" href="#0433-writing-other-chunk-sizes" aria-label="Link to this section">#</a></h1>
+<p><strong>Status:</strong> run</p>
+<p>An <code>.iwa</code> part is a sequence of chunks, each a raw Snappy block. No chunk Pages writes decodes to more than 65,536 bytes: a larger part is split into chunks of exactly 65,536 decoded bytes and a shorter last one (<a href="0001-empty-document.html">0001</a>, <a href="0141-large-text.html">0141</a>). This experiment writes the parts with much smaller and much larger chunks.</p>
+<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Pages</td><td>15.4, in Norwegian</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-18</td></tr><tr><td>Input</td><td><code>samples/0002/hello.pages</code>: seven parts; <code>DocumentStylesheet.iwa</code> decodes to 338,982 bytes in six chunks (five of 65,536 and one of 11,302), the others to one chunk each</td></tr><tr><td>Writer</td><td>The new [<code>recipes/0433-chunk-size.py</code>](../recipes/0433-chunk-size.py); read back with [<code>recipes/0372-in-app.sh</code>](../recipes/0372-in-app.sh)</td></tr></tbody></table></div>
+<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section">#</a></h2>
+<pre class="lang-bash"><code>mkdir -p samples/0433
+O=samples/0433
+for s in 1000 65536 1000000; do
+  python3 -I recipes/0433-chunk-size.py samples/0002/hello.pages $O/chunks-$s.pages $s
+  sh recipes/0372-in-app.sh Pages $O/chunks-$s.pages &#x27;return {body text of d, font of word 1 of body text of d}&#x27;
+done</code></pre>
+<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th>File</th><th>Chunk size</th><th>Largest chunk, decoded</th><th>Pages</th></tr></thead><tbody><tr><td><code>chunks-1000.pages</code></td><td>1,000 bytes</td><td>1,000</td><td>opens: <code>hello</code>, HelveticaNeue</td></tr><tr><td><code>chunks-65536.pages</code></td><td>65,536 bytes, as Pages</td><td>65,536</td><td>opens: <code>hello</code>, HelveticaNeue</td></tr><tr><td><code>chunks-1000000.pages</code></td><td>up to 1,000,000 bytes</td><td>338,982: the whole stylesheet in one chunk</td><td>opens: <code>hello</code>, HelveticaNeue</td></tr></tbody></table></div>
+<p>No alert was shown.</p>
+<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section">#</a></h2>
+<p>Pages joins a part's chunks before reading it, whatever their size: with 1,000-byte chunks nearly every record is cut across two chunks, and the stylesheet in a single chunk of 338,982 bytes reads as well as in six. The 65,536-byte split is how Pages writes, not something it requires. A reader shouldn't assume a limit on a chunk's decoded size beyond what the 3-byte length allows for the stored block.</p>
+<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section">#</a></h2>
+<p><em>Confirmed</em>: Pages reads chunks of any decoded size, smaller or larger than 65,536 bytes, by writing them.</p>
+<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Last built from <a href="https://github.com/alehel/iwork-format">alehel/iwork-format</a>.</p></footer>
+</main>
+
+</div>
+<script>
+// On narrow screens the contents and on-this-page lists start folded; on wide ones they stay open.
+(function () {
+  var narrow = window.matchMedia("(max-width: 48rem)");
+  var lists = document.querySelectorAll(".side > details, .toc > details");
+  function fit() { for (var i = 0; i < lists.length; i++) lists[i].open = !narrow.matches; }
+  fit();
+  if (narrow.addEventListener) narrow.addEventListener("change", fit);
+  // The release dropdown closes when you click anywhere else.
+  document.addEventListener("click", function (e) {
+    var release = document.querySelector(".side .release[open]");
+    if (release && !release.contains(e.target)) release.open = false;
+  });
+  document.addEventListener("keydown", function (e) {
+    var release = document.querySelector(".side .release[open]");
+    if (release && e.key === "Escape") { release.open = false; release.querySelector("summary").focus(); }
+  });
+  document.addEventListener("click", function (e) {
+    if (narrow.matches && e.target.closest && e.target.closest(".toc a")) fit();
+  });
+})();
+</script>
+</body>
+</html>
