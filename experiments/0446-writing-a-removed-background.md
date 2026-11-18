@@ -48,7 +48,7 @@ The page is made blue so that a white background shows. (310, 310) and (420, 390
 
 ## Conclusion
 
-Two things hide a removed background, each enough on its own. Field 10, the subject's outline, clips the image to the subject: with it, the white around the square isn't drawn even without the mask. The mask crops the image to the subject's box: with it, the background is gone even without the outline. Fields 19 and 22 change nothing drawn: 22 is probably the switch the app shows, and 19 perhaps a cache of the outline. The image file keeps its background, so a reader must apply the outline in field 10, or at least the mask, to draw what Pages draws.
+Two things hide a removed background, each enough on its own. Field 10, the subject's outline, clips the image to the subject: with it, the white around the square isn't drawn even without the mask. The mask crops the image to the subject's box: with it, the background is gone even without the outline. Fields 19 and 22 change nothing drawn: 22 is probably the switch the app shows, and 19 is in ordinary images too ([0447](0447-writing-an-image-s-sizes.md)'s has one), so it isn't part of the removed background. The image file keeps its background, so a reader must apply the outline in field 10, or at least the mask, to draw what Pages draws.
 
 ## Confidence
 
