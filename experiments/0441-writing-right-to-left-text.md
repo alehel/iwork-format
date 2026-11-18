@@ -35,7 +35,7 @@ The words' places were read with PDFKit's `findString` on each exported page.
 
 | File | Text, in stored order | Ink, left – right | Words, left to right on the page |
 | --- | --- | --- | --- |
-| `latin.pages` | Hello world | 57.8 – 111.2 | Hello (…), world |
+| `latin.pages` | Hello world | 57.8 – 111.2 | Hello, world |
 | `arabic.pages` | مرحبا بالعالم | 57.0 – 105.2 | بالعالم (56–80), مرحبا (83–105) |
 | `mixed.pages` | مرحبا ABC بالعالم | 58.5 – 131.0 | مرحبا (56–78), ABC (81–103), بالعالم (106–130) |
 

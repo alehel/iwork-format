@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0442: What the calculation engine&#x27;s owners are · iWork file format specification</title>
+<meta name="description" content="iWork file format specification">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
+<p class="wip"><strong>Work in progress.</strong> This specification is incomplete and changes as new experiments run. Each finding says how sure it is: <em>confirmed</em>, <em>likely</em> or <em>unknown</em>. See <a href="../spec/index.html">what each layer covers so far</a>.</p>
+<div class="layout">
+<nav class="side" aria-label="Contents"><details open><summary>Contents</summary><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="../guides/anatomy.html">Reading a Pages document</a></li><li><a href="../guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="../guides/writing.html">Writing a document</a></li><li><a href="../guides/samples.html">Sample files</a></li><li class="group">Specification</li><li class="versions"><details class="release"><summary><span class="label">App release</span><span class="value">15.4 (current)</span></summary><ul><li><a class="current" aria-current="page" href="../spec/index.html">15.4 (current)</a></li></ul></details></li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2–5. Text, styles, objects, layout</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li class="group">Evidence</li><li><a href="index.html">All experiments</a></li></ul></details></nav>
+<main>
+<h1 id="0442-what-the-calculation-engines-owners-are">0442: What the calculation engine's owners are<a class="anchor" href="#0442-what-the-calculation-engines-owners-are" aria-label="Link to this section">#</a></h1>
+<p><strong>Status:</strong> run</p>
+<p>The calculation engine lists type-4008 owners, each with a UUID in field 1 and a number in field 2; what each owner stands for was <em>unknown</em> (<a href="0293-calculation-owners.html">0293</a>). This experiment looks for every owner's UUID in the rest of each document.</p>
+<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Apps</td><td>Pages, Keynote and Numbers 15.4</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-18</td></tr><tr><td>Input</td><td>Every sample document on this machine that has owners: 1,139 documents with 6,674 owners. For a close look, <code>samples/0106/mixed.numbers</code>, one table with a formula</td></tr><tr><td>Method</td><td>Each owner's field 1, a message of two varints, was searched for, byte for byte, as a field of any other record, at any depth, using the writer of <a href="0287-rewriting-a-document.html">0287</a> to decode records</td></tr></tbody></table></div>
+<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section">#</a></h2>
+<p>For every document: collect the field 1 of every type-4008 record; walk every other record's payload, field by field, and note the record type and field path wherever a message equals one of those UUIDs. Count the paths over all documents.</p>
+<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section">#</a></h2>
+<p>4,462 of the 6,674 owners are named somewhere else. The places, with the number of documents:</p>
+<div class="table"><table><thead><tr><th>Record</th><th>Field</th><th>Documents</th></tr></thead><tbody><tr><td>6366</td><td>1</td><td>1,139 (every document)</td></tr><tr><td>6366</td><td>2</td><td>552</td></tr><tr><td>6366</td><td>3.1</td><td>389</td></tr><tr><td>6365</td><td>3.3.1.1</td><td>422</td></tr><tr><td>6000, a table's drawable</td><td>7 and 8</td><td>389</td></tr><tr><td>6001, a table's model</td><td>70.1, 70.2.1, 70.2.2.1, 70.2.3.1, 84.1, 93.1</td><td>397</td></tr><tr><td>6001</td><td>81.2.1</td><td>389</td></tr><tr><td>6316</td><td>4</td><td>389</td></tr><tr><td>6373</td><td>1</td><td>397</td></tr><tr><td>4000, the engine</td><td>7.1.1, 13.1.1, 17</td><td>45, 6, 13</td></tr><tr><td>6005, formulas</td><td>3.5.1.1.39.1.1</td><td>24, all in pivot tables</td></tr><tr><td>6010, highlighting rules; 6220, filter rules</td><td>3.1.1.4.4.3; 7.1.4.4.3</td><td>16; 13</td></tr></tbody></table></div>
+<p>In <code>mixed.numbers</code> the one table names these owners:</p>
+<div class="table"><table><thead><tr><th>Owner number</th><th>Named by</th></tr></thead><tbody><tr><td>9</td><td>drawable field 8; model fields 70.1, 70.2.1 and 70.2.3.1, the filter's hidden rows (<a href="0258-filter.html">0258</a>)</td></tr><tr><td>10</td><td>model field 70.2.2.1, beside the filter's rules</td></tr><tr><td>15</td><td>model field 84.1</td></tr><tr><td>16</td><td>model field 93.1</td></tr><tr><td>17</td><td>drawable field 7; model field 81.2.1, the categories (<a href="0226-category.html">0226</a>); type 6373, field 1</td></tr><tr><td>18</td><td>type 6316, field 4</td></tr></tbody></table></div>
+<p>Owners 1, 20 and 8 are named by the type-6366 record, and owners 11 to 14 nowhere outside the engine.</p>
+<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section">#</a></h2>
+<p>Owners are the parts of a document that the calculation engine tracks, and most belong to tables: each table registers one owner for itself, named by its drawable's field 8 and by its filter's row list, one for its filter's rules, one for its categories, named by its drawable's field 7, and others named by its model's fields 84 and 93 and by a type-6316 record. A document-wide type-6366 record names one owner in every document, probably the document itself. Pivot formulas, highlighting rules and filter rules name owners too, where they refer to a table's parts. So owners are bookkeeping for recalculation: a reader can still skip them, and a writer that adds a table would have to register its owners.</p>
+<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section">#</a></h2>
+<p><em>Confirmed</em>: where owners' UUIDs are named, across 1,139 documents. <em>Likely</em>: owners stand for a table, its filter, its categories and other table parts. What model fields 84 and 93, and records 6316, 6365, 6366 and 6373, are is <em>unknown</em>.</p>
+<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Last built from <a href="https://github.com/alehel/iwork-format">alehel/iwork-format</a>.</p></footer>
+</main>
+
+</div>
+<script>
+// On narrow screens the contents and on-this-page lists start folded; on wide ones they stay open.
+(function () {
+  var narrow = window.matchMedia("(max-width: 48rem)");
+  var lists = document.querySelectorAll(".side > details, .toc > details");
+  function fit() { for (var i = 0; i < lists.length; i++) lists[i].open = !narrow.matches; }
+  fit();
+  if (narrow.addEventListener) narrow.addEventListener("change", fit);
+  // The release dropdown closes when you click anywhere else.
+  document.addEventListener("click", function (e) {
+    var release = document.querySelector(".side .release[open]");
+    if (release && !release.contains(e.target)) release.open = false;
+  });
+  document.addEventListener("keydown", function (e) {
+    var release = document.querySelector(".side .release[open]");
+    if (release && e.key === "Escape") { release.open = false; release.querySelector("summary").focus(); }
+  });
+  document.addEventListener("click", function (e) {
+    if (narrow.matches && e.target.closest && e.target.closest(".toc a")) fit();
+  });
+})();
+</script>
+</body>
+</html>
