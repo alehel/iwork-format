@@ -2,7 +2,7 @@
 
 **Status:** run
 
-An image record holds three sizes: its geometry's size in 1.1.2, field 4, and field 9, its natural size. Fields 1.1.2 and 4 both seemed to be the size it is drawn at ([0055](0055-image-size.md)), and writing the size in Keynote confirmed the geometry ([0303](0303-writing-geometry.md), [0348](0348-writing-an-image-size.md)). This experiment writes each of the three alone in Pages.
+An image record holds three sizes: its geometry's size in 1.1.2, field 4, and field 9, its natural size. Fields 1.1.2 and 4 both seemed to be the size it is drawn at ([0055](0055-image-size.md)); writing them showed that 1.1.2 alone decides and field 4 is a copy ([0303](0303-writing-geometry.md), [0348](0348-writing-an-image-size.md)). This experiment repeats that in Pages and adds field 9.
 
 ## Setup
 
@@ -51,4 +51,4 @@ An image is drawn at the size in its geometry, 1.1.2, as in Keynote. Field 4, th
 
 ## Confidence
 
-*Confirmed*: an image's drawn size as its geometry's 1.1.2, with fields 4 and 9 unused for drawing, by writing each.
+*Confirmed*: an image's drawn size as its geometry's 1.1.2, again, and that field 9 isn't used for drawing either, by writing each.
