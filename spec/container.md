@@ -8,6 +8,8 @@ Observed with Pages 15.4 on macOS 26.5.2. Keynote 15.4 and Numbers 15.4 write th
 
 A document saved by Pages is a ZIP file by default. *Likely* ([0001](../experiments/0001-empty-document.md), [0002](../experiments/0002-one-word.md)). It can also be a folder (File → Advanced → Change File Type → Package): the metadata files and previews are files in the folder, the `.iwa` parts are inside an `Index.zip` in it, under the same `Index/` names, and data files are in a `Data/` folder beside it. *Confirmed* for all three apps ([0076](../experiments/0076-package-format.md), [0146](../experiments/0146-keynote-package.md), [0147](../experiments/0147-numbers-package.md))
 
+Pages opens a document without any one of the `Metadata/` files (`Properties.plist`, `DocumentIdentifier`, `BuildVersionHistory.plist`) or the previews, and without all of `Metadata/`. But it doesn't open one without `Index/ViewState.iwa`, nor a ZIP with nothing outside `Index/`, and afterwards opens no document until it is restarted; so a writer should include the view state and the `Metadata/` files. *Confirmed* by writing them ([0434](../experiments/0434-leaving-out-package-files.md)); why is *unknown*.
+
 ZIP entry names are UTF-8, but Pages doesn't set the ZIP flag that says so; read them as UTF-8 regardless. *Likely* ([0144](../experiments/0144-non-ascii-file-name.md)). Pages itself reads them as UTF-8 with or without the flag, *confirmed* by writing one ([0431](../experiments/0431-writing-a-non-ascii-part-name.md)).
 
 Part names aren't fixed: after a document is saved again, a part can be renamed after the ID of its new first record (`ViewState.iwa` became `ViewState-1732662.iwa`). Find parts by listing them. *Likely* ([0139](../experiments/0139-resave.md))

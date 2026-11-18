@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0434: Leaving out package files · iWork file format specification</title>
+<meta name="description" content="iWork file format specification">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
+<p class="wip"><strong>Work in progress.</strong> This specification is incomplete and changes as new experiments run. Each finding says how sure it is: <em>confirmed</em>, <em>likely</em> or <em>unknown</em>. See <a href="../spec/index.html">what each layer covers so far</a>.</p>
+<div class="layout">
+<nav class="side" aria-label="Contents"><details open><summary>Contents</summary><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="../guides/anatomy.html">Reading a Pages document</a></li><li><a href="../guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="../guides/writing.html">Writing a document</a></li><li><a href="../guides/samples.html">Sample files</a></li><li class="group">Specification</li><li class="versions"><details class="release"><summary><span class="label">App release</span><span class="value">15.4 (current)</span></summary><ul><li><a class="current" aria-current="page" href="../spec/index.html">15.4 (current)</a></li></ul></details></li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2–5. Text, styles, objects, layout</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li class="group">Evidence</li><li><a href="index.html">All experiments</a></li></ul></details></nav>
+<main>
+<h1 id="0434-leaving-out-package-files">0434: Leaving out package files<a class="anchor" href="#0434-leaving-out-package-files" aria-label="Link to this section">#</a></h1>
+<p><strong>Status:</strong> run</p>
+<p>Besides its <code>Index/</code> parts, a document's ZIP holds <code>Metadata/Properties.plist</code>, <code>Metadata/DocumentIdentifier</code>, <code>Metadata/BuildVersionHistory.plist</code> and three previews (<a href="../spec/container.html#the-package">container.md</a>). The writer of <a href="0287-rewriting-a-document.html">0287</a> already left out the previews. This experiment leaves out each of the others, and the view state, and asks whether Pages opens the document.</p>
+<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Pages</td><td>15.4, in Norwegian</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-18</td></tr><tr><td>Input</td><td><code>samples/0002/hello.pages</code>: seven parts under <code>Index/</code>, the three files under <code>Metadata/</code>, and <code>preview.jpg</code>, <code>preview-micro.jpg</code> and <code>preview-web.jpg</code></td></tr><tr><td>Writer</td><td>The new [<code>recipes/0434-drop-entries.py</code>](../recipes/0434-drop-entries.py); opened with [<code>recipes/0372-in-app.sh</code>](../recipes/0372-in-app.sh)</td></tr></tbody></table></div>
+<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section">#</a></h2>
+<pre class="lang-bash"><code>mkdir -p samples/0434
+X=recipes/0434-drop-entries.py
+F=samples/0002/hello.pages
+O=samples/0434
+python3 -I $X $F $O/no-identifier.pages Metadata/DocumentIdentifier
+python3 -I $X $F $O/no-properties.pages Metadata/Properties.plist
+python3 -I $X $F $O/no-history.pages Metadata/BuildVersionHistory.plist
+python3 -I $X $F $O/no-previews.pages &#x27;preview*&#x27;
+python3 -I $X $F $O/no-metadata-folder.pages &#x27;Metadata/*&#x27;
+python3 -I $X $F $O/only-index.pages &#x27;Metadata/*&#x27; &#x27;preview*&#x27;
+python3 -I $X $F $O/no-viewstate.pages Index/ViewState.iwa
+for f in no-identifier no-properties no-history no-previews no-metadata-folder only-index no-viewstate; do
+  sh recipes/0372-in-app.sh Pages $O/$f.pages &#x27;return {body text of d, font of word 1 of body text of d}&#x27;
+done</code></pre>
+<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th>File</th><th>Left out</th><th>Pages</th></tr></thead><tbody><tr><td><code>no-identifier.pages</code></td><td><code>DocumentIdentifier</code></td><td>opens: <code>hello</code>, HelveticaNeue</td></tr><tr><td><code>no-properties.pages</code></td><td><code>Properties.plist</code></td><td>opens</td></tr><tr><td><code>no-history.pages</code></td><td><code>BuildVersionHistory.plist</code></td><td>opens</td></tr><tr><td><code>no-previews.pages</code></td><td>the three previews</td><td>opens</td></tr><tr><td><code>no-metadata-folder.pages</code></td><td>all of <code>Metadata/</code></td><td>opens</td></tr><tr><td><code>only-index.pages</code></td><td><code>Metadata/</code> and the previews</td><td>doesn't open, with no alert</td></tr><tr><td><code>no-viewstate.pages</code></td><td><code>Index/ViewState.iwa</code></td><td>doesn't open, with no alert</td></tr></tbody></table></div>
+<p>After either of the last two, Pages opened no other document either, not even ones it had just opened, until it was quit and started again. Each was tried twice, with the same result.</p>
+<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section">#</a></h2>
+<p>Pages doesn't need any single file outside <code>Index/</code>: each of the three <code>Metadata/</code> files, and the previews, can be left out, and so can all of <code>Metadata/</code> at once. But a ZIP with nothing outside <code>Index/</code> makes Pages stop opening documents altogether, and so does a document without its view state part, which <code>Metadata.iwa</code> lists as a component (<a href="0394-renaming-a-part.html">0394</a>). So a writer should always include <code>ViewState.iwa</code> and keep at least one entry besides <code>Index/</code>, such as the <code>Metadata/</code> files Pages writes. Why the combination matters is <em>unknown</em>.</p>
+<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section">#</a></h2>
+<p><em>Confirmed</em>: Pages opens a document without any one of the <code>Metadata/</code> files or the previews, and without all of <code>Metadata/</code>, but not without its view state, nor with only <code>Index/</code>, by writing them. Why is <em>unknown</em>.</p>
+<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Last built from <a href="https://github.com/alehel/iwork-format">alehel/iwork-format</a>.</p></footer>
+</main>
+
+</div>
+<script>
+// On narrow screens the contents and on-this-page lists start folded; on wide ones they stay open.
+(function () {
+  var narrow = window.matchMedia("(max-width: 48rem)");
+  var lists = document.querySelectorAll(".side > details, .toc > details");
+  function fit() { for (var i = 0; i < lists.length; i++) lists[i].open = !narrow.matches; }
+  fit();
+  if (narrow.addEventListener) narrow.addEventListener("change", fit);
+  // The release dropdown closes when you click anywhere else.
+  document.addEventListener("click", function (e) {
+    var release = document.querySelector(".side .release[open]");
+    if (release && !release.contains(e.target)) release.open = false;
+  });
+  document.addEventListener("keydown", function (e) {
+    var release = document.querySelector(".side .release[open]");
+    if (release && e.key === "Escape") { release.open = false; release.querySelector("summary").focus(); }
+  });
+  document.addEventListener("click", function (e) {
+    if (narrow.matches && e.target.closest && e.target.closest(".toc a")) fit();
+  });
+})();
+</script>
+</body>
+</html>
