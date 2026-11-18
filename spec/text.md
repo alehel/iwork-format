@@ -130,7 +130,7 @@ A section break (Insert → Section Break) is the character U+0004. It starts a 
 
 Positions in the text count UTF-16 code units, not UTF-8 bytes or code points. So a character outside the Basic Multilingual Plane counts as 2, and an emoji joined from several (such as 👨‍👩‍👧) counts every unit, joiners included. A reader has to convert positions before using them on the UTF-8 text. *Confirmed* ([0003](../experiments/0003-non-ascii-word.md), [0004](../experiments/0004-larger-word.md), [0149](../experiments/0149-family-emoji.md))
 
-No writing direction is stored for right-to-left text set through AppleScript; lay text out by the Unicode bidirectional rules. *Likely* ([0150](../experiments/0150-arabic-text.md))
+No writing direction is stored for right-to-left text set through AppleScript; lay text out by the Unicode bidirectional rules. *Likely* ([0150](../experiments/0150-arabic-text.md)). But keep the paragraph's base direction left-to-right: Pages doesn't take it from the first strong character, so an Arabic line starts at the left margin and runs follow each other from the left (*confirmed* by writing them, [0441](../experiments/0441-writing-right-to-left-text.md)).
 
 ## Runs
 
