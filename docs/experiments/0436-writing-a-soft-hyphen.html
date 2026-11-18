@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0436: Writing a soft hyphen · iWork file format specification</title>
+<meta name="description" content="iWork file format specification">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
+<p class="wip"><strong>Work in progress.</strong> This specification is incomplete and changes as new experiments run. Each finding says how sure it is: <em>confirmed</em>, <em>likely</em> or <em>unknown</em>. See <a href="../spec/index.html">what each layer covers so far</a>.</p>
+<div class="layout">
+<nav class="side" aria-label="Contents"><details open><summary>Contents</summary><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="../guides/anatomy.html">Reading a Pages document</a></li><li><a href="../guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="../guides/writing.html">Writing a document</a></li><li><a href="../guides/samples.html">Sample files</a></li><li class="group">Specification</li><li class="versions"><details class="release"><summary><span class="label">App release</span><span class="value">15.4 (current)</span></summary><ul><li><a class="current" aria-current="page" href="../spec/index.html">15.4 (current)</a></li></ul></details></li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2–5. Text, styles, objects, layout</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li class="group">Evidence</li><li><a href="index.html">All experiments</a></li></ul></details></nav>
+<main>
+<h1 id="0436-writing-a-soft-hyphen">0436: Writing a soft hyphen<a class="anchor" href="#0436-writing-a-soft-hyphen" aria-label="Link to this section">#</a></h1>
+<p><strong>Status:</strong> run</p>
+<p>Text can contain U+00AD, the soft hyphen, as found in the samples (<a href="0032-reading-all-text.html">0032</a>). This experiment writes soft hyphens into long words in a document without hyphenation and reads where Pages breaks the lines.</p>
+<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Pages</td><td>15.4, in Norwegian</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-18</td></tr><tr><td>Input</td><td><code>samples/0002/hello.pages</code>, with its body (1732539) replaced by seven long Norwegian compound words; hyphenation is off (settings field 9 = 0, <a href="0420-writing-hyphenation.html">0420</a>)</td></tr><tr><td>Writer</td><td>The writer of <a href="0287-rewriting-a-document.html">0287</a>; exported with [<code>recipes/0372-in-app.sh</code>](../recipes/0372-in-app.sh) and read with [<code>recipes/0374-pdf-text.swift</code>](../recipes/0374-pdf-text.swift)</td></tr></tbody></table></div>
+<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section">#</a></h2>
+<pre class="lang-bash"><code>mkdir -p samples/0436
+O=samples/0436
+TXT=&quot;Arbeidsmiljølovgivningen fylkeskommunesammenslåingen sannsynlighetsberegningene kommunikasjonsteknologien vedlikeholdsarbeidene forskningsinstitusjonene arbeidsledighetstrygden&quot;
+SH=$(printf &#x27;\xc2\xad&#x27;)
+SOFT=$(echo &quot;$TXT&quot; | sed &quot;s/kommunikasjons/kommunikasjons$SH/; s/arbeidsledighets/arbeidsledighets$SH/&quot;)
+python3 -I recipes/0287-iwa-writer.py samples/0002/hello.pages $O/plain.pages --text 1732539 &quot;$TXT&quot;
+python3 -I recipes/0287-iwa-writer.py samples/0002/hello.pages $O/soft-hyphens.pages --text 1732539 &quot;$SOFT&quot;
+for f in plain soft-hyphens; do
+  sh recipes/0372-in-app.sh Pages $O/$f.pages &quot;export d to POSIX file \&quot;$PWD/$O/$f.pdf\&quot; as PDF
+return count of characters of body text of d&quot;
+  swift recipes/0374-pdf-text.swift $O/$f.pdf
+done</code></pre>
+<p>The soft hyphens go after <code>kommunikasjons</code> and after <code>arbeidsledighets</code>.</p>
+<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th>File</th><th>Characters</th><th>Lines</th></tr></thead><tbody><tr><td><code>plain.pages</code></td><td>176</td><td>… <code>sannsynlighetsberegningene</code> / … <code>forskningsinstitusjonene</code> / <code>arbeidsledighetstrygden</code></td></tr><tr><td><code>soft-hyphens.pages</code></td><td>178</td><td>… <code>sannsynlighetsberegningene</code> / … <code>forskningsinstitusjonene arbeidsledighets-</code> / <code>trygden</code></td></tr></tbody></table></div>
+<p>The first line ends at the same place in both; <code>kommunikasjons-</code> wouldn't have fitted on it.</p>
+<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section">#</a></h2>
+<p>A soft hyphen is a place where Pages may break a word, even with hyphenation off: where the word reaches the end of the line, Pages breaks there and draws a hyphen; elsewhere the soft hyphen isn't drawn. AppleScript counts it as a character. A reader laying out text should treat U+00AD the same way.</p>
+<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section">#</a></h2>
+<p><em>Confirmed</em>: U+00AD as an optional break that Pages draws as a hyphen only at the end of a line, by writing it.</p>
+<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Last built from <a href="https://github.com/alehel/iwork-format">alehel/iwork-format</a>.</p></footer>
+</main>
+
+</div>
+<script>
+// On narrow screens the contents and on-this-page lists start folded; on wide ones they stay open.
+(function () {
+  var narrow = window.matchMedia("(max-width: 48rem)");
+  var lists = document.querySelectorAll(".side > details, .toc > details");
+  function fit() { for (var i = 0; i < lists.length; i++) lists[i].open = !narrow.matches; }
+  fit();
+  if (narrow.addEventListener) narrow.addEventListener("change", fit);
+  // The release dropdown closes when you click anywhere else.
+  document.addEventListener("click", function (e) {
+    var release = document.querySelector(".side .release[open]");
+    if (release && !release.contains(e.target)) release.open = false;
+  });
+  document.addEventListener("keydown", function (e) {
+    var release = document.querySelector(".side .release[open]");
+    if (release && e.key === "Escape") { release.open = false; release.querySelector("summary").focus(); }
+  });
+  document.addEventListener("click", function (e) {
+    if (narrow.matches && e.target.closest && e.target.closest(".toc a")) fit();
+  });
+})();
+</script>
+</body>
+</html>
