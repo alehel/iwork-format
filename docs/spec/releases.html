@@ -18,7 +18,7 @@
 <h1 id="releases">Releases<a class="anchor" href="#releases" aria-label="Link to this section: Releases">#</a></h1>
 <p>The specification describes the file format as the 15.4 apps write it. Other releases checked against it write the same format, with the few differences listed below; a statement that holds for some releases only carries a mark such as <span class="release" title="Holds for some releases only">15.4 only</span> where it stands in the spec.</p>
 <h2 id="releases-checked">Releases checked<a class="anchor" href="#releases-checked" aria-label="Link to this section: Releases checked">#</a></h2>
-<div class="table"><table><thead><tr><th>Release</th><th>Apps</th><th>macOS</th><th><code>fileFormatVersion</code></th><th>Build</th></tr></thead><tbody><tr><td>15.4</td><td>Pages, Keynote, Numbers</td><td>26.5.2</td><td><code>26.4.0</code></td><td><code>M15.4-7051.0.79-2</code></td></tr><tr><td>14.5</td><td>Pages, Numbers</td><td>26.5.2</td><td><code>14.4.1</code></td><td><code>M14.5-7045.0.17-4</code></td></tr></tbody></table></div>
+<div class="table"><table><thead><tr><th scope="col">Release</th><th scope="col">Apps</th><th scope="col">macOS</th><th scope="col"><code>fileFormatVersion</code></th><th scope="col">Build</th></tr></thead><tbody><tr><td>15.4</td><td>Pages, Keynote, Numbers</td><td>26.5.2</td><td><code>26.4.0</code></td><td><code>M15.4-7051.0.79-2</code></td></tr><tr><td>14.5</td><td>Pages, Numbers</td><td>26.5.2</td><td><code>14.4.1</code></td><td><code>M14.5-7045.0.17-4</code></td></tr></tbody></table></div>
 <ul><li><strong>15.4</strong> is the release the spec describes, from <a href="../experiments/0001-empty-document.html">0001</a> on. Its apps are named "Pages Creator Studio" and so on.</li><li><strong>14.5</strong> writes the same format (<a href="../experiments/0461-new-documents-in-14-5.html">0461</a>, <a href="../experiments/0464-recipes-rerun-in-14-5.html">0464</a>), opens and reads the 15.4 samples (<a href="../experiments/0462-opening-15-4-documents-in-14-5.html">0462</a>) and draws them the same (<a href="../experiments/0463-drawing-15-4-documents-in-14-5.html">0463</a>).</li></ul>
 <p>Keynote 14.5 hasn't been checked yet.</p>
 <h2 id="telling-which-release-saved-a-document">Telling which release saved a document<a class="anchor" href="#telling-which-release-saved-a-document" aria-label="Link to this section: Telling which release saved a document">#</a></h2>
@@ -38,10 +38,28 @@
   var narrow = window.matchMedia("(max-width: 48rem)");
   var middle = window.matchMedia("(max-width: 72rem)");
   var side = document.querySelector(".side > details"), toc = document.querySelector(".toc > details");
+  var tocSummary = document.querySelector(".toc summary");
   function fit() {
     if (side) side.open = !narrow.matches;
     if (toc) toc.open = !middle.matches;
+    // On wide screens the list can't fold, so its heading isn't a control.
+    if (tocSummary) { if (middle.matches) tocSummary.removeAttribute("tabindex"); else tocSummary.tabIndex = -1; }
+    scrollers();
   }
+  // A table or code block wider than the page scrolls sideways; make it reachable by keyboard, with a name.
+  function scrollers() {
+    var boxes = document.querySelectorAll("main .table, main pre");
+    for (var i = 0; i < boxes.length; i++) {
+      var b = boxes[i];
+      if (b.scrollWidth > b.clientWidth + 1) {
+        b.tabIndex = 0; b.setAttribute("role", "region");
+        b.setAttribute("aria-label", (b.tagName === "PRE" ? "Code" : "Table") + ", scrolls sideways");
+      } else if (b.hasAttribute("role")) {
+        b.removeAttribute("tabindex"); b.removeAttribute("role"); b.removeAttribute("aria-label");
+      }
+    }
+  }
+  window.addEventListener("resize", scrollers);
   fit();
   if (narrow.addEventListener) { narrow.addEventListener("change", fit); middle.addEventListener("change", fit); }
   // The release dropdown closes when you click anywhere else.

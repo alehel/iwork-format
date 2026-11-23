@@ -19,14 +19,14 @@
 <p><strong>Status:</strong> run</p>
 <p><a href="0030-tiles.html">0030</a> found that a table's rows are split into tiles of 256, but its two tiles were the first two. This experiment fills three far-apart rows of a 1000-row table, to see whether empty tiles are stored and whether the local row numbers hold up.</p>
 <h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section: Setup">#</a></h2>
-<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Numbers</td><td>15.4 (build <code>M15.4-7051.0.79-2</code>)</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-09</td></tr><tr><td>Baseline</td><td>Experiment <a href="0030-tiles.html">0030</a></td></tr></tbody></table></div>
+<div class="table"><table><tbody><tr><th scope="row">Numbers</th><td>15.4 (build <code>M15.4-7051.0.79-2</code>)</td></tr><tr><th scope="row">macOS</th><td>26.5.2 (25F84)</td></tr><tr><th scope="row">Date</th><td>2026-11-09</td></tr><tr><th scope="row">Baseline</th><td>Experiment <a href="0030-tiles.html">0030</a></td></tr></tbody></table></div>
 <h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section: Recipe">#</a></h2>
 <pre class="lang-bash"><code>mkdir -p samples/0063
 osascript recipes/0063-numbers-sparse-rows.applescript &quot;$PWD/samples/0063/sparse.numbers&quot;</code></pre>
 <p>The recipe sets the first table's row count to 1000 and puts 1 in B2, 2 in B600 and 3 in B1000. Counted from 0, those are rows 1, 599 and 999.</p>
 <h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section: Observation">#</a></h2>
 <p>The table model's tile list (field 4.3):</p>
-<div class="table"><table><thead><tr><th>Tile index (4.3.1.1)</th><th>Tile</th><th>Row entries (5.1)</th><th>Field 4</th></tr></thead><tbody><tr><td>0</td><td>904547, <code>Tables/Tile.iwa</code></td><td>1</td><td>1</td></tr><tr><td>2</td><td>905237, <code>Tables/Tile-905237.iwa</code></td><td>87</td><td>1</td></tr><tr><td>3</td><td>905241, <code>Tables/Tile-905241.iwa</code></td><td>231</td><td>1</td></tr></tbody></table></div>
+<div class="table"><table><thead><tr><th scope="col">Tile index (4.3.1.1)</th><th scope="col">Tile</th><th scope="col">Row entries (5.1)</th><th scope="col">Field 4</th></tr></thead><tbody><tr><td>0</td><td>904547, <code>Tables/Tile.iwa</code></td><td>1</td><td>1</td></tr><tr><td>2</td><td>905237, <code>Tables/Tile-905237.iwa</code></td><td>87</td><td>1</td></tr><tr><td>3</td><td>905241, <code>Tables/Tile-905241.iwa</code></td><td>231</td><td>1</td></tr></tbody></table></div>
 <p>Field 4.3.2 is 256. There is no tile with index 1. The empty tile <code>Tile-905022-2.iwa</code> from <a href="0030-tiles.html">0030</a> is also present.</p>
 <h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section: Conclusion">#</a></h2>
 <p>Only tiles with content are stored, and the tile list skips the others: index 1, for rows 256–511, is missing. The rule from 0030 holds for every stored row: tile index × 256 + local row = 2 × 256 + 87 = 599 and 3 × 256 + 231 = 999. A reader has to use each entry's tile index, not its position in the list.</p>
@@ -43,10 +43,28 @@ osascript recipes/0063-numbers-sparse-rows.applescript &quot;$PWD/samples/0063/s
   var narrow = window.matchMedia("(max-width: 48rem)");
   var middle = window.matchMedia("(max-width: 72rem)");
   var side = document.querySelector(".side > details"), toc = document.querySelector(".toc > details");
+  var tocSummary = document.querySelector(".toc summary");
   function fit() {
     if (side) side.open = !narrow.matches;
     if (toc) toc.open = !middle.matches;
+    // On wide screens the list can't fold, so its heading isn't a control.
+    if (tocSummary) { if (middle.matches) tocSummary.removeAttribute("tabindex"); else tocSummary.tabIndex = -1; }
+    scrollers();
   }
+  // A table or code block wider than the page scrolls sideways; make it reachable by keyboard, with a name.
+  function scrollers() {
+    var boxes = document.querySelectorAll("main .table, main pre");
+    for (var i = 0; i < boxes.length; i++) {
+      var b = boxes[i];
+      if (b.scrollWidth > b.clientWidth + 1) {
+        b.tabIndex = 0; b.setAttribute("role", "region");
+        b.setAttribute("aria-label", (b.tagName === "PRE" ? "Code" : "Table") + ", scrolls sideways");
+      } else if (b.hasAttribute("role")) {
+        b.removeAttribute("tabindex"); b.removeAttribute("role"); b.removeAttribute("aria-label");
+      }
+    }
+  }
+  window.addEventListener("resize", scrollers);
   fit();
   if (narrow.addEventListener) { narrow.addEventListener("change", fit); middle.addEventListener("change", fit); }
   // The release dropdown closes when you click anywhere else.

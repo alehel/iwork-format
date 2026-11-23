@@ -26,10 +26,28 @@
   var narrow = window.matchMedia("(max-width: 48rem)");
   var middle = window.matchMedia("(max-width: 72rem)");
   var side = document.querySelector(".side > details"), toc = document.querySelector(".toc > details");
+  var tocSummary = document.querySelector(".toc summary");
   function fit() {
     if (side) side.open = !narrow.matches;
     if (toc) toc.open = !middle.matches;
+    // On wide screens the list can't fold, so its heading isn't a control.
+    if (tocSummary) { if (middle.matches) tocSummary.removeAttribute("tabindex"); else tocSummary.tabIndex = -1; }
+    scrollers();
   }
+  // A table or code block wider than the page scrolls sideways; make it reachable by keyboard, with a name.
+  function scrollers() {
+    var boxes = document.querySelectorAll("main .table, main pre");
+    for (var i = 0; i < boxes.length; i++) {
+      var b = boxes[i];
+      if (b.scrollWidth > b.clientWidth + 1) {
+        b.tabIndex = 0; b.setAttribute("role", "region");
+        b.setAttribute("aria-label", (b.tagName === "PRE" ? "Code" : "Table") + ", scrolls sideways");
+      } else if (b.hasAttribute("role")) {
+        b.removeAttribute("tabindex"); b.removeAttribute("role"); b.removeAttribute("aria-label");
+      }
+    }
+  }
+  window.addEventListener("resize", scrollers);
   fit();
   if (narrow.addEventListener) { narrow.addEventListener("change", fit); middle.addEventListener("change", fit); }
   // The release dropdown closes when you click anywhere else.

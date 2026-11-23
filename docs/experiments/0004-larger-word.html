@@ -20,7 +20,7 @@
 <p>The first style change. One word of two is set in a larger size, so the text has two runs, and a run table should show where the second starts. With an emoji in the text, the boundaries also show how the document itself counts positions.</p>
 <p>The AppleScript dictionary has no bold, but it can set the size, font and colour of a range of text. Size was used because it changes one value and nothing else.</p>
 <h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section: Setup">#</a></h2>
-<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Pages</td><td>15.4 (build <code>M15.4-7051.0.79-2</code>)</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-09</td></tr><tr><td>Baseline</td><td>The same text with no size change, saved by the same recipe (<code>plain.pages</code>, <code>emoji-plain.pages</code>)</td></tr></tbody></table></div>
+<div class="table"><table><tbody><tr><th scope="row">Pages</th><td>15.4 (build <code>M15.4-7051.0.79-2</code>)</td></tr><tr><th scope="row">macOS</th><td>26.5.2 (25F84)</td></tr><tr><th scope="row">Date</th><td>2026-11-09</td></tr><tr><th scope="row">Baseline</th><td>The same text with no size change, saved by the same recipe (<code>plain.pages</code>, <code>emoji-plain.pages</code>)</td></tr></tbody></table></div>
 <h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section: Recipe">#</a></h2>
 <pre class="lang-bash"><code>mkdir -p samples/0004
 R=recipes/0004-larger-word.applescript
@@ -29,7 +29,7 @@ osascript $R &quot;$PWD/samples/0004/large.pages&quot; &quot;hello world&quot;
 osascript $R &quot;$PWD/samples/0004/emoji-plain.pages&quot; &quot;hi🙂 world&quot; 0
 osascript $R &quot;$PWD/samples/0004/emoji-large.pages&quot; &quot;hi🙂 world&quot;</code></pre>
 <p>The recipe sets the body text, then sets the size of word 2 to 24 points. The body's default is 11 points. Pages splits <code>hi🙂 world</code> into three words, <code>hi</code>, <code>🙂</code> and <code>world</code>, so word 2 there is the emoji:</p>
-<div class="table"><table><thead><tr><th>Text</th><th>Word 2</th><th>Starts at (UTF-16 / code points / bytes)</th><th>Ends at (UTF-16 / code points / bytes)</th></tr></thead><tbody><tr><td><code>hello world</code></td><td><code>world</code></td><td>6 / 6 / 6</td><td>11 / 11 / 11</td></tr><tr><td><code>hi🙂 world</code></td><td><code>🙂</code></td><td>2 / 2 / 2</td><td>4 / 3 / 6</td></tr></tbody></table></div>
+<div class="table"><table><thead><tr><th scope="col">Text</th><th scope="col">Word 2</th><th scope="col">Starts at (UTF-16 / code points / bytes)</th><th scope="col">Ends at (UTF-16 / code points / bytes)</th></tr></thead><tbody><tr><td><code>hello world</code></td><td><code>world</code></td><td>6 / 6 / 6</td><td>11 / 11 / 11</td></tr><tr><td><code>hi🙂 world</code></td><td><code>🙂</code></td><td>2 / 2 / 2</td><td>4 / 3 / 6</td></tr></tbody></table></div>
 <p>Records were paired by position within each part and compared as <code>iwork-probe proto --decoded</code> trees, as in 0002.</p>
 <h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section: Observation">#</a></h2>
 <h3 id="a-run-table-in-the-bodys-type-2001-record">A run table in the body's type-2001 record<a class="anchor" href="#a-run-table-in-the-bodys-type-2001-record" aria-label="Link to this section: A run table in the body&#x27;s type-2001 record">#</a></h3>
@@ -66,7 +66,7 @@ osascript $R &quot;$PWD/samples/0004/emoji-large.pages&quot; &quot;hi🙂 world&
 <p>Object 1731539 is also of type 2021, and its payload holds the texts <code>Ingen</code> (Norwegian for "None") and <code>character-style-null</code>. Object 1732613 is the type-401 object that record 2001 names in its field 2. That object grew by 20 bytes, and <code>Metadata.iwa</code> record 2 gained entries naming 1732647.</p>
 <h3 id="what-the-other-lists-point-at">What the other lists point at<a class="anchor" href="#what-the-other-lists-point-at" aria-label="Link to this section: What the other lists point at">#</a></h3>
 <p>The objects named by the body's other lists, from 0002, hold these texts:</p>
-<div class="table"><table><thead><tr><th>Field of 2001</th><th>Object</th><th>Type</th><th>Texts in it</th></tr></thead><tbody><tr><td>5</td><td>1731511</td><td>2022</td><td><code>Brødtekst</code>, <code>text-20-paragraphstyle-Body 1</code>, <code>HelveticaNeue</code></td></tr><tr><td>7</td><td>1731481</td><td>2023</td><td><code>Ingen</code>, <code>text-0-liststyle-None</code></td></tr><tr><td>12</td><td>1732607</td><td>2024</td><td>(none)</td></tr></tbody></table></div>
+<div class="table"><table><thead><tr><th scope="col">Field of 2001</th><th scope="col">Object</th><th scope="col">Type</th><th scope="col">Texts in it</th></tr></thead><tbody><tr><td>5</td><td>1731511</td><td>2022</td><td><code>Brødtekst</code>, <code>text-20-paragraphstyle-Body 1</code>, <code>HelveticaNeue</code></td></tr><tr><td>7</td><td>1731481</td><td>2023</td><td><code>Ingen</code>, <code>text-0-liststyle-None</code></td></tr><tr><td>12</td><td>1732607</td><td>2024</td><td>(none)</td></tr></tbody></table></div>
 <p>The 18 other type-2001 records name object 1731520 in field 5. It is of type 2022 and holds <code>Topptekst og bunntekst</code> (Norwegian for "Header and footer") and <code>text-29-paragraphstyle-Header &amp; Footer</code>.</p>
 <p><code>DocumentStylesheet.iwa</code> holds 242 records of type 2022, 9 of type 2021 and 9 of type 2023.</p>
 <h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section: Conclusion">#</a></h2>
@@ -89,10 +89,28 @@ osascript $R &quot;$PWD/samples/0004/emoji-large.pages&quot; &quot;hi🙂 world&
   var narrow = window.matchMedia("(max-width: 48rem)");
   var middle = window.matchMedia("(max-width: 72rem)");
   var side = document.querySelector(".side > details"), toc = document.querySelector(".toc > details");
+  var tocSummary = document.querySelector(".toc summary");
   function fit() {
     if (side) side.open = !narrow.matches;
     if (toc) toc.open = !middle.matches;
+    // On wide screens the list can't fold, so its heading isn't a control.
+    if (tocSummary) { if (middle.matches) tocSummary.removeAttribute("tabindex"); else tocSummary.tabIndex = -1; }
+    scrollers();
   }
+  // A table or code block wider than the page scrolls sideways; make it reachable by keyboard, with a name.
+  function scrollers() {
+    var boxes = document.querySelectorAll("main .table, main pre");
+    for (var i = 0; i < boxes.length; i++) {
+      var b = boxes[i];
+      if (b.scrollWidth > b.clientWidth + 1) {
+        b.tabIndex = 0; b.setAttribute("role", "region");
+        b.setAttribute("aria-label", (b.tagName === "PRE" ? "Code" : "Table") + ", scrolls sideways");
+      } else if (b.hasAttribute("role")) {
+        b.removeAttribute("tabindex"); b.removeAttribute("role"); b.removeAttribute("aria-label");
+      }
+    }
+  }
+  window.addEventListener("resize", scrollers);
   fit();
   if (narrow.addEventListener) { narrow.addEventListener("change", fit); middle.addEventListener("change", fit); }
   // The release dropdown closes when you click anywhere else.

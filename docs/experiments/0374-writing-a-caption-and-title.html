@@ -19,7 +19,7 @@
 <p><strong>Status:</strong> run</p>
 <p>An object's caption and title are type-633 text shapes named in its drawable's fields 1.11 and 1.10, each with a text record of its own (<a href="0228-caption.html">0228</a>, <a href="0229-title.html">0229</a>). When they are shown but empty, Pages draws a prompt. AppleScript can't read captions, so this experiment writes text into both and reads the PDF Pages exports.</p>
 <h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section: Setup">#</a></h2>
-<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Pages</td><td>15.4, in Norwegian</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-17</td></tr><tr><td>Input</td><td><code>samples/0229/title-and-caption.pages</code>: an image with both a caption and a title shown and empty. The caption's text record is 1732703 and the title's 1732733. Neither has a field 3</td></tr><tr><td>Writer</td><td>[<code>recipes/0302-set-path.py</code>](../recipes/0302-set-path.py); exported with [<code>recipes/0372-in-app.sh</code>](../recipes/0372-in-app.sh) and read with the new [<code>recipes/0374-pdf-text.swift</code>](../recipes/0374-pdf-text.swift)</td></tr></tbody></table></div>
+<div class="table"><table><tbody><tr><th scope="row">Pages</th><td>15.4, in Norwegian</td></tr><tr><th scope="row">macOS</th><td>26.5.2 (25F84)</td></tr><tr><th scope="row">Date</th><td>2026-11-17</td></tr><tr><th scope="row">Input</th><td><code>samples/0229/title-and-caption.pages</code>: an image with both a caption and a title shown and empty. The caption's text record is 1732703 and the title's 1732733. Neither has a field 3</td></tr><tr><th scope="row">Writer</th><td>[<code>recipes/0302-set-path.py</code>](../recipes/0302-set-path.py); exported with [<code>recipes/0372-in-app.sh</code>](../recipes/0372-in-app.sh) and read with the new [<code>recipes/0374-pdf-text.swift</code>](../recipes/0374-pdf-text.swift)</td></tr></tbody></table></div>
 <h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section: Recipe">#</a></h2>
 <pre class="lang-bash"><code>mkdir -p samples/0374
 R=recipes/0302-set-path.py
@@ -35,7 +35,7 @@ done
 swift recipes/0374-pdf-text.swift samples/0374/*.pdf</code></pre>
 <p>An empty text record has no field 3 at all, so the writer adds it.</p>
 <h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section: Observation">#</a></h2>
-<div class="table"><table><thead><tr><th>File</th><th>Text of the exported page</th></tr></thead><tbody><tr><td><code>original.pages</code></td><td>One / Tittel / Infotekst</td></tr><tr><td><code>caption.pages</code></td><td>One / Tittel / Written caption</td></tr><tr><td><code>title.pages</code></td><td>One / Written title / Infotekst</td></tr><tr><td><code>both.pages</code></td><td>One / Written title / Written caption</td></tr></tbody></table></div>
+<div class="table"><table><thead><tr><th scope="col">File</th><th scope="col">Text of the exported page</th></tr></thead><tbody><tr><td><code>original.pages</code></td><td>One / Tittel / Infotekst</td></tr><tr><td><code>caption.pages</code></td><td>One / Tittel / Written caption</td></tr><tr><td><code>title.pages</code></td><td>One / Written title / Infotekst</td></tr><tr><td><code>both.pages</code></td><td>One / Written title / Written caption</td></tr></tbody></table></div>
 <p><em>Tittel</em> and <em>Infotekst</em> are the Norwegian prompts for an empty title and caption.</p>
 <h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section: Conclusion">#</a></h2>
 <p>The caption's and the title's text are the text records their type-633 shapes name, and Pages draws whatever is written there in place of the prompt. An empty one is drawn as the prompt in the app's language. A reader that wants the document's own words should treat an empty caption or title as having no text, not print a prompt.</p>
@@ -51,10 +51,28 @@ swift recipes/0374-pdf-text.swift samples/0374/*.pdf</code></pre>
   var narrow = window.matchMedia("(max-width: 48rem)");
   var middle = window.matchMedia("(max-width: 72rem)");
   var side = document.querySelector(".side > details"), toc = document.querySelector(".toc > details");
+  var tocSummary = document.querySelector(".toc summary");
   function fit() {
     if (side) side.open = !narrow.matches;
     if (toc) toc.open = !middle.matches;
+    // On wide screens the list can't fold, so its heading isn't a control.
+    if (tocSummary) { if (middle.matches) tocSummary.removeAttribute("tabindex"); else tocSummary.tabIndex = -1; }
+    scrollers();
   }
+  // A table or code block wider than the page scrolls sideways; make it reachable by keyboard, with a name.
+  function scrollers() {
+    var boxes = document.querySelectorAll("main .table, main pre");
+    for (var i = 0; i < boxes.length; i++) {
+      var b = boxes[i];
+      if (b.scrollWidth > b.clientWidth + 1) {
+        b.tabIndex = 0; b.setAttribute("role", "region");
+        b.setAttribute("aria-label", (b.tagName === "PRE" ? "Code" : "Table") + ", scrolls sideways");
+      } else if (b.hasAttribute("role")) {
+        b.removeAttribute("tabindex"); b.removeAttribute("role"); b.removeAttribute("aria-label");
+      }
+    }
+  }
+  window.addEventListener("resize", scrollers);
   fit();
   if (narrow.addEventListener) { narrow.addEventListener("change", fit); middle.addEventListener("change", fit); }
   // The release dropdown closes when you click anywhere else.

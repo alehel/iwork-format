@@ -19,7 +19,7 @@
 <p><strong>Status:</strong> run</p>
 <p><a href="0010-alignment.html">0010</a> read the font name (field 11.5) from the Body style. This experiment changes only one word's font, to confirm field 11.5 on its own and check the style rule of <a href="0033-style-resolution.html">0033</a> for it.</p>
 <h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section: Setup">#</a></h2>
-<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Pages</td><td>15.4 (build <code>M15.4-7051.0.79-2</code>)</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-09</td></tr><tr><td>Baseline</td><td>Experiment <a href="0008-runs-and-shared-styles.html">0008</a>, <code>middle.pages</code></td></tr></tbody></table></div>
+<div class="table"><table><tbody><tr><th scope="row">Pages</th><td>15.4 (build <code>M15.4-7051.0.79-2</code>)</td></tr><tr><th scope="row">macOS</th><td>26.5.2 (25F84)</td></tr><tr><th scope="row">Date</th><td>2026-11-09</td></tr><tr><th scope="row">Baseline</th><td>Experiment <a href="0008-runs-and-shared-styles.html">0008</a>, <code>middle.pages</code></td></tr></tbody></table></div>
 <h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section: Recipe">#</a></h2>
 <pre class="lang-bash"><code>mkdir -p samples/0053
 osascript recipes/0053-pages-font.applescript &quot;$PWD/samples/0053/font.pages&quot;</code></pre>
@@ -28,7 +28,7 @@ osascript recipes/0053-pages-font.applescript &quot;$PWD/samples/0053/font.pages
 <p>The character-style runs have <code>two</code> (4–7) on a new type-2021 style, 1732647, with one property:</p>
 <pre><code>10: 1
 11: { 5: &quot;Georgia&quot; }</code></pre>
-<div class="table"><table><thead><tr><th>Word</th><th>Pages reports</th><th>Predicted by the 0033 rule</th></tr></thead><tbody><tr><td>one</td><td>HelveticaNeue, 11</td><td>same</td></tr><tr><td>two</td><td>Georgia, 11</td><td>same</td></tr><tr><td>three</td><td>HelveticaNeue, 11</td><td>same</td></tr></tbody></table></div>
+<div class="table"><table><thead><tr><th scope="col">Word</th><th scope="col">Pages reports</th><th scope="col">Predicted by the 0033 rule</th></tr></thead><tbody><tr><td>one</td><td>HelveticaNeue, 11</td><td>same</td></tr><tr><td>two</td><td>Georgia, 11</td><td>same</td></tr><tr><td>three</td><td>HelveticaNeue, 11</td><td>same</td></tr></tbody></table></div>
 <h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section: Conclusion">#</a></h2>
 <p>Field 11.5 of a character style is the font name, and a style can set it alone: the size comes from the paragraph style. The style rule holds for fonts set this way.</p>
 <h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section: Confidence">#</a></h2>
@@ -43,10 +43,28 @@ osascript recipes/0053-pages-font.applescript &quot;$PWD/samples/0053/font.pages
   var narrow = window.matchMedia("(max-width: 48rem)");
   var middle = window.matchMedia("(max-width: 72rem)");
   var side = document.querySelector(".side > details"), toc = document.querySelector(".toc > details");
+  var tocSummary = document.querySelector(".toc summary");
   function fit() {
     if (side) side.open = !narrow.matches;
     if (toc) toc.open = !middle.matches;
+    // On wide screens the list can't fold, so its heading isn't a control.
+    if (tocSummary) { if (middle.matches) tocSummary.removeAttribute("tabindex"); else tocSummary.tabIndex = -1; }
+    scrollers();
   }
+  // A table or code block wider than the page scrolls sideways; make it reachable by keyboard, with a name.
+  function scrollers() {
+    var boxes = document.querySelectorAll("main .table, main pre");
+    for (var i = 0; i < boxes.length; i++) {
+      var b = boxes[i];
+      if (b.scrollWidth > b.clientWidth + 1) {
+        b.tabIndex = 0; b.setAttribute("role", "region");
+        b.setAttribute("aria-label", (b.tagName === "PRE" ? "Code" : "Table") + ", scrolls sideways");
+      } else if (b.hasAttribute("role")) {
+        b.removeAttribute("tabindex"); b.removeAttribute("role"); b.removeAttribute("aria-label");
+      }
+    }
+  }
+  window.addEventListener("resize", scrollers);
   fit();
   if (narrow.addEventListener) { narrow.addEventListener("change", fit); middle.addEventListener("change", fit); }
   // The release dropdown closes when you click anywhere else.

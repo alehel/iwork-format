@@ -19,7 +19,7 @@
 <p><strong>Status:</strong> run</p>
 <p>Everything so far was found with the 15.4 apps. This experiment saves the simplest documents with the older Pages and Numbers 14.5, using the recipes of the first experiments unchanged, and compares their structure with the 15.4 documents those recipes made.</p>
 <h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section: Setup">#</a></h2>
-<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Pages</td><td>14.5 (build <code>M14.5-7045.0.17-4</code>), in Norwegian</td></tr><tr><td>Numbers</td><td>14.5</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-23</td></tr><tr><td>Compared with</td><td><code>samples/0001/empty-a.pages</code>, <code>samples/0002/hello.pages</code> and <code>samples/0026/cells.numbers</code>, from Pages and Numbers 15.4</td></tr><tr><td>Script</td><td>The new [<code>recipes/0461-compare-structure.py</code>](../recipes/0461-compare-structure.py), which compares two documents' ZIP entries, <code>Properties.plist</code> and <code>BuildVersionHistory.plist</code>, and for each part the records of each type, each type's version (header field 2.2) and the top-level fields each type uses</td></tr></tbody></table></div>
+<div class="table"><table><tbody><tr><th scope="row">Pages</th><td>14.5 (build <code>M14.5-7045.0.17-4</code>), in Norwegian</td></tr><tr><th scope="row">Numbers</th><td>14.5</td></tr><tr><th scope="row">macOS</th><td>26.5.2 (25F84)</td></tr><tr><th scope="row">Date</th><td>2026-11-23</td></tr><tr><th scope="row">Compared with</th><td><code>samples/0001/empty-a.pages</code>, <code>samples/0002/hello.pages</code> and <code>samples/0026/cells.numbers</code>, from Pages and Numbers 15.4</td></tr><tr><th scope="row">Script</th><td>The new [<code>recipes/0461-compare-structure.py</code>](../recipes/0461-compare-structure.py), which compares two documents' ZIP entries, <code>Properties.plist</code> and <code>BuildVersionHistory.plist</code>, and for each part the records of each type, each type's version (header field 2.2) and the top-level fields each type uses</td></tr></tbody></table></div>
 <p>The 14.5 apps are installed as <code>Pages</code> and <code>Numbers</code>, without the 15.4 apps' "Creator Studio" in their names. [<code>recipes/0372-in-app.sh</code>](../recipes/0372-in-app.sh) now uses whichever is installed.</p>
 <h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section: Recipe">#</a></h2>
 <pre class="lang-bash"><code>mkdir -p samples/0461
@@ -32,7 +32,7 @@ python3 -I recipes/0461-compare-structure.py samples/0026/cells.numbers samples/
 <h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section: Observation">#</a></h2>
 <p>The same in all three pairs: the same ZIP entries, the same parts, the same number of records of every type in every part but one, and the same version in header field 2.2 for every type both releases write.</p>
 <p>The differences, besides UUIDs:</p>
-<div class="table"><table><thead><tr><th></th><th>15.4</th><th>14.5</th></tr></thead><tbody><tr><td><code>Properties.plist</code> <code>fileFormatVersion</code></td><td><code>26.4.0</code></td><td><code>14.4.1</code></td></tr><tr><td><code>Properties.plist</code> flags</td><td><code>hasExternalReferenceOrMissingData</code> and <code>hasUnmaterializedRemoteData</code>, both false</td><td><code>hasExternalReferenceOrMissingOrUnmaterializedRemoteData</code>, false</td></tr><tr><td><code>BuildVersionHistory.plist</code></td><td><code>Template: Blank (dev/15.4)</code>, <code>M15.4-7051.0.79-2</code></td><td><code>Template: Blank (13.2)</code> (Numbers: <code>(11.2)</code>), <code>M14.5-7045.0.17-4</code></td></tr><tr><td><code>CalculationEngine.iwa</code></td><td>a type-4011 record, empty, named by field 15 of the engine's root (type 4000)</td><td>neither the record nor field 15</td></tr><tr><td>Numbers' <code>DocumentStylesheet.iwa</code></td><td>245 paragraph styles (type 2022)</td><td>244</td></tr></tbody></table></div>
+<div class="table"><table><thead><tr><th scope="col"></th><th scope="col">15.4</th><th scope="col">14.5</th></tr></thead><tbody><tr><td><code>Properties.plist</code> <code>fileFormatVersion</code></td><td><code>26.4.0</code></td><td><code>14.4.1</code></td></tr><tr><td><code>Properties.plist</code> flags</td><td><code>hasExternalReferenceOrMissingData</code> and <code>hasUnmaterializedRemoteData</code>, both false</td><td><code>hasExternalReferenceOrMissingOrUnmaterializedRemoteData</code>, false</td></tr><tr><td><code>BuildVersionHistory.plist</code></td><td><code>Template: Blank (dev/15.4)</code>, <code>M15.4-7051.0.79-2</code></td><td><code>Template: Blank (13.2)</code> (Numbers: <code>(11.2)</code>), <code>M14.5-7045.0.17-4</code></td></tr><tr><td><code>CalculationEngine.iwa</code></td><td>a type-4011 record, empty, named by field 15 of the engine's root (type 4000)</td><td>neither the record nor field 15</td></tr><tr><td>Numbers' <code>DocumentStylesheet.iwa</code></td><td>245 paragraph styles (type 2022)</td><td>244</td></tr></tbody></table></div>
 <h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section: Conclusion">#</a></h2>
 <p>Pages and Numbers 14.5 write the same format as 15.4: everything the spec describes for these documents is laid out the same way, down to the record versions. The release that saved a document can be told from <code>fileFormatVersion</code> in <code>Properties.plist</code> and from the build in <code>BuildVersionHistory.plist</code>; the format version doesn't follow the app's version (14.5 writes 14.4.1, 15.4 writes 26.4.0). 15.4 adds an empty type-4011 record to the calculation engine, which a reader can ignore as it ignores the engine. Whether larger documents differ more is for the next experiments.</p>
 <h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section: Confidence">#</a></h2>
@@ -47,10 +47,28 @@ python3 -I recipes/0461-compare-structure.py samples/0026/cells.numbers samples/
   var narrow = window.matchMedia("(max-width: 48rem)");
   var middle = window.matchMedia("(max-width: 72rem)");
   var side = document.querySelector(".side > details"), toc = document.querySelector(".toc > details");
+  var tocSummary = document.querySelector(".toc summary");
   function fit() {
     if (side) side.open = !narrow.matches;
     if (toc) toc.open = !middle.matches;
+    // On wide screens the list can't fold, so its heading isn't a control.
+    if (tocSummary) { if (middle.matches) tocSummary.removeAttribute("tabindex"); else tocSummary.tabIndex = -1; }
+    scrollers();
   }
+  // A table or code block wider than the page scrolls sideways; make it reachable by keyboard, with a name.
+  function scrollers() {
+    var boxes = document.querySelectorAll("main .table, main pre");
+    for (var i = 0; i < boxes.length; i++) {
+      var b = boxes[i];
+      if (b.scrollWidth > b.clientWidth + 1) {
+        b.tabIndex = 0; b.setAttribute("role", "region");
+        b.setAttribute("aria-label", (b.tagName === "PRE" ? "Code" : "Table") + ", scrolls sideways");
+      } else if (b.hasAttribute("role")) {
+        b.removeAttribute("tabindex"); b.removeAttribute("role"); b.removeAttribute("aria-label");
+      }
+    }
+  }
+  window.addEventListener("resize", scrollers);
   fit();
   if (narrow.addEventListener) { narrow.addEventListener("change", fit); middle.addEventListener("change", fit); }
   // The release dropdown closes when you click anywhere else.

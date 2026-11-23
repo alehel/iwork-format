@@ -19,13 +19,13 @@
 <p><strong>Status:</strong> run</p>
 <p>Experiments 0004–0012 found character styles, paragraph styles and their parents (field 1.3), but not how they combine into the formatting a reader should show. <a href="0008-runs-and-shared-styles.html">0008</a> suggested an order without testing it. This experiment states a rule and checks its predictions against what Pages itself reports for each word, in eight earlier samples.</p>
 <h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section: Setup">#</a></h2>
-<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Pages</td><td>15.4 (build <code>M15.4-7051.0.79-2</code>)</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-09</td></tr><tr><td>Documents</td><td><code>samples/0004/large.pages</code>, <code>0006/heading-ui</code>, <code>0007/bold</code>, <code>0007/italic</code>, <code>0007/bold-italic</code>, <code>0008/middle</code>, <code>0008/two-words</code>, <code>0008/unbold-middle</code></td></tr></tbody></table></div>
+<div class="table"><table><tbody><tr><th scope="row">Pages</th><td>15.4 (build <code>M15.4-7051.0.79-2</code>)</td></tr><tr><th scope="row">macOS</th><td>26.5.2 (25F84)</td></tr><tr><th scope="row">Date</th><td>2026-11-09</td></tr><tr><th scope="row">Documents</th><td><code>samples/0004/large.pages</code>, <code>0006/heading-ui</code>, <code>0007/bold</code>, <code>0007/italic</code>, <code>0007/bold-italic</code>, <code>0008/middle</code>, <code>0008/two-words</code>, <code>0008/unbold-middle</code></td></tr></tbody></table></div>
 <h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section: Recipe">#</a></h2>
 <p><strong>What Pages shows.</strong> Each document was opened in Pages through AppleScript, and for each word of the body text, <code>font</code> and <code>size</code> were read. The font name carries the bold and italic, for example <code>HelveticaNeue-BoldItalic</code>. The documents were closed without saving.</p>
 <p><strong>What the file predicts.</strong> A throwaway script read the same documents with <code>iwork-probe</code> only, and applied this rule to each word:</p>
 <ol><li>Find the word's character style from the character-style runs (field 8 of the text record). An entry without a style means none.</li><li>Find its paragraph style from the paragraph-style runs (field 5). An entry without a style keeps the previous paragraph's style.</li><li>For each property (bold 11.1, italic 11.2, size 11.3, font 11.5), take the value from the first style that sets it. Look first in the character style, then its parent (field 1.3), then that style's parent, and so on. If none of those sets it, do the same with the paragraph style and its parents.</li><li>Name the font as Pages does: the font in 11.5, with <code>-Bold</code>, <code>-Italic</code> or <code>-BoldItalic</code> added unless the name already ends that way.</li></ol>
 <h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section: Observation">#</a></h2>
-<div class="table"><table><thead><tr><th>Document</th><th>Word</th><th>Pages reports</th><th>Predicted</th></tr></thead><tbody><tr><td>0004/large</td><td>hello</td><td>HelveticaNeue, 11</td><td>same</td></tr><tr><td></td><td>world</td><td>HelveticaNeue, 24</td><td>same</td></tr><tr><td>0006/heading-ui</td><td>One</td><td>HelveticaNeue, 11</td><td>same</td></tr><tr><td></td><td>two</td><td>HelveticaNeue-Bold, 18</td><td>same</td></tr><tr><td>0007/bold</td><td>world</td><td>HelveticaNeue-Bold, 11</td><td>same</td></tr><tr><td>0007/italic</td><td>world</td><td>HelveticaNeue-Italic, 11</td><td>same</td></tr><tr><td>0007/bold-italic</td><td>world</td><td>HelveticaNeue-BoldItalic, 11</td><td>same</td></tr><tr><td>0008/middle</td><td>one, two, three</td><td>regular, bold, regular, 11</td><td>same</td></tr><tr><td>0008/two-words</td><td>one, two, three</td><td>bold, regular, bold, 11</td><td>same</td></tr><tr><td>0008/unbold-middle</td><td>one, two, three</td><td>bold, regular, bold, 11</td><td>same</td></tr></tbody></table></div>
+<div class="table"><table><thead><tr><th scope="col">Document</th><th scope="col">Word</th><th scope="col">Pages reports</th><th scope="col">Predicted</th></tr></thead><tbody><tr><td>0004/large</td><td>hello</td><td>HelveticaNeue, 11</td><td>same</td></tr><tr><td></td><td>world</td><td>HelveticaNeue, 24</td><td>same</td></tr><tr><td>0006/heading-ui</td><td>One</td><td>HelveticaNeue, 11</td><td>same</td></tr><tr><td></td><td>two</td><td>HelveticaNeue-Bold, 18</td><td>same</td></tr><tr><td>0007/bold</td><td>world</td><td>HelveticaNeue-Bold, 11</td><td>same</td></tr><tr><td>0007/italic</td><td>world</td><td>HelveticaNeue-Italic, 11</td><td>same</td></tr><tr><td>0007/bold-italic</td><td>world</td><td>HelveticaNeue-BoldItalic, 11</td><td>same</td></tr><tr><td>0008/middle</td><td>one, two, three</td><td>regular, bold, regular, 11</td><td>same</td></tr><tr><td>0008/two-words</td><td>one, two, three</td><td>bold, regular, bold, 11</td><td>same</td></tr><tr><td>0008/unbold-middle</td><td>one, two, three</td><td>bold, regular, bold, 11</td><td>same</td></tr></tbody></table></div>
 <p>The words not shown (<code>hello</code> in 0007) were regular 11 in Pages and in the prediction. All 19 words in the 8 documents matched.</p>
 <p>The first version of the script mispredicted <code>two</code> in 0006 as <code>HelveticaNeue-Bold-Bold</code>. The Heading style's font (11.5) is <code>HelveticaNeue-Bold</code>, with bold also set in 11.1, and the script's naming added <code>-Bold</code> a second time. Bold and size had been predicted correctly. Step 4 above is the corrected naming.</p>
 <h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section: Conclusion">#</a></h2>
@@ -45,10 +45,28 @@
   var narrow = window.matchMedia("(max-width: 48rem)");
   var middle = window.matchMedia("(max-width: 72rem)");
   var side = document.querySelector(".side > details"), toc = document.querySelector(".toc > details");
+  var tocSummary = document.querySelector(".toc summary");
   function fit() {
     if (side) side.open = !narrow.matches;
     if (toc) toc.open = !middle.matches;
+    // On wide screens the list can't fold, so its heading isn't a control.
+    if (tocSummary) { if (middle.matches) tocSummary.removeAttribute("tabindex"); else tocSummary.tabIndex = -1; }
+    scrollers();
   }
+  // A table or code block wider than the page scrolls sideways; make it reachable by keyboard, with a name.
+  function scrollers() {
+    var boxes = document.querySelectorAll("main .table, main pre");
+    for (var i = 0; i < boxes.length; i++) {
+      var b = boxes[i];
+      if (b.scrollWidth > b.clientWidth + 1) {
+        b.tabIndex = 0; b.setAttribute("role", "region");
+        b.setAttribute("aria-label", (b.tagName === "PRE" ? "Code" : "Table") + ", scrolls sideways");
+      } else if (b.hasAttribute("role")) {
+        b.removeAttribute("tabindex"); b.removeAttribute("role"); b.removeAttribute("aria-label");
+      }
+    }
+  }
+  window.addEventListener("resize", scrollers);
   fit();
   if (narrow.addEventListener) { narrow.addEventListener("change", fit); middle.addEventListener("change", fit); }
   // The release dropdown closes when you click anywhere else.

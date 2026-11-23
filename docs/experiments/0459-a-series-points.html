@@ -19,7 +19,7 @@
 <p><strong>Status:</strong> run</p>
 <p>A scatter chart's points kept the theme's blue when the series style's fill properties 6 to 17 were changed (<a href="0457-series-colours-by-chart-type.html">0457</a>), and a line chart's line is stroke property 48 (<a href="0458-a-series-line-stroke.html">0458</a>). This experiment looks for what colours a scatter chart's points among the style's other colours, shadows and strokes.</p>
 <h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section: Setup">#</a></h2>
-<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Keynote</td><td>15.4, in Norwegian</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-18</td></tr><tr><td>Input</td><td><code>samples/0296/baseline.key</code>, with chart 2655552 made a scatter chart (10000.1 = 9); the first series' style is 2651484. Its properties 54 to 58 are colours like 6 to 17, 30 to 34 are shadows (a colour, an angle of 130°, an offset, a blur of 10, an opacity of 0.5 and a switch), and 47, 48, 50, 51 and 53 solid blue strokes</td></tr><tr><td>Writer</td><td>[<code>recipes/0302-set-path.py</code>](../recipes/0302-set-path.py); exported with [<code>recipes/0372-in-app.sh</code>](../recipes/0372-in-app.sh) and read with [<code>recipes/0384-pdf-colours.swift</code>](../recipes/0384-pdf-colours.swift)</td></tr></tbody></table></div>
+<div class="table"><table><tbody><tr><th scope="row">Keynote</th><td>15.4, in Norwegian</td></tr><tr><th scope="row">macOS</th><td>26.5.2 (25F84)</td></tr><tr><th scope="row">Date</th><td>2026-11-18</td></tr><tr><th scope="row">Input</th><td><code>samples/0296/baseline.key</code>, with chart 2655552 made a scatter chart (10000.1 = 9); the first series' style is 2651484. Its properties 54 to 58 are colours like 6 to 17, 30 to 34 are shadows (a colour, an angle of 130°, an offset, a blur of 10, an opacity of 0.5 and a switch), and 47, 48, 50, 51 and 53 solid blue strokes</td></tr><tr><th scope="row">Writer</th><td>[<code>recipes/0302-set-path.py</code>](../recipes/0302-set-path.py); exported with [<code>recipes/0372-in-app.sh</code>](../recipes/0372-in-app.sh) and read with [<code>recipes/0384-pdf-colours.swift</code>](../recipes/0384-pdf-colours.swift)</td></tr></tbody></table></div>
 <h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section: Recipe">#</a></h2>
 <pre class="lang-bash"><code>mkdir -p samples/0459
 O=samples/0459
@@ -32,7 +32,7 @@ for k in 54 55 56 57 58 47 48 50 51 53; do
 done</code></pre>
 <p>The box from (700, 470) to (740, 520) holds the first series' middle point, which covers 155 blue points of the grid in <code>scatter.key</code>.</p>
 <h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section: Observation">#</a></h2>
-<div class="table"><table><thead><tr><th>Property written red</th><th>Red points</th><th>Blue points</th></tr></thead><tbody><tr><td>none</td><td>0</td><td>155</td></tr><tr><td>colours 54 to 58, each</td><td>0</td><td>155</td></tr><tr><td>strokes 47, 48, 50 and 51, each</td><td>0</td><td>155</td></tr><tr><td>stroke 53</td><td>49</td><td>102</td></tr></tbody></table></div>
+<div class="table"><table><thead><tr><th scope="col">Property written red</th><th scope="col">Red points</th><th scope="col">Blue points</th></tr></thead><tbody><tr><td>none</td><td>0</td><td>155</td></tr><tr><td>colours 54 to 58, each</td><td>0</td><td>155</td></tr><tr><td>strokes 47, 48, 50 and 51, each</td><td>0</td><td>155</td></tr><tr><td>stroke 53</td><td>49</td><td>102</td></tr></tbody></table></div>
 <h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section: Conclusion">#</a></h2>
 <p>Stroke property 53 is the outline of a scatter chart's points: written red, it drew a red ring of 49 grid points around a still blue centre. The points' fill is in none of the colour properties 6 to 17 and 54 to 58, nor the strokes; where it is is <em>unknown</em>. The theme's series style keeps it the same blue as everything else, so a reader can use property 53's colour for the whole point and be right for the documents Keynote makes.</p>
 <h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section: Confidence">#</a></h2>
@@ -47,10 +47,28 @@ done</code></pre>
   var narrow = window.matchMedia("(max-width: 48rem)");
   var middle = window.matchMedia("(max-width: 72rem)");
   var side = document.querySelector(".side > details"), toc = document.querySelector(".toc > details");
+  var tocSummary = document.querySelector(".toc summary");
   function fit() {
     if (side) side.open = !narrow.matches;
     if (toc) toc.open = !middle.matches;
+    // On wide screens the list can't fold, so its heading isn't a control.
+    if (tocSummary) { if (middle.matches) tocSummary.removeAttribute("tabindex"); else tocSummary.tabIndex = -1; }
+    scrollers();
   }
+  // A table or code block wider than the page scrolls sideways; make it reachable by keyboard, with a name.
+  function scrollers() {
+    var boxes = document.querySelectorAll("main .table, main pre");
+    for (var i = 0; i < boxes.length; i++) {
+      var b = boxes[i];
+      if (b.scrollWidth > b.clientWidth + 1) {
+        b.tabIndex = 0; b.setAttribute("role", "region");
+        b.setAttribute("aria-label", (b.tagName === "PRE" ? "Code" : "Table") + ", scrolls sideways");
+      } else if (b.hasAttribute("role")) {
+        b.removeAttribute("tabindex"); b.removeAttribute("role"); b.removeAttribute("aria-label");
+      }
+    }
+  }
+  window.addEventListener("resize", scrollers);
   fit();
   if (narrow.addEventListener) { narrow.addEventListener("change", fit); middle.addEventListener("change", fit); }
   // The release dropdown closes when you click anywhere else.

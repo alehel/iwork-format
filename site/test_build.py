@@ -55,9 +55,14 @@ class Headings(Case):
 class Tables(Case):
     def test_header_body_and_inline(self):
         out = self.render("| Field | Holds |\n| --- | --- |\n| 3 | The `text` *likely* |")
-        self.assertIn("<thead><tr><th>Field</th><th>Holds</th></tr></thead>", out)
+        self.assertIn('<thead><tr><th scope="col">Field</th><th scope="col">Holds</th></tr></thead>', out)
         self.assertIn("<td>The <code>text</code> <em>likely</em></td>", out)
         self.assertEqual(b.PROBLEMS, [])
+
+    def test_empty_header_makes_row_headers(self):
+        out = self.render("| | |\n| --- | --- |\n| Pages | 15.4 |")
+        self.assertNotIn("<thead>", out)
+        self.assertIn('<tr><th scope="row">Pages</th><td>15.4</td></tr>', out)
 
     def test_wrong_cell_count_is_reported(self):
         self.render("| A | B |\n| --- | --- |\n| 1 | 2 | 3 |")

@@ -19,12 +19,12 @@
 <p><strong>Status:</strong> run</p>
 <p><a href="0259-conditional-highlighting.html">0259</a> found that cells under a conditional highlighting rule gain flag bits 0x80 and 0x100, each followed by a key. It concluded that the match isn't cached, but compared only the flags, not the keys of matching and non-matching cells. This experiment compares the keys, using the sample from 0259.</p>
 <h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section: Setup">#</a></h2>
-<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Numbers</td><td>15.4, in Norwegian</td></tr><tr><td>Date</td><td>2026-11-09</td></tr><tr><td>Sample</td><td><code>samples/0259/highlight.numbers</code>: n = 1, 2, 3, 4 in B2–B5, highlighted where greater than 2</td></tr></tbody></table></div>
+<div class="table"><table><tbody><tr><th scope="row">Numbers</th><td>15.4, in Norwegian</td></tr><tr><th scope="row">Date</th><td>2026-11-09</td></tr><tr><th scope="row">Sample</th><td><code>samples/0259/highlight.numbers</code>: n = 1, 2, 3, 4 in B2–B5, highlighted where greater than 2</td></tr></tbody></table></div>
 <h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section: Recipe">#</a></h2>
 <p>Each cell of column B in <code>Index/Tables/Tile.iwa</code> was split as in <a href="0031-cell-kinds.html">0031</a>, and the 32-bit keys after the decimal value were read in the order of their flag bits.</p>
 <h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section: Observation">#</a></h2>
 <p>All four cells have the flags 0x3181 and four keys:</p>
-<div class="table"><table><thead><tr><th>Cell</th><th>Value</th><th>Matches</th><th>Key for 0x80</th><th>Key for 0x100</th><th>0x1000</th><th>0x2000</th></tr></thead><tbody><tr><td>B2</td><td>1</td><td>no</td><td>1</td><td>15</td><td>1</td><td>2</td></tr><tr><td>B3</td><td>2</td><td>no</td><td>1</td><td>15</td><td>1</td><td>2</td></tr><tr><td>B4</td><td>3</td><td>yes</td><td>1</td><td>0</td><td>1</td><td>2</td></tr><tr><td>B5</td><td>4</td><td>yes</td><td>1</td><td>0</td><td>1</td><td>2</td></tr></tbody></table></div>
+<div class="table"><table><thead><tr><th scope="col">Cell</th><th scope="col">Value</th><th scope="col">Matches</th><th scope="col">Key for 0x80</th><th scope="col">Key for 0x100</th><th scope="col">0x1000</th><th scope="col">0x2000</th></tr></thead><tbody><tr><td>B2</td><td>1</td><td>no</td><td>1</td><td>15</td><td>1</td><td>2</td></tr><tr><td>B3</td><td>2</td><td>no</td><td>1</td><td>15</td><td>1</td><td>2</td></tr><tr><td>B4</td><td>3</td><td>yes</td><td>1</td><td>0</td><td>1</td><td>2</td></tr><tr><td>B5</td><td>4</td><td>yes</td><td>1</td><td>0</td><td>1</td><td>2</td></tr></tbody></table></div>
 <h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section: Conclusion">#</a></h2>
 <p>The key for flag 0x80 is the cell's entry in the conditional-format list (type 9), here entry 1, shared by all four cells. The key for flag 0x100 records the result: 0 where the cell matches, and 15 where it doesn't. 0 is most likely the index of the first rule that matched, and 15 a value meaning none. So Numbers does cache which rule applies to each cell, and a reader can show the highlighting without evaluating the rule. This corrects the conclusion of 0259.</p>
 <h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section: Confidence">#</a></h2>
@@ -41,10 +41,28 @@
   var narrow = window.matchMedia("(max-width: 48rem)");
   var middle = window.matchMedia("(max-width: 72rem)");
   var side = document.querySelector(".side > details"), toc = document.querySelector(".toc > details");
+  var tocSummary = document.querySelector(".toc summary");
   function fit() {
     if (side) side.open = !narrow.matches;
     if (toc) toc.open = !middle.matches;
+    // On wide screens the list can't fold, so its heading isn't a control.
+    if (tocSummary) { if (middle.matches) tocSummary.removeAttribute("tabindex"); else tocSummary.tabIndex = -1; }
+    scrollers();
   }
+  // A table or code block wider than the page scrolls sideways; make it reachable by keyboard, with a name.
+  function scrollers() {
+    var boxes = document.querySelectorAll("main .table, main pre");
+    for (var i = 0; i < boxes.length; i++) {
+      var b = boxes[i];
+      if (b.scrollWidth > b.clientWidth + 1) {
+        b.tabIndex = 0; b.setAttribute("role", "region");
+        b.setAttribute("aria-label", (b.tagName === "PRE" ? "Code" : "Table") + ", scrolls sideways");
+      } else if (b.hasAttribute("role")) {
+        b.removeAttribute("tabindex"); b.removeAttribute("role"); b.removeAttribute("aria-label");
+      }
+    }
+  }
+  window.addEventListener("resize", scrollers);
   fit();
   if (narrow.addEventListener) { narrow.addEventListener("change", fit); middle.addEventListener("change", fit); }
   // The release dropdown closes when you click anywhere else.

@@ -17,7 +17,7 @@
 <main id="page-content" tabindex="-1">
 <h1 id="reading-a-pages-document">Reading a Pages document<a class="anchor" href="#reading-a-pages-document" aria-label="Link to this section: Reading a Pages document">#</a></h1>
 <p>This page follows one file from its ZIP listing down to the five bytes that hold its text. The file is <a href="../files/hello.pages">hello.pages</a>: a new blank document in which the word <code>hello</code> was typed and saved (<a href="../experiments/0002-one-word.html">0002</a>).</p>
-<figure><img src="../files/hello.png" alt="hello.pages as Pages prints it: the word hello at the top of an A4 page" loading="lazy"><figcaption>hello.pages as Pages prints it: the word hello at the top of an A4 page</figcaption></figure>
+<figure><img src="../files/hello.png" alt="hello.pages as Pages prints it: the word hello at the top of an A4 page" loading="lazy"><figcaption aria-hidden="true">hello.pages as Pages prints it: the word hello at the top of an A4 page</figcaption></figure>
 <h2 id="1-the-zip-package">1. The ZIP package<a class="anchor" href="#1-the-zip-package" aria-label="Link to this section: 1. The ZIP package">#</a></h2>
 <p>A <code>.pages</code> file is a ZIP archive whose entries are stored, not compressed (<a href="../spec/container.html#the-package">container.md</a>). This one holds 13 parts:</p>
 <pre class="excerpt"><code>hello.pages: ZIP file, 13 parts
@@ -35,7 +35,7 @@
          838          838  preview-micro.jpg
         1479         1479  preview-web.jpg
        13885        13885  preview.jpg</code></pre>
-<div class="table"><table><thead><tr><th>Part</th><th>Holds</th></tr></thead><tbody><tr><td><code>Index/*.iwa</code></td><td>The document's objects. Most of this page is about these.</td></tr><tr><td><code>Metadata/Properties.plist</code></td><td>A binary property list: UUIDs, file format version, flags</td></tr><tr><td><code>Metadata/DocumentIdentifier</code></td><td>The document's UUID, 36 ASCII characters</td></tr><tr><td><code>Metadata/BuildVersionHistory.plist</code></td><td>The template and the Pages build that wrote the file</td></tr><tr><td><code>preview*.jpg</code></td><td>Previews of the first page, which readers may ignore</td></tr></tbody></table></div>
+<div class="table"><table><thead><tr><th scope="col">Part</th><th scope="col">Holds</th></tr></thead><tbody><tr><td><code>Index/*.iwa</code></td><td>The document's objects. Most of this page is about these.</td></tr><tr><td><code>Metadata/Properties.plist</code></td><td>A binary property list: UUIDs, file format version, flags</td></tr><tr><td><code>Metadata/DocumentIdentifier</code></td><td>The document's UUID, 36 ASCII characters</td></tr><tr><td><code>Metadata/BuildVersionHistory.plist</code></td><td>The template and the Pages build that wrote the file</td></tr><tr><td><code>preview*.jpg</code></td><td>Previews of the first page, which readers may ignore</td></tr></tbody></table></div>
 <p>A name ending in a number, such as <code>CalculationEngine-1732610.iwa</code>, carries the ID of the part's first object. Names can change when a document is saved again, so a reader should list the parts rather than expect fixed names.</p>
 <h2 id="2-chunks">2. Chunks<a class="anchor" href="#2-chunks" aria-label="Link to this section: 2. Chunks">#</a></h2>
 <p>The text lives in <code>Index/Document.iwa</code>. An <code>.iwa</code> part is a series of chunks, each with a four-byte header: a type byte, always 0, then the length of the chunk's data as a 24-bit little-endian number (<a href="../spec/container.html#chunks">container.md</a>). This part has one chunk:</p>
@@ -46,7 +46,7 @@
 <pre class="excerpt"><code>00000000  00 06 1e 00 cb 6e 68 56 08 01 12 52 08 90 4e 12  |.....nhV...R..N.|
 00000010  03 01 00 05 18 f6 0a 22 07 0a 03 0a 01 2e 18 01  |.......&quot;........|
 00000020  22 09 01 09 f4 48 01 2f 10 01 18 01 22 0b 0a 05  |&quot;....H./....&quot;...|</code></pre>
-<div class="table"><table><thead><tr><th>Bytes</th><th>Meaning</th></tr></thead><tbody><tr><td><code>00</code></td><td>Chunk type 0</td></tr><tr><td><code>06 1e 00</code></td><td>Length 0x001e06 = 7,686 bytes of chunk data follow</td></tr><tr><td><code>cb 6e</code></td><td>Start of the chunk data, a raw Snappy block: its decoded length as a varint, 0x4b + (0x6e × 128) = 14,155</td></tr><tr><td><code>68</code></td><td>A Snappy literal tag: 0x68 &gt;&gt; 2 = 26, so 27 literal bytes follow</td></tr><tr><td><code>56 08 01 12 52 …</code></td><td>Those literal bytes: the start of the decoded data</td></tr></tbody></table></div>
+<div class="table"><table><thead><tr><th scope="col">Bytes</th><th scope="col">Meaning</th></tr></thead><tbody><tr><td><code>00</code></td><td>Chunk type 0</td></tr><tr><td><code>06 1e 00</code></td><td>Length 0x001e06 = 7,686 bytes of chunk data follow</td></tr><tr><td><code>cb 6e</code></td><td>Start of the chunk data, a raw Snappy block: its decoded length as a varint, 0x4b + (0x6e × 128) = 14,155</td></tr><tr><td><code>68</code></td><td>A Snappy literal tag: 0x68 &gt;&gt; 2 = 26, so 27 literal bytes follow</td></tr><tr><td><code>56 08 01 12 52 …</code></td><td>Those literal bytes: the start of the decoded data</td></tr></tbody></table></div>
 <p>Snappy is Google's public compression format; the chunk data is a raw block, without the framing format's stream header. Each chunk decodes to at most 65,536 bytes, and a part's decoded chunks are joined end to end.</p>
 <h2 id="3-records">3. Records<a class="anchor" href="#3-records" aria-label="Link to this section: 3. Records">#</a></h2>
 <p>The decoded data is a list of records. Each record is a varint giving the header's length, a header message, then the payload. <code>iwork-probe records</code> lists them:</p>
@@ -83,7 +83,7 @@
     2: varint 3
     3: varint 0
   5: bytes (36) 81 e0 69 82 e0 69 83 e0 69 a1 e0 69 84 e0 69 98 d7 69 85 e0 69 8c de 69 b6 dd 69 96 dd 69 bb df …</code></pre>
-<div class="table"><table><thead><tr><th>Field</th><th>Value</th><th>Meaning</th></tr></thead><tbody><tr><td>1</td><td>1</td><td>The object's ID</td></tr><tr><td>2.1</td><td>10000</td><td>The object's type: a Pages document root</td></tr><tr><td>2.2</td><td><code>01 00 05</code></td><td>A version, 1.0.5</td></tr><tr><td>2.3</td><td>1,398</td><td>The payload's length in bytes</td></tr><tr><td>2.4</td><td></td><td>Groups of further referenced IDs</td></tr><tr><td>2.5</td><td>packed varints</td><td>IDs of objects the payload refers to</td></tr></tbody></table></div>
+<div class="table"><table><thead><tr><th scope="col">Field</th><th scope="col">Value</th><th scope="col">Meaning</th></tr></thead><tbody><tr><td>1</td><td>1</td><td>The object's ID</td></tr><tr><td>2.1</td><td>10000</td><td>The object's type: a Pages document root</td></tr><tr><td>2.2</td><td><code>01 00 05</code></td><td>A version, 1.0.5</td></tr><tr><td>2.3</td><td>1,398</td><td>The payload's length in bytes</td></tr><tr><td>2.4</td><td></td><td>Groups of further referenced IDs</td></tr><tr><td>2.5</td><td>packed varints</td><td>IDs of objects the payload refers to</td></tr></tbody></table></div>
 <p>So the payload is the 1,398 bytes after the header, at offset 1 + 86 = 87, as the records listing shows. Field 2 can repeat when a record has more than one payload; the payloads then follow each other (<a href="../spec/container.html#records">container.md</a>).</p>
 <h2 id="4-the-document-root">4. The document root<a class="anchor" href="#4-the-document-root" aria-label="Link to this section: 4. The document root">#</a></h2>
 <p>Object 1 is the root of a Pages document. Its payload is another Protocol Buffers message. Without a schema, a reader sees only field numbers and wire types; the specification gives them meaning. These are some of its fields:</p>
@@ -106,12 +106,12 @@
 33: fixed32 1113769356 (as float 56.692917)
 34: fixed32 1113769356 (as float 56.692917)
 35: fixed32 1113769356 (as float 56.692917)</code></pre>
-<div class="table"><table><thead><tr><th>Field</th><th>Meaning</th></tr></thead><tbody><tr><td>2</td><td>A reference (field 1 inside holds an ID) to the stylesheet, object 1732613</td></tr><tr><td>4</td><td>A reference to the body text, object 1732539</td></tr><tr><td>30, 31</td><td>Paper width and height in points: 595.28 × 841.89 is A4</td></tr><tr><td>32–35</td><td>Left, right, top and bottom margins: 56.69 points, which is 2 cm</td></tr></tbody></table></div>
+<div class="table"><table><thead><tr><th scope="col">Field</th><th scope="col">Meaning</th></tr></thead><tbody><tr><td>2</td><td>A reference (field 1 inside holds an ID) to the stylesheet, object 1732613</td></tr><tr><td>4</td><td>A reference to the body text, object 1732539</td></tr><tr><td>30, 31</td><td>Paper width and height in points: 595.28 × 841.89 is A4</td></tr><tr><td>32–35</td><td>Left, right, top and bottom margins: 56.69 points, which is 2 cm</td></tr></tbody></table></div>
 <p>Floats are stored as 32-bit fixed-width fields, which <code>iwork-probe</code> shows both as integers and as floats. A reference is always a small message whose field 1 is an ID; every ID referenced this way is also listed in the record's header, which is how a reader can walk from the roots to every object without understanding each type (<a href="../spec/container.html#following-references">container.md</a>).</p>
 <h2 id="5-the-body-text">5. The body text<a class="anchor" href="#5-the-body-text" aria-label="Link to this section: 5. The body text">#</a></h2>
 <p>Following root field 4 leads to object 1732539, a record of type 2001: a text storage. Its payload starts with these bytes:</p>
 <pre class="excerpt"><code>00002e72  08 00 12 04 08 85 e0 69 1a 05 68 65 6c 6c 6f 2a  |.......i..hello*|</code></pre>
-<div class="table"><table><thead><tr><th>Bytes</th><th>Field</th><th>Meaning</th></tr></thead><tbody><tr><td><code>08 00</code></td><td>1 = 0</td><td>Field 1, varint 0: this is the body, not a header or footer</td></tr><tr><td><code>12 04 08 85 e0 69</code></td><td>2 = { 1: 1732613 }</td><td>A reference to the stylesheet</td></tr><tr><td><code>1a 05 68 65 6c 6c 6f</code></td><td>3 = "hello"</td><td>Field 3, length 5: the text, as UTF-8</td></tr><tr><td><code>2a …</code></td><td>5</td><td>The paragraph run table follows</td></tr></tbody></table></div>
+<div class="table"><table><thead><tr><th scope="col">Bytes</th><th scope="col">Field</th><th scope="col">Meaning</th></tr></thead><tbody><tr><td><code>08 00</code></td><td>1 = 0</td><td>Field 1, varint 0: this is the body, not a header or footer</td></tr><tr><td><code>12 04 08 85 e0 69</code></td><td>2 = { 1: 1732613 }</td><td>A reference to the stylesheet</td></tr><tr><td><code>1a 05 68 65 6c 6c 6f</code></td><td>3 = "hello"</td><td>Field 3, length 5: the text, as UTF-8</td></tr><tr><td><code>2a …</code></td><td>5</td><td>The paragraph run table follows</td></tr></tbody></table></div>
 <p>The same record, decoded:</p>
 <pre class="excerpt"><code>1: varint 0
 2: message (4 bytes)
@@ -158,10 +158,28 @@ hello</code></pre>
   var narrow = window.matchMedia("(max-width: 48rem)");
   var middle = window.matchMedia("(max-width: 72rem)");
   var side = document.querySelector(".side > details"), toc = document.querySelector(".toc > details");
+  var tocSummary = document.querySelector(".toc summary");
   function fit() {
     if (side) side.open = !narrow.matches;
     if (toc) toc.open = !middle.matches;
+    // On wide screens the list can't fold, so its heading isn't a control.
+    if (tocSummary) { if (middle.matches) tocSummary.removeAttribute("tabindex"); else tocSummary.tabIndex = -1; }
+    scrollers();
   }
+  // A table or code block wider than the page scrolls sideways; make it reachable by keyboard, with a name.
+  function scrollers() {
+    var boxes = document.querySelectorAll("main .table, main pre");
+    for (var i = 0; i < boxes.length; i++) {
+      var b = boxes[i];
+      if (b.scrollWidth > b.clientWidth + 1) {
+        b.tabIndex = 0; b.setAttribute("role", "region");
+        b.setAttribute("aria-label", (b.tagName === "PRE" ? "Code" : "Table") + ", scrolls sideways");
+      } else if (b.hasAttribute("role")) {
+        b.removeAttribute("tabindex"); b.removeAttribute("role"); b.removeAttribute("aria-label");
+      }
+    }
+  }
+  window.addEventListener("resize", scrollers);
   fit();
   if (narrow.addEventListener) { narrow.addEventListener("change", fit); middle.addEventListener("change", fit); }
   // The release dropdown closes when you click anywhere else.

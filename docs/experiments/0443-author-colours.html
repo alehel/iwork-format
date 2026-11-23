@@ -19,7 +19,7 @@
 <p><strong>Status:</strong> run</p>
 <p>An author's colour (type-212 field 2) steers the colour Pages draws their tracked changes in, but Pages draws one of its own colours, not the one stored (<a href="0377-writing-a-tracked-change.html">0377</a>). This experiment writes more colours, including the ones Pages drew, to find the set it draws from.</p>
 <h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section: Setup">#</a></h2>
-<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Pages</td><td>15.4, in Norwegian</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-18</td></tr><tr><td>Input</td><td><code>samples/0377/deleted.pages</code>: <code>One two</code> with <code> two</code> a tracked deletion by author 1732734</td></tr><tr><td>Writer</td><td>[<code>recipes/0302-set-path.py</code>](../recipes/0302-set-path.py); exported with comments through [<code>recipes/0372-in-app.sh</code>](../recipes/0372-in-app.sh) and read with [<code>recipes/0384-pdf-colours.swift</code>](../recipes/0384-pdf-colours.swift)</td></tr></tbody></table></div>
+<div class="table"><table><tbody><tr><th scope="row">Pages</th><td>15.4, in Norwegian</td></tr><tr><th scope="row">macOS</th><td>26.5.2 (25F84)</td></tr><tr><th scope="row">Date</th><td>2026-11-18</td></tr><tr><th scope="row">Input</th><td><code>samples/0377/deleted.pages</code>: <code>One two</code> with <code> two</code> a tracked deletion by author 1732734</td></tr><tr><th scope="row">Writer</th><td>[<code>recipes/0302-set-path.py</code>](../recipes/0302-set-path.py); exported with comments through [<code>recipes/0372-in-app.sh</code>](../recipes/0372-in-app.sh) and read with [<code>recipes/0384-pdf-colours.swift</code>](../recipes/0384-pdf-colours.swift)</td></tr></tbody></table></div>
 <h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section: Recipe">#</a></h2>
 <pre class="lang-bash"><code>mkdir -p samples/0443
 O=samples/0443
@@ -32,9 +32,9 @@ for c in &quot;1 1 0&quot; &quot;0 1 1&quot; &quot;1 0 1&quot; &quot;0.5 0.5 0.5
 done</code></pre>
 <p>The point (232, 177.5) is on the strike line through the deleted word, as in 0377.</p>
 <h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section: Observation">#</a></h2>
-<div class="table"><table><thead><tr><th>Author colour written</th><th>Drawn</th></tr></thead><tbody><tr><td>1, 1, 0 (yellow)</td><td>0.77, 0.64, 0.23</td></tr><tr><td>0, 1, 1 (cyan)</td><td>0.36, 0.78, 0.69</td></tr><tr><td>1, 0, 1 (magenta)</td><td>0.93, 0.53, 0.87</td></tr><tr><td>0.5, 0.5, 0.5 (grey)</td><td>0.36, 0.78, 0.69</td></tr><tr><td>1, 0.5, 0 (orange)</td><td>0.98, 0.60, 0.21</td></tr><tr><td>0.5, 0, 1 (violet)</td><td>0.68, 0.52, 0.93</td></tr><tr><td>0, 0, 0 (black)</td><td>0.98, 0.60, 0.21</td></tr><tr><td>1, 1, 1 (white)</td><td>0.42, 0.52, 0.73</td></tr><tr><td>0.98, 0.60, 0.21 (a drawn colour)</td><td>0.98, 0.60, 0.21</td></tr><tr><td>0.36, 0.78, 0.69 (a drawn colour)</td><td>0.36, 0.78, 0.69</td></tr></tbody></table></div>
+<div class="table"><table><thead><tr><th scope="col">Author colour written</th><th scope="col">Drawn</th></tr></thead><tbody><tr><td>1, 1, 0 (yellow)</td><td>0.77, 0.64, 0.23</td></tr><tr><td>0, 1, 1 (cyan)</td><td>0.36, 0.78, 0.69</td></tr><tr><td>1, 0, 1 (magenta)</td><td>0.93, 0.53, 0.87</td></tr><tr><td>0.5, 0.5, 0.5 (grey)</td><td>0.36, 0.78, 0.69</td></tr><tr><td>1, 0.5, 0 (orange)</td><td>0.98, 0.60, 0.21</td></tr><tr><td>0.5, 0, 1 (violet)</td><td>0.68, 0.52, 0.93</td></tr><tr><td>0, 0, 0 (black)</td><td>0.98, 0.60, 0.21</td></tr><tr><td>1, 1, 1 (white)</td><td>0.42, 0.52, 0.73</td></tr><tr><td>0.98, 0.60, 0.21 (a drawn colour)</td><td>0.98, 0.60, 0.21</td></tr><tr><td>0.36, 0.78, 0.69 (a drawn colour)</td><td>0.36, 0.78, 0.69</td></tr></tbody></table></div>
 <p>With 0377's red, green, blue and the original author colour (red → 0.98, 0.60, 0.21; green → 0.43, 0.76, 0.27; blue → 0.36, 0.78, 0.69; 0.98, 0.94, 0.35 → 0.77, 0.64, 0.23), fourteen colours gave only seven:</p>
-<div class="table"><table><thead><tr><th>Drawn colour</th><th>Looks</th></tr></thead><tbody><tr><td>0.98, 0.60, 0.21</td><td>orange</td></tr><tr><td>0.77, 0.64, 0.23</td><td>ochre</td></tr><tr><td>0.43, 0.76, 0.27</td><td>green</td></tr><tr><td>0.36, 0.78, 0.69</td><td>teal</td></tr><tr><td>0.42, 0.52, 0.73</td><td>slate blue</td></tr><tr><td>0.68, 0.52, 0.93</td><td>violet</td></tr><tr><td>0.93, 0.53, 0.87</td><td>pink</td></tr></tbody></table></div>
+<div class="table"><table><thead><tr><th scope="col">Drawn colour</th><th scope="col">Looks</th></tr></thead><tbody><tr><td>0.98, 0.60, 0.21</td><td>orange</td></tr><tr><td>0.77, 0.64, 0.23</td><td>ochre</td></tr><tr><td>0.43, 0.76, 0.27</td><td>green</td></tr><tr><td>0.36, 0.78, 0.69</td><td>teal</td></tr><tr><td>0.42, 0.52, 0.73</td><td>slate blue</td></tr><tr><td>0.68, 0.52, 0.93</td><td>violet</td></tr><tr><td>0.93, 0.53, 0.87</td><td>pink</td></tr></tbody></table></div>
 <h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section: Conclusion">#</a></h2>
 <p>Pages draws tracked changes in one of a set of seven colours. A stored colour that is one of the seven is drawn as itself, and any other is drawn as one of the seven. The choice doesn't follow hue or nearness: black became orange and grey teal, though both have no hue, and blue became teal. So a writer should give authors one of the seven colours above, and a reader that wants to match Pages should draw a stored colour as itself when it is one of them. How Pages chooses for other colours is <em>unknown</em>.</p>
 <h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section: Confidence">#</a></h2>
@@ -49,10 +49,28 @@ done</code></pre>
   var narrow = window.matchMedia("(max-width: 48rem)");
   var middle = window.matchMedia("(max-width: 72rem)");
   var side = document.querySelector(".side > details"), toc = document.querySelector(".toc > details");
+  var tocSummary = document.querySelector(".toc summary");
   function fit() {
     if (side) side.open = !narrow.matches;
     if (toc) toc.open = !middle.matches;
+    // On wide screens the list can't fold, so its heading isn't a control.
+    if (tocSummary) { if (middle.matches) tocSummary.removeAttribute("tabindex"); else tocSummary.tabIndex = -1; }
+    scrollers();
   }
+  // A table or code block wider than the page scrolls sideways; make it reachable by keyboard, with a name.
+  function scrollers() {
+    var boxes = document.querySelectorAll("main .table, main pre");
+    for (var i = 0; i < boxes.length; i++) {
+      var b = boxes[i];
+      if (b.scrollWidth > b.clientWidth + 1) {
+        b.tabIndex = 0; b.setAttribute("role", "region");
+        b.setAttribute("aria-label", (b.tagName === "PRE" ? "Code" : "Table") + ", scrolls sideways");
+      } else if (b.hasAttribute("role")) {
+        b.removeAttribute("tabindex"); b.removeAttribute("role"); b.removeAttribute("aria-label");
+      }
+    }
+  }
+  window.addEventListener("resize", scrollers);
   fit();
   if (narrow.addEventListener) { narrow.addEventListener("change", fit); middle.addEventListener("change", fit); }
   // The release dropdown closes when you click anywhere else.

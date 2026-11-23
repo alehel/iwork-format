@@ -19,7 +19,7 @@
 <p><strong>Status:</strong> run</p>
 <p>Flipping a shape horizontally sets bit 0x4 of its geometry flags, field 1.1.3, from 3 to 7 (<a href="0213-flipped-shape.html">0213</a>). A vertical flip is stored as the same bit plus a rotation of 180° in 1.1.4 (<a href="0214-vertically-flipped-shape.html">0214</a>). AppleScript can't read a flip, so this experiment writes both forms into a shape that isn't symmetrical, has Pages export it as PDF and draws the shape.</p>
 <h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section: Setup">#</a></h2>
-<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Pages</td><td>15.4</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-17</td></tr><tr><td>Input</td><td><code>samples/0333/moved.pages</code>: shape 1732647, 100 × 100 at (300, 300), an editable square whose bottom-right point was moved to (50, 100) (<a href="0333-writing-a-path-point.html">0333</a>). Its top edge is full width and its left edge straight</td></tr><tr><td>Writer</td><td>[<code>recipes/0302-set-path.py</code>](../recipes/0302-set-path.py); exported with [<code>recipes/0372-in-app.sh</code>](../recipes/0372-in-app.sh) and drawn with the new [<code>recipes/0373-draw-pdf.swift</code>](../recipes/0373-draw-pdf.swift)</td></tr></tbody></table></div>
+<div class="table"><table><tbody><tr><th scope="row">Pages</th><td>15.4</td></tr><tr><th scope="row">macOS</th><td>26.5.2 (25F84)</td></tr><tr><th scope="row">Date</th><td>2026-11-17</td></tr><tr><th scope="row">Input</th><td><code>samples/0333/moved.pages</code>: shape 1732647, 100 × 100 at (300, 300), an editable square whose bottom-right point was moved to (50, 100) (<a href="0333-writing-a-path-point.html">0333</a>). Its top edge is full width and its left edge straight</td></tr><tr><th scope="row">Writer</th><td>[<code>recipes/0302-set-path.py</code>](../recipes/0302-set-path.py); exported with [<code>recipes/0372-in-app.sh</code>](../recipes/0372-in-app.sh) and drawn with the new [<code>recipes/0373-draw-pdf.swift</code>](../recipes/0373-draw-pdf.swift)</td></tr></tbody></table></div>
 <h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section: Recipe">#</a></h2>
 <pre class="lang-bash"><code>mkdir -p samples/0373
 R=recipes/0302-set-path.py
@@ -62,10 +62,28 @@ done</code></pre>
   var narrow = window.matchMedia("(max-width: 48rem)");
   var middle = window.matchMedia("(max-width: 72rem)");
   var side = document.querySelector(".side > details"), toc = document.querySelector(".toc > details");
+  var tocSummary = document.querySelector(".toc summary");
   function fit() {
     if (side) side.open = !narrow.matches;
     if (toc) toc.open = !middle.matches;
+    // On wide screens the list can't fold, so its heading isn't a control.
+    if (tocSummary) { if (middle.matches) tocSummary.removeAttribute("tabindex"); else tocSummary.tabIndex = -1; }
+    scrollers();
   }
+  // A table or code block wider than the page scrolls sideways; make it reachable by keyboard, with a name.
+  function scrollers() {
+    var boxes = document.querySelectorAll("main .table, main pre");
+    for (var i = 0; i < boxes.length; i++) {
+      var b = boxes[i];
+      if (b.scrollWidth > b.clientWidth + 1) {
+        b.tabIndex = 0; b.setAttribute("role", "region");
+        b.setAttribute("aria-label", (b.tagName === "PRE" ? "Code" : "Table") + ", scrolls sideways");
+      } else if (b.hasAttribute("role")) {
+        b.removeAttribute("tabindex"); b.removeAttribute("role"); b.removeAttribute("aria-label");
+      }
+    }
+  }
+  window.addEventListener("resize", scrollers);
   fit();
   if (narrow.addEventListener) { narrow.addEventListener("change", fit); middle.addEventListener("change", fit); }
   // The release dropdown closes when you click anywhere else.

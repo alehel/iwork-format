@@ -19,11 +19,11 @@
 <p><strong>Status:</strong> run</p>
 <p>Experiment <a href="0005-paragraphs.html">0005</a> set paragraphs through AppleScript, so it couldn't say what Pages writes when someone types. This experiment types in the Pages window instead. It covers pressing Return, pressing Shift-Return, and giving the second paragraph a different paragraph style.</p>
 <h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section: Setup">#</a></h2>
-<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Pages</td><td>15.4 (build <code>M15.4-7051.0.79-2</code>), with a Norwegian (nb) user interface</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-09</td></tr><tr><td>Baseline</td><td>Experiment <a href="0005-paragraphs.html">0005</a>, <code>two-lf.pages</code></td></tr></tbody></table></div>
+<div class="table"><table><tbody><tr><th scope="row">Pages</th><td>15.4 (build <code>M15.4-7051.0.79-2</code>), with a Norwegian (nb) user interface</td></tr><tr><th scope="row">macOS</th><td>26.5.2 (25F84)</td></tr><tr><th scope="row">Date</th><td>2026-11-09</td></tr><tr><th scope="row">Baseline</th><td>Experiment <a href="0005-paragraphs.html">0005</a>, <code>two-lf.pages</code></td></tr></tbody></table></div>
 <h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section: Recipe">#</a></h2>
 <p>This experiment has no AppleScript recipe, because its point is the steps AppleScript can't take. Each document was made like this:</p>
 <ol><li>Make a new document with AppleScript: <code>tell application &quot;Pages&quot; to make new document</code>.</li><li>In the Pages window, click in the body and type the keys below.</li><li>Save it with AppleScript, <code>save front document in POSIX file &quot;…&quot;</code>, then close it.</li></ol>
-<div class="table"><table><thead><tr><th>File</th><th>Keys typed</th><th>Then</th></tr></thead><tbody><tr><td><code>return-ui.pages</code></td><td><code>one</code>, Return, <code>two</code></td><td>—</td></tr><tr><td><code>line-break-ui.pages</code></td><td><code>one</code>, Shift-Return, <code>two</code></td><td>—</td></tr><tr><td><code>heading-ui.pages</code></td><td><code>one</code>, Return, <code>two</code></td><td>With the cursor in the second paragraph, choose <em>Overskrift</em> (Heading) in the paragraph style menu of the Format sidebar</td></tr></tbody></table></div>
+<div class="table"><table><thead><tr><th scope="col">File</th><th scope="col">Keys typed</th><th scope="col">Then</th></tr></thead><tbody><tr><td><code>return-ui.pages</code></td><td><code>one</code>, Return, <code>two</code></td><td>—</td></tr><tr><td><code>line-break-ui.pages</code></td><td><code>one</code>, Shift-Return, <code>two</code></td><td>—</td></tr><tr><td><code>heading-ui.pages</code></td><td><code>one</code>, Return, <code>two</code></td><td>With the cursor in the second paragraph, choose <em>Overskrift</em> (Heading) in the paragraph style menu of the Format sidebar</td></tr></tbody></table></div>
 <p>Pages capitalised some of the words as they were typed, as its autocorrection does at the start of a sentence. The text that ended up in each file is shown below.</p>
 <h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section: Observation">#</a></h2>
 <h3 id="return-and-shift-return">Return and Shift-Return<a class="anchor" href="#return-and-shift-return" aria-label="Link to this section: Return and Shift-Return">#</a></h3>
@@ -61,7 +61,7 @@ line-break-ui.pages  3: text (9 bytes) &quot;One\u{2028}two&quot;     4f 6e 65 e
     2: text (36 bytes) &quot;C8C6D8C1-B294-4C8C-ADC9-84117C3AFF2E&quot;</code></pre>
 <p>Field 19 has one entry: position 0 and the text <code>nb</code>, the language of the user interface.</p>
 <p>Field 20 has the same run-table shape, but its field 2 is a UUID as text instead of an object reference. Its entries line up with the words Pages capitalised:</p>
-<div class="table"><table><thead><tr><th>File</th><th>Text</th><th>Capitalised</th><th>Field 20 entries</th></tr></thead><tbody><tr><td><code>return-ui</code></td><td><code>One\nTwo</code></td><td><code>One</code>, <code>Two</code></td><td>0 → UUID, 3 → none, 4 → UUID</td></tr><tr><td><code>line-break-ui</code></td><td><code>One\u{2028}two</code></td><td><code>One</code></td><td>0 → UUID, 3 → none</td></tr><tr><td><code>heading-ui</code></td><td><code>One\ntwo</code></td><td><code>One</code></td><td>0 → UUID, 3 → none</td></tr></tbody></table></div>
+<div class="table"><table><thead><tr><th scope="col">File</th><th scope="col">Text</th><th scope="col">Capitalised</th><th scope="col">Field 20 entries</th></tr></thead><tbody><tr><td><code>return-ui</code></td><td><code>One\nTwo</code></td><td><code>One</code>, <code>Two</code></td><td>0 → UUID, 3 → none, 4 → UUID</td></tr><tr><td><code>line-break-ui</code></td><td><code>One\u{2028}two</code></td><td><code>One</code></td><td>0 → UUID, 3 → none</td></tr><tr><td><code>heading-ui</code></td><td><code>One\ntwo</code></td><td><code>One</code></td><td>0 → UUID, 3 → none</td></tr></tbody></table></div>
 <h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section: Conclusion">#</a></h2>
 <p>Pressing Return writes U+000A and starts a paragraph, as a line feed did in 0005. Pressing Shift-Return writes U+2028 and doesn't: it is a line break within a paragraph.</p>
 <p>The paragraph-style runs name a paragraph style wherever one begins, so field 5 is a run table like field 8. In 0005 every entry after the first had no field 2, and all paragraphs used the same style, so an entry without field 2 most likely keeps the previous style. Here, the paragraph with a different style named it.</p>
@@ -83,10 +83,28 @@ line-break-ui.pages  3: text (9 bytes) &quot;One\u{2028}two&quot;     4f 6e 65 e
   var narrow = window.matchMedia("(max-width: 48rem)");
   var middle = window.matchMedia("(max-width: 72rem)");
   var side = document.querySelector(".side > details"), toc = document.querySelector(".toc > details");
+  var tocSummary = document.querySelector(".toc summary");
   function fit() {
     if (side) side.open = !narrow.matches;
     if (toc) toc.open = !middle.matches;
+    // On wide screens the list can't fold, so its heading isn't a control.
+    if (tocSummary) { if (middle.matches) tocSummary.removeAttribute("tabindex"); else tocSummary.tabIndex = -1; }
+    scrollers();
   }
+  // A table or code block wider than the page scrolls sideways; make it reachable by keyboard, with a name.
+  function scrollers() {
+    var boxes = document.querySelectorAll("main .table, main pre");
+    for (var i = 0; i < boxes.length; i++) {
+      var b = boxes[i];
+      if (b.scrollWidth > b.clientWidth + 1) {
+        b.tabIndex = 0; b.setAttribute("role", "region");
+        b.setAttribute("aria-label", (b.tagName === "PRE" ? "Code" : "Table") + ", scrolls sideways");
+      } else if (b.hasAttribute("role")) {
+        b.removeAttribute("tabindex"); b.removeAttribute("role"); b.removeAttribute("aria-label");
+      }
+    }
+  }
+  window.addEventListener("resize", scrollers);
   fit();
   if (narrow.addEventListener) { narrow.addEventListener("change", fit); middle.addEventListener("change", fit); }
   // The release dropdown closes when you click anywhere else.

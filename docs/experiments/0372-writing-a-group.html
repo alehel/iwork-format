@@ -19,7 +19,7 @@
 <p><strong>Status:</strong> run</p>
 <p>A group is a type-3008 drawable that lists its members in field 2. Each member names the group in its field 1.2 and is positioned relative to the group's top-left corner (<a href="0216-group.html">0216</a>). AppleScript's <code>group</code> class lists a group's items with their positions on the page. This experiment moves the group, then moves one member within it, and reads the positions back from Pages.</p>
 <h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section: Setup">#</a></h2>
-<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Pages</td><td>15.4</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-17</td></tr><tr><td>Input</td><td><code>samples/0216/group.pages</code>: two 100 × 100 shapes, grouped. The group (1732829) is at 300, 300 and 250 × 100; the members 1732821 and 1732823 are at 0, 0 and 150, 0 within it</td></tr><tr><td>Writer</td><td>[<code>recipes/0302-set-path.py</code>](../recipes/0302-set-path.py); read back with the new [<code>recipes/0372-in-app.sh</code>](../recipes/0372-in-app.sh)</td></tr></tbody></table></div>
+<div class="table"><table><tbody><tr><th scope="row">Pages</th><td>15.4</td></tr><tr><th scope="row">macOS</th><td>26.5.2 (25F84)</td></tr><tr><th scope="row">Date</th><td>2026-11-17</td></tr><tr><th scope="row">Input</th><td><code>samples/0216/group.pages</code>: two 100 × 100 shapes, grouped. The group (1732829) is at 300, 300 and 250 × 100; the members 1732821 and 1732823 are at 0, 0 and 150, 0 within it</td></tr><tr><th scope="row">Writer</th><td>[<code>recipes/0302-set-path.py</code>](../recipes/0302-set-path.py); read back with the new [<code>recipes/0372-in-app.sh</code>](../recipes/0372-in-app.sh)</td></tr></tbody></table></div>
 <h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section: Recipe">#</a></h2>
 <pre class="lang-bash"><code>mkdir -p samples/0372
 R=recipes/0302-set-path.py
@@ -36,7 +36,7 @@ end repeat
 return out&#x27;</code></pre>
 <p><code>recipes/0372-in-app.sh</code> opens a document through Launch Services, runs the given AppleScript with <code>d</code> set to that document, and closes it without saving. The group's geometry is in its payload's field 1.1, but a shape's drawable sits one level deeper, so a member's position is at 1.1.1.1.</p>
 <h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section: Observation">#</a></h2>
-<div class="table"><table><thead><tr><th>File</th><th>Written</th><th>Group (position, size)</th><th>Members on the page</th></tr></thead><tbody><tr><td><code>group.pages</code></td><td>nothing</td><td>300, 300; 250 × 100</td><td>300, 300 and 450, 300</td></tr><tr><td><code>group-moved.pages</code></td><td>group 1.1.1 = 100, 400</td><td>100, 400; 250 × 100</td><td>100, 400 and 250, 400</td></tr><tr><td><code>member.pages</code></td><td>second member 1.1.1 = 50, 60</td><td>300, 300; 150 × 160</td><td>300, 300 and 350, 360</td></tr></tbody></table></div>
+<div class="table"><table><thead><tr><th scope="col">File</th><th scope="col">Written</th><th scope="col">Group (position, size)</th><th scope="col">Members on the page</th></tr></thead><tbody><tr><td><code>group.pages</code></td><td>nothing</td><td>300, 300; 250 × 100</td><td>300, 300 and 450, 300</td></tr><tr><td><code>group-moved.pages</code></td><td>group 1.1.1 = 100, 400</td><td>100, 400; 250 × 100</td><td>100, 400 and 250, 400</td></tr><tr><td><code>member.pages</code></td><td>second member 1.1.1 = 50, 60</td><td>300, 300; 150 × 160</td><td>300, 300 and 350, 360</td></tr></tbody></table></div>
 <p>In both written files Pages still shows one item on the page, the group.</p>
 <h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section: Conclusion">#</a></h2>
 <p>A member's position is an offset from the group's corner: moving the group moves both members with it, and the member written at 50, 60 is drawn at 300 + 50, 300 + 60. The group's size isn't taken from the file as written: after the member moved, Pages gave the group the box around its members, 150 × 160, though field 1.1.2 still said 250 × 100. A writer should still keep the group's box in step with its members.</p>
@@ -52,10 +52,28 @@ return out&#x27;</code></pre>
   var narrow = window.matchMedia("(max-width: 48rem)");
   var middle = window.matchMedia("(max-width: 72rem)");
   var side = document.querySelector(".side > details"), toc = document.querySelector(".toc > details");
+  var tocSummary = document.querySelector(".toc summary");
   function fit() {
     if (side) side.open = !narrow.matches;
     if (toc) toc.open = !middle.matches;
+    // On wide screens the list can't fold, so its heading isn't a control.
+    if (tocSummary) { if (middle.matches) tocSummary.removeAttribute("tabindex"); else tocSummary.tabIndex = -1; }
+    scrollers();
   }
+  // A table or code block wider than the page scrolls sideways; make it reachable by keyboard, with a name.
+  function scrollers() {
+    var boxes = document.querySelectorAll("main .table, main pre");
+    for (var i = 0; i < boxes.length; i++) {
+      var b = boxes[i];
+      if (b.scrollWidth > b.clientWidth + 1) {
+        b.tabIndex = 0; b.setAttribute("role", "region");
+        b.setAttribute("aria-label", (b.tagName === "PRE" ? "Code" : "Table") + ", scrolls sideways");
+      } else if (b.hasAttribute("role")) {
+        b.removeAttribute("tabindex"); b.removeAttribute("role"); b.removeAttribute("aria-label");
+      }
+    }
+  }
+  window.addEventListener("resize", scrollers);
   fit();
   if (narrow.addEventListener) { narrow.addEventListener("change", fit); middle.addEventListener("change", fit); }
   // The release dropdown closes when you click anywhere else.

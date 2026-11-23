@@ -42,6 +42,14 @@ body {
 }
 a { color: var(--accent); text-decoration: none; }
 a:hover { text-decoration: underline; }
+/* Links in the page's text are underlined: their colour alone is too close to the text's (WCAG 1.4.1) */
+main a { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: .15em;
+  text-decoration-color: color-mix(in srgb, currentColor 40%, transparent); }
+main a:hover { text-decoration-color: currentColor; }
+main a.anchor, main .release a { text-decoration: none; }
+/* One visible focus ring for everything that takes keyboard focus */
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 2px; }
+main .table:focus-visible, main pre:focus-visible { outline-offset: 0; }
 
 /* Top bar */
 .top {
@@ -100,9 +108,9 @@ h2 { font-size: 1.35rem; margin: 2.4rem 0 .8rem; padding-bottom: .3rem; border-b
 h3 { font-size: 1.1rem; margin: 1.8rem 0 .6rem; }
 h4 { font-size: 1rem; margin: 1.4rem 0 .5rem; }
 /* Section links: faint until the heading is hovered or the link has keyboard focus (opacity, not visibility, so Tab reaches them) */
-.anchor { margin-left: .4rem; color: var(--rule); font-weight: 400; opacity: 0; }
+.anchor { margin-left: .1rem; padding: 0 .4em; color: var(--fg-soft); font-weight: 400; opacity: 0; }
 h1:hover .anchor, h2:hover .anchor, h3:hover .anchor, h4:hover .anchor, .anchor:focus { opacity: 1; }
-.anchor:focus-visible { color: var(--accent); outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 2px; }
+.anchor:focus-visible { color: var(--accent); }
 @media (hover: none) { .anchor { opacity: 1; } }
 
 /* Skip link: off screen until it has focus */
@@ -212,7 +220,7 @@ main { grid-column: 2; grid-row: 1; }
 
 /* Which release the spec describes, and which others were checked: a quiet line under the Specification heading */
 .side li.releases-line { margin: .1rem 0 .5rem; font-size: .8rem; }
-.side li.releases-line a { color: var(--fg-soft); padding-top: 0; padding-bottom: 0; }
+.side li.releases-line a { color: var(--fg-soft); padding-top: .15rem; padding-bottom: .15rem; }
 .side li.releases-line a:hover { color: var(--fg); }
 
 /* Which frozen copy of the spec to read: a dropdown, shown only once one exists */
@@ -262,7 +270,7 @@ table.types td.exps { white-space: nowrap; }
 table.types td.where { min-width: 13rem; font-size: .88rem; }
 table.types td.where a { white-space: nowrap; }
 table.types td.exps details[open] { white-space: normal; min-width: 12rem; }
-table.types td.exps summary { cursor: pointer; color: var(--accent); }
+table.types td.exps summary { cursor: pointer; color: var(--accent); min-height: 24px; }
 /* Narrow screens: each type becomes a block, its number beside what it is, then where and the experiments */
 @media (max-width: 60rem) {
   table.types thead { display: none; }
@@ -273,3 +281,6 @@ table.types td.exps summary { cursor: pointer; color: var(--accent); }
   table.types td.exps:empty { display: none; }
   table.types td.exps summary::after { content: " experiments"; }
 }
+
+/* Tables without a header row (an experiment's setup): the first column names each row */
+tbody th[scope="row"] { background: none; font-weight: 600; white-space: nowrap; width: 1%; }

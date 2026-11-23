@@ -19,7 +19,7 @@
 <p><strong>Status:</strong> run</p>
 <p>A sheet's field 1 is its name (<a href="0124-sheet-name.html">0124</a>), and the table model (type 6001) holds the row count in field 6, the column count in field 7 and the name in field 8 (<a href="0029-numbers-root-to-table.html">0029</a>). This experiment writes the names, then the counts, and reads them back through Numbers' AppleScript: the sheet's and table's <code>name</code>, <code>row count</code>, <code>column count</code> and the name of the table's last cell.</p>
 <h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section: Setup">#</a></h2>
-<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Numbers</td><td>15.4</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-10</td></tr><tr><td>Input</td><td><code>samples/0226/plain.numbers</code>: sheet "Ark 1" (record 904532) with table "Tabell 1" (table model 904595), 22 rows × 7 columns</td></tr><tr><td>Writer</td><td>[<code>recipes/0302-set-path.py</code>](../recipes/0302-set-path.py) and the new [<code>recipes/0364-table-size.py</code>](../recipes/0364-table-size.py), both using the writer of <a href="0287-rewriting-a-document.html">0287</a></td></tr></tbody></table></div>
+<div class="table"><table><tbody><tr><th scope="row">Numbers</th><td>15.4</td></tr><tr><th scope="row">macOS</th><td>26.5.2 (25F84)</td></tr><tr><th scope="row">Date</th><td>2026-11-10</td></tr><tr><th scope="row">Input</th><td><code>samples/0226/plain.numbers</code>: sheet "Ark 1" (record 904532) with table "Tabell 1" (table model 904595), 22 rows × 7 columns</td></tr><tr><th scope="row">Writer</th><td>[<code>recipes/0302-set-path.py</code>](../recipes/0302-set-path.py) and the new [<code>recipes/0364-table-size.py</code>](../recipes/0364-table-size.py), both using the writer of <a href="0287-rewriting-a-document.html">0287</a></td></tr></tbody></table></div>
 <h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section: Recipe">#</a></h2>
 <pre class="lang-bash"><code>mkdir -p samples/0364
 R=recipes/0302-set-path.py
@@ -28,10 +28,10 @@ python3 -I $R samples/0364/x.numbers samples/0364/names.numbers 904595 8 string 
 python3 -I $R samples/0226/plain.numbers samples/0364/more-rows.numbers 904595 6 varint 40 7 varint 3
 python3 -I recipes/0364-table-size.py samples/0226/plain.numbers samples/0364/five-by-four.numbers 5 4</code></pre>
 <p>The search for other places that hold the size found two records in <code>CalculationEngine.iwa</code>:</p>
-<div class="table"><table><thead><tr><th>Record</th><th>Type</th><th>Fields</th></tr></thead><tbody><tr><td>904672</td><td>6305</td><td>1: 2, 2: 7 (columns), 3: 22 (rows)</td></tr><tr><td>904603</td><td>6267</td><td>1: seven 128-bit UUIDs (two varints each), one per column; 2 and 3: the numbers 0–6 in two different orders; 4: 22 UUIDs, one per row; 5 and 6: the numbers 0–21 in two different orders</td></tr></tbody></table></div>
+<div class="table"><table><thead><tr><th scope="col">Record</th><th scope="col">Type</th><th scope="col">Fields</th></tr></thead><tbody><tr><td>904672</td><td>6305</td><td>1: 2, 2: 7 (columns), 3: 22 (rows)</td></tr><tr><td>904603</td><td>6267</td><td>1: seven 128-bit UUIDs (two varints each), one per column; 2 and 3: the numbers 0–6 in two different orders; 4: 22 UUIDs, one per row; 5 and 6: the numbers 0–21 in two different orders</td></tr></tbody></table></div>
 <p>Two more type-6267 records in the file are empty. Writing 6305's fields along with the table model's, or 6305 alone, was tried too. <code>recipes/0364-table-size.py</code> writes the counts into 6001 and 6305 and trims 6267: it keeps the first ROWS and COLUMNS UUIDs and only the map entries below those counts. <code>lists-only.numbers</code> is <code>five-by-four.numbers</code> with 6001 and 6305 set back to 22 and 7.</p>
 <h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section: Observation">#</a></h2>
-<div class="table"><table><thead><tr><th>File</th><th>Sheet</th><th>Table</th><th>Size</th><th>Last cell</th></tr></thead><tbody><tr><td><code>plain.numbers</code></td><td>Ark 1</td><td>Tabell 1</td><td>22 × 7</td><td>G22</td></tr><tr><td><code>names.numbers</code></td><td>Budget</td><td>Costs</td><td>22 × 7</td><td>G22</td></tr><tr><td><code>more-rows.numbers</code> (6001: 40 × 3)</td><td>Ark 1</td><td>Tabell 1</td><td>22 × 7</td><td>G22</td></tr><tr><td>6001 and 6305: 40 × 3, or 5 × 4</td><td></td><td></td><td>22 × 7</td><td>G22</td></tr><tr><td>6305 alone: 5 × 4</td><td></td><td></td><td>22 × 7</td><td>G22</td></tr><tr><td><code>five-by-four.numbers</code></td><td>Ark 1</td><td>Tabell 1</td><td>5 × 4</td><td>D5</td></tr><tr><td><code>lists-only.numbers</code></td><td></td><td></td><td>5 × 4</td><td>D5</td></tr></tbody></table></div>
+<div class="table"><table><thead><tr><th scope="col">File</th><th scope="col">Sheet</th><th scope="col">Table</th><th scope="col">Size</th><th scope="col">Last cell</th></tr></thead><tbody><tr><td><code>plain.numbers</code></td><td>Ark 1</td><td>Tabell 1</td><td>22 × 7</td><td>G22</td></tr><tr><td><code>names.numbers</code></td><td>Budget</td><td>Costs</td><td>22 × 7</td><td>G22</td></tr><tr><td><code>more-rows.numbers</code> (6001: 40 × 3)</td><td>Ark 1</td><td>Tabell 1</td><td>22 × 7</td><td>G22</td></tr><tr><td>6001 and 6305: 40 × 3, or 5 × 4</td><td></td><td></td><td>22 × 7</td><td>G22</td></tr><tr><td>6305 alone: 5 × 4</td><td></td><td></td><td>22 × 7</td><td>G22</td></tr><tr><td><code>five-by-four.numbers</code></td><td>Ark 1</td><td>Tabell 1</td><td>5 × 4</td><td>D5</td></tr><tr><td><code>lists-only.numbers</code></td><td></td><td></td><td>5 × 4</td><td>D5</td></tr></tbody></table></div>
 <p>In <code>five-by-four.numbers</code> cell B2 still held 1, and the exported PDF showed the table's remaining cells. When Numbers saved the file again, it kept the trimmed lists (4 column UUIDs and 5 row UUIDs) and the counts 5 and 4.</p>
 <h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section: Conclusion">#</a></h2>
 <p>The names are read from the fields written. A table's size isn't: it is the number of row and column UUIDs in its type-6267 record. Fields 6 and 7 of the table model and fields 3 and 2 of record 6305 are copies, which Numbers rewrites when it saves. Fields 2 and 3, and 5 and 6, look like a pair of maps between a column's (or row's) place and its UUID's place in the list, one each way. Making a table smaller is done by dropping UUIDs; making it larger would need new ones and wasn't tried.</p>
@@ -47,10 +47,28 @@ python3 -I recipes/0364-table-size.py samples/0226/plain.numbers samples/0364/fi
   var narrow = window.matchMedia("(max-width: 48rem)");
   var middle = window.matchMedia("(max-width: 72rem)");
   var side = document.querySelector(".side > details"), toc = document.querySelector(".toc > details");
+  var tocSummary = document.querySelector(".toc summary");
   function fit() {
     if (side) side.open = !narrow.matches;
     if (toc) toc.open = !middle.matches;
+    // On wide screens the list can't fold, so its heading isn't a control.
+    if (tocSummary) { if (middle.matches) tocSummary.removeAttribute("tabindex"); else tocSummary.tabIndex = -1; }
+    scrollers();
   }
+  // A table or code block wider than the page scrolls sideways; make it reachable by keyboard, with a name.
+  function scrollers() {
+    var boxes = document.querySelectorAll("main .table, main pre");
+    for (var i = 0; i < boxes.length; i++) {
+      var b = boxes[i];
+      if (b.scrollWidth > b.clientWidth + 1) {
+        b.tabIndex = 0; b.setAttribute("role", "region");
+        b.setAttribute("aria-label", (b.tagName === "PRE" ? "Code" : "Table") + ", scrolls sideways");
+      } else if (b.hasAttribute("role")) {
+        b.removeAttribute("tabindex"); b.removeAttribute("role"); b.removeAttribute("aria-label");
+      }
+    }
+  }
+  window.addEventListener("resize", scrollers);
   fit();
   if (narrow.addEventListener) { narrow.addEventListener("change", fit); middle.addEventListener("change", fit); }
   // The release dropdown closes when you click anywhere else.

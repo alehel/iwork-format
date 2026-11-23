@@ -19,7 +19,7 @@
 <p><strong>Status:</strong> run</p>
 <p><a href="0024-keynote-and-numbers.html">0024</a> found that object 1 is type 10000 in Pages and type 1 in both Keynote and Numbers. This experiment looks at what those roots hold. It also asks whether Keynote's and Numbers' type 1 are the same, and follows Keynote's root down to the slide title found in <a href="0025-keynote-title.html">0025</a>. It saves no new documents.</p>
 <h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section: Setup">#</a></h2>
-<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Apps</td><td>Pages, Keynote and Numbers 15.4 (build <code>M15.4-7051.0.79-2</code>)</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-09</td></tr><tr><td>Documents</td><td><code>samples/0002/hello.pages</code>, <code>samples/0025/hello.key</code>, <code>samples/0026/cells.numbers</code></td></tr></tbody></table></div>
+<div class="table"><table><tbody><tr><th scope="row">Apps</th><td>Pages, Keynote and Numbers 15.4 (build <code>M15.4-7051.0.79-2</code>)</td></tr><tr><th scope="row">macOS</th><td>26.5.2 (25F84)</td></tr><tr><th scope="row">Date</th><td>2026-11-09</td></tr><tr><th scope="row">Documents</th><td><code>samples/0002/hello.pages</code>, <code>samples/0025/hello.key</code>, <code>samples/0026/cells.numbers</code></td></tr></tbody></table></div>
 <h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section: Recipe">#</a></h2>
 <pre class="lang-bash"><code>cargo run --release -- records samples/0025/hello.key Index/Document.iwa     # find object 1
 cargo run --release -- proto samples/0025/hello.key Index/Document.iwa --decoded --offset &lt;payload&gt; --len &lt;len&gt; --depth 1
@@ -27,7 +27,7 @@ cargo run --release -- refs samples/0025/hello.key Index/Slide-2652175.iwa</code
 <p>The same was done for the Pages and Numbers files. The path from object 1 to the title's text record was found with a breadth-first walk over the output of <code>refs</code>.</p>
 <h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section: Observation">#</a></h2>
 <h3 id="the-roots">The roots<a class="anchor" href="#the-roots" aria-label="Link to this section: The roots">#</a></h3>
-<div class="table"><table><thead><tr><th></th><th>Pages (type 10000)</th><th>Keynote (type 1)</th><th>Numbers (type 1)</th></tr></thead><tbody><tr><td>Top-level fields</td><td>2, 3, 4, 6, 7, 15, 20, 30–40, 42–44, 46, 47, 49</td><td>2, 3</td><td>1, 4, 5, 6, 8, 11, 12</td></tr><tr><td>Field holding the shared block</td><td>15</td><td>3</td><td>8</td></tr></tbody></table></div>
+<div class="table"><table><thead><tr><th scope="col"></th><th scope="col">Pages (type 10000)</th><th scope="col">Keynote (type 1)</th><th scope="col">Numbers (type 1)</th></tr></thead><tbody><tr><td>Top-level fields</td><td>2, 3, 4, 6, 7, 15, 20, 30–40, 42–44, 46, 47, 49</td><td>2, 3</td><td>1, 4, 5, 6, 8, 11, 12</td></tr><tr><td>Field holding the shared block</td><td>15</td><td>3</td><td>8</td></tr></tbody></table></div>
 <p>Keynote's and Numbers' type-1 roots share no field layout. But each of the three roots holds one large message with the same inner fields:</p>
 <pre><code>1: bytes (≈1190)  starting 22 05 &quot;nb_NO&quot; …
 3: text &quot;nb&quot;
@@ -37,11 +37,11 @@ cargo run --release -- refs samples/0025/hello.key Index/Slide-2652175.iwa</code
    text &quot;Application/21_BasicWhite/Wide&quot;  (Keynote)
    text &quot;Application/Blank/Traditional&quot;   (Numbers)</code></pre>
 <h3 id="page-setup-in-pages-root">Page setup in Pages' root<a class="anchor" href="#page-setup-in-pages-root" aria-label="Link to this section: Page setup in Pages&#x27; root">#</a></h3>
-<div class="table"><table><thead><tr><th>Field</th><th>Value</th><th>Matches</th></tr></thead><tbody><tr><td>30, 31</td><td>595.28, 841.89</td><td>A4 in points</td></tr><tr><td>32–35</td><td>56.69 each</td><td>the 2 cm margins the Document sidebar showed (see <a href="0016-header-and-footer.html">0016</a>)</td></tr><tr><td>36</td><td>35.43</td><td>the header's 1.25 cm</td></tr><tr><td>37</td><td>42.52</td><td>the footer's 1.5 cm</td></tr><tr><td>38</td><td>1.0</td><td></td></tr><tr><td>43</td><td><code>EPSON_XP_760_Series</code></td><td>the printer the sidebar showed</td></tr><tr><td>44</td><td><code>iso-a4</code></td><td>the paper size</td></tr></tbody></table></div>
+<div class="table"><table><thead><tr><th scope="col">Field</th><th scope="col">Value</th><th scope="col">Matches</th></tr></thead><tbody><tr><td>30, 31</td><td>595.28, 841.89</td><td>A4 in points</td></tr><tr><td>32–35</td><td>56.69 each</td><td>the 2 cm margins the Document sidebar showed (see <a href="0016-header-and-footer.html">0016</a>)</td></tr><tr><td>36</td><td>35.43</td><td>the header's 1.25 cm</td></tr><tr><td>37</td><td>42.52</td><td>the footer's 1.5 cm</td></tr><tr><td>38</td><td>1.0</td><td></td></tr><tr><td>43</td><td><code>EPSON_XP_760_Series</code></td><td>the printer the sidebar showed</td></tr><tr><td>44</td><td><code>iso-a4</code></td><td>the paper size</td></tr></tbody></table></div>
 <p>Numbers' root also has a paper size: field 11 <code>iso-a4</code>, and field 12 <code>{ 1: 595.0, 2: 842.0 }</code>.</p>
 <h3 id="from-keynotes-root-to-the-title">From Keynote's root to the title<a class="anchor" href="#from-keynotes-root-to-the-title" aria-label="Link to this section: From Keynote&#x27;s root to the title">#</a></h3>
 <p>Following header references from object 1 to the title's text record (2652192):</p>
-<div class="table"><table><thead><tr><th>Object</th><th>Type</th><th>Part</th><th>What it holds</th></tr></thead><tbody><tr><td>1</td><td>1</td><td><code>Document.iwa</code></td><td>the shared block, and a reference to 2652410</td></tr><tr><td>2652410</td><td>2</td><td><code>Document.iwa</code></td><td>references to 2652174, the stylesheet 2652414, and two other objects</td></tr><tr><td>2652174</td><td>4</td><td><code>Document.iwa</code></td><td>2: the slide 2652175; 10: <code>{356.0, 200.0}</code>; 16: <code>{ 1: 9058 }</code></td></tr><tr><td>2652175</td><td>5</td><td><code>Slide-2652175.iwa</code></td><td>references to 8 objects, among them 2652199</td></tr><tr><td>2652199</td><td>7</td><td><code>Slide-2652175.iwa</code></td><td>a geometry message, a style (2651745), and 2: and 4: the text 2652192</td></tr><tr><td>2652192</td><td>2001</td><td><code>Slide-2652175.iwa</code></td><td>the text <code>hello</code></td></tr></tbody></table></div>
+<div class="table"><table><thead><tr><th scope="col">Object</th><th scope="col">Type</th><th scope="col">Part</th><th scope="col">What it holds</th></tr></thead><tbody><tr><td>1</td><td>1</td><td><code>Document.iwa</code></td><td>the shared block, and a reference to 2652410</td></tr><tr><td>2652410</td><td>2</td><td><code>Document.iwa</code></td><td>references to 2652174, the stylesheet 2652414, and two other objects</td></tr><tr><td>2652174</td><td>4</td><td><code>Document.iwa</code></td><td>2: the slide 2652175; 10: <code>{356.0, 200.0}</code>; 16: <code>{ 1: 9058 }</code></td></tr><tr><td>2652175</td><td>5</td><td><code>Slide-2652175.iwa</code></td><td>references to 8 objects, among them 2652199</td></tr><tr><td>2652199</td><td>7</td><td><code>Slide-2652175.iwa</code></td><td>a geometry message, a style (2651745), and 2: and 4: the text 2652192</td></tr><tr><td>2652192</td><td>2001</td><td><code>Slide-2652175.iwa</code></td><td>the text <code>hello</code></td></tr></tbody></table></div>
 <p>Data ID 9058 is the file <code>Data/st-A11B23C4-404B-4AC4-98CB-13188B352B53-9058.jpg</code> in the package (see <a href="0024-keynote-and-numbers.html">0024</a>).</p>
 <h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section: Conclusion">#</a></h2>
 <p>Type numbers aren't shared across apps for every type: Keynote's and Numbers' type 1 are different records. But all three apps' roots embed the same block of document properties: the locale (<code>nb_NO</code>, <code>nb</code>), the template it came from, and a few references. A reader can find it as the one large message in the root, and read it the same way for every app.</p>
@@ -64,10 +64,28 @@ cargo run --release -- refs samples/0025/hello.key Index/Slide-2652175.iwa</code
   var narrow = window.matchMedia("(max-width: 48rem)");
   var middle = window.matchMedia("(max-width: 72rem)");
   var side = document.querySelector(".side > details"), toc = document.querySelector(".toc > details");
+  var tocSummary = document.querySelector(".toc summary");
   function fit() {
     if (side) side.open = !narrow.matches;
     if (toc) toc.open = !middle.matches;
+    // On wide screens the list can't fold, so its heading isn't a control.
+    if (tocSummary) { if (middle.matches) tocSummary.removeAttribute("tabindex"); else tocSummary.tabIndex = -1; }
+    scrollers();
   }
+  // A table or code block wider than the page scrolls sideways; make it reachable by keyboard, with a name.
+  function scrollers() {
+    var boxes = document.querySelectorAll("main .table, main pre");
+    for (var i = 0; i < boxes.length; i++) {
+      var b = boxes[i];
+      if (b.scrollWidth > b.clientWidth + 1) {
+        b.tabIndex = 0; b.setAttribute("role", "region");
+        b.setAttribute("aria-label", (b.tagName === "PRE" ? "Code" : "Table") + ", scrolls sideways");
+      } else if (b.hasAttribute("role")) {
+        b.removeAttribute("tabindex"); b.removeAttribute("role"); b.removeAttribute("aria-label");
+      }
+    }
+  }
+  window.addEventListener("resize", scrollers);
   fit();
   if (narrow.addEventListener) { narrow.addEventListener("change", fit); middle.addEventListener("change", fit); }
   // The release dropdown closes when you click anywhere else.

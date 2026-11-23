@@ -178,7 +178,8 @@ def render(md, here, toc=None):
             target = os.path.normpath(os.path.join(os.path.dirname(here), src)).replace(os.sep, "/")
             if target.startswith("site/files/"):
                 src = link_target(src, here)
-            out.append(f'<figure><img src="{html.escape(src)}" alt="{html.escape(m.group(1))}" loading="lazy"><figcaption>{inline(m.group(1), here)}</figcaption></figure>')
+            # The caption repeats the image's description, so screen readers are given it once, as the alt text.
+            out.append(f'<figure><img src="{html.escape(src)}" alt="{html.escape(m.group(1))}" loading="lazy"><figcaption aria-hidden="true">{inline(m.group(1), here)}</figcaption></figure>')
             i += 1
             continue
         if line.startswith("|") and i + 1 < len(lines) and re.match(r"^\|[\s:|-]+\|$", lines[i + 1].strip()):
@@ -191,11 +192,14 @@ def render(md, here, toc=None):
                 if len(rows[-1]) != len(header):
                     problem(here, f"table row has {len(rows[-1])} cells, its header {len(header)}: {lines[i][:60]}")
                 i += 1
-            t = ["<div class=\"table\"><table><thead><tr>"]
-            t += [f"<th>{inline(c, here)}</th>" for c in header]
-            t.append("</tr></thead><tbody>")
+            t = ['<div class="table"><table>']
+            keyed = not any(header)  # "| | |": a two-column list of names and values, as in an experiment's setup
+            if not keyed:
+                t.append("<thead><tr>" + "".join(f'<th scope="col">{inline(c, here)}</th>' for c in header) + "</tr></thead>")
+            t.append("<tbody>")
             for r in rows:
-                t.append("<tr>" + "".join(f"<td>{inline(c, here)}</td>" for c in r) + "</tr>")
+                first = f'<th scope="row">{inline(r[0], here)}</th>' if keyed and r else ""
+                t.append("<tr>" + first + "".join(f"<td>{inline(c, here)}</td>" for c in (r[1:] if keyed else r)) + "</tr>")
             t.append("</tbody></table></div>")
             out.append("".join(t))
             continue
@@ -603,10 +607,28 @@ def page(out_path, title, body, toc=None, description="", version=None, source=N
   var narrow = window.matchMedia("(max-width: 48rem)");
   var middle = window.matchMedia("(max-width: 72rem)");
   var side = document.querySelector(".side > details"), toc = document.querySelector(".toc > details");
+  var tocSummary = document.querySelector(".toc summary");
   function fit() {{
     if (side) side.open = !narrow.matches;
     if (toc) toc.open = !middle.matches;
+    // On wide screens the list can't fold, so its heading isn't a control.
+    if (tocSummary) {{ if (middle.matches) tocSummary.removeAttribute("tabindex"); else tocSummary.tabIndex = -1; }}
+    scrollers();
   }}
+  // A table or code block wider than the page scrolls sideways; make it reachable by keyboard, with a name.
+  function scrollers() {{
+    var boxes = document.querySelectorAll("main .table, main pre");
+    for (var i = 0; i < boxes.length; i++) {{
+      var b = boxes[i];
+      if (b.scrollWidth > b.clientWidth + 1) {{
+        b.tabIndex = 0; b.setAttribute("role", "region");
+        b.setAttribute("aria-label", (b.tagName === "PRE" ? "Code" : "Table") + ", scrolls sideways");
+      }} else if (b.hasAttribute("role")) {{
+        b.removeAttribute("tabindex"); b.removeAttribute("role"); b.removeAttribute("aria-label");
+      }}
+    }}
+  }}
+  window.addEventListener("resize", scrollers);
   fit();
   if (narrow.addEventListener) {{ narrow.addEventListener("change", fit); middle.addEventListener("change", fit); }}
   // The release dropdown closes when you click anywhere else.

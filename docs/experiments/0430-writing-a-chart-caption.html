@@ -19,7 +19,7 @@
 <p><strong>Status:</strong> run</p>
 <p>A chart's caption is drawable field 1.11, a type-633 text shape, as for other objects (<a href="0295-chart-options.html">0295</a>). In Pages, writing a caption's text record changed the caption drawn (<a href="0374-writing-a-caption-and-title.html">0374</a>). This experiment writes the caption of a Keynote chart.</p>
 <h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section: Setup">#</a></h2>
-<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Keynote</td><td>15.4, in Norwegian</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-18</td></tr><tr><td>Input</td><td><code>samples/0295/caption.key</code>: a bar chart in the test theme with its caption shown and empty. The caption is type-633 record 2655884 (field 3 = 1, a caption), which refers to text record 2655885, without a field 3, and to a type-634 record</td></tr><tr><td>Writer</td><td>[<code>recipes/0302-set-path.py</code>](../recipes/0302-set-path.py); exported with [<code>recipes/0372-in-app.sh</code>](../recipes/0372-in-app.sh), read with [<code>recipes/0374-pdf-text.swift</code>](../recipes/0374-pdf-text.swift) and compared with [<code>recipes/0399-pdf-diff.swift</code>](../recipes/0399-pdf-diff.swift)</td></tr></tbody></table></div>
+<div class="table"><table><tbody><tr><th scope="row">Keynote</th><td>15.4, in Norwegian</td></tr><tr><th scope="row">macOS</th><td>26.5.2 (25F84)</td></tr><tr><th scope="row">Date</th><td>2026-11-18</td></tr><tr><th scope="row">Input</th><td><code>samples/0295/caption.key</code>: a bar chart in the test theme with its caption shown and empty. The caption is type-633 record 2655884 (field 3 = 1, a caption), which refers to text record 2655885, without a field 3, and to a type-634 record</td></tr><tr><th scope="row">Writer</th><td>[<code>recipes/0302-set-path.py</code>](../recipes/0302-set-path.py); exported with [<code>recipes/0372-in-app.sh</code>](../recipes/0372-in-app.sh), read with [<code>recipes/0374-pdf-text.swift</code>](../recipes/0374-pdf-text.swift) and compared with [<code>recipes/0399-pdf-diff.swift</code>](../recipes/0399-pdf-diff.swift)</td></tr></tbody></table></div>
 <h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section: Recipe">#</a></h2>
 <pre class="lang-bash"><code>mkdir -p samples/0430
 O=samples/0430
@@ -31,7 +31,7 @@ for f in original caption-text; do
 done
 swift recipes/0399-pdf-diff.swift $O/original.pdf $O/caption-text.pdf</code></pre>
 <h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section: Observation">#</a></h2>
-<div class="table"><table><thead><tr><th>File</th><th>Caption's text</th><th>Text of the slide</th><th>Pixels differing from <code>original.pdf</code></th></tr></thead><tbody><tr><td><code>original.key</code></td><td>none</td><td>6 4,5 3 1,5 0 a b c</td><td></td></tr><tr><td><code>caption-text.key</code></td><td><code>Written chart caption</code></td><td>the same, then <code>Written chart caption</code></td><td>6,001, in 884, 883 – 1107, 905.5</td></tr></tbody></table></div>
+<div class="table"><table><thead><tr><th scope="col">File</th><th scope="col">Caption's text</th><th scope="col">Text of the slide</th><th scope="col">Pixels differing from <code>original.pdf</code></th></tr></thead><tbody><tr><td><code>original.key</code></td><td>none</td><td>6 4,5 3 1,5 0 a b c</td><td></td></tr><tr><td><code>caption-text.key</code></td><td><code>Written chart caption</code></td><td>the same, then <code>Written chart caption</code></td><td>6,001, in 884, 883 – 1107, 905.5</td></tr></tbody></table></div>
 <p>The changed area is centred under the chart, near the bottom of the 1920 × 1080 slide.</p>
 <h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section: Conclusion">#</a></h2>
 <p>A chart's caption works as in Pages: the type-633 shape that the chart's drawable names holds the caption's text in its own text record, and Keynote draws what is written there, centred below the chart. An empty caption isn't drawn in an exported slide at all; Keynote shows its prompt only while editing.</p>
@@ -47,10 +47,28 @@ swift recipes/0399-pdf-diff.swift $O/original.pdf $O/caption-text.pdf</code></pr
   var narrow = window.matchMedia("(max-width: 48rem)");
   var middle = window.matchMedia("(max-width: 72rem)");
   var side = document.querySelector(".side > details"), toc = document.querySelector(".toc > details");
+  var tocSummary = document.querySelector(".toc summary");
   function fit() {
     if (side) side.open = !narrow.matches;
     if (toc) toc.open = !middle.matches;
+    // On wide screens the list can't fold, so its heading isn't a control.
+    if (tocSummary) { if (middle.matches) tocSummary.removeAttribute("tabindex"); else tocSummary.tabIndex = -1; }
+    scrollers();
   }
+  // A table or code block wider than the page scrolls sideways; make it reachable by keyboard, with a name.
+  function scrollers() {
+    var boxes = document.querySelectorAll("main .table, main pre");
+    for (var i = 0; i < boxes.length; i++) {
+      var b = boxes[i];
+      if (b.scrollWidth > b.clientWidth + 1) {
+        b.tabIndex = 0; b.setAttribute("role", "region");
+        b.setAttribute("aria-label", (b.tagName === "PRE" ? "Code" : "Table") + ", scrolls sideways");
+      } else if (b.hasAttribute("role")) {
+        b.removeAttribute("tabindex"); b.removeAttribute("role"); b.removeAttribute("aria-label");
+      }
+    }
+  }
+  window.addEventListener("resize", scrollers);
   fit();
   if (narrow.addEventListener) { narrow.addEventListener("change", fit); middle.addEventListener("change", fit); }
   // The release dropdown closes when you click anywhere else.

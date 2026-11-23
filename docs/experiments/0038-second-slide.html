@@ -19,7 +19,7 @@
 <p><strong>Status:</strong> run</p>
 <p><a href="0027-document-roots.html">0027</a> followed Keynote's root through a presentation (type 2) and a slide node (type 4) to a slide (type 5) in its own part. With one slide, it couldn't show how slides are listed. This experiment adds a second slide.</p>
 <h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section: Setup">#</a></h2>
-<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Keynote</td><td>15.4 (build <code>M15.4-7051.0.79-2</code>)</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-09</td></tr><tr><td>Baseline</td><td>Experiment <a href="0025-keynote-title.html">0025</a>, <code>hello.key</code></td></tr></tbody></table></div>
+<div class="table"><table><tbody><tr><th scope="row">Keynote</th><td>15.4 (build <code>M15.4-7051.0.79-2</code>)</td></tr><tr><th scope="row">macOS</th><td>26.5.2 (25F84)</td></tr><tr><th scope="row">Date</th><td>2026-11-09</td></tr><tr><th scope="row">Baseline</th><td>Experiment <a href="0025-keynote-title.html">0025</a>, <code>hello.key</code></td></tr></tbody></table></div>
 <h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section: Recipe">#</a></h2>
 <pre class="lang-bash"><code>mkdir -p samples/0038
 osascript recipes/0038-keynote-two-slides.applescript &quot;$PWD/samples/0038/two-slides.key&quot;</code></pre>
@@ -30,7 +30,7 @@ osascript recipes/0038-keynote-two-slides.applescript &quot;$PWD/samples/0038/tw
 3: { 2: { 1: 2652174 }, 2: { 1: 2652533 } }     ← two slide nodes
 4: { 1: 1920.0, 2: 1080.0 }
 5: { 1: 2652414 }                               ← the stylesheet (type 401)</code></pre>
-<div class="table"><table><thead><tr><th></th><th>Slide 1</th><th>Slide 2</th></tr></thead><tbody><tr><td>Slide node (type 4)</td><td>2652174</td><td>2652533</td></tr><tr><td>Node field 2: the slide</td><td>2652175</td><td>2652493</td></tr><tr><td>Node fields 10 and 16: thumbnail size and data ID</td><td>356 × 200, 9058</td><td>absent</td></tr><tr><td>Part holding the slide</td><td><code>Index/Slide-2652175.iwa</code></td><td><code>Index/Slide.iwa</code></td></tr><tr><td>Title text record</td><td>2652192, <code>first</code></td><td>2652492, <code>second</code></td></tr></tbody></table></div>
+<div class="table"><table><thead><tr><th scope="col"></th><th scope="col">Slide 1</th><th scope="col">Slide 2</th></tr></thead><tbody><tr><td>Slide node (type 4)</td><td>2652174</td><td>2652533</td></tr><tr><td>Node field 2: the slide</td><td>2652175</td><td>2652493</td></tr><tr><td>Node fields 10 and 16: thumbnail size and data ID</td><td>356 × 200, 9058</td><td>absent</td></tr><tr><td>Part holding the slide</td><td><code>Index/Slide-2652175.iwa</code></td><td><code>Index/Slide.iwa</code></td></tr><tr><td>Title text record</td><td>2652192, <code>first</code></td><td>2652492, <code>second</code></td></tr></tbody></table></div>
 <p><code>Document.iwa</code> also holds 17 more slide nodes (type 4), one for each template slide. Each has a thumbnail size and data ID like slide 1's, and points at a slide in a <code>TemplateSlide-N.iwa</code> part.</p>
 <h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section: Conclusion">#</a></h2>
 <p>The presentation's field 3 lists the slide nodes in show order, in its repeated field 2. Its field 4 is the slide size in points: 1920 × 1080 for this Wide theme. To list a presentation's slides, a reader goes:</p>
@@ -53,10 +53,28 @@ osascript recipes/0038-keynote-two-slides.applescript &quot;$PWD/samples/0038/tw
   var narrow = window.matchMedia("(max-width: 48rem)");
   var middle = window.matchMedia("(max-width: 72rem)");
   var side = document.querySelector(".side > details"), toc = document.querySelector(".toc > details");
+  var tocSummary = document.querySelector(".toc summary");
   function fit() {
     if (side) side.open = !narrow.matches;
     if (toc) toc.open = !middle.matches;
+    // On wide screens the list can't fold, so its heading isn't a control.
+    if (tocSummary) { if (middle.matches) tocSummary.removeAttribute("tabindex"); else tocSummary.tabIndex = -1; }
+    scrollers();
   }
+  // A table or code block wider than the page scrolls sideways; make it reachable by keyboard, with a name.
+  function scrollers() {
+    var boxes = document.querySelectorAll("main .table, main pre");
+    for (var i = 0; i < boxes.length; i++) {
+      var b = boxes[i];
+      if (b.scrollWidth > b.clientWidth + 1) {
+        b.tabIndex = 0; b.setAttribute("role", "region");
+        b.setAttribute("aria-label", (b.tagName === "PRE" ? "Code" : "Table") + ", scrolls sideways");
+      } else if (b.hasAttribute("role")) {
+        b.removeAttribute("tabindex"); b.removeAttribute("role"); b.removeAttribute("aria-label");
+      }
+    }
+  }
+  window.addEventListener("resize", scrollers);
   fit();
   if (narrow.addEventListener) { narrow.addEventListener("change", fit); middle.addEventListener("change", fit); }
   // The release dropdown closes when you click anywhere else.

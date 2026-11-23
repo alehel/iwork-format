@@ -39,16 +39,16 @@
 <p>Pages opened the re-encoded document, more than four times the size of the original (395 KB against 90), without a warning, and saved it normally. A writer doesn't need to compress (<a href="../experiments/0287-rewriting-a-document.html">0287</a>).</p>
 <h2 id="new-text">New text<a class="anchor" href="#new-text" aria-label="Link to this section: New text">#</a></h2>
 <p>Setting field 3 of the body's type-2001 record to new text, and re-encoding, is enough for a one-paragraph body. Pages opened <a href="../files/written-by-script.pages">written-by-script.pages</a>, written without previews, and kept the record exactly as written when it saved it again (<a href="../experiments/0288-writing-new-text.html">0288</a>).</p>
-<figure><img src="../files/written-by-script.png" alt="written-by-script.pages, written by the Python writer, as Pages prints it" loading="lazy"><figcaption>written-by-script.pages, written by the Python writer, as Pages prints it</figcaption></figure>
+<figure><img src="../files/written-by-script.png" alt="written-by-script.pages, written by the Python writer, as Pages prints it" loading="lazy"><figcaption aria-hidden="true">written-by-script.pages, written by the Python writer, as Pages prints it</figcaption></figure>
 <h2 id="paragraphs-need-run-entries">Paragraphs need run entries<a class="anchor" href="#paragraphs-need-run-entries" aria-label="Link to this section: Paragraphs need run entries">#</a></h2>
 <p>The run tables list positions in the text. When the text gains a paragraph, the paragraph run table (field 5) needs an entry at its start. Without it, Pages rebuilds the table on opening and gives every paragraph the stylesheet's default style, <code>paragraph-style-default</code>, instead of the style the writer named (<a href="../experiments/0289-writing-two-paragraphs.html">0289</a>). So writing <code>One</code> U+000A <code>Two</code> takes:</p>
-<div class="table"><table><thead><tr><th>Field</th><th>Written</th></tr></thead><tbody><tr><td>3</td><td><code>One\nTwo</code></td></tr><tr><td>5</td><td><code>{ 1: 0, 2: { 1: &lt;Body style ID&gt; } }</code>, <code>{ 1: 4 }</code></td></tr></tbody></table></div>
+<div class="table"><table><thead><tr><th scope="col">Field</th><th scope="col">Written</th></tr></thead><tbody><tr><td>3</td><td><code>One\nTwo</code></td></tr><tr><td>5</td><td><code>{ 1: 0, 2: { 1: &lt;Body style ID&gt; } }</code>, <code>{ 1: 4 }</code></td></tr></tbody></table></div>
 <p>The second entry has no style; it continues the one before it.</p>
 <h2 id="a-new-cell-value">A new cell value<a class="anchor" href="#a-new-cell-value" aria-label="Link to this section: A new cell value">#</a></h2>
 <p>In Numbers, replacing the 16 bytes of a cell's decimal128 with another number is enough: Numbers opened <a href="../files/written-cell.numbers">written-cell.numbers</a> and showed 42 where the original held 1. Nothing else in the file caches the value (<a href="../experiments/0290-writing-a-cell.html">0290</a>).</p>
 <pre class="lang-python"><code>old = (1).to_bytes(14, &quot;little&quot;) + bytes([0x40, 0x30])   # 1 × 10⁰
 new = (42).to_bytes(14, &quot;little&quot;) + bytes([0x40, 0x30])  # 42 × 10⁰</code></pre>
-<figure><img src="../files/written-cell.png" alt="written-cell.numbers as Numbers prints it" loading="lazy"><figcaption>written-cell.numbers as Numbers prints it</figcaption></figure>
+<figure><img src="../files/written-cell.png" alt="written-cell.numbers as Numbers prints it" loading="lazy"><figcaption aria-hidden="true">written-cell.numbers as Numbers prints it</figcaption></figure>
 <h2 id="what-a-writer-still-has-to-get-right">What a writer still has to get right<a class="anchor" href="#what-a-writer-still-has-to-get-right" aria-label="Link to this section: What a writer still has to get right">#</a></h2>
 <ul><li>Any change that adds objects needs new IDs that are unique in the document, and every reference listed in the record header (fields 2.4 and 2.5).</li><li>Run tables must cover the new text: positions are in UTF-16 code units.</li><li>Cells that add strings need string table entries, with use counts.</li><li>The previews are optional; Pages makes new ones when it next saves.</li></ul>
 <footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Source: <a href="https://github.com/alehel/iwork-format/blob/main/site/guides/writing.md"><code>site/guides/writing.md</code></a>.</p></footer>
@@ -61,10 +61,28 @@ new = (42).to_bytes(14, &quot;little&quot;) + bytes([0x40, 0x30])  # 42 × 10⁰
   var narrow = window.matchMedia("(max-width: 48rem)");
   var middle = window.matchMedia("(max-width: 72rem)");
   var side = document.querySelector(".side > details"), toc = document.querySelector(".toc > details");
+  var tocSummary = document.querySelector(".toc summary");
   function fit() {
     if (side) side.open = !narrow.matches;
     if (toc) toc.open = !middle.matches;
+    // On wide screens the list can't fold, so its heading isn't a control.
+    if (tocSummary) { if (middle.matches) tocSummary.removeAttribute("tabindex"); else tocSummary.tabIndex = -1; }
+    scrollers();
   }
+  // A table or code block wider than the page scrolls sideways; make it reachable by keyboard, with a name.
+  function scrollers() {
+    var boxes = document.querySelectorAll("main .table, main pre");
+    for (var i = 0; i < boxes.length; i++) {
+      var b = boxes[i];
+      if (b.scrollWidth > b.clientWidth + 1) {
+        b.tabIndex = 0; b.setAttribute("role", "region");
+        b.setAttribute("aria-label", (b.tagName === "PRE" ? "Code" : "Table") + ", scrolls sideways");
+      } else if (b.hasAttribute("role")) {
+        b.removeAttribute("tabindex"); b.removeAttribute("role"); b.removeAttribute("aria-label");
+      }
+    }
+  }
+  window.addEventListener("resize", scrollers);
   fit();
   if (narrow.addEventListener) { narrow.addEventListener("change", fit); middle.addEventListener("change", fit); }
   // The release dropdown closes when you click anywhere else.

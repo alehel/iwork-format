@@ -19,11 +19,11 @@
 <p><strong>Status:</strong> run</p>
 <p><a href="0262-paragraph-border.html">0262</a> found that a paragraph border on the top edge sets properties 15 and 45 to 1, alongside the stroke in property 32. This experiment moves the border to the bottom edge, then to all four, to tell the two properties apart.</p>
 <h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section: Setup">#</a></h2>
-<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Pages</td><td>15.4 (build <code>M15.4-7051.0.79-2</code>), in Norwegian</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-09</td></tr><tr><td>Baseline</td><td>Experiment <a href="0262-paragraph-border.html">0262</a>, a border on the top edge</td></tr></tbody></table></div>
+<div class="table"><table><tbody><tr><th scope="row">Pages</th><td>15.4 (build <code>M15.4-7051.0.79-2</code>), in Norwegian</td></tr><tr><th scope="row">macOS</th><td>26.5.2 (25F84)</td></tr><tr><th scope="row">Date</th><td>2026-11-09</td></tr><tr><th scope="row">Baseline</th><td>Experiment <a href="0262-paragraph-border.html">0262</a>, a border on the top edge</td></tr></tbody></table></div>
 <h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section: Recipe">#</a></h2>
 <ol><li>With Pages in front, add a solid paragraph border to <code>One</code> as in 0262. It starts on the top edge.</li><li>In the Layout tab's edge buttons, turn on the bottom edge and turn off the top edge. Save as <code>samples/0273/bottom-border.pages</code>.</li><li>Click the box button, which puts the border on all four edges. Save as <code>samples/0273/all-edges.pages</code>.</li></ol>
 <h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section: Observation">#</a></h2>
-<div class="table"><table><thead><tr><th>Edges</th><th>Property 15</th><th>Property 45</th></tr></thead><tbody><tr><td>Top (0262)</td><td>1</td><td>1</td></tr><tr><td>Bottom</td><td>2</td><td>2</td></tr><tr><td>All four</td><td>4</td><td>15</td></tr></tbody></table></div>
+<div class="table"><table><thead><tr><th scope="col">Edges</th><th scope="col">Property 15</th><th scope="col">Property 45</th></tr></thead><tbody><tr><td>Top (0262)</td><td>1</td><td>1</td></tr><tr><td>Bottom</td><td>2</td><td>2</td></tr><tr><td>All four</td><td>4</td><td>15</td></tr></tbody></table></div>
 <p>The stroke (property 32) is the same in all three.</p>
 <h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section: Conclusion">#</a></h2>
 <p>Property 45 is a bit set of edges: 1 top and 2 bottom. The value 15 for all four edges means 4 and 8 are the left and right edges, in an order not yet tested. Property 15 is a single choice rather than a bit set: 1 top, 2 bottom, 4 all edges. It is probably an older setting that Pages still writes alongside 45 for older readers. A reader should use property 45 and fall back on 15.</p>
@@ -41,10 +41,28 @@
   var narrow = window.matchMedia("(max-width: 48rem)");
   var middle = window.matchMedia("(max-width: 72rem)");
   var side = document.querySelector(".side > details"), toc = document.querySelector(".toc > details");
+  var tocSummary = document.querySelector(".toc summary");
   function fit() {
     if (side) side.open = !narrow.matches;
     if (toc) toc.open = !middle.matches;
+    // On wide screens the list can't fold, so its heading isn't a control.
+    if (tocSummary) { if (middle.matches) tocSummary.removeAttribute("tabindex"); else tocSummary.tabIndex = -1; }
+    scrollers();
   }
+  // A table or code block wider than the page scrolls sideways; make it reachable by keyboard, with a name.
+  function scrollers() {
+    var boxes = document.querySelectorAll("main .table, main pre");
+    for (var i = 0; i < boxes.length; i++) {
+      var b = boxes[i];
+      if (b.scrollWidth > b.clientWidth + 1) {
+        b.tabIndex = 0; b.setAttribute("role", "region");
+        b.setAttribute("aria-label", (b.tagName === "PRE" ? "Code" : "Table") + ", scrolls sideways");
+      } else if (b.hasAttribute("role")) {
+        b.removeAttribute("tabindex"); b.removeAttribute("role"); b.removeAttribute("aria-label");
+      }
+    }
+  }
+  window.addEventListener("resize", scrollers);
   fit();
   if (narrow.addEventListener) { narrow.addEventListener("change", fit); middle.addEventListener("change", fit); }
   // The release dropdown closes when you click anywhere else.

@@ -19,13 +19,13 @@
 <p><strong>Status:</strong> run</p>
 <p>AppleScript can set an audio clip's volume and whether it repeats. This experiment changes both, to find their fields in the type-3007 record from <a href="0185-keynote-audio.html">0185</a>.</p>
 <h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section: Setup">#</a></h2>
-<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Keynote</td><td>15.4</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-09</td></tr><tr><td>Baseline</td><td>Experiment <a href="0185-keynote-audio.html">0185</a>, <code>audio.key</code></td></tr></tbody></table></div>
+<div class="table"><table><tbody><tr><th scope="row">Keynote</th><td>15.4</td></tr><tr><th scope="row">macOS</th><td>26.5.2 (25F84)</td></tr><tr><th scope="row">Date</th><td>2026-11-09</td></tr><tr><th scope="row">Baseline</th><td>Experiment <a href="0185-keynote-audio.html">0185</a>, <code>audio.key</code></td></tr></tbody></table></div>
 <h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section: Recipe">#</a></h2>
 <pre class="lang-bash"><code>osascript recipes/0185-keynote-media.applescript loop &quot;$PWD/samples/0185/loop.key&quot; &quot;$PWD/samples/0185/tone.m4a&quot;</code></pre>
 <p>The recipe adds the sound from 0185, then sets its <code>repetition method</code> to <code>loop</code> and its <code>clip volume</code> to 50.</p>
 <h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section: Observation">#</a></h2>
 <p>Apart from IDs, the type-3007 record differs from 0185's in two fields:</p>
-<div class="table"><table><thead><tr><th>Field</th><th>0185</th><th>Looping, volume 50</th></tr></thead><tbody><tr><td>7</td><td>1.0</td><td>0.5</td></tr><tr><td>24</td><td>0</td><td>1</td></tr></tbody></table></div>
+<div class="table"><table><thead><tr><th scope="col">Field</th><th scope="col">0185</th><th scope="col">Looping, volume 50</th></tr></thead><tbody><tr><td>7</td><td>1.0</td><td>0.5</td></tr><tr><td>24</td><td>0</td><td>1</td></tr></tbody></table></div>
 <h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section: Conclusion">#</a></h2>
 <p>Field 7 is the volume, as a fraction of full volume: AppleScript's 0–100 scale divided by 100. Field 24 is the repetition: 0 for none and 1 for loop. Loop back and forth is probably 2.</p>
 <h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section: Confidence">#</a></h2>
@@ -41,10 +41,28 @@
   var narrow = window.matchMedia("(max-width: 48rem)");
   var middle = window.matchMedia("(max-width: 72rem)");
   var side = document.querySelector(".side > details"), toc = document.querySelector(".toc > details");
+  var tocSummary = document.querySelector(".toc summary");
   function fit() {
     if (side) side.open = !narrow.matches;
     if (toc) toc.open = !middle.matches;
+    // On wide screens the list can't fold, so its heading isn't a control.
+    if (tocSummary) { if (middle.matches) tocSummary.removeAttribute("tabindex"); else tocSummary.tabIndex = -1; }
+    scrollers();
   }
+  // A table or code block wider than the page scrolls sideways; make it reachable by keyboard, with a name.
+  function scrollers() {
+    var boxes = document.querySelectorAll("main .table, main pre");
+    for (var i = 0; i < boxes.length; i++) {
+      var b = boxes[i];
+      if (b.scrollWidth > b.clientWidth + 1) {
+        b.tabIndex = 0; b.setAttribute("role", "region");
+        b.setAttribute("aria-label", (b.tagName === "PRE" ? "Code" : "Table") + ", scrolls sideways");
+      } else if (b.hasAttribute("role")) {
+        b.removeAttribute("tabindex"); b.removeAttribute("role"); b.removeAttribute("aria-label");
+      }
+    }
+  }
+  window.addEventListener("resize", scrollers);
   fit();
   if (narrow.addEventListener) { narrow.addEventListener("change", fit); middle.addEventListener("change", fit); }
   // The release dropdown closes when you click anywhere else.

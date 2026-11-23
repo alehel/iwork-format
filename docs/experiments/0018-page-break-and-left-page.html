@@ -19,7 +19,7 @@
 <p><strong>Status:</strong> run</p>
 <p><a href="0017-section-switches.html">0017</a> found the <em>Facing pages</em> switch but couldn't say what a section's other two header-and-footer sets (fields 23 and 24) are for. This experiment turns facing pages on and adds a second page, which is a left-hand page. Then it types into that page's header, to see whether a left page uses a set of its own. Adding the page also shows how a page break is stored.</p>
 <h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section: Setup">#</a></h2>
-<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Pages</td><td>15.4 (build <code>M15.4-7051.0.79-2</code>), with a Norwegian (nb) user interface and default autocorrection</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-09</td></tr><tr><td>Baseline</td><td>Experiment <a href="0016-header-and-footer.html">0016</a>, <code>header.pages</code> (text in the left header of a one-page document)</td></tr></tbody></table></div>
+<div class="table"><table><tbody><tr><th scope="row">Pages</th><td>15.4 (build <code>M15.4-7051.0.79-2</code>), with a Norwegian (nb) user interface and default autocorrection</td></tr><tr><th scope="row">macOS</th><td>26.5.2 (25F84)</td></tr><tr><th scope="row">Date</th><td>2026-11-09</td></tr><tr><th scope="row">Baseline</th><td>Experiment <a href="0016-header-and-footer.html">0016</a>, <code>header.pages</code> (text in the left header of a one-page document)</td></tr></tbody></table></div>
 <h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section: Recipe">#</a></h2>
 <ol><li>AppleScript makes a new document and sets its body text to <code>one</code>.</li><li>In the Pages window, Document tab of the sidebar: turn on <em>Motstående sider</em> (Facing pages).</li><li>Click at the end of <code>one</code>, then choose Insert → Page Break (<em>Sett inn → Sideskift</em>) and type <code>two</code>. Pages capitalised it to <code>Two</code> on the new page.</li><li>View → Show Layout, then click the left box of the second page's header and type <code>left</code>.</li><li>Pages offered <code>Left</code> in a suggestion that blocked AppleScript. It was dismissed with its close button. It appeared only once the save had started, so it can't be cleared beforehand.</li><li>AppleScript saves the document as <code>left-page-header.pages</code>.</li></ol>
 <p>With facing pages on, Pages showed the first page on the right of a spread and the second page as the left page of the next spread.</p>
@@ -50,10 +50,28 @@ set 1732544: header 1732234 (&quot;left&quot;), 1732385, 1732428; footer 1732501
   var narrow = window.matchMedia("(max-width: 48rem)");
   var middle = window.matchMedia("(max-width: 72rem)");
   var side = document.querySelector(".side > details"), toc = document.querySelector(".toc > details");
+  var tocSummary = document.querySelector(".toc summary");
   function fit() {
     if (side) side.open = !narrow.matches;
     if (toc) toc.open = !middle.matches;
+    // On wide screens the list can't fold, so its heading isn't a control.
+    if (tocSummary) { if (middle.matches) tocSummary.removeAttribute("tabindex"); else tocSummary.tabIndex = -1; }
+    scrollers();
   }
+  // A table or code block wider than the page scrolls sideways; make it reachable by keyboard, with a name.
+  function scrollers() {
+    var boxes = document.querySelectorAll("main .table, main pre");
+    for (var i = 0; i < boxes.length; i++) {
+      var b = boxes[i];
+      if (b.scrollWidth > b.clientWidth + 1) {
+        b.tabIndex = 0; b.setAttribute("role", "region");
+        b.setAttribute("aria-label", (b.tagName === "PRE" ? "Code" : "Table") + ", scrolls sideways");
+      } else if (b.hasAttribute("role")) {
+        b.removeAttribute("tabindex"); b.removeAttribute("role"); b.removeAttribute("aria-label");
+      }
+    }
+  }
+  window.addEventListener("resize", scrollers);
   fit();
   if (narrow.addEventListener) { narrow.addEventListener("change", fit); middle.addEventListener("change", fit); }
   // The release dropdown closes when you click anywhere else.

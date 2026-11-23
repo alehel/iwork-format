@@ -19,7 +19,7 @@
 <p><strong>Status:</strong> run</p>
 <p>An object placed in the text, such as a table, is the character U+FFFC in the text with an entry in the attachment runs (field 9) at that position (<a href="0020-a-table.html">0020</a>). This experiment moves the character and the entry, together and apart.</p>
 <h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section: Setup">#</a></h2>
-<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Pages</td><td>15.4</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-18</td></tr><tr><td>Input</td><td><code>samples/0020/table.pages</code>: the body (1732539) is <code>one</code> and U+FFFC, with one attachment entry at position 3 naming the table; Pages draws <code>one</code> and the table below it</td></tr><tr><td>Writer</td><td>[<code>recipes/0302-set-path.py</code>](../recipes/0302-set-path.py) and [<code>recipes/0383-set-nth-path.py</code>](../recipes/0383-set-nth-path.py); exported with [<code>recipes/0372-in-app.sh</code>](../recipes/0372-in-app.sh) and measured with [<code>recipes/0319-measure-pdf.swift</code>](../recipes/0319-measure-pdf.swift)</td></tr></tbody></table></div>
+<div class="table"><table><tbody><tr><th scope="row">Pages</th><td>15.4</td></tr><tr><th scope="row">macOS</th><td>26.5.2 (25F84)</td></tr><tr><th scope="row">Date</th><td>2026-11-18</td></tr><tr><th scope="row">Input</th><td><code>samples/0020/table.pages</code>: the body (1732539) is <code>one</code> and U+FFFC, with one attachment entry at position 3 naming the table; Pages draws <code>one</code> and the table below it</td></tr><tr><th scope="row">Writer</th><td>[<code>recipes/0302-set-path.py</code>](../recipes/0302-set-path.py) and [<code>recipes/0383-set-nth-path.py</code>](../recipes/0383-set-nth-path.py); exported with [<code>recipes/0372-in-app.sh</code>](../recipes/0372-in-app.sh) and measured with [<code>recipes/0319-measure-pdf.swift</code>](../recipes/0319-measure-pdf.swift)</td></tr></tbody></table></div>
 <h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section: Recipe">#</a></h2>
 <pre class="lang-bash"><code>mkdir -p samples/0423
 R=recipes/0302-set-path.py
@@ -38,7 +38,7 @@ return {body text of d, count of tables of d}&quot;
   swift recipes/0319-measure-pdf.swift $O/$f.pdf
 done</code></pre>
 <h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section: Observation">#</a></h2>
-<div class="table"><table><thead><tr><th>File</th><th>Text</th><th>Entry at</th><th><code>body text</code>, tables</th><th><code>one</code> drawn at</th><th>Table drawn</th></tr></thead><tbody><tr><td><code>original.pages</code></td><td><code>one</code> U+FFFC</td><td>3</td><td>one, 1</td><td>60–66</td><td>below <code>one</code> (bottom edge at 92.5)</td></tr><tr><td><code>table-first.pages</code></td><td>U+FFFC <code>one</code></td><td>0</td><td>U+FFFC one, 1</td><td>175–181</td><td>above <code>one</code> (from 79)</td></tr><tr><td><code>char-moved-only.pages</code></td><td>U+FFFC <code>one</code></td><td>3</td><td>one, 1</td><td>60–66</td><td>no</td></tr><tr><td><code>entry-moved-only.pages</code></td><td><code>one</code> U+FFFC</td><td>0</td><td>one, 1</td><td>60–66</td><td>no</td></tr></tbody></table></div>
+<div class="table"><table><thead><tr><th scope="col">File</th><th scope="col">Text</th><th scope="col">Entry at</th><th scope="col"><code>body text</code>, tables</th><th scope="col"><code>one</code> drawn at</th><th scope="col">Table drawn</th></tr></thead><tbody><tr><td><code>original.pages</code></td><td><code>one</code> U+FFFC</td><td>3</td><td>one, 1</td><td>60–66</td><td>below <code>one</code> (bottom edge at 92.5)</td></tr><tr><td><code>table-first.pages</code></td><td>U+FFFC <code>one</code></td><td>0</td><td>U+FFFC one, 1</td><td>175–181</td><td>above <code>one</code> (from 79)</td></tr><tr><td><code>char-moved-only.pages</code></td><td>U+FFFC <code>one</code></td><td>3</td><td>one, 1</td><td>60–66</td><td>no</td></tr><tr><td><code>entry-moved-only.pages</code></td><td><code>one</code> U+FFFC</td><td>0</td><td>one, 1</td><td>60–66</td><td>no</td></tr></tbody></table></div>
 <h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section: Conclusion">#</a></h2>
 <p>An object in the text sits where its U+FFFC is, and only when an attachment entry sits at the same position: moving both put the table before the word, and moving either alone left the table undrawn, though Pages still counted it. In the mismatched files AppleScript's <code>body text</code> leaves the U+FFFC out, so Pages treats an unattached U+FFFC as nothing. A reader must pair each U+FFFC with the attachment entry at its position, and a writer must keep the two together.</p>
 <h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section: Confidence">#</a></h2>
@@ -53,10 +53,28 @@ done</code></pre>
   var narrow = window.matchMedia("(max-width: 48rem)");
   var middle = window.matchMedia("(max-width: 72rem)");
   var side = document.querySelector(".side > details"), toc = document.querySelector(".toc > details");
+  var tocSummary = document.querySelector(".toc summary");
   function fit() {
     if (side) side.open = !narrow.matches;
     if (toc) toc.open = !middle.matches;
+    // On wide screens the list can't fold, so its heading isn't a control.
+    if (tocSummary) { if (middle.matches) tocSummary.removeAttribute("tabindex"); else tocSummary.tabIndex = -1; }
+    scrollers();
   }
+  // A table or code block wider than the page scrolls sideways; make it reachable by keyboard, with a name.
+  function scrollers() {
+    var boxes = document.querySelectorAll("main .table, main pre");
+    for (var i = 0; i < boxes.length; i++) {
+      var b = boxes[i];
+      if (b.scrollWidth > b.clientWidth + 1) {
+        b.tabIndex = 0; b.setAttribute("role", "region");
+        b.setAttribute("aria-label", (b.tagName === "PRE" ? "Code" : "Table") + ", scrolls sideways");
+      } else if (b.hasAttribute("role")) {
+        b.removeAttribute("tabindex"); b.removeAttribute("role"); b.removeAttribute("aria-label");
+      }
+    }
+  }
+  window.addEventListener("resize", scrollers);
   fit();
   if (narrow.addEventListener) { narrow.addEventListener("change", fit); middle.addEventListener("change", fit); }
   // The release dropdown closes when you click anywhere else.

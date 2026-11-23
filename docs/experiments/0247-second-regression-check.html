@@ -19,12 +19,12 @@
 <p><strong>Status:</strong> run</p>
 <p><a href="0178-regression-check.html">0178</a> checked that every sample document frames, that every object is reachable from the roots, and that its text extracts. Experiments 0179–0246 added 150 documents with new features: password protection, media, links, tracked changes, highlights, tables of contents, charts in Pages and Numbers, pivot tables, categories, groups, masks and captions. This experiment runs the same checks over all of them.</p>
 <h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section: Setup">#</a></h2>
-<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Tool</td><td><code>iwork-probe</code>, unchanged since 0178</td></tr><tr><td>Date</td><td>2026-11-09</td></tr><tr><td>Baseline</td><td>Experiment <a href="0178-regression-check.html">0178</a></td></tr></tbody></table></div>
+<div class="table"><table><tbody><tr><th scope="row">Tool</th><td><code>iwork-probe</code>, unchanged since 0178</td></tr><tr><th scope="row">Date</th><td>2026-11-09</td></tr><tr><th scope="row">Baseline</th><td>Experiment <a href="0178-regression-check.html">0178</a></td></tr></tbody></table></div>
 <h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section: Recipe">#</a></h2>
 <p>The same three checks as in 0178, over every document in <code>samples/</code>:</p>
 <ol><li><strong>Framing:</strong> every <code>.iwa</code> part split into chunks and records.</li><li><strong>Reachability:</strong> objects reached from roots 1, 2, 71 and 61 through the IDs listed in record headers.</li><li><strong>Text:</strong> every text record extracted.</li></ol>
 <h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section: Observation">#</a></h2>
-<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Documents</td><td>353: 155 Pages, 74 Keynote, 124 Numbers, 3 of them folder packages</td></tr><tr><td>Failed</td><td>6, the password-protected documents of <a href="0179-password.html">0179</a> and <a href="0180-password-in-other-apps.html">0180</a></td></tr><tr><td><code>.iwa</code> parts in the other 347</td><td>8,109, all framed without error</td></tr><tr><td>Objects</td><td>236,403, all reached from the roots</td></tr><tr><td>References to missing objects</td><td>none other than root 61 in documents without a chart</td></tr><tr><td>Text extraction</td><td>no errors in the other 347</td></tr></tbody></table></div>
+<div class="table"><table><tbody><tr><th scope="row">Documents</th><td>353: 155 Pages, 74 Keynote, 124 Numbers, 3 of them folder packages</td></tr><tr><th scope="row">Failed</th><td>6, the password-protected documents of <a href="0179-password.html">0179</a> and <a href="0180-password-in-other-apps.html">0180</a></td></tr><tr><th scope="row"><code>.iwa</code> parts in the other 347</th><td>8,109, all framed without error</td></tr><tr><th scope="row">Objects</th><td>236,403, all reached from the roots</td></tr><tr><th scope="row">References to missing objects</th><td>none other than root 61 in documents without a chart</td></tr><tr><th scope="row">Text extraction</th><td>no errors in the other 347</td></tr></tbody></table></div>
 <p>The six failures are expected: their parts are encrypted, so none of them frames. Decrypted as described in <a href="../spec/container.html#password-protection">container.md</a>, the same documents framed and were fully reachable in 0180.</p>
 <h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section: Conclusion">#</a></h2>
 <p>The container findings hold for everything added since 0178: every new record type is framed by the same chunk and record layout and listed in its parent's header references. That includes media, tracked changes, highlights, captions, groups, masks, chart links, pivot tables and category trees. <code>iwork-probe</code> doesn't decrypt yet, so a reader built on it must first decrypt password-protected documents.</p>
@@ -41,10 +41,28 @@
   var narrow = window.matchMedia("(max-width: 48rem)");
   var middle = window.matchMedia("(max-width: 72rem)");
   var side = document.querySelector(".side > details"), toc = document.querySelector(".toc > details");
+  var tocSummary = document.querySelector(".toc summary");
   function fit() {
     if (side) side.open = !narrow.matches;
     if (toc) toc.open = !middle.matches;
+    // On wide screens the list can't fold, so its heading isn't a control.
+    if (tocSummary) { if (middle.matches) tocSummary.removeAttribute("tabindex"); else tocSummary.tabIndex = -1; }
+    scrollers();
   }
+  // A table or code block wider than the page scrolls sideways; make it reachable by keyboard, with a name.
+  function scrollers() {
+    var boxes = document.querySelectorAll("main .table, main pre");
+    for (var i = 0; i < boxes.length; i++) {
+      var b = boxes[i];
+      if (b.scrollWidth > b.clientWidth + 1) {
+        b.tabIndex = 0; b.setAttribute("role", "region");
+        b.setAttribute("aria-label", (b.tagName === "PRE" ? "Code" : "Table") + ", scrolls sideways");
+      } else if (b.hasAttribute("role")) {
+        b.removeAttribute("tabindex"); b.removeAttribute("role"); b.removeAttribute("aria-label");
+      }
+    }
+  }
+  window.addEventListener("resize", scrollers);
   fit();
   if (narrow.addEventListener) { narrow.addEventListener("change", fit); middle.addEventListener("change", fit); }
   // The release dropdown closes when you click anywhere else.

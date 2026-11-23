@@ -19,7 +19,7 @@
 <p><strong>Status:</strong> run</p>
 <p>A Keynote slide with a dynamic background has an image fill showing a pre-rendered still, a <code>motionBackground-…</code> data file, and field 200 naming a type-26 motion background style, which holds the generator's name, such as <code>KNGradientLinearBase</code>, colour stops as in a gradient fill (11.3.2), and its parameters (<a href="0271-dynamic-background.html">0271</a>). This experiment replaces the still and changes the stops, and reads the colours of the exported slide.</p>
 <h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section: Setup">#</a></h2>
-<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Keynote</td><td>15.4, in Norwegian</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-18</td></tr><tr><td>Input</td><td><code>samples/theme/0271/dynamic.key</code>: one slide with the <em>Rainbow</em> dynamic background, in the test theme. Its still is <code>Data/motionBackground-9094.jpeg</code>, data ID 9094, and its motion style is 2651723, with six colour stops</td></tr><tr><td>Writer</td><td>[<code>recipes/0395-data-file.py</code>](../recipes/0395-data-file.py) for the still and [<code>recipes/0383-set-nth-path.py</code>](../recipes/0383-set-nth-path.py) for the stops; exported with [<code>recipes/0372-in-app.sh</code>](../recipes/0372-in-app.sh) and read with [<code>recipes/0384-pdf-colours.swift</code>](../recipes/0384-pdf-colours.swift)</td></tr></tbody></table></div>
+<div class="table"><table><tbody><tr><th scope="row">Keynote</th><td>15.4, in Norwegian</td></tr><tr><th scope="row">macOS</th><td>26.5.2 (25F84)</td></tr><tr><th scope="row">Date</th><td>2026-11-18</td></tr><tr><th scope="row">Input</th><td><code>samples/theme/0271/dynamic.key</code>: one slide with the <em>Rainbow</em> dynamic background, in the test theme. Its still is <code>Data/motionBackground-9094.jpeg</code>, data ID 9094, and its motion style is 2651723, with six colour stops</td></tr><tr><th scope="row">Writer</th><td>[<code>recipes/0395-data-file.py</code>](../recipes/0395-data-file.py) for the still and [<code>recipes/0383-set-nth-path.py</code>](../recipes/0383-set-nth-path.py) for the stops; exported with [<code>recipes/0372-in-app.sh</code>](../recipes/0372-in-app.sh) and read with [<code>recipes/0384-pdf-colours.swift</code>](../recipes/0384-pdf-colours.swift)</td></tr></tbody></table></div>
 <h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section: Recipe">#</a></h2>
 <pre class="lang-bash"><code>mkdir -p samples/0440
 O=samples/0440
@@ -36,7 +36,7 @@ done</code></pre>
 <p><code>motion-red.key</code> makes all six stops pure red.</p>
 <h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section: Observation">#</a></h2>
 <p>Colours at the top left, the centre and the bottom right of the 1920 × 1080 slide:</p>
-<div class="table"><table><thead><tr><th>File</th><th>Written</th><th>(100, 100)</th><th>(960, 540)</th><th>(1800, 1000)</th></tr></thead><tbody><tr><td><code>original.key</code></td><td></td><td>0, 1, 0.66</td><td>0, 0.98, 0.45</td><td>0.46, 0.95, 0.25</td></tr><tr><td><code>still-green.key</code></td><td>the still replaced by plain green</td><td>the same</td><td>the same</td><td>the same</td></tr><tr><td><code>motion-red.key</code></td><td>all stops red</td><td>1, 0, 0</td><td>1, 0, 0</td><td>1, 0, 0</td></tr></tbody></table></div>
+<div class="table"><table><thead><tr><th scope="col">File</th><th scope="col">Written</th><th scope="col">(100, 100)</th><th scope="col">(960, 540)</th><th scope="col">(1800, 1000)</th></tr></thead><tbody><tr><td><code>original.key</code></td><td></td><td>0, 1, 0.66</td><td>0, 0.98, 0.45</td><td>0.46, 0.95, 0.25</td></tr><tr><td><code>still-green.key</code></td><td>the still replaced by plain green</td><td>the same</td><td>the same</td><td>the same</td></tr><tr><td><code>motion-red.key</code></td><td>all stops red</td><td>1, 0, 0</td><td>1, 0, 0</td><td>1, 0, 0</td></tr></tbody></table></div>
 <h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section: Conclusion">#</a></h2>
 <p>Keynote draws a dynamic background from its motion style, rendering it again when it exports, and doesn't use the still in the image fill: replacing the still changed nothing, while red stops made the whole slide red. The still is there for whatever can't render the motion, such as other readers and previews. So a reader that can't run Keynote's generators should show the still, and a writer that changes a dynamic background should render a new still to go with it.</p>
 <h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section: Confidence">#</a></h2>
@@ -51,10 +51,28 @@ done</code></pre>
   var narrow = window.matchMedia("(max-width: 48rem)");
   var middle = window.matchMedia("(max-width: 72rem)");
   var side = document.querySelector(".side > details"), toc = document.querySelector(".toc > details");
+  var tocSummary = document.querySelector(".toc summary");
   function fit() {
     if (side) side.open = !narrow.matches;
     if (toc) toc.open = !middle.matches;
+    // On wide screens the list can't fold, so its heading isn't a control.
+    if (tocSummary) { if (middle.matches) tocSummary.removeAttribute("tabindex"); else tocSummary.tabIndex = -1; }
+    scrollers();
   }
+  // A table or code block wider than the page scrolls sideways; make it reachable by keyboard, with a name.
+  function scrollers() {
+    var boxes = document.querySelectorAll("main .table, main pre");
+    for (var i = 0; i < boxes.length; i++) {
+      var b = boxes[i];
+      if (b.scrollWidth > b.clientWidth + 1) {
+        b.tabIndex = 0; b.setAttribute("role", "region");
+        b.setAttribute("aria-label", (b.tagName === "PRE" ? "Code" : "Table") + ", scrolls sideways");
+      } else if (b.hasAttribute("role")) {
+        b.removeAttribute("tabindex"); b.removeAttribute("role"); b.removeAttribute("aria-label");
+      }
+    }
+  }
+  window.addEventListener("resize", scrollers);
   fit();
   if (narrow.addEventListener) { narrow.addEventListener("change", fit); middle.addEventListener("change", fit); }
   // The release dropdown closes when you click anywhere else.

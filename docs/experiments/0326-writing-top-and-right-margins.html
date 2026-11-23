@@ -19,7 +19,7 @@
 <p><strong>Status:</strong> run</p>
 <p><a href="0318-writing-paper-size-and-margin.html">0318</a> confirmed the paper size and the left margin (root field 32) by writing them. This experiment does the same for the right and top margins, fields 33 and 34, on a paragraph that wraps, measuring with [<code>recipes/0319-measure-pdf.swift</code>](../recipes/0319-measure-pdf.swift).</p>
 <h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section: Setup">#</a></h2>
-<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Pages</td><td>15.4</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-10</td></tr><tr><td>Input</td><td><code>samples/0320/long.pages</code>: one wrapping paragraph on A4 (595.28 points wide) with all margins 56.69 points</td></tr><tr><td>Writer</td><td>[<code>recipes/0302-set-path.py</code>](../recipes/0302-set-path.py)</td></tr></tbody></table></div>
+<div class="table"><table><tbody><tr><th scope="row">Pages</th><td>15.4</td></tr><tr><th scope="row">macOS</th><td>26.5.2 (25F84)</td></tr><tr><th scope="row">Date</th><td>2026-11-10</td></tr><tr><th scope="row">Input</th><td><code>samples/0320/long.pages</code>: one wrapping paragraph on A4 (595.28 points wide) with all margins 56.69 points</td></tr><tr><th scope="row">Writer</th><td>[<code>recipes/0302-set-path.py</code>](../recipes/0302-set-path.py)</td></tr></tbody></table></div>
 <h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section: Recipe">#</a></h2>
 <pre class="lang-bash"><code>mkdir -p samples/0326
 cp samples/0320/long.pages samples/0326/long.pages
@@ -27,7 +27,7 @@ python3 -I recipes/0302-set-path.py samples/0326/long.pages samples/0326/top150.
 python3 -I recipes/0302-set-path.py samples/0326/long.pages samples/0326/right150.pages 1 33 float 150</code></pre>
 <p>Each file was opened in Pages on its own, exported as PDF and measured.</p>
 <h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section: Observation">#</a></h2>
-<div class="table"><table><thead><tr><th>File</th><th>Line 1: top, left – right</th><th>Line 2: top, left – right</th></tr></thead><tbody><tr><td><code>long.pages</code></td><td>60.2, 57.5 – 506.0</td><td>72.2, 57.5 – 506.0</td></tr><tr><td><code>top150.pages</code> (34 = 150)</td><td>153.5, 57.5 – 506.0</td><td>165.5, 57.5 – 506.0</td></tr><tr><td><code>right150.pages</code> (33 = 150)</td><td>60.2, 57.5 – 415.5</td><td>72.2, 57.5 – 415.5</td></tr></tbody></table></div>
+<div class="table"><table><thead><tr><th scope="col">File</th><th scope="col">Line 1: top, left – right</th><th scope="col">Line 2: top, left – right</th></tr></thead><tbody><tr><td><code>long.pages</code></td><td>60.2, 57.5 – 506.0</td><td>72.2, 57.5 – 506.0</td></tr><tr><td><code>top150.pages</code> (34 = 150)</td><td>153.5, 57.5 – 506.0</td><td>165.5, 57.5 – 506.0</td></tr><tr><td><code>right150.pages</code> (33 = 150)</td><td>60.2, 57.5 – 415.5</td><td>72.2, 57.5 – 415.5</td></tr></tbody></table></div>
 <h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section: Conclusion">#</a></h2>
 <p>Field 34 is the top margin: the text moves down by 93.3 points, the difference between 150 and 56.69. Field 33 is the right margin: the lines now wrap before 595.28 − 150 = 445.28 points. Both are floats in points, used as written.</p>
 <h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section: Confidence">#</a></h2>
@@ -42,10 +42,28 @@ python3 -I recipes/0302-set-path.py samples/0326/long.pages samples/0326/right15
   var narrow = window.matchMedia("(max-width: 48rem)");
   var middle = window.matchMedia("(max-width: 72rem)");
   var side = document.querySelector(".side > details"), toc = document.querySelector(".toc > details");
+  var tocSummary = document.querySelector(".toc summary");
   function fit() {
     if (side) side.open = !narrow.matches;
     if (toc) toc.open = !middle.matches;
+    // On wide screens the list can't fold, so its heading isn't a control.
+    if (tocSummary) { if (middle.matches) tocSummary.removeAttribute("tabindex"); else tocSummary.tabIndex = -1; }
+    scrollers();
   }
+  // A table or code block wider than the page scrolls sideways; make it reachable by keyboard, with a name.
+  function scrollers() {
+    var boxes = document.querySelectorAll("main .table, main pre");
+    for (var i = 0; i < boxes.length; i++) {
+      var b = boxes[i];
+      if (b.scrollWidth > b.clientWidth + 1) {
+        b.tabIndex = 0; b.setAttribute("role", "region");
+        b.setAttribute("aria-label", (b.tagName === "PRE" ? "Code" : "Table") + ", scrolls sideways");
+      } else if (b.hasAttribute("role")) {
+        b.removeAttribute("tabindex"); b.removeAttribute("role"); b.removeAttribute("aria-label");
+      }
+    }
+  }
+  window.addEventListener("resize", scrollers);
   fit();
   if (narrow.addEventListener) { narrow.addEventListener("change", fit); middle.addEventListener("change", fit); }
   // The release dropdown closes when you click anywhere else.

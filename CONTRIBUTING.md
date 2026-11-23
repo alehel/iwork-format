@@ -34,7 +34,7 @@ The site in `docs/` is built from the Markdown; never edit the HTML. Before push
 1. `python3 -I site/test_build.py` tests the builder's Markdown subset and its checks. CI runs it too, builds the site, and fails when the committed `docs/` differs from what the Markdown builds.
 2. If a guide's excerpts or the samples they come from changed, `python3 -I site/examples.py` makes them again. It needs the gitignored `samples/` and `target/release/iwork-probe`, and stops, writing nothing, when either is missing.
 3. `python3 -I site/build.py` writes `docs/`. It fails on Markdown it can't render faithfully (an unclosed code block, a table row with the wrong number of cells, raw HTML, a link to a missing file or excerpt) and on any broken local link, missing `#section` or repeated id in the built pages. Fix the Markdown it names.
-4. Look at a changed page at phone, middle (about 960 pixels) and desktop widths, and Tab through it once: the skip link comes first, and every link and menu shows where the focus is.
+4. Look at a changed page at phone, middle (about 960 pixels) and desktop widths, and Tab through it once: the skip link comes first, and every link and menu shows where the focus is. [`site/ACCESSIBILITY.md`](site/ACCESSIBILITY.md) records the fuller checks and their results; add to it when you rerun them.
 5. Commit the Markdown and `docs/` together.
 
 When a release changes the format, `python3 -I site/archive.py RELEASE` freezes the current spec first ([spec/releases.md](spec/releases.md)).

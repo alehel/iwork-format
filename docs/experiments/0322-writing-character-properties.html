@@ -19,7 +19,7 @@
 <p><strong>Status:</strong> run</p>
 <p>Character properties were read as fields of a style's field 11: 10 the baseline (1 superscript, 2 subscript), 13 capitals (1 all caps, 2 small caps), 14 the baseline shift in points and 27 tracking (<a href="0203-superscript.html">0203</a>–<a href="0209-raised-baseline.html">0209</a>). This experiment writes each into the Body style and measures the text on the exported page with [<code>recipes/0319-measure-pdf.swift</code>](../recipes/0319-measure-pdf.swift).</p>
 <h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section: Setup">#</a></h2>
-<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Pages</td><td>15.4</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-10</td></tr><tr><td>Input</td><td><code>samples/0002/hello.pages</code> (the word <code>hello</code>, 11-point Body) and <code>samples/0320/long.pages</code> (a paragraph wrapping to several lines)</td></tr><tr><td>Writer</td><td>[<code>recipes/0302-set-path.py</code>](../recipes/0302-set-path.py)</td></tr></tbody></table></div>
+<div class="table"><table><tbody><tr><th scope="row">Pages</th><td>15.4</td></tr><tr><th scope="row">macOS</th><td>26.5.2 (25F84)</td></tr><tr><th scope="row">Date</th><td>2026-11-10</td></tr><tr><th scope="row">Input</th><td><code>samples/0002/hello.pages</code> (the word <code>hello</code>, 11-point Body) and <code>samples/0320/long.pages</code> (a paragraph wrapping to several lines)</td></tr><tr><th scope="row">Writer</th><td>[<code>recipes/0302-set-path.py</code>](../recipes/0302-set-path.py)</td></tr></tbody></table></div>
 <h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section: Recipe">#</a></h2>
 <pre class="lang-bash"><code>mkdir -p samples/0322
 cp samples/0002/hello.pages samples/0322/original.pages
@@ -32,7 +32,7 @@ python3 -I $R samples/0320/long.pages samples/0322/long-shift10.pages 1731511 11
 <p>Each file was opened in Pages on its own, exported as PDF and measured.</p>
 <h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section: Observation">#</a></h2>
 <p>The word's ink, in points:</p>
-<div class="table"><table><thead><tr><th>File</th><th>Left – right</th><th>Top – bottom</th></tr></thead><tbody><tr><td><code>original.pages</code></td><td>57.5 – 79.5</td><td>58.2 – 66.2</td></tr><tr><td><code>caps.pages</code> (13 = 1)</td><td>57.8 – 91.5</td><td>58.0 – 66.2</td></tr><tr><td><code>super.pages</code> (10 = 1)</td><td>57.5 – 72.0</td><td>58.2 – 63.2</td></tr><tr><td><code>shift10.pages</code> (14 = 10)</td><td>57.5 – 79.5</td><td>58.2 – 66.2</td></tr><tr><td><code>tracking.pages</code> (27 = 0.5)</td><td>57.5 – 101.5</td><td>58.2 – 66.2</td></tr></tbody></table></div>
+<div class="table"><table><thead><tr><th scope="col">File</th><th scope="col">Left – right</th><th scope="col">Top – bottom</th></tr></thead><tbody><tr><td><code>original.pages</code></td><td>57.5 – 79.5</td><td>58.2 – 66.2</td></tr><tr><td><code>caps.pages</code> (13 = 1)</td><td>57.8 – 91.5</td><td>58.0 – 66.2</td></tr><tr><td><code>super.pages</code> (10 = 1)</td><td>57.5 – 72.0</td><td>58.2 – 63.2</td></tr><tr><td><code>shift10.pages</code> (14 = 10)</td><td>57.5 – 79.5</td><td>58.2 – 66.2</td></tr><tr><td><code>tracking.pages</code> (27 = 0.5)</td><td>57.5 – 101.5</td><td>58.2 – 66.2</td></tr></tbody></table></div>
 <p>The first three lines of the long paragraph, top – bottom: 60.2 – 66.2, 72.2 – 78.2 and 84.2 – 90.2 as written; 60.2 – 66.2, 82.2 – 88.2 and 104.2 – 110.2 with 14 = 10.</p>
 <h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section: Conclusion">#</a></h2>
 <p>All caps sets <code>HELLO</code> in capitals, 12 points wider. Superscript sets the word smaller and raised: it is 7.5 points narrower and its bottom 3 points higher. Tracking 0.5 adds half an em, 5.5 points, after each of the word's letters, 22 points in all for the four gaps and the end. The baseline shift raises the text by 10 points, and each line grows by the same amount to make room, so on the first line the text stays where it was while the spacing between lines grows from 12 to 22 points.</p>
@@ -48,10 +48,28 @@ python3 -I $R samples/0320/long.pages samples/0322/long-shift10.pages 1731511 11
   var narrow = window.matchMedia("(max-width: 48rem)");
   var middle = window.matchMedia("(max-width: 72rem)");
   var side = document.querySelector(".side > details"), toc = document.querySelector(".toc > details");
+  var tocSummary = document.querySelector(".toc summary");
   function fit() {
     if (side) side.open = !narrow.matches;
     if (toc) toc.open = !middle.matches;
+    // On wide screens the list can't fold, so its heading isn't a control.
+    if (tocSummary) { if (middle.matches) tocSummary.removeAttribute("tabindex"); else tocSummary.tabIndex = -1; }
+    scrollers();
   }
+  // A table or code block wider than the page scrolls sideways; make it reachable by keyboard, with a name.
+  function scrollers() {
+    var boxes = document.querySelectorAll("main .table, main pre");
+    for (var i = 0; i < boxes.length; i++) {
+      var b = boxes[i];
+      if (b.scrollWidth > b.clientWidth + 1) {
+        b.tabIndex = 0; b.setAttribute("role", "region");
+        b.setAttribute("aria-label", (b.tagName === "PRE" ? "Code" : "Table") + ", scrolls sideways");
+      } else if (b.hasAttribute("role")) {
+        b.removeAttribute("tabindex"); b.removeAttribute("role"); b.removeAttribute("aria-label");
+      }
+    }
+  }
+  window.addEventListener("resize", scrollers);
   fit();
   if (narrow.addEventListener) { narrow.addEventListener("change", fit); middle.addEventListener("change", fit); }
   // The release dropdown closes when you click anywhere else.

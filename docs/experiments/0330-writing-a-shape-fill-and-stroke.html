@@ -19,7 +19,7 @@
 <p><strong>Status:</strong> run</p>
 <p>A shape style keeps its properties one level deeper than text styles, in field 1.11: 1.11.1.1 is the fill colour (<a href="0077-shape-fill.html">0077</a>) and 1.11.2 the stroke, with its width in 1.11.2.2 (<a href="0250-shape-border.html">0250</a>). This experiment writes a fill and a wider stroke into a shape's style and measures the shape on the exported page.</p>
 <h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section: Setup">#</a></h2>
-<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Pages</td><td>15.4</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-10</td></tr><tr><td>Input</td><td><code>samples/0250/border.pages</code>: a 100 × 100 shape at (300, 300) whose own style, record 1732710, holds only a black 5-point stroke; its fill, black, comes from the parent style</td></tr><tr><td>Writer</td><td>[<code>recipes/0302-set-path.py</code>](../recipes/0302-set-path.py)</td></tr></tbody></table></div>
+<div class="table"><table><tbody><tr><th scope="row">Pages</th><td>15.4</td></tr><tr><th scope="row">macOS</th><td>26.5.2 (25F84)</td></tr><tr><th scope="row">Date</th><td>2026-11-10</td></tr><tr><th scope="row">Input</th><td><code>samples/0250/border.pages</code>: a 100 × 100 shape at (300, 300) whose own style, record 1732710, holds only a black 5-point stroke; its fill, black, comes from the parent style</td></tr><tr><th scope="row">Writer</th><td>[<code>recipes/0302-set-path.py</code>](../recipes/0302-set-path.py)</td></tr></tbody></table></div>
 <h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section: Recipe">#</a></h2>
 <pre class="lang-bash"><code>mkdir -p samples/0330
 cp samples/0250/border.pages samples/0330/original.pages
@@ -28,7 +28,7 @@ python3 -I recipes/0302-set-path.py samples/0330/original.pages samples/0330/wri
   1.11.2.2 float 15</code></pre>
 <p>A first attempt wrote the same values at 11.1 and 11.2, without the leading 1, and nothing changed: the shape style's properties really are under field 1. Each file was opened in Pages on its own and exported as PDF; the page was drawn at 4 pixels per point, the pixel at the shape's centre read, and the inked extent of the row through the centre measured.</p>
 <h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section: Observation">#</a></h2>
-<div class="table"><table><thead><tr><th>File</th><th>Centre (sRGB)</th><th>Row through the centre</th></tr></thead><tbody><tr><td><code>original.pages</code></td><td>0, 0, 0</td><td>297.8 – 402.8</td></tr><tr><td><code>written.pages</code></td><td>1, 0, 0</td><td>292.8 – 407.8</td></tr></tbody></table></div>
+<div class="table"><table><thead><tr><th scope="col">File</th><th scope="col">Centre (sRGB)</th><th scope="col">Row through the centre</th></tr></thead><tbody><tr><td><code>original.pages</code></td><td>0, 0, 0</td><td>297.8 – 402.8</td></tr><tr><td><code>written.pages</code></td><td>1, 0, 0</td><td>292.8 – 407.8</td></tr></tbody></table></div>
 <h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section: Conclusion">#</a></h2>
 <p>1.11.1.1 is the shape's fill colour and 1.11.2.2 its stroke width in points. The stroke is centred on the outline, so a 15-point stroke reaches 7.5 points outside the 300 – 400 box, against 2.5 for the original 5 points. Writing into the shape's own unnamed style changes only that shape.</p>
 <h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section: Confidence">#</a></h2>
@@ -43,10 +43,28 @@ python3 -I recipes/0302-set-path.py samples/0330/original.pages samples/0330/wri
   var narrow = window.matchMedia("(max-width: 48rem)");
   var middle = window.matchMedia("(max-width: 72rem)");
   var side = document.querySelector(".side > details"), toc = document.querySelector(".toc > details");
+  var tocSummary = document.querySelector(".toc summary");
   function fit() {
     if (side) side.open = !narrow.matches;
     if (toc) toc.open = !middle.matches;
+    // On wide screens the list can't fold, so its heading isn't a control.
+    if (tocSummary) { if (middle.matches) tocSummary.removeAttribute("tabindex"); else tocSummary.tabIndex = -1; }
+    scrollers();
   }
+  // A table or code block wider than the page scrolls sideways; make it reachable by keyboard, with a name.
+  function scrollers() {
+    var boxes = document.querySelectorAll("main .table, main pre");
+    for (var i = 0; i < boxes.length; i++) {
+      var b = boxes[i];
+      if (b.scrollWidth > b.clientWidth + 1) {
+        b.tabIndex = 0; b.setAttribute("role", "region");
+        b.setAttribute("aria-label", (b.tagName === "PRE" ? "Code" : "Table") + ", scrolls sideways");
+      } else if (b.hasAttribute("role")) {
+        b.removeAttribute("tabindex"); b.removeAttribute("role"); b.removeAttribute("aria-label");
+      }
+    }
+  }
+  window.addEventListener("resize", scrollers);
   fit();
   if (narrow.addEventListener) { narrow.addEventListener("change", fit); middle.addEventListener("change", fit); }
   // The release dropdown closes when you click anywhere else.

@@ -19,7 +19,7 @@
 <p><strong>Status:</strong> run</p>
 <p>Turning on slide numbers set field 18 of every slide node (type 4) from 0 to 1 (<a href="0074-slide-numbers.html">0074</a>). Hidden placeholders are left out of a slide's lists of shown objects, fields 7 and 42 (<a href="0243-hidden-body.html">0243</a>, <a href="0312-writing-a-hidden-body.html">0312</a>). This experiment writes field 18 and reads Keynote's exported PDF, where a shown slide number is text on the page.</p>
 <h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section: Setup">#</a></h2>
-<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Keynote</td><td>15.4, in Norwegian</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-17</td></tr><tr><td>Input</td><td><code>samples/theme/0160/move.key</code>: three slides, C, A and B, without numbers. Slide A is node 2655505 and slide 2655467, which refers to a slide-number placeholder, 2655501 (type 7), not in its lists 7 and 42</td></tr><tr><td>Writer</td><td>[<code>recipes/0302-set-path.py</code>](../recipes/0302-set-path.py) and the new [<code>recipes/0381-show-object.py</code>](../recipes/0381-show-object.py); exported with [<code>recipes/0372-in-app.sh</code>](../recipes/0372-in-app.sh) and read with [<code>recipes/0374-pdf-text.swift</code>](../recipes/0374-pdf-text.swift)</td></tr></tbody></table></div>
+<div class="table"><table><tbody><tr><th scope="row">Keynote</th><td>15.4, in Norwegian</td></tr><tr><th scope="row">macOS</th><td>26.5.2 (25F84)</td></tr><tr><th scope="row">Date</th><td>2026-11-17</td></tr><tr><th scope="row">Input</th><td><code>samples/theme/0160/move.key</code>: three slides, C, A and B, without numbers. Slide A is node 2655505 and slide 2655467, which refers to a slide-number placeholder, 2655501 (type 7), not in its lists 7 and 42</td></tr><tr><th scope="row">Writer</th><td>[<code>recipes/0302-set-path.py</code>](../recipes/0302-set-path.py) and the new [<code>recipes/0381-show-object.py</code>](../recipes/0381-show-object.py); exported with [<code>recipes/0372-in-app.sh</code>](../recipes/0372-in-app.sh) and read with [<code>recipes/0374-pdf-text.swift</code>](../recipes/0374-pdf-text.swift)</td></tr></tbody></table></div>
 <h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section: Recipe">#</a></h2>
 <pre class="lang-bash"><code>mkdir -p samples/0381
 R=recipes/0302-set-path.py
@@ -38,7 +38,7 @@ return slide numbers showing of d&quot;
 done</code></pre>
 <p>Comparing the records of <a href="0074-slide-numbers.html">0074</a>'s <code>slidenumbers.key</code> with its baseline found what that experiment missed: besides field 18 of every node, the slide record gained its slide-number placeholder in fields 7 and 42. <code>recipes/0381-show-object.py</code> adds an object to those lists, the reverse of 0312.</p>
 <h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section: Observation">#</a></h2>
-<div class="table"><table><thead><tr><th>File</th><th>Written</th><th><code>slide numbers showing</code></th><th>Text of pages 1–3</th></tr></thead><tbody><tr><td><code>original.key</code></td><td>nothing</td><td>false</td><td>C / A / B</td></tr><tr><td><code>a-numbered.key</code></td><td>node of A: 18 = 1</td><td>false</td><td>C / A / B</td></tr><tr><td><code>a-and-b-numbered.key</code></td><td>nodes of A and B: 18 = 1</td><td>false</td><td>C / A / B</td></tr><tr><td><code>all-numbered.key</code></td><td>all three nodes: 18 = 1</td><td>false</td><td>C / A / B</td></tr><tr><td><code>a-placeholder.key</code></td><td>slide A: placeholder in 7 and 42</td><td>false</td><td>C / A 2 / B</td></tr><tr><td><code>a-numbered-placeholder.key</code></td><td>both</td><td>false</td><td>C / A 2 / B</td></tr></tbody></table></div>
+<div class="table"><table><thead><tr><th scope="col">File</th><th scope="col">Written</th><th scope="col"><code>slide numbers showing</code></th><th scope="col">Text of pages 1–3</th></tr></thead><tbody><tr><td><code>original.key</code></td><td>nothing</td><td>false</td><td>C / A / B</td></tr><tr><td><code>a-numbered.key</code></td><td>node of A: 18 = 1</td><td>false</td><td>C / A / B</td></tr><tr><td><code>a-and-b-numbered.key</code></td><td>nodes of A and B: 18 = 1</td><td>false</td><td>C / A / B</td></tr><tr><td><code>all-numbered.key</code></td><td>all three nodes: 18 = 1</td><td>false</td><td>C / A / B</td></tr><tr><td><code>a-placeholder.key</code></td><td>slide A: placeholder in 7 and 42</td><td>false</td><td>C / A 2 / B</td></tr><tr><td><code>a-numbered-placeholder.key</code></td><td>both</td><td>false</td><td>C / A 2 / B</td></tr></tbody></table></div>
 <p><code>slidenumbers.key</code> from 0074, exported the same way, reports true and shows <code>1</code>.</p>
 <h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section: Conclusion">#</a></h2>
 <p>A slide shows its number when its slide-number placeholder is in its lists of shown objects, fields 7 and 42, like any other placeholder; Keynote fills it with the slide's position, here 2. Field 18 of the slide node doesn't show or hide the number: it was set on its own on every slide without any number appearing. AppleScript's document-wide <code>slide numbers showing</code> stayed false even with all three slide nodes set, though it is true in 0074, where the template slides' nodes were set too; it may require every node, layouts included. So a reader should draw a number where the placeholder is listed, and a writer should list the placeholder and set field 18 on every node, as Keynote does.</p>
@@ -54,10 +54,28 @@ done</code></pre>
   var narrow = window.matchMedia("(max-width: 48rem)");
   var middle = window.matchMedia("(max-width: 72rem)");
   var side = document.querySelector(".side > details"), toc = document.querySelector(".toc > details");
+  var tocSummary = document.querySelector(".toc summary");
   function fit() {
     if (side) side.open = !narrow.matches;
     if (toc) toc.open = !middle.matches;
+    // On wide screens the list can't fold, so its heading isn't a control.
+    if (tocSummary) { if (middle.matches) tocSummary.removeAttribute("tabindex"); else tocSummary.tabIndex = -1; }
+    scrollers();
   }
+  // A table or code block wider than the page scrolls sideways; make it reachable by keyboard, with a name.
+  function scrollers() {
+    var boxes = document.querySelectorAll("main .table, main pre");
+    for (var i = 0; i < boxes.length; i++) {
+      var b = boxes[i];
+      if (b.scrollWidth > b.clientWidth + 1) {
+        b.tabIndex = 0; b.setAttribute("role", "region");
+        b.setAttribute("aria-label", (b.tagName === "PRE" ? "Code" : "Table") + ", scrolls sideways");
+      } else if (b.hasAttribute("role")) {
+        b.removeAttribute("tabindex"); b.removeAttribute("role"); b.removeAttribute("aria-label");
+      }
+    }
+  }
+  window.addEventListener("resize", scrollers);
   fit();
   if (narrow.addEventListener) { narrow.addEventListener("change", fit); middle.addEventListener("change", fit); }
   // The release dropdown closes when you click anywhere else.

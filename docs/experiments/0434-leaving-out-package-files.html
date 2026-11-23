@@ -19,7 +19,7 @@
 <p><strong>Status:</strong> run</p>
 <p>Besides its <code>Index/</code> parts, a document's ZIP holds <code>Metadata/Properties.plist</code>, <code>Metadata/DocumentIdentifier</code>, <code>Metadata/BuildVersionHistory.plist</code> and three previews (<a href="../spec/container.html#the-package">container.md</a>). The writer of <a href="0287-rewriting-a-document.html">0287</a> already left out the previews. This experiment leaves out each of the others, and the view state, and asks whether Pages opens the document.</p>
 <h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section: Setup">#</a></h2>
-<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Pages</td><td>15.4, in Norwegian</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-18</td></tr><tr><td>Input</td><td><code>samples/0002/hello.pages</code>: seven parts under <code>Index/</code>, the three files under <code>Metadata/</code>, and <code>preview.jpg</code>, <code>preview-micro.jpg</code> and <code>preview-web.jpg</code></td></tr><tr><td>Writer</td><td>The new [<code>recipes/0434-drop-entries.py</code>](../recipes/0434-drop-entries.py); opened with [<code>recipes/0372-in-app.sh</code>](../recipes/0372-in-app.sh)</td></tr></tbody></table></div>
+<div class="table"><table><tbody><tr><th scope="row">Pages</th><td>15.4, in Norwegian</td></tr><tr><th scope="row">macOS</th><td>26.5.2 (25F84)</td></tr><tr><th scope="row">Date</th><td>2026-11-18</td></tr><tr><th scope="row">Input</th><td><code>samples/0002/hello.pages</code>: seven parts under <code>Index/</code>, the three files under <code>Metadata/</code>, and <code>preview.jpg</code>, <code>preview-micro.jpg</code> and <code>preview-web.jpg</code></td></tr><tr><th scope="row">Writer</th><td>The new [<code>recipes/0434-drop-entries.py</code>](../recipes/0434-drop-entries.py); opened with [<code>recipes/0372-in-app.sh</code>](../recipes/0372-in-app.sh)</td></tr></tbody></table></div>
 <h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section: Recipe">#</a></h2>
 <pre class="lang-bash"><code>mkdir -p samples/0434
 X=recipes/0434-drop-entries.py
@@ -36,7 +36,7 @@ for f in no-identifier no-properties no-history no-previews no-metadata-folder o
   sh recipes/0372-in-app.sh Pages $O/$f.pages &#x27;return {body text of d, font of word 1 of body text of d}&#x27;
 done</code></pre>
 <h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section: Observation">#</a></h2>
-<div class="table"><table><thead><tr><th>File</th><th>Left out</th><th>Pages</th></tr></thead><tbody><tr><td><code>no-identifier.pages</code></td><td><code>DocumentIdentifier</code></td><td>opens: <code>hello</code>, HelveticaNeue</td></tr><tr><td><code>no-properties.pages</code></td><td><code>Properties.plist</code></td><td>opens</td></tr><tr><td><code>no-history.pages</code></td><td><code>BuildVersionHistory.plist</code></td><td>opens</td></tr><tr><td><code>no-previews.pages</code></td><td>the three previews</td><td>opens</td></tr><tr><td><code>no-metadata-folder.pages</code></td><td>all of <code>Metadata/</code></td><td>opens</td></tr><tr><td><code>only-index.pages</code></td><td><code>Metadata/</code> and the previews</td><td>doesn't open, with no alert</td></tr><tr><td><code>no-viewstate.pages</code></td><td><code>Index/ViewState.iwa</code></td><td>doesn't open, with no alert</td></tr></tbody></table></div>
+<div class="table"><table><thead><tr><th scope="col">File</th><th scope="col">Left out</th><th scope="col">Pages</th></tr></thead><tbody><tr><td><code>no-identifier.pages</code></td><td><code>DocumentIdentifier</code></td><td>opens: <code>hello</code>, HelveticaNeue</td></tr><tr><td><code>no-properties.pages</code></td><td><code>Properties.plist</code></td><td>opens</td></tr><tr><td><code>no-history.pages</code></td><td><code>BuildVersionHistory.plist</code></td><td>opens</td></tr><tr><td><code>no-previews.pages</code></td><td>the three previews</td><td>opens</td></tr><tr><td><code>no-metadata-folder.pages</code></td><td>all of <code>Metadata/</code></td><td>opens</td></tr><tr><td><code>only-index.pages</code></td><td><code>Metadata/</code> and the previews</td><td>doesn't open, with no alert</td></tr><tr><td><code>no-viewstate.pages</code></td><td><code>Index/ViewState.iwa</code></td><td>doesn't open, with no alert</td></tr></tbody></table></div>
 <p>After either of the last two, Pages opened no other document either, not even ones it had just opened, until it was quit and started again. Each was tried twice, with the same result.</p>
 <h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section: Conclusion">#</a></h2>
 <p>Pages doesn't need any single file outside <code>Index/</code>: each of the three <code>Metadata/</code> files, and the previews, can be left out, and so can all of <code>Metadata/</code> at once. But a ZIP with nothing outside <code>Index/</code> makes Pages stop opening documents altogether, and so does a document without its view state part, which <code>Metadata.iwa</code> lists as a component (<a href="0394-renaming-a-part.html">0394</a>). So a writer should always include <code>ViewState.iwa</code> and keep at least one entry besides <code>Index/</code>, such as the <code>Metadata/</code> files Pages writes. Why the combination matters is <em>unknown</em>.</p>
@@ -52,10 +52,28 @@ done</code></pre>
   var narrow = window.matchMedia("(max-width: 48rem)");
   var middle = window.matchMedia("(max-width: 72rem)");
   var side = document.querySelector(".side > details"), toc = document.querySelector(".toc > details");
+  var tocSummary = document.querySelector(".toc summary");
   function fit() {
     if (side) side.open = !narrow.matches;
     if (toc) toc.open = !middle.matches;
+    // On wide screens the list can't fold, so its heading isn't a control.
+    if (tocSummary) { if (middle.matches) tocSummary.removeAttribute("tabindex"); else tocSummary.tabIndex = -1; }
+    scrollers();
   }
+  // A table or code block wider than the page scrolls sideways; make it reachable by keyboard, with a name.
+  function scrollers() {
+    var boxes = document.querySelectorAll("main .table, main pre");
+    for (var i = 0; i < boxes.length; i++) {
+      var b = boxes[i];
+      if (b.scrollWidth > b.clientWidth + 1) {
+        b.tabIndex = 0; b.setAttribute("role", "region");
+        b.setAttribute("aria-label", (b.tagName === "PRE" ? "Code" : "Table") + ", scrolls sideways");
+      } else if (b.hasAttribute("role")) {
+        b.removeAttribute("tabindex"); b.removeAttribute("role"); b.removeAttribute("aria-label");
+      }
+    }
+  }
+  window.addEventListener("resize", scrollers);
   fit();
   if (narrow.addEventListener) { narrow.addEventListener("change", fit); middle.addEventListener("change", fit); }
   // The release dropdown closes when you click anywhere else.

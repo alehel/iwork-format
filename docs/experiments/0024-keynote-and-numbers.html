@@ -19,7 +19,7 @@
 <p><strong>Status:</strong> run</p>
 <p>The README has said since the start that Keynote and Numbers documents appear to share a container with Pages. This experiment checks it. It saves new, empty documents from both apps and runs every container finding so far over them: the package, chunks, records, header references and roots.</p>
 <h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section: Setup">#</a></h2>
-<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Keynote</td><td>15.4 (build <code>M15.4-7051.0.79-2</code>)</td></tr><tr><td>Numbers</td><td>15.4 (build <code>M15.4-7051.0.79-2</code>)</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-09</td></tr><tr><td>Baseline</td><td>Experiment <a href="0001-empty-document.html">0001</a>, <code>empty-a.pages</code></td></tr></tbody></table></div>
+<div class="table"><table><tbody><tr><th scope="row">Keynote</th><td>15.4 (build <code>M15.4-7051.0.79-2</code>)</td></tr><tr><th scope="row">Numbers</th><td>15.4 (build <code>M15.4-7051.0.79-2</code>)</td></tr><tr><th scope="row">macOS</th><td>26.5.2 (25F84)</td></tr><tr><th scope="row">Date</th><td>2026-11-09</td></tr><tr><th scope="row">Baseline</th><td>Experiment <a href="0001-empty-document.html">0001</a>, <code>empty-a.pages</code></td></tr></tbody></table></div>
 <h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section: Recipe">#</a></h2>
 <pre class="lang-bash"><code>mkdir -p samples/0024
 R=recipes/0024-empty-iwork-document.applescript
@@ -30,16 +30,16 @@ osascript $R Numbers &quot;$PWD/samples/0024/empty-b.numbers&quot;</code></pre>
 <p>The recipe makes a new document in the named app with the app's defaults and saves it. Keynote used the theme <em>Basic White</em> (<code>21_BasicWhite</code>), and Numbers the <em>Blank</em> template. Every <code>.iwa</code> part was then checked with <code>iwork-probe chunks</code>, <code>records</code> and <code>refs</code>, as in <a href="0022-header-references.html">0022</a>.</p>
 <h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section: Observation">#</a></h2>
 <h3 id="the-package">The package<a class="anchor" href="#the-package" aria-label="Link to this section: The package">#</a></h3>
-<div class="table"><table><thead><tr><th></th><th>Pages (0001)</th><th>Keynote</th><th>Numbers</th></tr></thead><tbody><tr><td>Package</td><td>ZIP, 13 parts</td><td>ZIP, 54 parts</td><td>ZIP, 43 parts</td></tr><tr><td>Parts stored with ZIP compression</td><td>0</td><td>0</td><td>0</td></tr><tr><td><code>Metadata/</code> and <code>preview*.jpg</code></td><td>yes</td><td>yes</td><td>yes</td></tr><tr><td><code>fileFormatVersion</code> in <code>Properties.plist</code></td><td><code>26.4.0</code></td><td><code>26.4.0</code></td><td><code>26.4.0</code></td></tr><tr><td>Template in <code>BuildVersionHistory.plist</code></td><td><code>Blank</code></td><td><code>21_BasicWhite</code></td><td><code>Blank</code></td></tr></tbody></table></div>
+<div class="table"><table><thead><tr><th scope="col"></th><th scope="col">Pages (0001)</th><th scope="col">Keynote</th><th scope="col">Numbers</th></tr></thead><tbody><tr><td>Package</td><td>ZIP, 13 parts</td><td>ZIP, 54 parts</td><td>ZIP, 43 parts</td></tr><tr><td>Parts stored with ZIP compression</td><td>0</td><td>0</td><td>0</td></tr><tr><td><code>Metadata/</code> and <code>preview*.jpg</code></td><td>yes</td><td>yes</td><td>yes</td></tr><tr><td><code>fileFormatVersion</code> in <code>Properties.plist</code></td><td><code>26.4.0</code></td><td><code>26.4.0</code></td><td><code>26.4.0</code></td></tr><tr><td>Template in <code>BuildVersionHistory.plist</code></td><td><code>Blank</code></td><td><code>21_BasicWhite</code></td><td><code>Blank</code></td></tr></tbody></table></div>
 <p>Part names under <code>Index/</code>:</p>
 <ul><li><strong>Keynote:</strong> <code>AnnotationAuthorStorage</code>, <code>CalculationEngine</code>, <code>Document</code>, <code>DocumentMetadata</code>, <code>DocumentStylesheet</code>, <code>Metadata</code>, <code>ViewState</code>, one <code>Slide-N</code> and 17 <code>TemplateSlide-N</code>.</li><li><strong>Numbers:</strong> the seven shared names, plus 30 parts under <code>Index/Tables/</code>, named as in <a href="0020-a-table.html">0020</a>. A new Numbers document already holds an empty table.</li></ul>
 <p>Unlike in Pages, <code>AnnotationAuthorStorage</code> and <code>CalculationEngine</code> have no number in their names here.</p>
 <p>The Keynote file also has 23 images under <code>Data/</code>, the theme's pictures for the template slides. Pages' Blank template had none.</p>
 <p>Two empty saves from the same app had the same part names.</p>
 <h3 id="chunks-records-and-references">Chunks, records and references<a class="anchor" href="#chunks-records-and-references" aria-label="Link to this section: Chunks, records and references">#</a></h3>
-<div class="table"><table><thead><tr><th></th><th>Keynote</th><th>Numbers</th></tr></thead><tbody><tr><td><code>.iwa</code> parts</td><td>26</td><td>37</td></tr><tr><td>Parts where the chunk and record layout failed</td><td>0</td><td>0</td></tr><tr><td>Chunks with a type other than 0</td><td>0</td><td>0</td></tr><tr><td>Objects</td><td>962</td><td>627</td></tr><tr><td>Reached from objects 1, 2 and 71 through header references</td><td>962</td><td>627</td></tr><tr><td>Header references to objects that don't exist</td><td>0</td><td>0</td></tr></tbody></table></div>
+<div class="table"><table><thead><tr><th scope="col"></th><th scope="col">Keynote</th><th scope="col">Numbers</th></tr></thead><tbody><tr><td><code>.iwa</code> parts</td><td>26</td><td>37</td></tr><tr><td>Parts where the chunk and record layout failed</td><td>0</td><td>0</td></tr><tr><td>Chunks with a type other than 0</td><td>0</td><td>0</td></tr><tr><td>Objects</td><td>962</td><td>627</td></tr><tr><td>Reached from objects 1, 2 and 71 through header references</td><td>962</td><td>627</td></tr><tr><td>Header references to objects that don't exist</td><td>0</td><td>0</td></tr></tbody></table></div>
 <h3 id="the-roots">The roots<a class="anchor" href="#the-roots" aria-label="Link to this section: The roots">#</a></h3>
-<div class="table"><table><thead><tr><th>Root</th><th>Part</th><th>Pages</th><th>Keynote</th><th>Numbers</th></tr></thead><tbody><tr><td>1</td><td><code>Document.iwa</code></td><td>type 10000</td><td>type 1</td><td>type 1</td></tr><tr><td>2</td><td><code>Metadata.iwa</code></td><td>type 11006</td><td>type 11006</td><td>type 11006</td></tr><tr><td>71</td><td><code>DocumentMetadata.iwa</code></td><td>type 11011</td><td>type 11011</td><td>type 11011</td></tr></tbody></table></div>
+<div class="table"><table><thead><tr><th scope="col">Root</th><th scope="col">Part</th><th scope="col">Pages</th><th scope="col">Keynote</th><th scope="col">Numbers</th></tr></thead><tbody><tr><td>1</td><td><code>Document.iwa</code></td><td>type 10000</td><td>type 1</td><td>type 1</td></tr><tr><td>2</td><td><code>Metadata.iwa</code></td><td>type 11006</td><td>type 11006</td><td>type 11006</td></tr><tr><td>71</td><td><code>DocumentMetadata.iwa</code></td><td>type 11011</td><td>type 11011</td><td>type 11011</td></tr></tbody></table></div>
 <h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section: Conclusion">#</a></h2>
 <p>Keynote and Numbers 15.4 write the same container as Pages 15.4. They use ZIP files without compression, the same metadata files, and <code>.iwa</code> parts with the same chunk and record layout. Header references reach every object from the same three roots, and the metadata roots (2 and 71) have the same types. So the container layer of the spec applies to all three apps. A reader can decode any of them up to the level of records and references.</p>
 <p>The apps differ in their document root, object 1. In Pages it is type 10000, and in both Keynote and Numbers it is type 1. Whether Keynote's and Numbers' type 1 is the same kind of object, or whether type numbers are only unique within one app, is still open. The parts each app adds also differ: slides for Keynote, tables for Numbers. Those, and what lies below object 1, are where each app needs its own layers.</p>
@@ -58,10 +58,28 @@ osascript $R Numbers &quot;$PWD/samples/0024/empty-b.numbers&quot;</code></pre>
   var narrow = window.matchMedia("(max-width: 48rem)");
   var middle = window.matchMedia("(max-width: 72rem)");
   var side = document.querySelector(".side > details"), toc = document.querySelector(".toc > details");
+  var tocSummary = document.querySelector(".toc summary");
   function fit() {
     if (side) side.open = !narrow.matches;
     if (toc) toc.open = !middle.matches;
+    // On wide screens the list can't fold, so its heading isn't a control.
+    if (tocSummary) { if (middle.matches) tocSummary.removeAttribute("tabindex"); else tocSummary.tabIndex = -1; }
+    scrollers();
   }
+  // A table or code block wider than the page scrolls sideways; make it reachable by keyboard, with a name.
+  function scrollers() {
+    var boxes = document.querySelectorAll("main .table, main pre");
+    for (var i = 0; i < boxes.length; i++) {
+      var b = boxes[i];
+      if (b.scrollWidth > b.clientWidth + 1) {
+        b.tabIndex = 0; b.setAttribute("role", "region");
+        b.setAttribute("aria-label", (b.tagName === "PRE" ? "Code" : "Table") + ", scrolls sideways");
+      } else if (b.hasAttribute("role")) {
+        b.removeAttribute("tabindex"); b.removeAttribute("role"); b.removeAttribute("aria-label");
+      }
+    }
+  }
+  window.addEventListener("resize", scrollers);
   fit();
   if (narrow.addEventListener) { narrow.addEventListener("change", fit); middle.addEventListener("change", fit); }
   // The release dropdown closes when you click anywhere else.

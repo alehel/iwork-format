@@ -19,7 +19,7 @@
 <p><strong>Status:</strong> run</p>
 <p>Field 1 of the type-10012 document settings is the <em>Document body</em> switch: 1 for a word-processing document (the default), 0 for page layout (<a href="0240-no-document-body.html">0240</a>). Pages' AppleScript has <code>document body</code>. This experiment writes the field both ways and reads the setting, the body text and the exported page.</p>
 <h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section: Setup">#</a></h2>
-<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Pages</td><td>15.4, in Norwegian</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-18</td></tr><tr><td>Input</td><td><code>samples/0002/hello.pages</code>: the body <code>hello</code>, settings record 1732614 with field 1 = 1. <code>samples/0240/no-document-body.pages</code>: a document Pages turned into page layout, field 1 = 0</td></tr><tr><td>Writer</td><td>[<code>recipes/0302-set-path.py</code>](../recipes/0302-set-path.py); exported with [<code>recipes/0372-in-app.sh</code>](../recipes/0372-in-app.sh) and read with [<code>recipes/0374-pdf-text.swift</code>](../recipes/0374-pdf-text.swift)</td></tr></tbody></table></div>
+<div class="table"><table><tbody><tr><th scope="row">Pages</th><td>15.4, in Norwegian</td></tr><tr><th scope="row">macOS</th><td>26.5.2 (25F84)</td></tr><tr><th scope="row">Date</th><td>2026-11-18</td></tr><tr><th scope="row">Input</th><td><code>samples/0002/hello.pages</code>: the body <code>hello</code>, settings record 1732614 with field 1 = 1. <code>samples/0240/no-document-body.pages</code>: a document Pages turned into page layout, field 1 = 0</td></tr><tr><th scope="row">Writer</th><td>[<code>recipes/0302-set-path.py</code>](../recipes/0302-set-path.py); exported with [<code>recipes/0372-in-app.sh</code>](../recipes/0372-in-app.sh) and read with [<code>recipes/0374-pdf-text.swift</code>](../recipes/0374-pdf-text.swift)</td></tr></tbody></table></div>
 <h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section: Recipe">#</a></h2>
 <pre class="lang-bash"><code>mkdir -p samples/0419
 R=recipes/0302-set-path.py
@@ -34,7 +34,7 @@ return {document body of d, body text of d}&quot;
   swift recipes/0374-pdf-text.swift $O/$f.pdf
 done</code></pre>
 <h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section: Observation">#</a></h2>
-<div class="table"><table><thead><tr><th>File</th><th>Field 1</th><th><code>document body</code></th><th><code>body text</code></th><th>Text on the exported page</th></tr></thead><tbody><tr><td><code>original.pages</code></td><td>1</td><td>true</td><td>hello</td><td>hello</td></tr><tr><td><code>no-body.pages</code></td><td>0, written</td><td>false</td><td>missing value</td><td>hello</td></tr><tr><td><code>pages-no-body.pages</code></td><td>0 (Pages')</td><td>false</td><td>missing value</td><td>none</td></tr><tr><td><code>pages-no-body-on.pages</code></td><td>1, written</td><td>true</td><td>empty</td><td>none</td></tr></tbody></table></div>
+<div class="table"><table><thead><tr><th scope="col">File</th><th scope="col">Field 1</th><th scope="col"><code>document body</code></th><th scope="col"><code>body text</code></th><th scope="col">Text on the exported page</th></tr></thead><tbody><tr><td><code>original.pages</code></td><td>1</td><td>true</td><td>hello</td><td>hello</td></tr><tr><td><code>no-body.pages</code></td><td>0, written</td><td>false</td><td>missing value</td><td>hello</td></tr><tr><td><code>pages-no-body.pages</code></td><td>0 (Pages')</td><td>false</td><td>missing value</td><td>none</td></tr><tr><td><code>pages-no-body-on.pages</code></td><td>1, written</td><td>true</td><td>empty</td><td>none</td></tr></tbody></table></div>
 <h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section: Conclusion">#</a></h2>
 <p>Field 1 is what decides whether Pages treats a document as word processing or page layout: written 0, it reports no document body and no body text, and written 1 into a page-layout document, a body, empty. But it doesn't hide the body's text: the written page-layout document still draws <code>hello</code> where the body was. When Pages itself turns the body off, it also empties the body's text, so the two agree. A reader should go by field 1 for what kind of document it is, and still draw whatever text the body storage holds, which in a document Pages saved is nothing.</p>
 <h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section: Confidence">#</a></h2>
@@ -49,10 +49,28 @@ done</code></pre>
   var narrow = window.matchMedia("(max-width: 48rem)");
   var middle = window.matchMedia("(max-width: 72rem)");
   var side = document.querySelector(".side > details"), toc = document.querySelector(".toc > details");
+  var tocSummary = document.querySelector(".toc summary");
   function fit() {
     if (side) side.open = !narrow.matches;
     if (toc) toc.open = !middle.matches;
+    // On wide screens the list can't fold, so its heading isn't a control.
+    if (tocSummary) { if (middle.matches) tocSummary.removeAttribute("tabindex"); else tocSummary.tabIndex = -1; }
+    scrollers();
   }
+  // A table or code block wider than the page scrolls sideways; make it reachable by keyboard, with a name.
+  function scrollers() {
+    var boxes = document.querySelectorAll("main .table, main pre");
+    for (var i = 0; i < boxes.length; i++) {
+      var b = boxes[i];
+      if (b.scrollWidth > b.clientWidth + 1) {
+        b.tabIndex = 0; b.setAttribute("role", "region");
+        b.setAttribute("aria-label", (b.tagName === "PRE" ? "Code" : "Table") + ", scrolls sideways");
+      } else if (b.hasAttribute("role")) {
+        b.removeAttribute("tabindex"); b.removeAttribute("role"); b.removeAttribute("aria-label");
+      }
+    }
+  }
+  window.addEventListener("resize", scrollers);
   fit();
   if (narrow.addEventListener) { narrow.addEventListener("change", fit); middle.addEventListener("change", fit); }
   // The release dropdown closes when you click anywhere else.

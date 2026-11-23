@@ -19,7 +19,7 @@
 <p><strong>Status:</strong> run</p>
 <p>Experiment <a href="0004-larger-word.html">0004</a> changed one word's size and found a character-style run pointing at a new, unnamed style. AppleScript can't make text bold or italic, so this experiment uses the Bold and Italic buttons in the Pages window, to see how those are stored.</p>
 <h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section: Setup">#</a></h2>
-<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Pages</td><td>15.4 (build <code>M15.4-7051.0.79-2</code>), with a Norwegian (nb) user interface</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-09</td></tr><tr><td>Baseline</td><td>Experiment <a href="0004-larger-word.html">0004</a>: <code>plain.pages</code>, and <code>large.pages</code> for the same change with a size</td></tr></tbody></table></div>
+<div class="table"><table><tbody><tr><th scope="row">Pages</th><td>15.4 (build <code>M15.4-7051.0.79-2</code>), with a Norwegian (nb) user interface</td></tr><tr><th scope="row">macOS</th><td>26.5.2 (25F84)</td></tr><tr><th scope="row">Date</th><td>2026-11-09</td></tr><tr><th scope="row">Baseline</th><td>Experiment <a href="0004-larger-word.html">0004</a>: <code>plain.pages</code>, and <code>large.pages</code> for the same change with a size</td></tr></tbody></table></div>
 <h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section: Recipe">#</a></h2>
 <p>The text was set through AppleScript, so it is the same as in 0004 and Pages doesn't autocorrect it (see <a href="0006-typing-in-pages.html">0006</a>). Each document was made like this:</p>
 <ol><li>With AppleScript, make a new document and set its body text to <code>hello world</code>:
@@ -27,7 +27,7 @@
     set d to make new document
     set body text of d to &quot;hello world&quot;
 end tell</code></pre></li><li>In the Pages window, double-click <code>world</code> to select it, then click buttons in the Style tab of the Format sidebar:
-<div class="table"><table><thead><tr><th>File</th><th>Buttons</th></tr></thead><tbody><tr><td><code>bold.pages</code></td><td>Bold</td></tr><tr><td><code>italic.pages</code></td><td>Italic</td></tr><tr><td><code>bold-italic.pages</code></td><td>Bold, then Italic</td></tr></tbody></table></div></li></ol>
+<div class="table"><table><thead><tr><th scope="col">File</th><th scope="col">Buttons</th></tr></thead><tbody><tr><td><code>bold.pages</code></td><td>Bold</td></tr><tr><td><code>italic.pages</code></td><td>Italic</td></tr><tr><td><code>bold-italic.pages</code></td><td>Bold, then Italic</td></tr></tbody></table></div></li></ol>
 <ol><li>Save with AppleScript, <code>save front document in POSIX file &quot;…&quot;</code>, and close.</li></ol>
 <h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section: Observation">#</a></h2>
 <h3 id="the-run-table">The run table<a class="anchor" href="#the-run-table" aria-label="Link to this section: The run table">#</a></h3>
@@ -43,7 +43,7 @@ bold-italic.pages     10: varint 2   11: { 1: varint 1, 2: varint 1 }
 <p>The other changes from <code>large.pages</code> are the save-to-save changes from 0001 and 0002, plus <code>ViewState.iwa</code> record type 10132. That record grew from 24 to 28 bytes, probably because <code>world</code> was still selected when the file was saved.</p>
 <h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section: Conclusion">#</a></h2>
 <p>Bold and italic are stored the same way as a size. They go in a new, unnamed character style that inherits from the null character style, and the run table points the range at it. Field 11 of a character style holds its properties:</p>
-<div class="table"><table><thead><tr><th>Field 11.n</th><th>Property</th><th>Seen as</th></tr></thead><tbody><tr><td>1</td><td>Bold</td><td>varint 1</td></tr><tr><td>2</td><td>Italic</td><td>varint 1</td></tr><tr><td>3</td><td>Size in points</td><td>float</td></tr></tbody></table></div>
+<div class="table"><table><thead><tr><th scope="col">Field 11.n</th><th scope="col">Property</th><th scope="col">Seen as</th></tr></thead><tbody><tr><td>1</td><td>Bold</td><td>varint 1</td></tr><tr><td>2</td><td>Italic</td><td>varint 1</td></tr><tr><td>3</td><td>Size in points</td><td>float</td></tr></tbody></table></div>
 <p>Field 10 of a character style was 1 when the style set one property and 2 when it set two. It may count the properties, or the edits that made the style. This experiment can't tell those apart.</p>
 <h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section: Confidence">#</a></h2>
 <p><em>Likely</em>:</p>
@@ -60,10 +60,28 @@ bold-italic.pages     10: varint 2   11: { 1: varint 1, 2: varint 1 }
   var narrow = window.matchMedia("(max-width: 48rem)");
   var middle = window.matchMedia("(max-width: 72rem)");
   var side = document.querySelector(".side > details"), toc = document.querySelector(".toc > details");
+  var tocSummary = document.querySelector(".toc summary");
   function fit() {
     if (side) side.open = !narrow.matches;
     if (toc) toc.open = !middle.matches;
+    // On wide screens the list can't fold, so its heading isn't a control.
+    if (tocSummary) { if (middle.matches) tocSummary.removeAttribute("tabindex"); else tocSummary.tabIndex = -1; }
+    scrollers();
   }
+  // A table or code block wider than the page scrolls sideways; make it reachable by keyboard, with a name.
+  function scrollers() {
+    var boxes = document.querySelectorAll("main .table, main pre");
+    for (var i = 0; i < boxes.length; i++) {
+      var b = boxes[i];
+      if (b.scrollWidth > b.clientWidth + 1) {
+        b.tabIndex = 0; b.setAttribute("role", "region");
+        b.setAttribute("aria-label", (b.tagName === "PRE" ? "Code" : "Table") + ", scrolls sideways");
+      } else if (b.hasAttribute("role")) {
+        b.removeAttribute("tabindex"); b.removeAttribute("role"); b.removeAttribute("aria-label");
+      }
+    }
+  }
+  window.addEventListener("resize", scrollers);
   fit();
   if (narrow.addEventListener) { narrow.addEventListener("change", fit); middle.addEventListener("change", fit); }
   // The release dropdown closes when you click anywhere else.

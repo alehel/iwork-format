@@ -19,7 +19,7 @@
 <p><strong>Status:</strong> run</p>
 <p><a href="0029-numbers-root-to-table.html">0029</a> found that a table model lists its tiles in field 4.3, next to the value 256, and guessed that a tile covers 256 rows. This experiment fills row 300 of a Numbers table to see whether a second tile appears.</p>
 <h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section: Setup">#</a></h2>
-<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Numbers</td><td>15.4 (build <code>M15.4-7051.0.79-2</code>)</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-09</td></tr><tr><td>Baseline</td><td>Experiment <a href="0026-numbers-cells.html">0026</a>, <code>cells.numbers</code></td></tr></tbody></table></div>
+<div class="table"><table><tbody><tr><th scope="row">Numbers</th><td>15.4 (build <code>M15.4-7051.0.79-2</code>)</td></tr><tr><th scope="row">macOS</th><td>26.5.2 (25F84)</td></tr><tr><th scope="row">Date</th><td>2026-11-09</td></tr><tr><th scope="row">Baseline</th><td>Experiment <a href="0026-numbers-cells.html">0026</a>, <code>cells.numbers</code></td></tr></tbody></table></div>
 <h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section: Recipe">#</a></h2>
 <pre class="lang-bash"><code>mkdir -p samples/0030
 osascript recipes/0030-numbers-row-300.applescript &quot;$PWD/samples/0030/row-300.numbers&quot;</code></pre>
@@ -31,7 +31,7 @@ osascript recipes/0030-numbers-row-300.applescript &quot;$PWD/samples/0030/row-3
   1: { 1: 1, 2: { 1: 905237 } }      ← Tables/Tile-905237.iwa
   2: 256</code></pre>
 <p>The two tiles:</p>
-<div class="table"><table><thead><tr><th>Tile</th><th>Index</th><th>Field 4</th><th>Row entries (field 5.1)</th></tr></thead><tbody><tr><td>904547</td><td>0</td><td>1</td><td>1</td></tr><tr><td>905237</td><td>1</td><td>1</td><td>43</td></tr></tbody></table></div>
+<div class="table"><table><thead><tr><th scope="col">Tile</th><th scope="col">Index</th><th scope="col">Field 4</th><th scope="col">Row entries (field 5.1)</th></tr></thead><tbody><tr><td>904547</td><td>0</td><td>1</td><td>1</td></tr><tr><td>905237</td><td>1</td><td>1</td><td>43</td></tr></tbody></table></div>
 <p>Row 43 of tile 1 is row 256 + 43 = 299 counted from 0, which is row 300.</p>
 <p>The file has a third tile, <code>Tables/Tile-905022-2.iwa</code>, with no rows (field 4 is 0). It is reached from the sheet through the drawable and a type-6316 record, not through the table model. <code>samples/0026/cells.numbers</code> already had it, along with three <code>HeaderStorageBucket-N-2.iwa</code> parts.</p>
 <h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section: Conclusion">#</a></h2>
@@ -52,10 +52,28 @@ osascript recipes/0030-numbers-row-300.applescript &quot;$PWD/samples/0030/row-3
   var narrow = window.matchMedia("(max-width: 48rem)");
   var middle = window.matchMedia("(max-width: 72rem)");
   var side = document.querySelector(".side > details"), toc = document.querySelector(".toc > details");
+  var tocSummary = document.querySelector(".toc summary");
   function fit() {
     if (side) side.open = !narrow.matches;
     if (toc) toc.open = !middle.matches;
+    // On wide screens the list can't fold, so its heading isn't a control.
+    if (tocSummary) { if (middle.matches) tocSummary.removeAttribute("tabindex"); else tocSummary.tabIndex = -1; }
+    scrollers();
   }
+  // A table or code block wider than the page scrolls sideways; make it reachable by keyboard, with a name.
+  function scrollers() {
+    var boxes = document.querySelectorAll("main .table, main pre");
+    for (var i = 0; i < boxes.length; i++) {
+      var b = boxes[i];
+      if (b.scrollWidth > b.clientWidth + 1) {
+        b.tabIndex = 0; b.setAttribute("role", "region");
+        b.setAttribute("aria-label", (b.tagName === "PRE" ? "Code" : "Table") + ", scrolls sideways");
+      } else if (b.hasAttribute("role")) {
+        b.removeAttribute("tabindex"); b.removeAttribute("role"); b.removeAttribute("aria-label");
+      }
+    }
+  }
+  window.addEventListener("resize", scrollers);
   fit();
   if (narrow.addEventListener) { narrow.addEventListener("change", fit); middle.addEventListener("change", fit); }
   // The release dropdown closes when you click anywhere else.

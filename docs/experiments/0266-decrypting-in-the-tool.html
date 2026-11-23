@@ -19,7 +19,7 @@
 <p><strong>Status:</strong> run</p>
 <p><a href="0179-password.html">0179</a> and <a href="0180-password-in-other-apps.html">0180</a> worked out how password-protected documents are encrypted, using throwaway scripts. <a href="0247-second-regression-check.html">0247</a> had to leave the six protected samples out of its checks, because <code>iwork-probe</code> couldn't read them. This experiment builds that reading into <code>iwork-probe</code> and runs the 0247 checks on those six documents.</p>
 <h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section: Setup">#</a></h2>
-<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Tool</td><td><code>iwork-probe</code> with a new <code>crypt</code> module and a <code>--password</code> option</td></tr><tr><td>Date</td><td>2026-11-09</td></tr><tr><td>Baseline</td><td>Experiment <a href="0247-second-regression-check.html">0247</a></td></tr></tbody></table></div>
+<div class="table"><table><tbody><tr><th scope="row">Tool</th><td><code>iwork-probe</code> with a new <code>crypt</code> module and a <code>--password</code> option</td></tr><tr><th scope="row">Date</th><td>2026-11-09</td></tr><tr><th scope="row">Baseline</th><td>Experiment <a href="0247-second-regression-check.html">0247</a></td></tr></tbody></table></div>
 <h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section: Recipe">#</a></h2>
 <p>The tool now:</p>
 <ul><li>Recognises a protected document by its <code>.iwpv2</code> file.</li><li>Derives the key from <code>--password</code> as described in <a href="../spec/container.html#password-protection">container.md</a>, and checks it against <code>.iwpv2</code>'s encrypted SHA-256.</li><li>Decrypts every part except <code>.iwph</code>, <code>.iwpv2</code>, <code>Properties.plist</code> and <code>DocumentIdentifier</code> as it reads them.</li></ul>
@@ -28,7 +28,7 @@
 <pre class="lang-bash"><code>iwork-probe records samples/0179/locked.pages Index/Document.iwa --password pw1234
 iwork-probe text samples/0180/accent.pages --password påss</code></pre>
 <h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section: Observation">#</a></h2>
-<div class="table"><table><thead><tr><th>Document</th><th>Parts</th><th>Framing errors</th><th>Objects reached</th><th>Text</th></tr></thead><tbody><tr><td><code>0179/locked.pages</code></td><td>7</td><td>0</td><td>571 of 571</td><td>ok</td></tr><tr><td><code>0179/locked2.pages</code></td><td>7</td><td>0</td><td>571 of 571</td><td>ok</td></tr><tr><td><code>0180/accent.pages</code></td><td>7</td><td>0</td><td>571 of 571</td><td>ok</td></tr><tr><td><code>0180/image.pages</code></td><td>7</td><td>0</td><td>574 of 574</td><td>ok</td></tr><tr><td><code>0180/locked.key</code></td><td>25</td><td>0</td><td>962 of 962</td><td>ok</td></tr><tr><td><code>0180/locked.numbers</code></td><td>37</td><td>0</td><td>626 of 626</td><td>ok</td></tr></tbody></table></div>
+<div class="table"><table><thead><tr><th scope="col">Document</th><th scope="col">Parts</th><th scope="col">Framing errors</th><th scope="col">Objects reached</th><th scope="col">Text</th></tr></thead><tbody><tr><td><code>0179/locked.pages</code></td><td>7</td><td>0</td><td>571 of 571</td><td>ok</td></tr><tr><td><code>0179/locked2.pages</code></td><td>7</td><td>0</td><td>571 of 571</td><td>ok</td></tr><tr><td><code>0180/accent.pages</code></td><td>7</td><td>0</td><td>571 of 571</td><td>ok</td></tr><tr><td><code>0180/image.pages</code></td><td>7</td><td>0</td><td>574 of 574</td><td>ok</td></tr><tr><td><code>0180/locked.key</code></td><td>25</td><td>0</td><td>962 of 962</td><td>ok</td></tr><tr><td><code>0180/locked.numbers</code></td><td>37</td><td>0</td><td>626 of 626</td><td>ok</td></tr></tbody></table></div>
 <p>The only missing reference is root 61, which documents without a chart don't have. Without <code>--password</code>, the tool reports that the document is password-protected and shows its hint (<code>test</code>). With a wrong password, it reports "wrong password" and reads nothing.</p>
 <h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section: Conclusion">#</a></h2>
 <p>The reading of 0179 and 0180 is complete enough to rely on. Every part of every protected sample decrypts with valid padding and then frames, and all 3,875 objects are reachable, as in unprotected documents. With 0247, all 353 samples now pass the three checks. The password check in <code>.iwpv2</code> works as a reader needs it to: a wrong password is caught before any part is decrypted.</p>
@@ -44,10 +44,28 @@ iwork-probe text samples/0180/accent.pages --password påss</code></pre>
   var narrow = window.matchMedia("(max-width: 48rem)");
   var middle = window.matchMedia("(max-width: 72rem)");
   var side = document.querySelector(".side > details"), toc = document.querySelector(".toc > details");
+  var tocSummary = document.querySelector(".toc summary");
   function fit() {
     if (side) side.open = !narrow.matches;
     if (toc) toc.open = !middle.matches;
+    // On wide screens the list can't fold, so its heading isn't a control.
+    if (tocSummary) { if (middle.matches) tocSummary.removeAttribute("tabindex"); else tocSummary.tabIndex = -1; }
+    scrollers();
   }
+  // A table or code block wider than the page scrolls sideways; make it reachable by keyboard, with a name.
+  function scrollers() {
+    var boxes = document.querySelectorAll("main .table, main pre");
+    for (var i = 0; i < boxes.length; i++) {
+      var b = boxes[i];
+      if (b.scrollWidth > b.clientWidth + 1) {
+        b.tabIndex = 0; b.setAttribute("role", "region");
+        b.setAttribute("aria-label", (b.tagName === "PRE" ? "Code" : "Table") + ", scrolls sideways");
+      } else if (b.hasAttribute("role")) {
+        b.removeAttribute("tabindex"); b.removeAttribute("role"); b.removeAttribute("aria-label");
+      }
+    }
+  }
+  window.addEventListener("resize", scrollers);
   fit();
   if (narrow.addEventListener) { narrow.addEventListener("change", fit); middle.addEventListener("change", fit); }
   // The release dropdown closes when you click anywhere else.

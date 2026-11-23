@@ -19,12 +19,12 @@
 <p><strong>Status:</strong> run</p>
 <p><a href="0027-document-roots.html">0027</a> followed Keynote's root down to a slide's text. This experiment does the same for Numbers, from the root down to the tile that holds the cells written in <a href="0026-numbers-cells.html">0026</a>. It also checks how the table model points at its tile in both Numbers and Pages. It saves no new documents.</p>
 <h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section: Setup">#</a></h2>
-<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Apps</td><td>Numbers and Pages 15.4 (build <code>M15.4-7051.0.79-2</code>)</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-09</td></tr><tr><td>Documents</td><td><code>samples/0026/cells.numbers</code>, <code>samples/0021/cells.pages</code></td></tr></tbody></table></div>
+<div class="table"><table><tbody><tr><th scope="row">Apps</th><td>Numbers and Pages 15.4 (build <code>M15.4-7051.0.79-2</code>)</td></tr><tr><th scope="row">macOS</th><td>26.5.2 (25F84)</td></tr><tr><th scope="row">Date</th><td>2026-11-09</td></tr><tr><th scope="row">Documents</th><td><code>samples/0026/cells.numbers</code>, <code>samples/0021/cells.pages</code></td></tr></tbody></table></div>
 <h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section: Recipe">#</a></h2>
 <p>A breadth-first walk over <code>iwork-probe refs</code> output finds the path of header references from object 1 to the tile (<code>Index/Tables/Tile.iwa</code>). Each record along it was printed with <code>iwork-probe proto --decoded</code>.</p>
 <h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section: Observation">#</a></h2>
 <h3 id="the-path">The path<a class="anchor" href="#the-path" aria-label="Link to this section: The path">#</a></h3>
-<div class="table"><table><thead><tr><th>Object</th><th>Type</th><th>Part</th><th>What it holds</th></tr></thead><tbody><tr><td>1</td><td>1</td><td><code>Document.iwa</code></td><td>the shared document-properties block, the paper size</td></tr><tr><td>904532</td><td>2</td><td><code>Document.iwa</code></td><td>1: <code>&quot;Ark 1&quot;</code> (Norwegian for "Sheet 1"); 2: <code>{ 1: 904769 }</code>; and more, see below</td></tr><tr><td>904769</td><td>6000</td><td><code>CalculationEngine.iwa</code></td><td>the table's drawable, as in <a href="0020-a-table.html">0020</a></td></tr><tr><td>904595</td><td>6001</td><td><code>CalculationEngine.iwa</code></td><td>1: a UUID; 8: <code>&quot;Tabell 1&quot;</code></td></tr><tr><td>904547</td><td>6002</td><td><code>Tables/Tile.iwa</code></td><td>the cells, as in <a href="0026-numbers-cells.html">0026</a></td></tr></tbody></table></div>
+<div class="table"><table><thead><tr><th scope="col">Object</th><th scope="col">Type</th><th scope="col">Part</th><th scope="col">What it holds</th></tr></thead><tbody><tr><td>1</td><td>1</td><td><code>Document.iwa</code></td><td>the shared document-properties block, the paper size</td></tr><tr><td>904532</td><td>2</td><td><code>Document.iwa</code></td><td>1: <code>&quot;Ark 1&quot;</code> (Norwegian for "Sheet 1"); 2: <code>{ 1: 904769 }</code>; and more, see below</td></tr><tr><td>904769</td><td>6000</td><td><code>CalculationEngine.iwa</code></td><td>the table's drawable, as in <a href="0020-a-table.html">0020</a></td></tr><tr><td>904595</td><td>6001</td><td><code>CalculationEngine.iwa</code></td><td>1: a UUID; 8: <code>&quot;Tabell 1&quot;</code></td></tr><tr><td>904547</td><td>6002</td><td><code>Tables/Tile.iwa</code></td><td>the cells, as in <a href="0026-numbers-cells.html">0026</a></td></tr></tbody></table></div>
 <p>The sheet's other fields include 10: four floats (54, 36, 54, 36), 13 and 14: 20.0 each, and 17: a reference to 904606.</p>
 <h3 id="how-the-table-model-reaches-its-tile">How the table model reaches its tile<a class="anchor" href="#how-the-table-model-reaches-its-tile" aria-label="Link to this section: How the table model reaches its tile">#</a></h3>
 <p>The start of field 4 of the type-6001 model:</p>
@@ -55,10 +55,28 @@
   var narrow = window.matchMedia("(max-width: 48rem)");
   var middle = window.matchMedia("(max-width: 72rem)");
   var side = document.querySelector(".side > details"), toc = document.querySelector(".toc > details");
+  var tocSummary = document.querySelector(".toc summary");
   function fit() {
     if (side) side.open = !narrow.matches;
     if (toc) toc.open = !middle.matches;
+    // On wide screens the list can't fold, so its heading isn't a control.
+    if (tocSummary) { if (middle.matches) tocSummary.removeAttribute("tabindex"); else tocSummary.tabIndex = -1; }
+    scrollers();
   }
+  // A table or code block wider than the page scrolls sideways; make it reachable by keyboard, with a name.
+  function scrollers() {
+    var boxes = document.querySelectorAll("main .table, main pre");
+    for (var i = 0; i < boxes.length; i++) {
+      var b = boxes[i];
+      if (b.scrollWidth > b.clientWidth + 1) {
+        b.tabIndex = 0; b.setAttribute("role", "region");
+        b.setAttribute("aria-label", (b.tagName === "PRE" ? "Code" : "Table") + ", scrolls sideways");
+      } else if (b.hasAttribute("role")) {
+        b.removeAttribute("tabindex"); b.removeAttribute("role"); b.removeAttribute("aria-label");
+      }
+    }
+  }
+  window.addEventListener("resize", scrollers);
   fit();
   if (narrow.addEventListener) { narrow.addEventListener("change", fit); middle.addEventListener("change", fit); }
   // The release dropdown closes when you click anywhere else.

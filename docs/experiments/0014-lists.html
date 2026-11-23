@@ -19,10 +19,10 @@
 <p><strong>Status:</strong> run</p>
 <p>Since <a href="0002-one-word.html">0002</a>, field 7 of the body's type-2001 record has pointed at a list style named <em>Ingen</em> (None), <code>text-0-liststyle-None</code>. This experiment makes a dash list and a numbered list, to see how a list is attached to paragraphs and what a list style holds.</p>
 <h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section: Setup">#</a></h2>
-<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Pages</td><td>15.4 (build <code>M15.4-7051.0.79-2</code>), with a Norwegian (nb) user interface and default autocorrection</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-09</td></tr><tr><td>Baseline</td><td>Experiment <a href="0006-typing-in-pages.html">0006</a>, <code>return-ui.pages</code> (typed paragraphs, no list)</td></tr></tbody></table></div>
+<div class="table"><table><tbody><tr><th scope="row">Pages</th><td>15.4 (build <code>M15.4-7051.0.79-2</code>), with a Norwegian (nb) user interface and default autocorrection</td></tr><tr><th scope="row">macOS</th><td>26.5.2 (25F84)</td></tr><tr><th scope="row">Date</th><td>2026-11-09</td></tr><tr><th scope="row">Baseline</th><td>Experiment <a href="0006-typing-in-pages.html">0006</a>, <code>return-ui.pages</code> (typed paragraphs, no list)</td></tr></tbody></table></div>
 <h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section: Recipe">#</a></h2>
 <p>There is no menu command for lists, and the list menu in the sidebar is a pop-up the test couldn't open. Instead, the lists were typed so that Pages' automatic list detection made them. AppleScript made an empty document, the keys were typed in the Pages window, and AppleScript saved the document.</p>
-<div class="table"><table><thead><tr><th>File</th><th>Typed</th></tr></thead><tbody><tr><td><code>dash-list.pages</code></td><td><code>- one</code>, Return, <code>two</code>, Return, <code>three</code></td></tr><tr><td><code>numbered-list.pages</code></td><td><code>1. one</code>, Return, <code>two</code>, Return, <code>three</code></td></tr></tbody></table></div>
+<div class="table"><table><thead><tr><th scope="col">File</th><th scope="col">Typed</th></tr></thead><tbody><tr><td><code>dash-list.pages</code></td><td><code>- one</code>, Return, <code>two</code>, Return, <code>three</code></td></tr><tr><td><code>numbered-list.pages</code></td><td><code>1. one</code>, Return, <code>two</code>, Return, <code>three</code></td></tr></tbody></table></div>
 <p>After the first Return, Pages turned the paragraph into a list item. The sidebar then showed the list style as <em>Strek</em> (Dash) and <em>Nummerert</em> (Numbered).</p>
 <p>While making the numbered list, Pages showed an autocorrection suggestion (<code>Three</code>) under the last word. As long as it was shown, Pages didn't answer AppleScript. It was dismissed with its close button, so the last word stayed lowercase in that file.</p>
 <h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section: Observation">#</a></h2>
@@ -38,7 +38,7 @@ numbered-list.pages  7: { 1: { 1: 0, 2: { 1: 1731486 } } }</code></pre>
 <h3 id="the-list-styles">The list styles<a class="anchor" href="#the-list-styles" aria-label="Link to this section: The list styles">#</a></h3>
 <p>Both list styles were already in the stylesheet, so no record was added. The order of a few records in <code>DocumentStylesheet.iwa</code> changed, but their contents didn't.</p>
 <p>All three list styles are type 2023 and store most properties as nine repeated values:</p>
-<div class="table"><table><thead><tr><th>Field</th><th>None (1731481)</th><th>Dash (1731488)</th><th>Numbered (1731486)</th></tr></thead><tbody><tr><td>1.1, 1.2</td><td><code>Ingen</code>, <code>text-0-liststyle-None</code></td><td><code>Strek</code>, <code>text-7-liststyle-Dash</code></td><td><code>Nummerert</code>, <code>text-5-liststyle-Numbered</code></td></tr><tr><td>10</td><td>4</td><td>5</td><td>6</td></tr><tr><td>11 (×9)</td><td>0</td><td>2</td><td>3</td></tr><tr><td>12 (×9, float)</td><td>−0, then 0</td><td>1.0909091</td><td>1.6363636</td></tr><tr><td>13 (×9, float)</td><td>0, 36, 72 … 288</td><td>0, 12, 24 … 96</td><td>0, 18, 36 … 144</td></tr><tr><td>14 (×9, message)</td><td><code>{1: 1.0, 2: 0, 3: 1}</code></td><td><code>{1: 1.2, 2: 2.0, 3: 1}</code></td><td><code>{1: 1.0, 2: 0, 3: 1}</code></td></tr><tr><td>15 (×9)</td><td>—</td><td>—</td><td>0</td></tr><tr><td>16 (×9, text)</td><td>—</td><td><code>-</code></td><td>—</td></tr><tr><td>25 (×9)</td><td>—</td><td>—</td><td>0</td></tr></tbody></table></div>
+<div class="table"><table><thead><tr><th scope="col">Field</th><th scope="col">None (1731481)</th><th scope="col">Dash (1731488)</th><th scope="col">Numbered (1731486)</th></tr></thead><tbody><tr><td>1.1, 1.2</td><td><code>Ingen</code>, <code>text-0-liststyle-None</code></td><td><code>Strek</code>, <code>text-7-liststyle-Dash</code></td><td><code>Nummerert</code>, <code>text-5-liststyle-Numbered</code></td></tr><tr><td>10</td><td>4</td><td>5</td><td>6</td></tr><tr><td>11 (×9)</td><td>0</td><td>2</td><td>3</td></tr><tr><td>12 (×9, float)</td><td>−0, then 0</td><td>1.0909091</td><td>1.6363636</td></tr><tr><td>13 (×9, float)</td><td>0, 36, 72 … 288</td><td>0, 12, 24 … 96</td><td>0, 18, 36 … 144</td></tr><tr><td>14 (×9, message)</td><td><code>{1: 1.0, 2: 0, 3: 1}</code></td><td><code>{1: 1.2, 2: 2.0, 3: 1}</code></td><td><code>{1: 1.0, 2: 0, 3: 1}</code></td></tr><tr><td>15 (×9)</td><td>—</td><td>—</td><td>0</td></tr><tr><td>16 (×9, text)</td><td>—</td><td><code>-</code></td><td>—</td></tr><tr><td>25 (×9)</td><td>—</td><td>—</td><td>0</td></tr></tbody></table></div>
 <h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section: Conclusion">#</a></h2>
 <p>A list is a list style attached to a range of paragraphs through the list-style runs (field 7). The marker, a dash or a number, is not part of the text. A reader has to draw it from the list style.</p>
 <p>A list style describes nine levels, with each property stored as nine repeated values, one per level:</p>
@@ -60,10 +60,28 @@ numbered-list.pages  7: { 1: { 1: 0, 2: { 1: 1731486 } } }</code></pre>
   var narrow = window.matchMedia("(max-width: 48rem)");
   var middle = window.matchMedia("(max-width: 72rem)");
   var side = document.querySelector(".side > details"), toc = document.querySelector(".toc > details");
+  var tocSummary = document.querySelector(".toc summary");
   function fit() {
     if (side) side.open = !narrow.matches;
     if (toc) toc.open = !middle.matches;
+    // On wide screens the list can't fold, so its heading isn't a control.
+    if (tocSummary) { if (middle.matches) tocSummary.removeAttribute("tabindex"); else tocSummary.tabIndex = -1; }
+    scrollers();
   }
+  // A table or code block wider than the page scrolls sideways; make it reachable by keyboard, with a name.
+  function scrollers() {
+    var boxes = document.querySelectorAll("main .table, main pre");
+    for (var i = 0; i < boxes.length; i++) {
+      var b = boxes[i];
+      if (b.scrollWidth > b.clientWidth + 1) {
+        b.tabIndex = 0; b.setAttribute("role", "region");
+        b.setAttribute("aria-label", (b.tagName === "PRE" ? "Code" : "Table") + ", scrolls sideways");
+      } else if (b.hasAttribute("role")) {
+        b.removeAttribute("tabindex"); b.removeAttribute("role"); b.removeAttribute("aria-label");
+      }
+    }
+  }
+  window.addEventListener("resize", scrollers);
   fit();
   if (narrow.addEventListener) { narrow.addEventListener("change", fit); middle.addEventListener("change", fit); }
   // The release dropdown closes when you click anywhere else.

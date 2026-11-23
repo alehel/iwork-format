@@ -19,7 +19,7 @@
 <p><strong>Status:</strong> run</p>
 <p>Some record headers have a field 2.6 whose meaning wasn't known (<a href="0001-empty-document.html">0001</a>, <a href="0396-writing-record-headers.html">0396</a>). This experiment surveys where it appears, compares its values with the data IDs in <code>Metadata.iwa</code>, and writes it.</p>
 <h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section: Setup">#</a></h2>
-<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Pages</td><td>15.4, in Norwegian</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-18</td></tr><tr><td>Input</td><td>Every sample document on this machine for the survey; <code>samples/0023/image.pages</code> for writing: a red 8 × 4 PNG, data ID 24, in image record 1732647, whose header has 2.6 = 24</td></tr><tr><td>Writer</td><td>[<code>recipes/0396-record-header.py</code>](../recipes/0396-record-header.py); exported and saved with [<code>recipes/0372-in-app.sh</code>](../recipes/0372-in-app.sh)</td></tr></tbody></table></div>
+<div class="table"><table><tbody><tr><th scope="row">Pages</th><td>15.4, in Norwegian</td></tr><tr><th scope="row">macOS</th><td>26.5.2 (25F84)</td></tr><tr><th scope="row">Date</th><td>2026-11-18</td></tr><tr><th scope="row">Input</th><td>Every sample document on this machine for the survey; <code>samples/0023/image.pages</code> for writing: a red 8 × 4 PNG, data ID 24, in image record 1732647, whose header has 2.6 = 24</td></tr><tr><th scope="row">Writer</th><td>[<code>recipes/0396-record-header.py</code>](../recipes/0396-record-header.py); exported and saved with [<code>recipes/0372-in-app.sh</code>](../recipes/0372-in-app.sh)</td></tr></tbody></table></div>
 <h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section: Recipe">#</a></h2>
 <p>The survey read every payload message in every record header of the samples, and for each document the data IDs in <code>Metadata.iwa</code> record 2, field 4.1 (<a href="../spec/container.html#data-files">container.md</a>). Then:</p>
 <pre class="lang-bash"><code>mkdir -p samples/0397
@@ -37,9 +37,9 @@ done</code></pre>
 <p>Data ID 8 is one of the template's background images, which the document lists but doesn't store.</p>
 <h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section: Observation">#</a></h2>
 <p>Field 2.6 appears in the headers of records of types 4 (a slide node), 9, 10, 26, 2023 (a list style), 3005 (an image), 3007 (a sound or movie), 10001 and 12009, as packed varints. In 952 documents, all 23,373 values are data IDs that the document lists. Examples from <code>image.pages</code>:</p>
-<div class="table"><table><thead><tr><th>Record</th><th>Type</th><th>2.6</th><th>Data</th></tr></thead><tbody><tr><td>1732647</td><td>3005, the image</td><td>24</td><td><code>red-8x4.png</code></td></tr><tr><td>1731484</td><td>2023, a list style</td><td>23, nine times</td><td><code>bullet_circle-blk-resize.pdf</code>, the bullet image, once per level</td></tr><tr><td>1731489</td><td>2023</td><td>14, twice</td><td>another bullet image</td></tr><tr><td>1731480</td><td>10001</td><td>8, 9, 9, 9, 9, 9</td><td>the template's paper textures</td></tr></tbody></table></div>
+<div class="table"><table><thead><tr><th scope="col">Record</th><th scope="col">Type</th><th scope="col">2.6</th><th scope="col">Data</th></tr></thead><tbody><tr><td>1732647</td><td>3005, the image</td><td>24</td><td><code>red-8x4.png</code></td></tr><tr><td>1731484</td><td>2023, a list style</td><td>23, nine times</td><td><code>bullet_circle-blk-resize.pdf</code>, the bullet image, once per level</td></tr><tr><td>1731489</td><td>2023</td><td>14, twice</td><td>another bullet image</td></tr><tr><td>1731480</td><td>10001</td><td>8, 9, 9, 9, 9, 9</td><td>the template's paper textures</td></tr></tbody></table></div>
 <p>Writing it:</p>
-<div class="table"><table><thead><tr><th>File</th><th>Image's 2.6 written</th><th>Drawn</th><th>Saved copy's <code>Data/</code></th><th>Saved copy's 2.6</th></tr></thead><tbody><tr><td><code>original.pages</code></td><td>24</td><td>red</td><td><code>red-8x4-24.png</code></td><td>24</td></tr><tr><td><code>image-no-data-refs.pages</code></td><td>removed</td><td>red</td><td><code>red-8x4-24.png</code></td><td>24</td></tr><tr><td><code>image-other-data-ref.pages</code></td><td>8</td><td>red</td><td><code>red-8x4-24.png</code></td><td>24</td></tr></tbody></table></div>
+<div class="table"><table><thead><tr><th scope="col">File</th><th scope="col">Image's 2.6 written</th><th scope="col">Drawn</th><th scope="col">Saved copy's <code>Data/</code></th><th scope="col">Saved copy's 2.6</th></tr></thead><tbody><tr><td><code>original.pages</code></td><td>24</td><td>red</td><td><code>red-8x4-24.png</code></td><td>24</td></tr><tr><td><code>image-no-data-refs.pages</code></td><td>removed</td><td>red</td><td><code>red-8x4-24.png</code></td><td>24</td></tr><tr><td><code>image-other-data-ref.pages</code></td><td>8</td><td>red</td><td><code>red-8x4-24.png</code></td><td>24</td></tr></tbody></table></div>
 <h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section: Conclusion">#</a></h2>
 <p>Field 2.6 lists the data files a payload uses, by data ID, once for each place in the payload that names one, much as 2.5 lists the objects it refers to. Pages doesn't rely on it: the image is drawn and kept on saving whatever 2.6 says, and on saving Pages writes 2.6 again from the payload. A reader can use it to find the files a record needs without decoding the payload, and a writer should fill it as Pages does.</p>
 <h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section: Confidence">#</a></h2>
@@ -54,10 +54,28 @@ done</code></pre>
   var narrow = window.matchMedia("(max-width: 48rem)");
   var middle = window.matchMedia("(max-width: 72rem)");
   var side = document.querySelector(".side > details"), toc = document.querySelector(".toc > details");
+  var tocSummary = document.querySelector(".toc summary");
   function fit() {
     if (side) side.open = !narrow.matches;
     if (toc) toc.open = !middle.matches;
+    // On wide screens the list can't fold, so its heading isn't a control.
+    if (tocSummary) { if (middle.matches) tocSummary.removeAttribute("tabindex"); else tocSummary.tabIndex = -1; }
+    scrollers();
   }
+  // A table or code block wider than the page scrolls sideways; make it reachable by keyboard, with a name.
+  function scrollers() {
+    var boxes = document.querySelectorAll("main .table, main pre");
+    for (var i = 0; i < boxes.length; i++) {
+      var b = boxes[i];
+      if (b.scrollWidth > b.clientWidth + 1) {
+        b.tabIndex = 0; b.setAttribute("role", "region");
+        b.setAttribute("aria-label", (b.tagName === "PRE" ? "Code" : "Table") + ", scrolls sideways");
+      } else if (b.hasAttribute("role")) {
+        b.removeAttribute("tabindex"); b.removeAttribute("role"); b.removeAttribute("aria-label");
+      }
+    }
+  }
+  window.addEventListener("resize", scrollers);
   fit();
   if (narrow.addEventListener) { narrow.addEventListener("change", fit); middle.addEventListener("change", fit); }
   // The release dropdown closes when you click anywhere else.

@@ -19,7 +19,7 @@
 <p><strong>Status:</strong> run</p>
 <p>Each shape style preset in the sidebar is a named style in the stylesheet, <code>shape-N-shapestyle</code>, and choosing one only changes the shape's style reference (<a href="0215-shape-style-preset.html">0215</a>). This experiment writes the reference and reads the shape's colour from the exported page.</p>
 <h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section: Setup">#</a></h2>
-<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Pages</td><td>15.4</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-18</td></tr><tr><td>Input</td><td><code>samples/0213/plain-shape.pages</code>: shape 1732647, 100 × 100 at (300, 300), whose style reference (1.2.1) is <code>shape-0-shapestyle</code> (1731553, black). The stylesheet also has <code>shape-1-shapestyle</code> (1731554, blue) and <code>shape-3-shapestyle</code> (1731556, red). Pages' own blue version: <code>samples/0215/blue-style.pages</code></td></tr><tr><td>Writer</td><td>[<code>recipes/0302-set-path.py</code>](../recipes/0302-set-path.py); exported with [<code>recipes/0372-in-app.sh</code>](../recipes/0372-in-app.sh) and read with [<code>recipes/0384-pdf-colours.swift</code>](../recipes/0384-pdf-colours.swift)</td></tr></tbody></table></div>
+<div class="table"><table><tbody><tr><th scope="row">Pages</th><td>15.4</td></tr><tr><th scope="row">macOS</th><td>26.5.2 (25F84)</td></tr><tr><th scope="row">Date</th><td>2026-11-18</td></tr><tr><th scope="row">Input</th><td><code>samples/0213/plain-shape.pages</code>: shape 1732647, 100 × 100 at (300, 300), whose style reference (1.2.1) is <code>shape-0-shapestyle</code> (1731553, black). The stylesheet also has <code>shape-1-shapestyle</code> (1731554, blue) and <code>shape-3-shapestyle</code> (1731556, red). Pages' own blue version: <code>samples/0215/blue-style.pages</code></td></tr><tr><th scope="row">Writer</th><td>[<code>recipes/0302-set-path.py</code>](../recipes/0302-set-path.py); exported with [<code>recipes/0372-in-app.sh</code>](../recipes/0372-in-app.sh) and read with [<code>recipes/0384-pdf-colours.swift</code>](../recipes/0384-pdf-colours.swift)</td></tr></tbody></table></div>
 <h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section: Recipe">#</a></h2>
 <pre class="lang-bash"><code>mkdir -p samples/0413
 R=recipes/0302-set-path.py
@@ -33,7 +33,7 @@ for f in original style-1731554 style-1731556 pages-blue; do
   swift recipes/0384-pdf-colours.swift $O/$f.pdf 350,350
 done</code></pre>
 <h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section: Observation">#</a></h2>
-<div class="table"><table><thead><tr><th>File</th><th>Style reference</th><th>Colour at the shape's centre</th></tr></thead><tbody><tr><td><code>original.pages</code></td><td><code>shape-0-shapestyle</code></td><td>0, 0, 0</td></tr><tr><td><code>style-1731554.pages</code></td><td><code>shape-1-shapestyle</code></td><td>0, 0.63, 1.0</td></tr><tr><td><code>style-1731556.pages</code></td><td><code>shape-3-shapestyle</code></td><td>0.93, 0.13, 0.05</td></tr><tr><td><code>pages-blue.pages</code></td><td>(Pages' own)</td><td>0, 0.63, 1.0</td></tr></tbody></table></div>
+<div class="table"><table><thead><tr><th scope="col">File</th><th scope="col">Style reference</th><th scope="col">Colour at the shape's centre</th></tr></thead><tbody><tr><td><code>original.pages</code></td><td><code>shape-0-shapestyle</code></td><td>0, 0, 0</td></tr><tr><td><code>style-1731554.pages</code></td><td><code>shape-1-shapestyle</code></td><td>0, 0.63, 1.0</td></tr><tr><td><code>style-1731556.pages</code></td><td><code>shape-3-shapestyle</code></td><td>0.93, 0.13, 0.05</td></tr><tr><td><code>pages-blue.pages</code></td><td>(Pages' own)</td><td>0, 0.63, 1.0</td></tr></tbody></table></div>
 <h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section: Conclusion">#</a></h2>
 <p>A shape takes its look from the style its 1.2 names: pointing it at another preset's style changes its fill to that preset's, the same blue Pages draws when the preset is chosen in the sidebar. A writer can give a shape a preset by reference alone, without copying any properties.</p>
 <h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section: Confidence">#</a></h2>
@@ -48,10 +48,28 @@ done</code></pre>
   var narrow = window.matchMedia("(max-width: 48rem)");
   var middle = window.matchMedia("(max-width: 72rem)");
   var side = document.querySelector(".side > details"), toc = document.querySelector(".toc > details");
+  var tocSummary = document.querySelector(".toc summary");
   function fit() {
     if (side) side.open = !narrow.matches;
     if (toc) toc.open = !middle.matches;
+    // On wide screens the list can't fold, so its heading isn't a control.
+    if (tocSummary) { if (middle.matches) tocSummary.removeAttribute("tabindex"); else tocSummary.tabIndex = -1; }
+    scrollers();
   }
+  // A table or code block wider than the page scrolls sideways; make it reachable by keyboard, with a name.
+  function scrollers() {
+    var boxes = document.querySelectorAll("main .table, main pre");
+    for (var i = 0; i < boxes.length; i++) {
+      var b = boxes[i];
+      if (b.scrollWidth > b.clientWidth + 1) {
+        b.tabIndex = 0; b.setAttribute("role", "region");
+        b.setAttribute("aria-label", (b.tagName === "PRE" ? "Code" : "Table") + ", scrolls sideways");
+      } else if (b.hasAttribute("role")) {
+        b.removeAttribute("tabindex"); b.removeAttribute("role"); b.removeAttribute("aria-label");
+      }
+    }
+  }
+  window.addEventListener("resize", scrollers);
   fit();
   if (narrow.addEventListener) { narrow.addEventListener("change", fit); middle.addEventListener("change", fit); }
   // The release dropdown closes when you click anywhere else.

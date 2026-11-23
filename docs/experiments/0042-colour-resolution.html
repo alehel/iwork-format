@@ -19,11 +19,11 @@
 <p><strong>Status:</strong> run</p>
 <p>The style rule of <a href="0033-style-resolution.html">0033</a> was tested for bold, italic, size and font, which Pages reports through the font name. This experiment checks the same rule for text colour (field 11.7, <a href="0013-text-colour.html">0013</a>), using the <code>color</code> that Pages reports for each word.</p>
 <h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section: Setup">#</a></h2>
-<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Pages</td><td>15.4 (build <code>M15.4-7051.0.79-2</code>)</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-09</td></tr><tr><td>Documents</td><td><code>samples/0013/red.pages</code>, <code>0013/blue</code>, <code>0013/mixed</code>, <code>0008/unbold-middle</code>, <code>0006/heading-ui</code></td></tr></tbody></table></div>
+<div class="table"><table><tbody><tr><th scope="row">Pages</th><td>15.4 (build <code>M15.4-7051.0.79-2</code>)</td></tr><tr><th scope="row">macOS</th><td>26.5.2 (25F84)</td></tr><tr><th scope="row">Date</th><td>2026-11-09</td></tr><tr><th scope="row">Documents</th><td><code>samples/0013/red.pages</code>, <code>0013/blue</code>, <code>0013/mixed</code>, <code>0008/unbold-middle</code>, <code>0006/heading-ui</code></td></tr></tbody></table></div>
 <h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section: Recipe">#</a></h2>
 <p>Each document was opened in Pages through AppleScript. For each word of the body, <code>color</code> was read as three 16-bit components, and the document was closed without saving.</p>
 <h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section: Observation">#</a></h2>
-<div class="table"><table><thead><tr><th>Document</th><th>Word</th><th>Colour Pages reports</th><th>Colour set in 0013</th></tr></thead><tbody><tr><td>0013/red</td><td>one, three</td><td>0, 0, 0</td><td>—</td></tr><tr><td></td><td>two</td><td>64633, 466, 1797</td><td>65535, 0, 0</td></tr><tr><td>0013/blue</td><td>one, three</td><td>0, 0, 0</td><td>—</td></tr><tr><td></td><td>two</td><td>7, 114, 65418</td><td>0, 0, 65535</td></tr><tr><td>0013/mixed</td><td>one, three</td><td>0, 0, 0</td><td>—</td></tr><tr><td></td><td>two</td><td>32767, 16381, 652</td><td>32768, 16384, 0</td></tr><tr><td>0008/unbold-middle</td><td>one, two, three</td><td>0, 0, 0</td><td>—</td></tr><tr><td>0006/heading-ui</td><td>One, two</td><td>0, 0, 0</td><td>—</td></tr></tbody></table></div>
+<div class="table"><table><thead><tr><th scope="col">Document</th><th scope="col">Word</th><th scope="col">Colour Pages reports</th><th scope="col">Colour set in 0013</th></tr></thead><tbody><tr><td>0013/red</td><td>one, three</td><td>0, 0, 0</td><td>—</td></tr><tr><td></td><td>two</td><td>64633, 466, 1797</td><td>65535, 0, 0</td></tr><tr><td>0013/blue</td><td>one, three</td><td>0, 0, 0</td><td>—</td></tr><tr><td></td><td>two</td><td>7, 114, 65418</td><td>0, 0, 65535</td></tr><tr><td>0013/mixed</td><td>one, three</td><td>0, 0, 0</td><td>—</td></tr><tr><td></td><td>two</td><td>32767, 16381, 652</td><td>32768, 16384, 0</td></tr><tr><td>0008/unbold-middle</td><td>one, two, three</td><td>0, 0, 0</td><td>—</td></tr><tr><td>0006/heading-ui</td><td>One, two</td><td>0, 0, 0</td><td>—</td></tr></tbody></table></div>
 <h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section: Conclusion">#</a></h2>
 <p>The rule of 0033 predicts these colours. Only the words whose character style sets field 11.7 have a colour, and every other word gets black from the Body or Heading paragraph style. That includes the bold paragraph of <code>unbold-middle</code>, whose unnamed paragraph style sets no colour and inherits Body's.</p>
 <p>The colour values don't survive a round trip through AppleScript: pure red comes back as 64633, 466, 1797. The file stores red as (1.0, 0.149, 0.0) (<a href="0013-text-colour.html">0013</a>). So Pages converts colours both when AppleScript sets them and when it reads them, and the stored components are in a different colour space from AppleScript's. Which one is still unknown.</p>
@@ -40,10 +40,28 @@
   var narrow = window.matchMedia("(max-width: 48rem)");
   var middle = window.matchMedia("(max-width: 72rem)");
   var side = document.querySelector(".side > details"), toc = document.querySelector(".toc > details");
+  var tocSummary = document.querySelector(".toc summary");
   function fit() {
     if (side) side.open = !narrow.matches;
     if (toc) toc.open = !middle.matches;
+    // On wide screens the list can't fold, so its heading isn't a control.
+    if (tocSummary) { if (middle.matches) tocSummary.removeAttribute("tabindex"); else tocSummary.tabIndex = -1; }
+    scrollers();
   }
+  // A table or code block wider than the page scrolls sideways; make it reachable by keyboard, with a name.
+  function scrollers() {
+    var boxes = document.querySelectorAll("main .table, main pre");
+    for (var i = 0; i < boxes.length; i++) {
+      var b = boxes[i];
+      if (b.scrollWidth > b.clientWidth + 1) {
+        b.tabIndex = 0; b.setAttribute("role", "region");
+        b.setAttribute("aria-label", (b.tagName === "PRE" ? "Code" : "Table") + ", scrolls sideways");
+      } else if (b.hasAttribute("role")) {
+        b.removeAttribute("tabindex"); b.removeAttribute("role"); b.removeAttribute("aria-label");
+      }
+    }
+  }
+  window.addEventListener("resize", scrollers);
   fit();
   if (narrow.addEventListener) { narrow.addEventListener("change", fit); middle.addEventListener("change", fit); }
   // The release dropdown closes when you click anywhere else.

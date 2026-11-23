@@ -19,14 +19,14 @@
 <p><strong>Status:</strong> run</p>
 <p><a href="0195-remaining-chart-types.html">0195</a> completed the chart types AppleScript offers, leaving numbers 10 and 11 unexplained. The Insert → Chart menu offers more types: mixed, two-axis, radar, donut, bubble and four interactive charts. This experiment inserts one of each in Pages.</p>
 <h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section: Setup">#</a></h2>
-<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Pages</td><td>15.4 (build <code>M15.4-7051.0.79-2</code>), in Norwegian</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-09</td></tr><tr><td>Baseline</td><td>Experiments <a href="0195-remaining-chart-types.html">0195</a> and <a href="0222-pages-chart.html">0222</a></td></tr></tbody></table></div>
+<div class="table"><table><tbody><tr><th scope="row">Pages</th><td>15.4 (build <code>M15.4-7051.0.79-2</code>), in Norwegian</td></tr><tr><th scope="row">macOS</th><td>26.5.2 (25F84)</td></tr><tr><th scope="row">Date</th><td>2026-11-09</td></tr><tr><th scope="row">Baseline</th><td>Experiments <a href="0195-remaining-chart-types.html">0195</a> and <a href="0222-pages-chart.html">0222</a></td></tr></tbody></table></div>
 <h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section: Recipe">#</a></h2>
 <p>For each type, in a new document with the body text <code>One</code>:</p>
 <pre class="lang-bash"><code>osascript -e &#x27;tell application &quot;Pages&quot; to set body text of (make new document) to &quot;One&quot;&#x27;</code></pre>
 <p>choose Insert → Chart → the type, then save the document in <code>samples/0224/</code> under the name in the table.</p>
 <h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section: Observation">#</a></h2>
 <p>Each document has one type-5021 chart. Its field 10000.1 and the grouping in 10000.5:</p>
-<div class="table"><table><thead><tr><th>Menu item</th><th>Sample</th><th>10000.1</th><th>10000.5</th></tr></thead><tbody><tr><td>2D Mixed (<em>2D blandet</em>)</td><td><code>mixed.pages</code></td><td>10</td><td>1</td></tr><tr><td>2D 2-Axis (<em>2D-2-akse</em>)</td><td><code>two-axis.pages</code></td><td>11</td><td>1</td></tr><tr><td>Interactive Column (<em>Interaktiv kolonne</em>)</td><td><code>interactive-column.pages</code></td><td>20</td><td>1</td></tr><tr><td>Interactive Bar (<em>Interaktiv stolpe</em>)</td><td><code>interactive-bar.pages</code></td><td>21</td><td>1</td></tr><tr><td>2D Bubble (<em>2D-boble</em>)</td><td><code>bubble.pages</code></td><td>22</td><td>2</td></tr><tr><td>Interactive Scatter (<em>Interaktivt punkt</em>)</td><td><code>interactive-scatter.pages</code></td><td>23</td><td>2</td></tr><tr><td>Interactive Bubble (<em>Interaktiv boble</em>)</td><td><code>interactive-bubble.pages</code></td><td>24</td><td>2</td></tr><tr><td>2D Donut (<em>2D-smultring</em>)</td><td><code>donut.pages</code></td><td>25</td><td>2</td></tr><tr><td>2D Radar (<em>2D-radardiagram</em>)</td><td><code>radar.pages</code></td><td>27</td><td>1</td></tr></tbody></table></div>
+<div class="table"><table><thead><tr><th scope="col">Menu item</th><th scope="col">Sample</th><th scope="col">10000.1</th><th scope="col">10000.5</th></tr></thead><tbody><tr><td>2D Mixed (<em>2D blandet</em>)</td><td><code>mixed.pages</code></td><td>10</td><td>1</td></tr><tr><td>2D 2-Axis (<em>2D-2-akse</em>)</td><td><code>two-axis.pages</code></td><td>11</td><td>1</td></tr><tr><td>Interactive Column (<em>Interaktiv kolonne</em>)</td><td><code>interactive-column.pages</code></td><td>20</td><td>1</td></tr><tr><td>Interactive Bar (<em>Interaktiv stolpe</em>)</td><td><code>interactive-bar.pages</code></td><td>21</td><td>1</td></tr><tr><td>2D Bubble (<em>2D-boble</em>)</td><td><code>bubble.pages</code></td><td>22</td><td>2</td></tr><tr><td>Interactive Scatter (<em>Interaktivt punkt</em>)</td><td><code>interactive-scatter.pages</code></td><td>23</td><td>2</td></tr><tr><td>Interactive Bubble (<em>Interaktiv boble</em>)</td><td><code>interactive-bubble.pages</code></td><td>24</td><td>2</td></tr><tr><td>2D Donut (<em>2D-smultring</em>)</td><td><code>donut.pages</code></td><td>25</td><td>2</td></tr><tr><td>2D Radar (<em>2D-radardiagram</em>)</td><td><code>radar.pages</code></td><td>27</td><td>1</td></tr></tbody></table></div>
 <p>The data is in 10000.7 as for other charts. The interactive column chart's sample data has four rows instead of two.</p>
 <h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section: Conclusion">#</a></h2>
 <p>Types 10 and 11 are the mixed and two-axis charts, which AppleScript can't make. Types from 20 up came later: the interactive charts (20, 21, 23, 24), bubble (22), donut (25) and radar (27). The scatter and bubble kinds, and the donut, start grouped by column (2), because their sample data is laid out that way. Type 26 is probably the 3D bubble or another later kind that the menu doesn't offer.</p>
@@ -43,10 +43,28 @@
   var narrow = window.matchMedia("(max-width: 48rem)");
   var middle = window.matchMedia("(max-width: 72rem)");
   var side = document.querySelector(".side > details"), toc = document.querySelector(".toc > details");
+  var tocSummary = document.querySelector(".toc summary");
   function fit() {
     if (side) side.open = !narrow.matches;
     if (toc) toc.open = !middle.matches;
+    // On wide screens the list can't fold, so its heading isn't a control.
+    if (tocSummary) { if (middle.matches) tocSummary.removeAttribute("tabindex"); else tocSummary.tabIndex = -1; }
+    scrollers();
   }
+  // A table or code block wider than the page scrolls sideways; make it reachable by keyboard, with a name.
+  function scrollers() {
+    var boxes = document.querySelectorAll("main .table, main pre");
+    for (var i = 0; i < boxes.length; i++) {
+      var b = boxes[i];
+      if (b.scrollWidth > b.clientWidth + 1) {
+        b.tabIndex = 0; b.setAttribute("role", "region");
+        b.setAttribute("aria-label", (b.tagName === "PRE" ? "Code" : "Table") + ", scrolls sideways");
+      } else if (b.hasAttribute("role")) {
+        b.removeAttribute("tabindex"); b.removeAttribute("role"); b.removeAttribute("aria-label");
+      }
+    }
+  }
+  window.addEventListener("resize", scrollers);
   fit();
   if (narrow.addEventListener) { narrow.addEventListener("change", fit); middle.addEventListener("change", fit); }
   // The release dropdown closes when you click anywhere else.

@@ -24,23 +24,23 @@ iwork-probe text hello.pages</code></pre>
 <h2 id="pages">Pages<a class="anchor" href="#pages" aria-label="Link to this section: Pages">#</a></h2>
 <h3 id="hellopages">hello.pages<a class="anchor" href="#hellopages" aria-label="Link to this section: hello.pages">#</a></h3>
 <p><a href="../files/hello.pages">Download</a>. A new blank document with the word <code>hello</code>, from <a href="../experiments/0002-one-word.html">0002</a>. The smallest useful document: one paragraph in the Body style. <a href="anatomy.html">Reading a Pages document</a> walks through it.</p>
-<figure><img src="../files/hello.png" alt="hello.pages" loading="lazy"><figcaption>hello.pages</figcaption></figure>
+<figure><img src="../files/hello.png" alt="hello.pages" loading="lazy"><figcaption aria-hidden="true">hello.pages</figcaption></figure>
 <h3 id="two-paragraphspages">two-paragraphs.pages<a class="anchor" href="#two-paragraphspages" aria-label="Link to this section: two-paragraphs.pages">#</a></h3>
 <p><a href="../files/two-paragraphs.pages">Download</a>. <code>one</code> and <code>two</code> as two paragraphs, from <a href="../experiments/0005-paragraphs.html">0005</a>. The text holds U+000A between them, and the paragraph run table (field 5 of the body's text record) has an entry at 0 and one at 4.</p>
-<figure><img src="../files/two-paragraphs.png" alt="two-paragraphs.pages" loading="lazy"><figcaption>two-paragraphs.pages</figcaption></figure>
+<figure><img src="../files/two-paragraphs.png" alt="two-paragraphs.pages" loading="lazy"><figcaption aria-hidden="true">two-paragraphs.pages</figcaption></figure>
 <h3 id="tablepages">table.pages<a class="anchor" href="#tablepages" aria-label="Link to this section: table.pages">#</a></h3>
 <p><a href="../files/table.pages">Download</a>. A paragraph <code>one</code> and a table, from <a href="../experiments/0020-a-table.html">0020</a>. The table is anchored in the text by an attachment character, U+FFFC, which points through a type-2003 attachment to a drawable and table model in <code>CalculationEngine.iwa</code>, as in Numbers.</p>
-<figure><img src="../files/table.png" alt="table.pages" loading="lazy"><figcaption>table.pages</figcaption></figure>
+<figure><img src="../files/table.png" alt="table.pages" loading="lazy"><figcaption aria-hidden="true">table.pages</figcaption></figure>
 <h3 id="written-by-scriptpages">written-by-script.pages<a class="anchor" href="#written-by-scriptpages" aria-label="Link to this section: written-by-script.pages">#</a></h3>
 <p><a href="../files/written-by-script.pages">Download</a>. Not saved by Pages: written by the Python writer from <a href="../experiments/0288-writing-new-text.html">0288</a>, with new body text and no previews. Pages opens it as an ordinary document. See <a href="writing.html">Writing a document</a>.</p>
-<figure><img src="../files/written-by-script.png" alt="written-by-script.pages" loading="lazy"><figcaption>written-by-script.pages</figcaption></figure>
+<figure><img src="../files/written-by-script.png" alt="written-by-script.pages" loading="lazy"><figcaption aria-hidden="true">written-by-script.pages</figcaption></figure>
 <h2 id="numbers">Numbers<a class="anchor" href="#numbers" aria-label="Link to this section: Numbers">#</a></h2>
 <h3 id="kinds-and-numbersnumbers">kinds-and-numbers.numbers<a class="anchor" href="#kinds-and-numbersnumbers" aria-label="Link to this section: kinds-and-numbers.numbers">#</a></h3>
 <p><a href="../files/kinds-and-numbers.numbers">Download</a>. A table with a header row <code>kind</code>, <code>n</code> and four rows of a letter and a number, from <a href="../experiments/0226-category.html">0226</a>. <a href="numbers-table.html">Reading a Numbers table</a> decodes its cells.</p>
-<figure><img src="../files/kinds-and-numbers.png" alt="kinds-and-numbers.numbers" loading="lazy"><figcaption>kinds-and-numbers.numbers</figcaption></figure>
+<figure><img src="../files/kinds-and-numbers.png" alt="kinds-and-numbers.numbers" loading="lazy"><figcaption aria-hidden="true">kinds-and-numbers.numbers</figcaption></figure>
 <h3 id="written-cellnumbers">written-cell.numbers<a class="anchor" href="#written-cellnumbers" aria-label="Link to this section: written-cell.numbers">#</a></h3>
 <p><a href="../files/written-cell.numbers">Download</a>. Written by script in <a href="../experiments/0290-writing-a-cell.html">0290</a>: one cell's decimal128 replaced with 42.</p>
-<figure><img src="../files/written-cell.png" alt="written-cell.numbers" loading="lazy"><figcaption>written-cell.numbers</figcaption></figure>
+<figure><img src="../files/written-cell.png" alt="written-cell.numbers" loading="lazy"><figcaption aria-hidden="true">written-cell.numbers</figcaption></figure>
 <h2 id="all-fixtures">All fixtures<a class="anchor" href="#all-fixtures" aria-label="Link to this section: All fixtures">#</a></h2>
 <p><a href="https://github.com/alehel/iwork-format/releases/download/fixtures/iwork-format-fixtures.zip">Download all fixtures</a> (zip, about 197 MB): 634 documents from the experiments, from Pages, Numbers and Keynote. The <a href="https://github.com/alehel/iwork-format/blob/main/fixtures/INDEX.md">index</a> lists each file with its experiment, size, SHA-256 and, for encrypted documents, the test password.</p>
 <p>The Keynote presentations were made again with the project's own test theme, which replaces Basic White's photos with labelled test cards (<a href="../experiments/0291-test-theme.html">0291</a>, <a href="../experiments/0292-test-theme-reruns.html">0292</a>). Left out are the few documents that hold Apple's theme photos or the placeholder text Apple wrote for a template. Folder packages are included as folders. Documents with comments, highlights or tracked changes record their author's name, here the project owner's. Every experiment's recipe says how to make its documents again with AppleScript.</p>
@@ -55,10 +55,28 @@ iwork-probe text hello.pages</code></pre>
   var narrow = window.matchMedia("(max-width: 48rem)");
   var middle = window.matchMedia("(max-width: 72rem)");
   var side = document.querySelector(".side > details"), toc = document.querySelector(".toc > details");
+  var tocSummary = document.querySelector(".toc summary");
   function fit() {
     if (side) side.open = !narrow.matches;
     if (toc) toc.open = !middle.matches;
+    // On wide screens the list can't fold, so its heading isn't a control.
+    if (tocSummary) { if (middle.matches) tocSummary.removeAttribute("tabindex"); else tocSummary.tabIndex = -1; }
+    scrollers();
   }
+  // A table or code block wider than the page scrolls sideways; make it reachable by keyboard, with a name.
+  function scrollers() {
+    var boxes = document.querySelectorAll("main .table, main pre");
+    for (var i = 0; i < boxes.length; i++) {
+      var b = boxes[i];
+      if (b.scrollWidth > b.clientWidth + 1) {
+        b.tabIndex = 0; b.setAttribute("role", "region");
+        b.setAttribute("aria-label", (b.tagName === "PRE" ? "Code" : "Table") + ", scrolls sideways");
+      } else if (b.hasAttribute("role")) {
+        b.removeAttribute("tabindex"); b.removeAttribute("role"); b.removeAttribute("aria-label");
+      }
+    }
+  }
+  window.addEventListener("resize", scrollers);
   fit();
   if (narrow.addEventListener) { narrow.addEventListener("change", fit); middle.addEventListener("change", fit); }
   // The release dropdown closes when you click anywhere else.

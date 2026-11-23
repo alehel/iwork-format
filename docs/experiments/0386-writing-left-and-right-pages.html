@@ -19,7 +19,7 @@
 <p><strong>Status:</strong> run</p>
 <p>Section field 19 is 1 when left and right pages have different headers and footers. Then the right-hand pages use the set that section field 25 names and the left-hand pages the set in field 24 (<a href="0019-left-and-right-pages.html">0019</a>). Pages shows that switch only with <em>Facing pages</em> on, the document setting in field 34 of the type-10012 record (<a href="0017-section-switches.html">0017</a>). This experiment turns each off and reads the headers from the exported PDF.</p>
 <h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section: Setup">#</a></h2>
-<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Pages</td><td>15.4, in Norwegian</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-17</td></tr><tr><td>Input</td><td><code>samples/0019/left-right.pages</code>: two pages, <code>one</code> and <code>Two</code>, with facing pages on and section 1732296's field 19 = 1. The first page's header reads <code>Right</code> and the second's <code>left</code></td></tr><tr><td>Writer</td><td>[<code>recipes/0302-set-path.py</code>](../recipes/0302-set-path.py); exported with [<code>recipes/0372-in-app.sh</code>](../recipes/0372-in-app.sh) and read with [<code>recipes/0374-pdf-text.swift</code>](../recipes/0374-pdf-text.swift)</td></tr></tbody></table></div>
+<div class="table"><table><tbody><tr><th scope="row">Pages</th><td>15.4, in Norwegian</td></tr><tr><th scope="row">macOS</th><td>26.5.2 (25F84)</td></tr><tr><th scope="row">Date</th><td>2026-11-17</td></tr><tr><th scope="row">Input</th><td><code>samples/0019/left-right.pages</code>: two pages, <code>one</code> and <code>Two</code>, with facing pages on and section 1732296's field 19 = 1. The first page's header reads <code>Right</code> and the second's <code>left</code></td></tr><tr><th scope="row">Writer</th><td>[<code>recipes/0302-set-path.py</code>](../recipes/0302-set-path.py); exported with [<code>recipes/0372-in-app.sh</code>](../recipes/0372-in-app.sh) and read with [<code>recipes/0374-pdf-text.swift</code>](../recipes/0374-pdf-text.swift)</td></tr></tbody></table></div>
 <h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section: Recipe">#</a></h2>
 <pre class="lang-bash"><code>mkdir -p samples/0386
 R=recipes/0302-set-path.py
@@ -34,7 +34,7 @@ return facing pages of d&quot;
   swift recipes/0374-pdf-text.swift $O/$f.pdf
 done</code></pre>
 <h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section: Observation">#</a></h2>
-<div class="table"><table><thead><tr><th>File</th><th>Written</th><th><code>facing pages</code></th><th>Page 1</th><th>Page 2</th></tr></thead><tbody><tr><td><code>original.pages</code></td><td>nothing</td><td>true</td><td>Right / one</td><td>left / Two</td></tr><tr><td><code>same.pages</code></td><td>section field 19 = 0</td><td>true</td><td>Right / one</td><td>Right / Two</td></tr><tr><td><code>not-facing.pages</code></td><td>settings field 34 = 0</td><td>false</td><td>Right / one</td><td>left / Two</td></tr></tbody></table></div>
+<div class="table"><table><thead><tr><th scope="col">File</th><th scope="col">Written</th><th scope="col"><code>facing pages</code></th><th scope="col">Page 1</th><th scope="col">Page 2</th></tr></thead><tbody><tr><td><code>original.pages</code></td><td>nothing</td><td>true</td><td>Right / one</td><td>left / Two</td></tr><tr><td><code>same.pages</code></td><td>section field 19 = 0</td><td>true</td><td>Right / one</td><td>Right / Two</td></tr><tr><td><code>not-facing.pages</code></td><td>settings field 34 = 0</td><td>false</td><td>Right / one</td><td>left / Two</td></tr></tbody></table></div>
 <h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section: Conclusion">#</a></h2>
 <p>Field 19 decides whether left-hand pages get their own headers and footers: with it 0, the second page uses the right-hand set like the first. The left-hand set's text stays in the file but isn't used. Facing pages doesn't gate it: with field 34 at 0, AppleScript reports facing pages off, yet the second page still uses the left-hand set. So <em>left</em> and <em>right</em> here are even and odd pages whatever the facing-pages setting, and a reader should follow field 19 alone.</p>
 <h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section: Confidence">#</a></h2>
@@ -49,10 +49,28 @@ done</code></pre>
   var narrow = window.matchMedia("(max-width: 48rem)");
   var middle = window.matchMedia("(max-width: 72rem)");
   var side = document.querySelector(".side > details"), toc = document.querySelector(".toc > details");
+  var tocSummary = document.querySelector(".toc summary");
   function fit() {
     if (side) side.open = !narrow.matches;
     if (toc) toc.open = !middle.matches;
+    // On wide screens the list can't fold, so its heading isn't a control.
+    if (tocSummary) { if (middle.matches) tocSummary.removeAttribute("tabindex"); else tocSummary.tabIndex = -1; }
+    scrollers();
   }
+  // A table or code block wider than the page scrolls sideways; make it reachable by keyboard, with a name.
+  function scrollers() {
+    var boxes = document.querySelectorAll("main .table, main pre");
+    for (var i = 0; i < boxes.length; i++) {
+      var b = boxes[i];
+      if (b.scrollWidth > b.clientWidth + 1) {
+        b.tabIndex = 0; b.setAttribute("role", "region");
+        b.setAttribute("aria-label", (b.tagName === "PRE" ? "Code" : "Table") + ", scrolls sideways");
+      } else if (b.hasAttribute("role")) {
+        b.removeAttribute("tabindex"); b.removeAttribute("role"); b.removeAttribute("aria-label");
+      }
+    }
+  }
+  window.addEventListener("resize", scrollers);
   fit();
   if (narrow.addEventListener) { narrow.addEventListener("change", fit); middle.addEventListener("change", fit); }
   // The release dropdown closes when you click anywhere else.
