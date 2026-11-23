@@ -1,6 +1,6 @@
 # Keynote
 
-What is specific to Keynote documents. The container is the same as Pages' ([container.md](container.md)), and text is stored as in [text.md](text.md). Every finding links to the experiments that support it, with a confidence level as defined in [CONTRIBUTING.md](../CONTRIBUTING.md#confidence).
+What is specific to Keynote documents. The container is the same as Pages' ([container.md](container.md)), text is stored as in [2. Text](text.md) and styled as in [3. Styles](styles.md), and charts, sounds and movies are described in [5. Drawables, media and charts](drawables.md). Every finding links to the experiments that support it, with a confidence level as defined in [CONTRIBUTING.md](../CONTRIBUTING.md#confidence).
 
 Observed with Keynote 15.4 on macOS 26.5.2.
 
@@ -38,49 +38,8 @@ A slide's transition is in its field 4.2.8: the effect's name in field 2, its du
 
 Effect names are Keynote's own identifiers: `none`, `apple:dissolve` (AppleScript `dissolve`), `apple:slide` (`move in`), `apple:push` (`push`), `apple:3D-cube` (`cube`) and `apple:magic-move-implied-motion-path` (`magic move`). *Likely* ([0091](../experiments/0091-move-in-transition.md)–[0095](../experiments/0095-magic-move.md)). The identifiers of the other 38 effects AppleScript offers are listed in [0196](../experiments/0196-every-transition.md), *confirmed* by writing each and reading the effect back ([0347](../experiments/0347-every-transition-by-writing.md)). Some use the `apple:` form, and others a class name such as `com.apple.iWork.Keynote.BLTBlinds`. *Likely*
 
-Sounds and movies are type 3007. Field 14 names the media file by data ID, field 15 a poster image for a movie, field 7 the volume (0–1) and field 24 the repetition (0 none, 1 loop, 2 loop back and forth); both are *confirmed* by writing them into a sound and a movie ([0363](../experiments/0363-writing-media-volume-and-repetition.md)). Field 23 is 1 when the media has pictures and field 9 is 1 when it has only sound; fields 20 and 21 are a movie's natural size. Field 29 describes the first track: its kind (`soun` or `vide`) and time scale. A sound's drawable has a size of 0 × 0. *Likely* ([0185](../experiments/0185-keynote-audio.md)–[0187](../experiments/0187-keynote-movie.md)). Pages and Numbers store media in the same record: that sounds and movies are type 3007 with their file in field 14 is *confirmed* ([0188](../experiments/0188-media-in-pages-and-numbers.md)).
-
 A build is a type-8 record listed in slide field 2: field 1 names the object (*confirmed* by writing it, [0450](../experiments/0450-writing-a-build-s-object.md)), field 2 the delivery (such as `All at Once`), and field 4.18 the effect, with `In`, `Out` or `Action` in 4.18.1 for a build-in, build-out or action, *confirmed* ([0263](../experiments/0263-build-out.md), [0264](../experiments/0264-action-build.md); and by writing `Out` into a build-in, [0449](../experiments/0449-writing-a-build-direction.md)); an action's settings, such as a rotation's angle in 4.9, sit beside the effect in field 4, an identifier such as `apple:dissolve character` in 4.18.2 and the duration in 4.18.3. Slide field 43 lists type-153 records, probably the build order. *Likely* ([0257](../experiments/0257-build.md)). A build plays only with both its entry in field 2 and a type-153 stage in field 43; without either it is ignored, and a stage listed twice plays once (*confirmed* by writing them, [0448](../experiments/0448-writing-a-build-s-stages.md)). Writing the delivery text doesn't change the number of stages Keynote plays, so the stages probably come from the type-153 records, one per stage ([0368](../experiments/0368-writing-a-build-delivery.md)).
 
 A slide's background is the fill in its slide style (type 9, property 11.1); a colour in 11.1.1 is *confirmed* by writing it ([0346](../experiments/0346-writing-a-slide-background.md)). A dynamic background is an image fill (field 3) showing a pre-rendered still, a `motionBackground-…` data file (the same file whatever the preset's angle, scale and speed, [0292](../experiments/0292-test-theme-reruns.md)), plus field 200 naming a type-26 motion background style. That style holds the generator's name, such as `KNGradientLinearBase`, colour stops as in a gradient fill, and parameters such as the scale (64) and speed (70). *Likely* ([0271](../experiments/0271-dynamic-background.md)). Keynote renders the background from the style's stops, even when exporting, and ignores the still, which is there for readers that can't (*confirmed* by writing them, [0440](../experiments/0440-writing-a-dynamic-background.md)).
 
 Bulleted body text uses the same text records and list styles as Pages; the theme's default body list style is a bullet (`•` in field 16, repeated once per level). *Likely* ([0072](../experiments/0072-keynote-bullets.md)). Field 16 as the bullet Keynote draws is *confirmed* by writing it ([0414](../experiments/0414-writing-a-keynote-bullet.md)).
-
-## Charts
-
-A chart is a drawable of type 5021 on the slide. Its field 10000.7 holds its data: row names in 7.1, column names in 7.2, and one 7.3 per row listing its values as doubles. *Confirmed*: Pages stores charts the same way ([0067](../experiments/0067-chart.md), [0222](../experiments/0222-pages-chart.md)). A Numbers chart also links to its table: field 10000.8 names a type-12006 record whose field 3 holds formulas, in the cell-formula node form, for the series values (3.1), category labels (3.3) and series names (3.4); 10000.7 keeps a copy of the values. *Likely* ([0225](../experiments/0225-numbers-chart.md)). Numbers draws the chart from the formulas, evaluated on opening, and ignores the copy; a series is a range of two references joined by node 29 (*confirmed* by writing them, [0409](../experiments/0409-writing-a-numbers-chart-link.md)).
-
-A chart also names a chart style (type 5022) in field 10000.9 and a type-5023 record of settings in 10000.10. In the settings, 10000.21 = 1 shows the chart's title and 10000.20 = 1 its legend; turning one off leaves 0. *Confirmed* by writing them ([0298](../experiments/0298-writing-chart-switches.md)). The border is chart style property 10000.18 = 1, which Keynote sets through an unnamed style whose parent is the theme's chart style, as with text styles (*confirmed* by writing it, [0399](../experiments/0399-writing-chart-border-and-axes.md)). A chart's caption is drawable field 1.11, as for other objects (its text *confirmed* by writing it; an empty caption isn't drawn in an exported slide, [0430](../experiments/0430-writing-a-chart-caption.md)). *Likely* ([0295](../experiments/0295-chart-options.md))
-
-Each part of a chart has such a pair of a style and a settings record, named in field 10000: 10000.9 and 10000.10 the chart (types 5022, 5023), 10000.11 and 10000.12 types 5024 and 5025, 10000.13 and 10000.14 the value axes (types 5026, 5027, two each, the main value axis first), and 10000.15 and 10000.16 the category axis ([0297](../experiments/0297-chart-category-axis.md)). Field 10000.17 names six series styles (type 5028, `chart-0-series_0` and on; a series style's properties 6 to 17 are fills, one per kind of shape: 10000.13 for bars, 10000.11 for areas and 10000.17 for pie wedges, *confirmed* by writing them, the stroke property 10000.48 draws a line chart's line and 10000.53 the outline of a scatter chart's points, whose fill is *unknown*, and 10000.30 to 10000.34 are shadows, [0456](../experiments/0456-writing-a-series-colour.md), [0457](../experiments/0457-series-colours-by-chart-type.md), [0458](../experiments/0458-a-series-line-stroke.md), [0459](../experiments/0459-a-series-points.md)) and 10000.20 the chart's 25 paragraph styles (type 2022). Shareable properties go in a style, which Keynote overrides through an unnamed child style; a chart's own switches go in its settings record. For the value axis, style property 10000.25 = 1 draws the axis line and 10000.31 = 0 hides the minimum value, and setting 10000.14 = 1 shows the axis name (all three *confirmed* by writing them, drawing as Keynote's own pixel for pixel, [0399](../experiments/0399-writing-chart-border-and-axes.md)); the category axis shows its name with setting 10000.13 = 1 (*confirmed* by writing it; 10000.14 does nothing there, [0400](../experiments/0400-writing-a-category-axis-name.md)). *Likely* ([0296](../experiments/0296-chart-axis.md), [0297](../experiments/0297-chart-category-axis.md))
-
-Writing the grid and the type changes the chart Keynote draws, *confirmed* in [0317](../experiments/0317-writing-chart-data.md). Field 10000.1 is the chart type and 10000.5 the grouping into series (1 by row, 2 by column, *confirmed* by writing it, [0350](../experiments/0350-writing-chart-grouping.md)); the data grid in 10000.7 is the same whatever the type or grouping. *Likely* ([0079](../experiments/0079-pie-chart.md)–[0086](../experiments/0086-chart-grouped-by-column.md))
-
-| 10000.1 | Type |
-| --- | --- |
-| 1 | Vertical bar |
-| 2 | Horizontal bar |
-| 3 | Line |
-| 4 | Area |
-| 5 | Pie |
-| 6 | Stacked vertical bar |
-| 7 | Stacked horizontal bar ([0195](../experiments/0195-remaining-chart-types.md)) |
-| 8 | Stacked area ([0195](../experiments/0195-remaining-chart-types.md)) |
-| 9 | Scatter |
-| 10 | Mixed ([0224](../experiments/0224-menu-chart-types.md)) |
-| 11 | Two-axis ([0224](../experiments/0224-menu-chart-types.md)) |
-| 12 | 3D vertical bar |
-| 13 | 3D horizontal bar ([0195](../experiments/0195-remaining-chart-types.md)) |
-| 14 | 3D line ([0195](../experiments/0195-remaining-chart-types.md)) |
-| 15 | 3D area ([0195](../experiments/0195-remaining-chart-types.md)) |
-| 16 | 3D pie ([0195](../experiments/0195-remaining-chart-types.md)) |
-| 17 | 3D stacked vertical bar ([0195](../experiments/0195-remaining-chart-types.md)) |
-| 18 | 3D stacked horizontal bar ([0195](../experiments/0195-remaining-chart-types.md)) |
-| 19 | 3D stacked area ([0195](../experiments/0195-remaining-chart-types.md)) |
-| 20 | Interactive column ([0224](../experiments/0224-menu-chart-types.md)) |
-| 21 | Interactive bar ([0224](../experiments/0224-menu-chart-types.md)) |
-| 22 | Bubble ([0224](../experiments/0224-menu-chart-types.md)) |
-| 23 | Interactive scatter ([0224](../experiments/0224-menu-chart-types.md)) |
-| 24 | Interactive bubble ([0224](../experiments/0224-menu-chart-types.md)) |
-| 25 | Donut ([0224](../experiments/0224-menu-chart-types.md)) |
-| 27 | Radar ([0224](../experiments/0224-menu-chart-types.md)) |

@@ -2,7 +2,7 @@
 
 **Status:** run
 
-A style's font is in 11.5, and its bold and italic in 11.1 and 11.2. A font name may already include a weight, such as `HelveticaNeue-Bold`, which Pages wrote in some styles ([text.md](../spec/text.md#styles)). This experiment writes font names with weights into the body's style, with and without the bold flag.
+A style's font is in 11.5, and its bold and italic in 11.1 and 11.2. A font name may already include a weight, such as `HelveticaNeue-Bold`, which Pages wrote in some styles ([styles.md](../spec/styles.md)). This experiment writes font names with weights into the body's style, with and without the bold flag.
 
 ## Setup
 

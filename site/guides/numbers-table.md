@@ -46,7 +46,7 @@ Field 4 is the table's storage. It names the lists that cells refer to by key:
 
 ## A tile's rows
 
-A tile (type 6002) has one field-5 entry per row with content. Each entry gives the row index (5.1), a table of 16-bit little-endian offsets, one per column, with `ffff` for an empty cell (5.7, or 5.4 in a row with a single cell), and the cell bytes (5.6) ([text.md](../../spec/text.md#objects-in-the-text)). Here are the five rows, split into cells using the offsets:
+A tile (type 6002) has one field-5 entry per row with content. Each entry gives the row index (5.1), a table of 16-bit little-endian offsets, one per column, with `ffff` for an empty cell (5.7, or 5.4 in a row with a single cell), and the cell bytes (5.6) ([tables.md](../../spec/tables.md#rows-in-a-tile)). Here are the five rows, split into cells using the offsets:
 
 <!-- include: numbers-rows.txt -->
 
@@ -70,7 +70,7 @@ Row 1, column 1 holds the number 1:
 | `01 00 00 00` | The key for flag 0x1000 |
 | `02 00 00 00` | The key for flag 0x2000: format 2 |
 
-The values and keys follow in the order of their flag bits. The flag table in [text.md](../../spec/text.md#objects-in-the-text) lists the bits found so far.
+The values and keys follow in the order of their flag bits. The flag table in [tables.md](../../spec/tables.md#cells) lists the bits found so far.
 
 ## A text cell
 
@@ -98,7 +98,7 @@ The two format keys lead to the format list, another type-6005 record, here in `
 
 <!-- include: numbers-formats.txt -->
 
-Key 1 is format kind 260, text, used by 6 cells: the two headers and the four letters. Key 2 is kind 256, a number, used by the four numbers ([text.md](../../spec/text.md#objects-in-the-text)).
+Key 1 is format kind 260, text, used by 6 cells: the two headers and the four letters. Key 2 is kind 256, a number, used by the four numbers ([tables.md](../../spec/tables.md#formats)).
 
 ## A reader's steps
 

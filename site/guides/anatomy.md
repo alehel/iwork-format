@@ -109,7 +109,7 @@ Object 1731511 is in `Index/DocumentStylesheet.iwa`. It is a type-2022 paragraph
 
 <!-- include: hello-body-style.txt -->
 
-Field 1.1 is the style's name, as the app's language shows it (`Brødtekst` is Norwegian for Body, since this document was made in Norwegian) and 1.2 its identifier, which doesn't depend on the language. Field 11 holds its character properties and field 12 its paragraph properties. Styles inherit from a parent, and a property missing from a style comes from the parent ([text.md](../../spec/text.md#styles)).
+Field 1.1 is the style's name, as the app's language shows it (`Brødtekst` is Norwegian for Body, since this document was made in Norwegian) and 1.2 its identifier, which doesn't depend on the language. Field 11 holds its character properties and field 12 its paragraph properties. Styles inherit from a parent, and a property missing from a style comes from the parent ([styles.md](../../spec/styles.md#named-and-unnamed-styles)).
 
 ## What was skipped
 

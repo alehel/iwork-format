@@ -1,6 +1,6 @@
 # Numbers
 
-What is specific to Numbers documents. The container is the same as Pages' ([container.md](container.md)), and tables are stored as described in [text.md](text.md#objects-in-the-text). Every finding links to the experiments that support it, with a confidence level as defined in [CONTRIBUTING.md](../CONTRIBUTING.md#confidence).
+What is specific to Numbers documents. The container is the same as Pages' ([container.md](container.md)), and tables are stored as described in [4. Tables](tables.md). Every finding links to the experiments that support it, with a confidence level as defined in [CONTRIBUTING.md](../CONTRIBUTING.md#confidence).
 
 Observed with Numbers 15.4 on macOS 26.5.2.
 

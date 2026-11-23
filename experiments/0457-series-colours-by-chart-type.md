@@ -49,7 +49,7 @@ for t in 1 3 4 5 9; do
 done
 ```
 
-Chart types: 1 column, 3 line, 4 area, 5 pie, 9 scatter ([keynote.md](../spec/keynote.md#charts)).
+Chart types: 1 column, 3 line, 4 area, 5 pie, 9 scatter ([drawables.md](../spec/drawables.md#charts)).
 
 ## Observation
 

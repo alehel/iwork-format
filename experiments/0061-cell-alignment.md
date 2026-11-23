@@ -34,7 +34,7 @@ The cell's flags are `48 10 02 00` = 0x00021048. That is 0x8 (string), 0x40 (tex
 
 ## Conclusion
 
-Centring a cell gives it a text style that sets paragraph property 12.1 = 2, the same value Pages uses for a centred paragraph. Cell alignment is therefore read exactly like paragraph alignment ([text.md](../spec/text.md#styles)).
+Centring a cell gives it a text style that sets paragraph property 12.1 = 2, the same value Pages uses for a centred paragraph. Cell alignment is therefore read exactly like paragraph alignment ([styles.md](../spec/styles.md)).
 
 ## Confidence
 

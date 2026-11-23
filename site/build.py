@@ -37,7 +37,10 @@ TITLE = "iWork file format specification"
 # each experiment records the release it ran on, which the experiment list shows.
 CURRENT_VERSION = "15.4"
 SPEC_PAGES = [("README.md", "index.html"), ("container.md", "container.html"), ("text.md", "text.html"),
-              ("keynote.md", "keynote.html"), ("numbers.md", "numbers.html"), ("releases.md", "releases.html")]
+              ("styles.md", "styles.html"), ("tables.md", "tables.html"), ("drawables.md", "drawables.html"),
+              ("pages.md", "pages.html"), ("keynote.md", "keynote.html"), ("numbers.md", "numbers.html"),
+              ("releases.md", "releases.html")]
+GENERATED = {"spec/types.html"}  # pages the build makes without a Markdown source, which Markdown may link to
 RELEASE_MARK = re.compile(r"\[release: ([^\]]+)\]")
 
 
@@ -79,6 +82,8 @@ def link_target(url, here):
     path, _, anchor = url.partition("#")
     anchor = "#" + anchor if anchor else ""
     target = os.path.normpath(os.path.join(os.path.dirname(here), path)).replace(os.sep, "/")
+    if target in GENERATED:
+        return relpath(target, here_out(here)) + anchor
     if target.startswith("site/files/"):
         return relpath("files/" + target[len("site/files/"):], here_out(here)) + anchor
     if target.endswith(".md"):
@@ -348,8 +353,9 @@ def record_types(text):
             yield int(n)
 
 
-CHAPTERS = {"README.md": "Layers and status", "container.md": "Container", "text.md": "Text",
-            "keynote.md": "Keynote", "numbers.md": "Numbers"}
+CHAPTERS = {"README.md": "Layers and status", "container.md": "Container", "text.md": "Text", "styles.md": "Styles",
+            "tables.md": "Tables", "drawables.md": "Drawables", "pages.md": "Pages", "keynote.md": "Keynote",
+            "numbers.md": "Numbers"}
 
 
 def type_mentions(md):
@@ -481,11 +487,17 @@ NAV = [
     ("Specification", None),
     ("Layers and status", "spec:index.html"),
     ("1. Container", "spec:container.html"),
-    ("2–5. Text, styles, objects, layout", "spec:text.html"),
+    ("2. Text", "spec:text.html"),
+    ("3. Styles", "spec:styles.html"),
+    ("4. Tables", "spec:tables.html"),
+    ("5. Drawables, media and charts", "spec:drawables.html"),
+    ("Apps", None),
+    ("Pages", "spec:pages.html"),
     ("Keynote", "spec:keynote.html"),
     ("Numbers", "spec:numbers.html"),
-    ("Releases", "spec:releases.html"),
+    ("Reference", None),
     ("Record types", "spec/types.html"),
+    ("Releases", "spec:releases.html"),
     ("Evidence", None),
     ("All experiments", "experiments/index.html"),
 ]
@@ -575,7 +587,7 @@ def page(out_path, title, body, toc=None, description="", version=None, source=N
 <body>
 <a class="skip" href="#page-content">Skip to content</a>
 <header class="top"><a class="brand" href="{home}">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><a class="repo" href="{REPO}">Repository</a></header>
-<p class="wip"><strong>Work in progress.</strong> This specification is incomplete and changes as new experiments run. Each finding says how sure it is: <em>confirmed</em>, <em>likely</em> or <em>unknown</em>. See <a href="{relpath("spec/index.html", out_path)}">what each layer covers so far</a>.</p>{archived}
+<p class="wip"><strong>Work in progress.</strong> This specification is incomplete and changes as new experiments run. Each finding says how sure it is: <em>confirmed</em>, <em>likely</em> or <em>unknown</em>. See <a href="{relpath("spec/index.html", out_path)}">what each chapter covers so far</a>.</p>{archived}
 <div class="layout{'' if toc_html else ' no-toc'}{' wide' if wide and not toc_html else ''}">
 <nav class="side" aria-label="Contents"><details open><summary>Contents</summary><ul>{''.join(nav)}</ul></details></nav>
 {toc_html}

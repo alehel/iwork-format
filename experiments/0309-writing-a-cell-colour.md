@@ -2,7 +2,7 @@
 
 **Status:** run
 
-[0043](0043-cell-styles.md) found a cell's background colour in its cell style (type 6004), field 11.1.1: a colour message with red, green and blue as floats in fields 3, 4 and 5. The spec left the colour space open ([text.md](../spec/text.md#styles)). AppleScript reads a cell's `background color` as three 16-bit numbers. This experiment writes a new colour and compares what Numbers reports with the stored values.
+[0043](0043-cell-styles.md) found a cell's background colour in its cell style (type 6004), field 11.1.1: a colour message with red, green and blue as floats in fields 3, 4 and 5. The spec left the colour space open ([styles.md](../spec/styles.md)). AppleScript reads a cell's `background color` as three 16-bit numbers. This experiment writes a new colour and compares what Numbers reports with the stored values.
 
 ## Setup
 

@@ -21,15 +21,26 @@ The findings come from Pages, Keynote and Numbers 15.4 on macOS 26.5.
 
 ## The specification
 
-The specification is written in layers, each built on the one before.
+Five chapters describe what the three apps share, and one chapter per app what is its own.
 
 | Page | Covers |
 | --- | --- |
-| [Container](../../spec/container.md) | How a document is packaged: the ZIP, its parts, the chunk and record encoding, references between objects, password protection |
-| [Text](../../spec/text.md) | The text of Pages documents, and the styles, lists, tables, shapes, images and page layout shared with the other apps |
-| [Keynote](../../spec/keynote.md) | Slides, layouts, builds, transitions, charts and media |
-| [Numbers](../../spec/numbers.md) | Sheets, tables, categories, pivot tables, filters and conditional highlighting |
-| [Layer overview](../../spec/README.md) | What each layer covers so far, and the experiments behind it |
+| [1. Container](../../spec/container.md) | How a document is packaged: the ZIP, its parts, the chunk and record encoding, references between objects, password protection |
+| [2. Text](../../spec/text.md) | Text storages: the text, paragraphs and breaks, positions, and the run tables that apply styles, links, fields and changes to it |
+| [3. Styles](../../spec/styles.md) | Character, paragraph and list styles, their properties, and how they combine |
+| [4. Tables](../../spec/tables.md) | Table models, tiles, cells, formats, formulas and merged cells |
+| [5. Drawables, media and charts](../../spec/drawables.md) | Images, text boxes, shapes, groups, sounds, movies and charts, and where they are placed |
+| [Pages](../../spec/pages.md) | Page setup, sections, headers and footers |
+| [Keynote](../../spec/keynote.md) | Slides, layouts, builds, transitions and backgrounds |
+| [Numbers](../../spec/numbers.md) | Sheets, the way to a table's cells, categories, pivot tables, filters, conditional highlighting and the calculation engine |
+| [Record types](../../spec/types.html) | Every record type the spec names, and where it is described |
+| [Layers and status](../../spec/README.md) | What each chapter covers so far, and the experiments behind it |
+
+Where to start, after [1. Container](../../spec/container.md):
+
+- **Pages**: [2. Text](../../spec/text.md), [3. Styles](../../spec/styles.md), then [Pages](../../spec/pages.md).
+- **Keynote**: [Keynote](../../spec/keynote.md) for the way from the root to each slide, then [2. Text](../../spec/text.md) and [5. Drawables, media and charts](../../spec/drawables.md).
+- **Numbers**: [Numbers](../../spec/numbers.md) for the way from the root to each table, then [4. Tables](../../spec/tables.md).
 
 ## In brief
 

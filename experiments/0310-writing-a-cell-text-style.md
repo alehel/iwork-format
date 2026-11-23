@@ -2,7 +2,7 @@
 
 **Status:** run
 
-[0043](0043-cell-styles.md) found a cell's text formatting in an unnamed paragraph style (type 2022), with character properties in field 11: 11.3 the size, 11.5 the font and 11.7 the text colour ([text.md](../spec/text.md#styles)). AppleScript reads a cell's `font size`, `font name` and `text color`. This experiment writes each and asks Numbers.
+[0043](0043-cell-styles.md) found a cell's text formatting in an unnamed paragraph style (type 2022), with character properties in field 11: 11.3 the size, 11.5 the font and 11.7 the text colour ([styles.md](../spec/styles.md)). AppleScript reads a cell's `font size`, `font name` and `text color`. This experiment writes each and asks Numbers.
 
 ## Setup
 
