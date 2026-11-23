@@ -176,7 +176,12 @@ footer { margin-top: 4rem; padding-top: 1rem; border-top: 1px solid var(--rule);
   .layout { display: block; }
 }
 
-/* Which release of the apps the spec describes: a dropdown under the Specification heading */
+/* Which release the spec describes, and which others were checked: a quiet line under the Specification heading */
+.side li.releases-line { margin: .1rem 0 .5rem; font-size: .8rem; }
+.side li.releases-line a { color: var(--fg-soft); padding-top: 0; padding-bottom: 0; }
+.side li.releases-line a:hover { color: var(--fg); }
+
+/* Which frozen copy of the spec to read: a dropdown, shown only once one exists */
 .side li.versions { margin: .3rem 0 .6rem; }
 .side .release { position: relative; }
 .side .release summary {

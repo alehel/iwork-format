@@ -26,4 +26,4 @@ Every statement in the spec marked as holding for some releases only, gathered f
 
 ## Releases that change the format
 
-When a release writes a format that differs in more than a few details, the spec moves on to describe it, and the spec as it stood is kept for documents the earlier release wrote: `python3 -I site/archive.py RELEASE` freezes it in `spec/versions/RELEASE/`, and the site's *App release* menu switches between them. No release has needed that yet.
+When a release writes a format that differs in more than a few details, the spec moves on to describe it, and the spec as it stood is kept for documents the earlier release wrote: `python3 -I site/archive.py RELEASE` freezes it in `spec/versions/RELEASE/`, and the site shows a *Spec version* menu to switch between them. No release has needed that yet.

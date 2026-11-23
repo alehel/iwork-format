@@ -283,6 +283,9 @@ def experiment_releases(md):
     """The app releases an experiment ran with, from the Pages, Numbers, Keynote or Apps rows of its setup."""
     found = []
     app = r"(?:Pages|Numbers|Keynote|Apps)"
+    # Only the Setup section counts: an observation may list other copies of the apps it found.
+    setup = re.search(r"^## Setup\s*$(.*?)(?=^## |\Z)", md, re.M | re.S)
+    md = setup.group(1) if setup else md
     for m in re.finditer(rf"^\|\s*({app}(?:,?\s+(?:and\s+)?{app})*)\s*\|([^|\n]*)\|", md, re.M):
         for v in re.findall(r"\b(\d{2}\.\d+)\b", m.group(2)):
             if v not in found:
@@ -323,6 +326,7 @@ NAV = [
 
 
 VERSIONS = []      # filled by main(): (release, source folder, output folder), newest first
+OTHER_RELEASES = []  # filled by main(): releases other than CURRENT_VERSION that experiments ran with
 VERSION_PAGES = {}  # output folder -> the page names that version has
 
 
@@ -332,14 +336,24 @@ def version_switch(out_path, view, name):
     shown = ""
     for release, _, folder in VERSIONS:
         target = f"{folder}/{name}" if name in VERSION_PAGES[folder] else f"{folder}/index.html"
-        label = html.escape(release + (" (current)" if release == CURRENT_VERSION else ""))
+        label = html.escape(f"Format of {release}" + (" (current)" if release == CURRENT_VERSION else ""))
         if folder == view:
             shown = label
             links.append(f'<li><a class="current" aria-current="page" href="{relpath(target, out_path)}">{label}</a></li>')
         else:
             links.append(f'<li><a href="{relpath(target, out_path)}">{label}</a></li>')
-    return ('<li class="versions"><details class="release"><summary><span class="label">App release</span>'
+    return ('<li class="versions"><details class="release"><summary><span class="label">Spec version</span>'
             f'<span class="value">{shown}</span></summary><ul>' + "".join(links) + "</ul></details></li>")
+
+
+def releases_line(out_path, view):
+    """What the spec describes and which other releases were checked, linking to the releases page."""
+    shown = next((r for r, _, f in VERSIONS if f == view), CURRENT_VERSION)
+    text = f"Describes {shown}"
+    if view == "spec" and OTHER_RELEASES:
+        text += " · also checked: " + ", ".join(OTHER_RELEASES)
+    target = f"{view}/releases.html" if "releases.html" in VERSION_PAGES.get(view, ()) else "spec/releases.html"
+    return f'<li class="releases-line"><a href="{relpath(target, out_path)}">{html.escape(text)}</a></li>'
 
 
 def page(out_path, title, body, toc=None, description="", version=None):
@@ -351,7 +365,10 @@ def page(out_path, title, body, toc=None, description="", version=None):
         if href is None:
             nav.append(f'<li class="group">{html.escape(label)}</li>')
             if label == "Specification":
-                nav.append(version_switch(out_path, view, name))
+                # The picker only appears once a copy of the spec has been frozen for an earlier format.
+                if len(VERSIONS) > 1:
+                    nav.append(version_switch(out_path, view, name))
+                nav.append(releases_line(out_path, view))
             continue
         if href.startswith("spec:"):
             href = f"{view}/{href[5:]}"
@@ -437,6 +454,11 @@ def main():
     os.makedirs(OUT)
 
     VERSIONS[:] = spec_versions()
+    found = set()
+    for f in os.listdir(os.path.join(ROOT, "experiments")):
+        if re.match(r"^\d{4}-.*\.md$", f):
+            found.update(experiment_releases(read(f"experiments/{f}")))
+    OTHER_RELEASES[:] = sorted(found - {CURRENT_VERSION}, key=version_key, reverse=True)
     spec_map = {}  # source -> (output, version folder)
     for _, src_dir, out_dir in VERSIONS:
         VERSION_PAGES[out_dir] = set()
