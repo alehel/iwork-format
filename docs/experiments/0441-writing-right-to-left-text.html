@@ -8,17 +8,19 @@
 <link rel="stylesheet" href="../style.css">
 </head>
 <body>
+<a class="skip" href="#page-content">Skip to content</a>
 <header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
 <p class="wip"><strong>Work in progress.</strong> This specification is incomplete and changes as new experiments run. Each finding says how sure it is: <em>confirmed</em>, <em>likely</em> or <em>unknown</em>. See <a href="../spec/index.html">what each layer covers so far</a>.</p>
 <div class="layout">
 <nav class="side" aria-label="Contents"><details open><summary>Contents</summary><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="../guides/anatomy.html">Reading a Pages document</a></li><li><a href="../guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="../guides/writing.html">Writing a document</a></li><li><a href="../guides/samples.html">Sample files</a></li><li class="group">Specification</li><li class="releases-line"><a href="../spec/releases.html">Describes 15.4 · also checked: 14.5</a></li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2–5. Text, styles, objects, layout</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li><a href="../spec/releases.html">Releases</a></li><li class="group">Evidence</li><li><a href="index.html">All experiments</a></li></ul></details></nav>
-<main>
-<h1 id="0441-writing-right-to-left-text">0441: Writing right-to-left text<a class="anchor" href="#0441-writing-right-to-left-text" aria-label="Link to this section">#</a></h1><p class="ran">App release: <span class="release">15.4</span></p>
+
+<main id="page-content" tabindex="-1">
+<h1 id="0441-writing-right-to-left-text">0441: Writing right-to-left text<a class="anchor" href="#0441-writing-right-to-left-text" aria-label="Link to this section: 0441: Writing right-to-left text">#</a></h1><p class="ran">App release: <span class="release">15.4</span></p>
 <p><strong>Status:</strong> run</p>
 <p>Pages stores no writing direction for Arabic text set through AppleScript, so a reader was told to lay text out by the Unicode bidirectional rules (<a href="0150-arabic-text.html">0150</a>). Those rules leave open the paragraph's base direction, which by default comes from its first strong character. This experiment writes Arabic, Latin and mixed text into a body and reads where Pages draws each word.</p>
-<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section">#</a></h2>
+<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section: Setup">#</a></h2>
 <div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Pages</td><td>15.4, in Norwegian</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-18</td></tr><tr><td>Input</td><td><code>samples/0002/hello.pages</code>, with its body (1732539) replaced by each text, in the left-aligned <em>Brødtekst</em></td></tr><tr><td>Writer</td><td>The writer of <a href="0287-rewriting-a-document.html">0287</a>; exported with [<code>recipes/0372-in-app.sh</code>](../recipes/0372-in-app.sh), measured with [<code>recipes/0319-measure-pdf.swift</code>](../recipes/0319-measure-pdf.swift), and each word found with PDFKit</td></tr></tbody></table></div>
-<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section">#</a></h2>
+<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section: Recipe">#</a></h2>
 <pre class="lang-bash"><code>mkdir -p samples/0441
 O=samples/0441
 W=recipes/0287-iwa-writer.py
@@ -30,24 +32,28 @@ for f in latin arabic mixed; do
   swift recipes/0319-measure-pdf.swift $O/$f.pdf
 done</code></pre>
 <p>The words' places were read with PDFKit's <code>findString</code> on each exported page.</p>
-<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section">#</a></h2>
+<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section: Observation">#</a></h2>
 <div class="table"><table><thead><tr><th>File</th><th>Text, in stored order</th><th>Ink, left – right</th><th>Words, left to right on the page</th></tr></thead><tbody><tr><td><code>latin.pages</code></td><td>Hello world</td><td>57.8 – 111.2</td><td>Hello, world</td></tr><tr><td><code>arabic.pages</code></td><td>مرحبا بالعالم</td><td>57.0 – 105.2</td><td>بالعالم (56–80), مرحبا (83–105)</td></tr><tr><td><code>mixed.pages</code></td><td>مرحبا ABC بالعالم</td><td>58.5 – 131.0</td><td>مرحبا (56–78), ABC (81–103), بالعالم (106–130)</td></tr></tbody></table></div>
-<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section">#</a></h2>
+<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section: Conclusion">#</a></h2>
 <p>Pages applies the bidirectional rules within a paragraph, so a run of Arabic is laid out right to left: the first Arabic word stands to the right of the second. But the paragraph's base direction stays left-to-right, from its style, even when its first strong character is Arabic: the Arabic line starts at the left margin, and in the mixed line the runs follow each other from left to right, with the first Arabic word on the left. A reader should lay out each paragraph with a left-to-right base direction unless its style says otherwise, not detect the direction from the text.</p>
-<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section">#</a></h2>
+<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section: Confidence">#</a></h2>
 <p><em>Confirmed</em>: Pages lays out Arabic runs right to left within a left-to-right paragraph and doesn't take the paragraph's direction from its text, by writing it. How a right-to-left paragraph is stored, when set in the app, is <em>unknown</em>.</p>
-<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Last built from <a href="https://github.com/alehel/iwork-format">alehel/iwork-format</a>.</p></footer>
+<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Source: <a href="https://github.com/alehel/iwork-format/blob/main/experiments/0441-writing-right-to-left-text.md"><code>experiments/0441-writing-right-to-left-text.md</code></a>.</p></footer>
 </main>
-
 </div>
 <script>
 // On narrow screens the contents and on-this-page lists start folded; on wide ones they stay open.
 (function () {
+  // From 48rem to 72rem the on-this-page list sits folded above the page instead of beside it.
   var narrow = window.matchMedia("(max-width: 48rem)");
-  var lists = document.querySelectorAll(".side > details, .toc > details");
-  function fit() { for (var i = 0; i < lists.length; i++) lists[i].open = !narrow.matches; }
+  var middle = window.matchMedia("(max-width: 72rem)");
+  var side = document.querySelector(".side > details"), toc = document.querySelector(".toc > details");
+  function fit() {
+    if (side) side.open = !narrow.matches;
+    if (toc) toc.open = !middle.matches;
+  }
   fit();
-  if (narrow.addEventListener) narrow.addEventListener("change", fit);
+  if (narrow.addEventListener) { narrow.addEventListener("change", fit); middle.addEventListener("change", fit); }
   // The release dropdown closes when you click anywhere else.
   document.addEventListener("click", function (e) {
     var release = document.querySelector(".side .release[open]");
@@ -58,7 +64,7 @@ done</code></pre>
     if (release && e.key === "Escape") { release.open = false; release.querySelector("summary").focus(); }
   });
   document.addEventListener("click", function (e) {
-    if (narrow.matches && e.target.closest && e.target.closest(".toc a")) fit();
+    if (middle.matches && e.target.closest && e.target.closest(".toc a")) fit();
   });
 })();
 </script>

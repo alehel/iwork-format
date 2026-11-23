@@ -2,7 +2,7 @@
 
 **Status:** run; corrected on 2026-11-23: the body files crash Pages rather than failing to open
 
-Field 1 of a type-2001 text record says what it is for: 0 a body, 1 a header or footer, 2 a footnote, 4 a slide's presenter notes and 7 a table of contents ([0003](0003-non-ascii-word.md), [0016](0016-header-and-footer.md), [text.md](../spec/text.md#where-the-text-is)). This experiment writes other kinds into the body and a header.
+Field 1 of a type-2001 text record says what it is for: 0 a body, 1 a header or footer, 2 a footnote, 4 a slide's presenter notes and 7 a table of contents ([0003](0003-non-ascii-word.md), [0016](0016-header-and-footer.md), [text.md](../spec/text.md#the-body-text)). This experiment writes other kinds into the body and a header.
 
 ## Setup
 

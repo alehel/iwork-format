@@ -8,17 +8,19 @@
 <link rel="stylesheet" href="../style.css">
 </head>
 <body>
+<a class="skip" href="#page-content">Skip to content</a>
 <header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
 <p class="wip"><strong>Work in progress.</strong> This specification is incomplete and changes as new experiments run. Each finding says how sure it is: <em>confirmed</em>, <em>likely</em> or <em>unknown</em>. See <a href="../spec/index.html">what each layer covers so far</a>.</p>
 <div class="layout">
 <nav class="side" aria-label="Contents"><details open><summary>Contents</summary><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="../guides/anatomy.html">Reading a Pages document</a></li><li><a href="../guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="../guides/writing.html">Writing a document</a></li><li><a href="../guides/samples.html">Sample files</a></li><li class="group">Specification</li><li class="releases-line"><a href="../spec/releases.html">Describes 15.4 · also checked: 14.5</a></li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2–5. Text, styles, objects, layout</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li><a href="../spec/releases.html">Releases</a></li><li class="group">Evidence</li><li><a href="index.html">All experiments</a></li></ul></details></nav>
-<main>
-<h1 id="0399-writing-a-charts-border-and-axis-options">0399: Writing a chart's border and axis options<a class="anchor" href="#0399-writing-a-charts-border-and-axis-options" aria-label="Link to this section">#</a></h1><p class="ran">App release: <span class="release">15.4</span></p>
+
+<main id="page-content" tabindex="-1">
+<h1 id="0399-writing-a-charts-border-and-axis-options">0399: Writing a chart's border and axis options<a class="anchor" href="#0399-writing-a-charts-border-and-axis-options" aria-label="Link to this section: 0399: Writing a chart&#x27;s border and axis options">#</a></h1><p class="ran">App release: <span class="release">15.4</span></p>
 <p><strong>Status:</strong> run</p>
 <p>A chart's border is chart style property 10000.18 = 1 (<a href="0295-chart-options.html">0295</a>). For the value axis, style property 10000.25 = 1 draws the axis line, 10000.31 = 0 hides the minimum value, and setting 10000.14 = 1 shows the axis name (<a href="0296-chart-axis.html">0296</a>). Keynote set the style properties through new unnamed styles. This experiment writes each into the baseline, here into the theme's own styles, and compares the exported slide with the one Keynote made for the same option.</p>
-<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section">#</a></h2>
+<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section: Setup">#</a></h2>
 <div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Keynote</td><td>15.4, in Norwegian</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-18</td></tr><tr><td>Input</td><td><code>samples/0296/baseline.key</code>: a bar chart in the test theme, chart 2655552, whose 10000.9 names the theme's chart style 2651479, whose first 10000.13 names the theme's value-axis style 2651481, and whose first 10000.14 names an empty settings record, 2655559. Keynote's own versions: <code>samples/0295/border.key</code> and <code>samples/0296/axis-line.key</code>, <code>axis-title.key</code> and <code>no-minimum.key</code></td></tr><tr><td>Writer</td><td>[<code>recipes/0302-set-path.py</code>](../recipes/0302-set-path.py); exported with [<code>recipes/0372-in-app.sh</code>](../recipes/0372-in-app.sh) and compared with the new [<code>recipes/0399-pdf-diff.swift</code>](../recipes/0399-pdf-diff.swift)</td></tr></tbody></table></div>
-<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section">#</a></h2>
+<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section: Recipe">#</a></h2>
 <pre class="lang-bash"><code>mkdir -p samples/0399
 R=recipes/0302-set-path.py
 B=samples/0296/baseline.key
@@ -37,26 +39,30 @@ for f in $O/*.key; do
 done
 swift recipes/0399-pdf-diff.swift $O/baseline.pdf $O/keynote-*.pdf $O/border.pdf $O/axis-line.pdf $O/axis-name.pdf $O/no-minimum.pdf</code></pre>
 <p><code>recipes/0399-pdf-diff.swift</code> draws two first pages and reports how many pixels differ, and where. The settings record gets 10001 = 1 and 10002 = 1 as well, as Keynote wrote them. 2655837 is the unnamed style Keynote made for the border.</p>
-<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section">#</a></h2>
+<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section: Observation">#</a></h2>
 <p>Compared with the baseline's slide (1920 × 1080):</p>
 <div class="table"><table><thead><tr><th>File</th><th>Pixels that differ</th><th>Where</th><th>Same as Keynote's own</th></tr></thead><tbody><tr><td><code>keynote-border.pdf</code></td><td>12,429</td><td>95.5, 339.5 – 1826, 820.5</td><td></td></tr><tr><td><code>border.pdf</code></td><td>12,429</td><td>the same</td><td>yes</td></tr><tr><td><code>keynote-border-off.pdf</code></td><td>0</td><td></td><td></td></tr><tr><td><code>keynote-axis-line.pdf</code></td><td>3,981</td><td>95.5, 339.5 – 169, 820.5</td><td></td></tr><tr><td><code>axis-line.pdf</code></td><td>3,981</td><td>the same</td><td>yes</td></tr><tr><td><code>keynote-axis-title.pdf</code></td><td>5,980</td><td>43.5, 507 – 68.5, 653.5</td><td></td></tr><tr><td><code>axis-name.pdf</code></td><td>5,980</td><td>the same</td><td>yes</td></tr><tr><td><code>keynote-no-minimum.pdf</code></td><td>861</td><td>124.5, 795.5 – 141.5, 820.5</td><td></td></tr><tr><td><code>no-minimum.pdf</code></td><td>861</td><td>the same</td><td>yes</td></tr></tbody></table></div>
 <p>The PDF's text gains <code>Verdiakse</code> (value axis) with the axis name, and loses the <code>0</code> at the bottom of the axis without the minimum value.</p>
-<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section">#</a></h2>
+<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section: Conclusion">#</a></h2>
 <p>Each option draws exactly as Keynote's own, pixel for pixel: chart style property 10000.18 is the border, value-axis style property 10000.25 the axis line, 10000.31 = 0 hides the minimum value, and value-axis setting 10000.14 = 1 shows the axis name, in the app's language. Clearing 10000.18 in Keynote's unnamed style takes the border away again. It makes no difference whether a property is set in the theme's named style or in an unnamed child, as for text styles (<a href="0393-writing-a-style-parent.html">0393</a>).</p>
-<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section">#</a></h2>
+<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section: Confidence">#</a></h2>
 <p><em>Confirmed</em>: the chart border, the value axis line, hiding the minimum value and the value axis name, by writing them.</p>
-<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Last built from <a href="https://github.com/alehel/iwork-format">alehel/iwork-format</a>.</p></footer>
+<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Source: <a href="https://github.com/alehel/iwork-format/blob/main/experiments/0399-writing-chart-border-and-axes.md"><code>experiments/0399-writing-chart-border-and-axes.md</code></a>.</p></footer>
 </main>
-
 </div>
 <script>
 // On narrow screens the contents and on-this-page lists start folded; on wide ones they stay open.
 (function () {
+  // From 48rem to 72rem the on-this-page list sits folded above the page instead of beside it.
   var narrow = window.matchMedia("(max-width: 48rem)");
-  var lists = document.querySelectorAll(".side > details, .toc > details");
-  function fit() { for (var i = 0; i < lists.length; i++) lists[i].open = !narrow.matches; }
+  var middle = window.matchMedia("(max-width: 72rem)");
+  var side = document.querySelector(".side > details"), toc = document.querySelector(".toc > details");
+  function fit() {
+    if (side) side.open = !narrow.matches;
+    if (toc) toc.open = !middle.matches;
+  }
   fit();
-  if (narrow.addEventListener) narrow.addEventListener("change", fit);
+  if (narrow.addEventListener) { narrow.addEventListener("change", fit); middle.addEventListener("change", fit); }
   // The release dropdown closes when you click anywhere else.
   document.addEventListener("click", function (e) {
     var release = document.querySelector(".side .release[open]");
@@ -67,7 +73,7 @@ swift recipes/0399-pdf-diff.swift $O/baseline.pdf $O/keynote-*.pdf $O/border.pdf
     if (release && e.key === "Escape") { release.open = false; release.querySelector("summary").focus(); }
   });
   document.addEventListener("click", function (e) {
-    if (narrow.matches && e.target.closest && e.target.closest(".toc a")) fit();
+    if (middle.matches && e.target.closest && e.target.closest(".toc a")) fit();
   });
 })();
 </script>

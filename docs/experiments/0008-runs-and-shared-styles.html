@@ -8,35 +8,37 @@
 <link rel="stylesheet" href="../style.css">
 </head>
 <body>
+<a class="skip" href="#page-content">Skip to content</a>
 <header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
 <p class="wip"><strong>Work in progress.</strong> This specification is incomplete and changes as new experiments run. Each finding says how sure it is: <em>confirmed</em>, <em>likely</em> or <em>unknown</em>. See <a href="../spec/index.html">what each layer covers so far</a>.</p>
 <div class="layout">
 <nav class="side" aria-label="Contents"><details open><summary>Contents</summary><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="../guides/anatomy.html">Reading a Pages document</a></li><li><a href="../guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="../guides/writing.html">Writing a document</a></li><li><a href="../guides/samples.html">Sample files</a></li><li class="group">Specification</li><li class="releases-line"><a href="../spec/releases.html">Describes 15.4 · also checked: 14.5</a></li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2–5. Text, styles, objects, layout</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li><a href="../spec/releases.html">Releases</a></li><li class="group">Evidence</li><li><a href="index.html">All experiments</a></li></ul></details></nav>
-<main>
-<h1 id="0008-runs-and-shared-styles">0008: Runs and shared styles<a class="anchor" href="#0008-runs-and-shared-styles" aria-label="Link to this section">#</a></h1><p class="ran">App release: <span class="release">15.4</span></p>
+
+<main id="page-content" tabindex="-1">
+<h1 id="0008-runs-and-shared-styles">0008: Runs and shared styles<a class="anchor" href="#0008-runs-and-shared-styles" aria-label="Link to this section: 0008: Runs and shared styles">#</a></h1><p class="ran">App release: <span class="release">15.4</span></p>
 <p><strong>Status:</strong> run</p>
 <p>Follow-ups from <a href="0004-larger-word.html">0004</a> and <a href="0007-bold-and-italic.html">0007</a>. Does a character-style run in the middle of the text get closed by an entry? Do two bold ranges share one style object? And how is "not bold" stored?</p>
-<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section">#</a></h2>
+<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section: Setup">#</a></h2>
 <div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Pages</td><td>15.4 (build <code>M15.4-7051.0.79-2</code>), with a Norwegian (nb) user interface</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-09</td></tr><tr><td>Baseline</td><td>Experiment <a href="0004-larger-word.html">0004</a>, <code>plain.pages</code>; experiment <a href="0007-bold-and-italic.html">0007</a>, <code>bold.pages</code></td></tr></tbody></table></div>
-<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section">#</a></h2>
+<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section: Recipe">#</a></h2>
 <p>As in 0007: AppleScript makes a new document and sets the body text to <code>one two three</code>. Then the Pages window is used to select and format text, and AppleScript saves the document.</p>
 <div class="table"><table><thead><tr><th>File</th><th>Steps in the Pages window</th></tr></thead><tbody><tr><td><code>middle.pages</code></td><td>Double-click <code>two</code>, click Bold</td></tr><tr><td><code>two-words.pages</code></td><td>Double-click <code>one</code>, click Bold; double-click <code>three</code>, click Bold</td></tr><tr><td><code>unbold-middle.pages</code></td><td>Triple-click the paragraph, click Bold; double-click <code>two</code>, click Bold again to turn it off</td></tr></tbody></table></div>
 <p>Positions: <code>one</code> is 0–3, <code>two</code> is 4–7, <code>three</code> is 8–13.</p>
-<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section">#</a></h2>
-<h3 id="middlepages"><code>middle.pages</code><a class="anchor" href="#middlepages" aria-label="Link to this section">#</a></h3>
+<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section: Observation">#</a></h2>
+<h3 id="middlepages"><code>middle.pages</code><a class="anchor" href="#middlepages" aria-label="Link to this section: middle.pages">#</a></h3>
 <p>The character-style runs (field 8 of the body's type-2001 record):</p>
 <pre><code>8: message (18 bytes)
   1: { 1: 0 }
   1: { 1: 4, 2: { 1: 1732696 } }
   1: { 1: 7 }</code></pre>
 <p>The bold run starts at 4 and is closed by an entry at 7 with no style. Object 1732696 is an unnamed type-2021 style with <code>11: { 1: 1 }</code>, the same as the bold style in 0007.</p>
-<h3 id="two-wordspages"><code>two-words.pages</code><a class="anchor" href="#two-wordspages" aria-label="Link to this section">#</a></h3>
+<h3 id="two-wordspages"><code>two-words.pages</code><a class="anchor" href="#two-wordspages" aria-label="Link to this section: two-words.pages">#</a></h3>
 <pre><code>8: message (24 bytes)
   1: { 1: 0, 2: { 1: 1732696 } }
   1: { 1: 3 }
   1: { 1: 8, 2: { 1: 1732696 } }</code></pre>
 <p>Both bold words point at the same object. The stylesheet gained one record, not two. Because the first word starts at 0, the first entry carries the style itself.</p>
-<h3 id="unbold-middlepages"><code>unbold-middle.pages</code><a class="anchor" href="#unbold-middlepages" aria-label="Link to this section">#</a></h3>
+<h3 id="unbold-middlepages"><code>unbold-middle.pages</code><a class="anchor" href="#unbold-middlepages" aria-label="Link to this section: unbold-middle.pages">#</a></h3>
 <p>The stylesheet gained two records:</p>
 <pre><code>1732699, type 2022 (a paragraph style), 24 bytes
   1: { 3: { 1: 1731511 }, 4: 1, 5: { 1: 1732613 } }     ← parent: the Body paragraph style
@@ -54,30 +56,34 @@
      1: { 1: 4, 2: { 1: 1732745 } },
      1: { 1: 7 } }</code></pre>
 <p>When the whole paragraph was bold, Pages didn't use a character style. It made an unnamed paragraph style that inherits from Body and adds bold, and pointed the paragraph at it. The Format sidebar showed the paragraph style as <code>Brødtekst*</code>. Turning bold off for <code>two</code> then made a character style that sets bold to 0.</p>
-<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section">#</a></h2>
+<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section: Conclusion">#</a></h2>
 <p>A character-style run lasts until the next entry. To end a run before the end of the text, Pages writes an entry with no style. When the styled range starts at 0, the first entry carries the style.</p>
 <p>Ranges with the same formatting share one style object.</p>
 <p>Unnamed styles exist for paragraphs too: type 2022 with a parent (field 1.3) and the changes. Formatting applied to a whole paragraph goes into such a paragraph style, not into character runs.</p>
 <p>Paragraph styles use field 11 for the same character properties as character styles, so a reader can treat field 11 the same way for both. Paragraph styles also have a field 12, empty here, which is probably for paragraph properties.</p>
 <p>A property turned off is stored explicitly: <code>11.1 = 0</code> means "not bold". That's not the same as leaving 11.1 out, which means "inherit". Here, the 0 overrides the bold that the paragraph style supplies.</p>
 <p>So to find a character's bold setting, a reader has to look at the character style first, then the paragraph style, then each style's parents. The first one that sets 11.1 wins.</p>
-<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section">#</a></h2>
+<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section: Confidence">#</a></h2>
 <p><em>Likely</em>:</p>
 <ul><li>Runs, as described.</li><li>Ranges with the same formatting share one style.</li><li>Field 11 holds character properties in both character and paragraph styles, and an explicit 0 turns a property off.</li></ul>
 <p><em>Unknown</em>:</p>
 <ul><li>What field 12 of a paragraph style holds. Follow-up: change a paragraph's alignment or spacing.</li><li>The order in which a reader should resolve character styles, paragraph styles and parents. It follows from how Pages draws this example, but the experiment only shows one combination.</li></ul>
-<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Last built from <a href="https://github.com/alehel/iwork-format">alehel/iwork-format</a>.</p></footer>
+<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Source: <a href="https://github.com/alehel/iwork-format/blob/main/experiments/0008-runs-and-shared-styles.md"><code>experiments/0008-runs-and-shared-styles.md</code></a>.</p></footer>
 </main>
-
 </div>
 <script>
 // On narrow screens the contents and on-this-page lists start folded; on wide ones they stay open.
 (function () {
+  // From 48rem to 72rem the on-this-page list sits folded above the page instead of beside it.
   var narrow = window.matchMedia("(max-width: 48rem)");
-  var lists = document.querySelectorAll(".side > details, .toc > details");
-  function fit() { for (var i = 0; i < lists.length; i++) lists[i].open = !narrow.matches; }
+  var middle = window.matchMedia("(max-width: 72rem)");
+  var side = document.querySelector(".side > details"), toc = document.querySelector(".toc > details");
+  function fit() {
+    if (side) side.open = !narrow.matches;
+    if (toc) toc.open = !middle.matches;
+  }
   fit();
-  if (narrow.addEventListener) narrow.addEventListener("change", fit);
+  if (narrow.addEventListener) { narrow.addEventListener("change", fit); middle.addEventListener("change", fit); }
   // The release dropdown closes when you click anywhere else.
   document.addEventListener("click", function (e) {
     var release = document.querySelector(".side .release[open]");
@@ -88,7 +94,7 @@
     if (release && e.key === "Escape") { release.open = false; release.querySelector("summary").focus(); }
   });
   document.addEventListener("click", function (e) {
-    if (narrow.matches && e.target.closest && e.target.closest(".toc a")) fit();
+    if (middle.matches && e.target.closest && e.target.closest(".toc a")) fit();
   });
 })();
 </script>

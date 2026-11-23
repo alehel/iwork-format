@@ -8,17 +8,19 @@
 <link rel="stylesheet" href="../style.css">
 </head>
 <body>
+<a class="skip" href="#page-content">Skip to content</a>
 <header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
 <p class="wip"><strong>Work in progress.</strong> This specification is incomplete and changes as new experiments run. Each finding says how sure it is: <em>confirmed</em>, <em>likely</em> or <em>unknown</em>. See <a href="../spec/index.html">what each layer covers so far</a>.</p>
 <div class="layout">
 <nav class="side" aria-label="Contents"><details open><summary>Contents</summary><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="../guides/anatomy.html">Reading a Pages document</a></li><li><a href="../guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="../guides/writing.html">Writing a document</a></li><li><a href="../guides/samples.html">Sample files</a></li><li class="group">Specification</li><li class="releases-line"><a href="../spec/releases.html">Describes 15.4 · also checked: 14.5</a></li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2–5. Text, styles, objects, layout</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li><a href="../spec/releases.html">Releases</a></li><li class="group">Evidence</li><li><a href="index.html">All experiments</a></li></ul></details></nav>
-<main>
-<h1 id="0391-writing-the-value-of-a-highlighting-rule-and-a-filter">0391: Writing the value of a highlighting rule and a filter<a class="anchor" href="#0391-writing-the-value-of-a-highlighting-rule-and-a-filter" aria-label="Link to this section">#</a></h1><p class="ran">App release: <span class="release">15.4</span></p>
+
+<main id="page-content" tabindex="-1">
+<h1 id="0391-writing-the-value-of-a-highlighting-rule-and-a-filter">0391: Writing the value of a highlighting rule and a filter<a class="anchor" href="#0391-writing-the-value-of-a-highlighting-rule-and-a-filter" aria-label="Link to this section: 0391: Writing the value of a highlighting rule and a filter">#</a></h1><p class="ran">App release: <span class="release">15.4</span></p>
 <p><strong>Status:</strong> run</p>
 <p>A conditional highlighting rule is a type-6010 record whose condition is a formula, and cells under it cache the result in the key of their flag 0x100: the index of the first matching rule, or 15 for none (<a href="0259-conditional-highlighting.html">0259</a>, <a href="0267-highlighting-result.html">0267</a>). Writing a filter's value into its formulas changed nothing Numbers showed (<a href="0383-writing-a-filter.html">0383</a>). This experiment writes the cached results and then each copy of the rule's value in turn, and reads the cell fills from the exported PDF.</p>
-<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section">#</a></h2>
+<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section: Setup">#</a></h2>
 <div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Numbers</td><td>15.4, in Norwegian</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-17</td></tr><tr><td>Input</td><td><code>samples/0259/highlight.numbers</code>: <code>n</code> 1, 2, 3, 4 in B2:B5, with the rule <em>greater than 2</em> and a green fill, so B4 and B5 are green. The rule is record 905589 in <code>Tables/DataList-904538.iwa</code>. Its value 2 is in five places: a number node (field 4, a double, and 42) in the formula at 2.1, the same in a second formula at 3.1.1.7, and 3.1.1.5.2, which holds { 1: 2.0 (a double), 2: 2 }. <code>samples/0258/filter.numbers</code> keeps its filter's value the same way in record 905584, at 7.1.5.2</td></tr><tr><td>Writer</td><td>The new [<code>recipes/0391-cell-key.py</code>](../recipes/0391-cell-key.py) for the cached results and [<code>recipes/0383-set-nth-path.py</code>](../recipes/0383-set-nth-path.py); exported with [<code>recipes/0372-in-app.sh</code>](../recipes/0372-in-app.sh) and read with [<code>recipes/0384-pdf-colours.swift</code>](../recipes/0384-pdf-colours.swift) and [<code>recipes/0374-pdf-text.swift</code>](../recipes/0374-pdf-text.swift)</td></tr></tbody></table></div>
-<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section">#</a></h2>
+<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section: Recipe">#</a></h2>
 <pre class="lang-bash"><code>mkdir -p samples/0391
 K=recipes/0391-cell-key.py
 N=recipes/0383-set-nth-path.py
@@ -42,28 +44,32 @@ for f in $O/*.numbers; do
   swift recipes/0384-pdf-colours.swift ${f%.numbers}.pdf 220,130 220,150 220,170 220,190
 done</code></pre>
 <p>The four points are the middles of B2 to B5 on the exported page. Copies of <code>original</code>, <code>rule-all-3</code> and a version with every copy set to 0 were also exported after setting B2 to 2.5 through AppleScript, to make Numbers recalculate. A search of every record of <code>rule-all-3.numbers</code> for 2 as a float, a double, a decimal128 or text found none outside the cells.</p>
-<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section">#</a></h2>
+<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section: Observation">#</a></h2>
 <div class="table"><table><thead><tr><th>File</th><th>Written</th><th>B2 (1)</th><th>B3 (2)</th><th>B4 (3)</th><th>B5 (4)</th></tr></thead><tbody><tr><td><code>original.numbers</code></td><td>nothing</td><td>white</td><td>white</td><td>green</td><td>green</td></tr><tr><td><code>b2-cached-match.numbers</code></td><td>B2's 0x100 key 15 → 0</td><td>white</td><td>white</td><td>green</td><td>green</td></tr><tr><td><code>b5-cached-none.numbers</code></td><td>B5's 0x100 key 0 → 15</td><td>white</td><td>white</td><td>green</td><td>green</td></tr><tr><td><code>rule-formula-3.numbers</code></td><td>3 in the formula at 2.1</td><td>white</td><td>white</td><td>green</td><td>green</td></tr><tr><td><code>rule-settings-3.numbers</code></td><td>3 in 3.1.1.5.2.1 and the formula at 3.1.1.7</td><td>white</td><td>white</td><td>green</td><td>green</td></tr><tr><td><code>rule-all-3.numbers</code></td><td>3 in all three</td><td>white</td><td>white</td><td>green</td><td>green</td></tr><tr><td><code>rule-all-3.numbers</code>, B2 set to 2.5</td><td></td><td>green</td><td>white</td><td>green</td><td>green</td></tr><tr><td><code>only-522.numbers</code></td><td>3.1.1.5.2.2 = 3</td><td>white</td><td>white</td><td>white</td><td>green</td></tr><tr><td><code>only-522-zero.numbers</code></td><td>3.1.1.5.2.2 = 0</td><td>green</td><td>green</td><td>green</td><td>green</td></tr></tbody></table></div>
 <p>Green is 0.72, 0.90, 0.58 and white 1, 1, 1. The filter, read as the rows shown under the header:</p>
 <div class="table"><table><thead><tr><th>File</th><th>Written</th><th>Rows shown</th></tr></thead><tbody><tr><td><code>samples/0258/filter.numbers</code></td><td>nothing (n &gt; 2)</td><td>a 3, b 4</td></tr><tr><td><code>samples/0383/only-522-0.numbers</code></td><td>905584 7.1.5.2.2 = 0</td><td>a 1, b 2, a 3, b 4</td></tr><tr><td><code>samples/0383/only-522-3.numbers</code></td><td>905584 7.1.5.2.2 = 3</td><td>b 4</td></tr></tbody></table></div>
-<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section">#</a></h2>
+<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section: Conclusion">#</a></h2>
 <p>Numbers evaluates a highlighting rule and a filter when it opens a document, and doesn't use the results stored in the file: the cells' 0x100 keys and the filter's list of hidden rows are only caches. But it doesn't take the value from the rule's formulas either, nor from the double beside it. The value it compares with is the varint in field 2 of the rule's value message: 3.1.1.5.2.2 for a highlighting rule and 7.1.5.2.2 for a filter. Written alone, it changes the result, and changing every other copy without it doesn't, even after recalculating. The formulas and the double are probably what the rules editor shows.</p>
 <p>So <a href="0383-writing-a-filter.html">0383</a>'s conclusion, that neither the rule nor the hidden rows decide what is shown, holds for what it wrote, but the filter's value is in a field it didn't write.</p>
 <p>Whether field 2 can hold a value that isn't a whole number wasn't tested.</p>
-<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section">#</a></h2>
+<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section: Confidence">#</a></h2>
 <p><em>Confirmed</em>: field 2 of the rule's value message (3.1.1.5.2.2, and 7.1.5.2.2 for a filter) as the value Numbers compares with, by writing it, and that the cached results are recomputed on opening. <em>Likely</em>: the formulas and the double aren't used to evaluate the rule.</p>
-<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Last built from <a href="https://github.com/alehel/iwork-format">alehel/iwork-format</a>.</p></footer>
+<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Source: <a href="https://github.com/alehel/iwork-format/blob/main/experiments/0391-writing-a-rule-value.md"><code>experiments/0391-writing-a-rule-value.md</code></a>.</p></footer>
 </main>
-
 </div>
 <script>
 // On narrow screens the contents and on-this-page lists start folded; on wide ones they stay open.
 (function () {
+  // From 48rem to 72rem the on-this-page list sits folded above the page instead of beside it.
   var narrow = window.matchMedia("(max-width: 48rem)");
-  var lists = document.querySelectorAll(".side > details, .toc > details");
-  function fit() { for (var i = 0; i < lists.length; i++) lists[i].open = !narrow.matches; }
+  var middle = window.matchMedia("(max-width: 72rem)");
+  var side = document.querySelector(".side > details"), toc = document.querySelector(".toc > details");
+  function fit() {
+    if (side) side.open = !narrow.matches;
+    if (toc) toc.open = !middle.matches;
+  }
   fit();
-  if (narrow.addEventListener) narrow.addEventListener("change", fit);
+  if (narrow.addEventListener) { narrow.addEventListener("change", fit); middle.addEventListener("change", fit); }
   // The release dropdown closes when you click anywhere else.
   document.addEventListener("click", function (e) {
     var release = document.querySelector(".side .release[open]");
@@ -74,7 +80,7 @@ done</code></pre>
     if (release && e.key === "Escape") { release.open = false; release.querySelector("summary").focus(); }
   });
   document.addEventListener("click", function (e) {
-    if (narrow.matches && e.target.closest && e.target.closest(".toc a")) fit();
+    if (middle.matches && e.target.closest && e.target.closest(".toc a")) fit();
   });
 })();
 </script>

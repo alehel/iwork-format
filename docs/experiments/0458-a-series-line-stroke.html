@@ -8,17 +8,19 @@
 <link rel="stylesheet" href="../style.css">
 </head>
 <body>
+<a class="skip" href="#page-content">Skip to content</a>
 <header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
 <p class="wip"><strong>Work in progress.</strong> This specification is incomplete and changes as new experiments run. Each finding says how sure it is: <em>confirmed</em>, <em>likely</em> or <em>unknown</em>. See <a href="../spec/index.html">what each layer covers so far</a>.</p>
 <div class="layout">
 <nav class="side" aria-label="Contents"><details open><summary>Contents</summary><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="../guides/anatomy.html">Reading a Pages document</a></li><li><a href="../guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="../guides/writing.html">Writing a document</a></li><li><a href="../guides/samples.html">Sample files</a></li><li class="group">Specification</li><li class="releases-line"><a href="../spec/releases.html">Describes 15.4 · also checked: 14.5</a></li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2–5. Text, styles, objects, layout</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li><a href="../spec/releases.html">Releases</a></li><li class="group">Evidence</li><li><a href="index.html">All experiments</a></li></ul></details></nav>
-<main>
-<h1 id="0458-a-series-line-in-a-line-chart">0458: A series' line in a line chart<a class="anchor" href="#0458-a-series-line-in-a-line-chart" aria-label="Link to this section">#</a></h1><p class="ran">App release: <span class="release">15.4</span></p>
+
+<main id="page-content" tabindex="-1">
+<h1 id="0458-a-series-line-in-a-line-chart">0458: A series' line in a line chart<a class="anchor" href="#0458-a-series-line-in-a-line-chart" aria-label="Link to this section: 0458: A series&#x27; line in a line chart">#</a></h1><p class="ran">App release: <span class="release">15.4</span></p>
 <p><strong>Status:</strong> run</p>
 <p>A series style's colour properties 6 to 17 are fills, and a line chart's line took its colour from none of them (<a href="0457-series-colours-by-chart-type.html">0457</a>). The style also has eleven stroke properties, 4, 5 and 45 to 53, each a stroke as for shapes: a colour in 1, a width in 2 and a pattern in 6, whose kind is 1 for solid and 2 for none (<a href="0250-shape-border.html">0250</a>). This experiment writes red into each solid blue stroke and looks at the line.</p>
-<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section">#</a></h2>
+<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section: Setup">#</a></h2>
 <div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Keynote</td><td>15.4, in Norwegian</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-18</td></tr><tr><td>Input</td><td><code>samples/0296/baseline.key</code>, with chart 2655552 made a line chart (10000.1 = 3). In the first series' style, 2651484, the strokes are black (4, 5), grey and none (45, 49), black and none (46, 52), and solid blue of width 1 (47, 50), 6 (48, 51) and 3 (53)</td></tr><tr><td>Writer</td><td>[<code>recipes/0302-set-path.py</code>](../recipes/0302-set-path.py); exported with [<code>recipes/0372-in-app.sh</code>](../recipes/0372-in-app.sh) and read with [<code>recipes/0384-pdf-colours.swift</code>](../recipes/0384-pdf-colours.swift)</td></tr></tbody></table></div>
-<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section">#</a></h2>
+<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section: Recipe">#</a></h2>
 <pre class="lang-bash"><code>mkdir -p samples/0458
 O=samples/0458
 python3 -I recipes/0302-set-path.py samples/0296/baseline.key $O/line.key 2655552 10000.1 varint 3
@@ -29,24 +31,28 @@ for k in 47 48 50 51 53; do
   swift recipes/0384-pdf-colours.swift $O/line-$k.pdf $(for y in $(seq 630 680); do printf &quot;990,%s &quot; $y; done)
 done</code></pre>
 <p>The points run down a column through the first series' line, every point from y = 630 to 680.</p>
-<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section">#</a></h2>
+<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section: Observation">#</a></h2>
 <div class="table"><table><thead><tr><th>Stroke written red</th><th>Red points</th><th>Blue points</th></tr></thead><tbody><tr><td>47 (width 1)</td><td>0</td><td>6</td></tr><tr><td>48 (width 6)</td><td>6</td><td>0</td></tr><tr><td>50 (width 1)</td><td>0</td><td>6</td></tr><tr><td>51 (width 6)</td><td>0</td><td>6</td></tr><tr><td>53 (width 3)</td><td>0</td><td>6</td></tr></tbody></table></div>
-<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section">#</a></h2>
+<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section: Conclusion">#</a></h2>
 <p>Stroke property 48 draws a line chart's line: written red, the whole line is red, and the line is 6 points thick where it crosses the column, the stroke's width. The other solid strokes didn't change it; with their widths and the fills of 0457 they are probably the outlines and lines of other chart types. A reader drawing a line chart should take each series' line from its style's property 48.</p>
-<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section">#</a></h2>
+<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section: Confidence">#</a></h2>
 <p><em>Confirmed</em>: series style property 48 as a line chart's line, colour and width, by writing its colour.</p>
-<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Last built from <a href="https://github.com/alehel/iwork-format">alehel/iwork-format</a>.</p></footer>
+<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Source: <a href="https://github.com/alehel/iwork-format/blob/main/experiments/0458-a-series-line-stroke.md"><code>experiments/0458-a-series-line-stroke.md</code></a>.</p></footer>
 </main>
-
 </div>
 <script>
 // On narrow screens the contents and on-this-page lists start folded; on wide ones they stay open.
 (function () {
+  // From 48rem to 72rem the on-this-page list sits folded above the page instead of beside it.
   var narrow = window.matchMedia("(max-width: 48rem)");
-  var lists = document.querySelectorAll(".side > details, .toc > details");
-  function fit() { for (var i = 0; i < lists.length; i++) lists[i].open = !narrow.matches; }
+  var middle = window.matchMedia("(max-width: 72rem)");
+  var side = document.querySelector(".side > details"), toc = document.querySelector(".toc > details");
+  function fit() {
+    if (side) side.open = !narrow.matches;
+    if (toc) toc.open = !middle.matches;
+  }
   fit();
-  if (narrow.addEventListener) narrow.addEventListener("change", fit);
+  if (narrow.addEventListener) { narrow.addEventListener("change", fit); middle.addEventListener("change", fit); }
   // The release dropdown closes when you click anywhere else.
   document.addEventListener("click", function (e) {
     var release = document.querySelector(".side .release[open]");
@@ -57,7 +63,7 @@ done</code></pre>
     if (release && e.key === "Escape") { release.open = false; release.querySelector("summary").focus(); }
   });
   document.addEventListener("click", function (e) {
-    if (narrow.matches && e.target.closest && e.target.closest(".toc a")) fit();
+    if (middle.matches && e.target.closest && e.target.closest(".toc a")) fit();
   });
 })();
 </script>

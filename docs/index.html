@@ -8,22 +8,24 @@
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
+<a class="skip" href="#page-content">Skip to content</a>
 <header class="top"><a class="brand" href="index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
 <p class="wip"><strong>Work in progress.</strong> This specification is incomplete and changes as new experiments run. Each finding says how sure it is: <em>confirmed</em>, <em>likely</em> or <em>unknown</em>. See <a href="spec/index.html">what each layer covers so far</a>.</p>
 <div class="layout">
-<nav class="side" aria-label="Contents"><details open><summary>Contents</summary><ul><li><a class="current" href="index.html">Overview</a></li><li class="group">Guides</li><li><a href="guides/anatomy.html">Reading a Pages document</a></li><li><a href="guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="guides/writing.html">Writing a document</a></li><li><a href="guides/samples.html">Sample files</a></li><li class="group">Specification</li><li class="releases-line"><a href="spec/releases.html">Describes 15.4 · also checked: 14.5</a></li><li><a href="spec/index.html">Layers and status</a></li><li><a href="spec/container.html">1. Container</a></li><li><a href="spec/text.html">2–5. Text, styles, objects, layout</a></li><li><a href="spec/keynote.html">Keynote</a></li><li><a href="spec/numbers.html">Numbers</a></li><li><a href="spec/releases.html">Releases</a></li><li class="group">Evidence</li><li><a href="experiments/index.html">All experiments</a></li></ul></details></nav>
-<main>
-<h1 id="the-iwork-file-formats">The iWork file formats<a class="anchor" href="#the-iwork-file-formats" aria-label="Link to this section">#</a></h1>
+<nav class="side" aria-label="Contents"><details open><summary>Contents</summary><ul><li><a class="current" aria-current="page" href="index.html">Overview</a></li><li class="group">Guides</li><li><a href="guides/anatomy.html">Reading a Pages document</a></li><li><a href="guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="guides/writing.html">Writing a document</a></li><li><a href="guides/samples.html">Sample files</a></li><li class="group">Specification</li><li class="releases-line"><a href="spec/releases.html">Describes 15.4 · also checked: 14.5</a></li><li><a href="spec/index.html">Layers and status</a></li><li><a href="spec/container.html">1. Container</a></li><li><a href="spec/text.html">2–5. Text, styles, objects, layout</a></li><li><a href="spec/keynote.html">Keynote</a></li><li><a href="spec/numbers.html">Numbers</a></li><li><a href="spec/releases.html">Releases</a></li><li class="group">Evidence</li><li><a href="experiments/index.html">All experiments</a></li></ul></details></nav>
+<nav class="toc" aria-label="On this page"><details open><summary>On this page</summary><ul><li><a href="#where-to-start">Where to start</a></li><li><a href="#the-specification">The specification</a></li><li><a href="#in-brief">In brief</a></li><li><a href="#tools">Tools</a></li></ul></details></nav>
+<main id="page-content" tabindex="-1">
+<h1 id="the-iwork-file-formats">The iWork file formats<a class="anchor" href="#the-iwork-file-formats" aria-label="Link to this section: The iWork file formats">#</a></h1>
 <p>This site specifies the files that Apple's Pages, Keynote and Numbers save: <code>.pages</code>, <code>.key</code> and <code>.numbers</code>. Apple doesn't publish the formats. Everything here was found from the outside, by changing one thing in a document, saving it, and recording what changed in the file. No Apple code was read, disassembled or decompiled.</p>
 <p>Each finding links to the experiments that support it and carries a confidence level:</p>
 <div class="table"><table><thead><tr><th>Level</th><th>Meaning</th></tr></thead><tbody><tr><td><em>Confirmed</em></td><td>At least two experiments agree</td></tr><tr><td><em>Likely</em></td><td>One experiment supports it, and nothing contradicts it</td></tr><tr><td><em>Unknown</em></td><td>Seen in files, but its meaning isn't established yet</td></tr></tbody></table></div>
 <p>The findings come from Pages, Keynote and Numbers 15.4 on macOS 26.5.</p>
-<h2 id="where-to-start">Where to start<a class="anchor" href="#where-to-start" aria-label="Link to this section">#</a></h2>
+<h2 id="where-to-start">Where to start<a class="anchor" href="#where-to-start" aria-label="Link to this section: Where to start">#</a></h2>
 <ul><li><strong><a href="guides/anatomy.html">Reading a Pages document</a></strong> takes one small file, a page with the word <code>hello</code>, from its ZIP listing down to the bytes that hold the word. Read it first: every other page assumes it.</li><li><strong><a href="guides/numbers-table.html">Reading a Numbers table</a></strong> follows a spreadsheet's root to its cells and decodes a row byte by byte.</li><li><strong><a href="guides/writing.html">Writing a document</a></strong> shows that the spec is complete enough to write files the apps accept.</li><li><strong><a href="guides/samples.html">Sample files</a></strong> lists the documents used on these pages, for download.</li></ul>
-<h2 id="the-specification">The specification<a class="anchor" href="#the-specification" aria-label="Link to this section">#</a></h2>
+<h2 id="the-specification">The specification<a class="anchor" href="#the-specification" aria-label="Link to this section: The specification">#</a></h2>
 <p>The specification is written in layers, each built on the one before.</p>
 <div class="table"><table><thead><tr><th>Page</th><th>Covers</th></tr></thead><tbody><tr><td><a href="spec/container.html">Container</a></td><td>How a document is packaged: the ZIP, its parts, the chunk and record encoding, references between objects, password protection</td></tr><tr><td><a href="spec/text.html">Text</a></td><td>The text of Pages documents, and the styles, lists, tables, shapes, images and page layout shared with the other apps</td></tr><tr><td><a href="spec/keynote.html">Keynote</a></td><td>Slides, layouts, builds, transitions, charts and media</td></tr><tr><td><a href="spec/numbers.html">Numbers</a></td><td>Sheets, tables, categories, pivot tables, filters and conditional highlighting</td></tr><tr><td><a href="spec/index.html">Layer overview</a></td><td>What each layer covers so far, and the experiments behind it</td></tr></tbody></table></div>
-<h2 id="in-brief">In brief<a class="anchor" href="#in-brief" aria-label="Link to this section">#</a></h2>
+<h2 id="in-brief">In brief<a class="anchor" href="#in-brief" aria-label="Link to this section: In brief">#</a></h2>
 <p>A document is a ZIP file, stored without compression. Most of it is in <code>.iwa</code> parts under <code>Index/</code>. Each part is a series of chunks of <a href="https://github.com/google/snappy/blob/main/format_description.txt">Snappy</a>-compressed data. Once decompressed, a part is a list of records: each is a <a href="https://protobuf.dev/programming-guides/encoding/">Protocol Buffers</a> header, giving the object's ID, type and length, followed by the object itself as a Protocol Buffers message. Objects refer to each other by ID, and every object can be reached from the root objects.</p>
 <pre><code>document.pages (ZIP)
 ├── Index/Document.iwa ──► chunks ──► Snappy ──► records ──► objects
@@ -32,20 +34,24 @@
 ├── Metadata/Properties.plist
 └── preview.jpg</code></pre>
 <p>There is no schema in the file. Field numbers, types and their meanings are what this specification provides.</p>
-<h2 id="tools">Tools<a class="anchor" href="#tools" aria-label="Link to this section">#</a></h2>
+<h2 id="tools">Tools<a class="anchor" href="#tools" aria-label="Link to this section: Tools">#</a></h2>
 <p>The repository holds <code>iwork-probe</code>, a command-line tool written from this specification, which lists parts, decodes chunks and records, prints messages and follows references. The excerpts on these pages are its output. A small Python writer, using only the standard library, writes documents back (<a href="experiments/0287-rewriting-a-document.html">0287</a>).</p>
-<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Last built from <a href="https://github.com/alehel/iwork-format">alehel/iwork-format</a>.</p></footer>
+<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Source: <a href="https://github.com/alehel/iwork-format/blob/main/site/guides/index.md"><code>site/guides/index.md</code></a>. Built on revision <a href="https://github.com/alehel/iwork-format/commit/440a2ab2e851a24a1346dd5e8678f573edc20d55"><code>440a2ab</code></a>, with the changes committed alongside this build.</p></footer>
 </main>
-<nav class="toc" aria-label="On this page"><details open><summary>On this page</summary><ul><li><a href="#where-to-start">Where to start</a></li><li><a href="#the-specification">The specification</a></li><li><a href="#in-brief">In brief</a></li><li><a href="#tools">Tools</a></li></ul></details></nav>
 </div>
 <script>
 // On narrow screens the contents and on-this-page lists start folded; on wide ones they stay open.
 (function () {
+  // From 48rem to 72rem the on-this-page list sits folded above the page instead of beside it.
   var narrow = window.matchMedia("(max-width: 48rem)");
-  var lists = document.querySelectorAll(".side > details, .toc > details");
-  function fit() { for (var i = 0; i < lists.length; i++) lists[i].open = !narrow.matches; }
+  var middle = window.matchMedia("(max-width: 72rem)");
+  var side = document.querySelector(".side > details"), toc = document.querySelector(".toc > details");
+  function fit() {
+    if (side) side.open = !narrow.matches;
+    if (toc) toc.open = !middle.matches;
+  }
   fit();
-  if (narrow.addEventListener) narrow.addEventListener("change", fit);
+  if (narrow.addEventListener) { narrow.addEventListener("change", fit); middle.addEventListener("change", fit); }
   // The release dropdown closes when you click anywhere else.
   document.addEventListener("click", function (e) {
     var release = document.querySelector(".side .release[open]");
@@ -56,7 +62,7 @@
     if (release && e.key === "Escape") { release.open = false; release.querySelector("summary").focus(); }
   });
   document.addEventListener("click", function (e) {
-    if (narrow.matches && e.target.closest && e.target.closest(".toc a")) fit();
+    if (middle.matches && e.target.closest && e.target.closest(".toc a")) fit();
   });
 })();
 </script>

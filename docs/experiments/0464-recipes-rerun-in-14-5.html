@@ -8,17 +8,19 @@
 <link rel="stylesheet" href="../style.css">
 </head>
 <body>
+<a class="skip" href="#page-content">Skip to content</a>
 <header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
 <p class="wip"><strong>Work in progress.</strong> This specification is incomplete and changes as new experiments run. Each finding says how sure it is: <em>confirmed</em>, <em>likely</em> or <em>unknown</em>. See <a href="../spec/index.html">what each layer covers so far</a>.</p>
 <div class="layout">
 <nav class="side" aria-label="Contents"><details open><summary>Contents</summary><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="../guides/anatomy.html">Reading a Pages document</a></li><li><a href="../guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="../guides/writing.html">Writing a document</a></li><li><a href="../guides/samples.html">Sample files</a></li><li class="group">Specification</li><li class="releases-line"><a href="../spec/releases.html">Describes 15.4 · also checked: 14.5</a></li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2–5. Text, styles, objects, layout</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li><a href="../spec/releases.html">Releases</a></li><li class="group">Evidence</li><li><a href="index.html">All experiments</a></li></ul></details></nav>
-<main>
-<h1 id="0464-the-recipes-rerun-in-145">0464: The recipes rerun in 14.5<a class="anchor" href="#0464-the-recipes-rerun-in-145" aria-label="Link to this section">#</a></h1><p class="ran">App release: <span class="release">14.5</span></p>
+
+<main id="page-content" tabindex="-1">
+<h1 id="0464-the-recipes-rerun-in-145">0464: The recipes rerun in 14.5<a class="anchor" href="#0464-the-recipes-rerun-in-145" aria-label="Link to this section: 0464: The recipes rerun in 14.5">#</a></h1><p class="ran">App release: <span class="release">14.5</span></p>
 <p><strong>Status:</strong> run</p>
 <p>The simplest new documents from Pages and Numbers 14.5 have the same structure as from 15.4 (<a href="0461-new-documents-in-14-5.html">0461</a>). This experiment reruns, unchanged, every AppleScript recipe of the early experiments that makes one document from nothing but an output path, and compares each 14.5 document with the one 15.4 made.</p>
-<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section">#</a></h2>
+<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section: Setup">#</a></h2>
 <div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Pages</td><td>14.5, in Norwegian</td></tr><tr><td>Numbers</td><td>14.5</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-23</td></tr><tr><td>Recipes</td><td>0030, 0031, 0035, 0036, 0037, 0043, 0044, 0045, 0047, 0059, 0060, 0063, 0064, 0065, 0066 and 0078 for Numbers (cells, formulas, formats, sheets, styles, merges, sizes, tables, headers, sparse rows, functions, cross-table references, errors); 0049, 0050, 0051, 0052, 0053, 0054, 0058 and 0198 for Pages (a text box, a shape, a line, a floating table, a font, sizes, a tab, a book template)</td></tr><tr><td>Compared with</td><td>Each experiment's own 15.4 sample, with [<code>recipes/0461-compare-structure.py</code>](../recipes/0461-compare-structure.py)</td></tr></tbody></table></div>
-<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section">#</a></h2>
+<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section: Recipe">#</a></h2>
 <pre class="lang-bash"><code>mkdir -p samples/0464
 for e in 0030 0031 0035 0036 0037 0043 0044 0045 0047 0049 0050 0051 0052 0053 0054 0058 0059 0060 0063 0064 0065 0066 0078 0198; do
   r=$(ls recipes/$e-*.applescript | head -1)
@@ -27,26 +29,30 @@ for e in 0030 0031 0035 0036 0037 0043 0044 0045 0047 0049 0050 0051 0052 0053 0
   python3 -I recipes/0461-compare-structure.py $old samples/0464/$e-$(basename $old)
 done</code></pre>
 <p>A first run timed out on every recipe, because two password-protected documents left open by <a href="0462-opening-15-4-documents-in-14-5.html">0462</a> were blocking Pages, and each recipe left an untitled document behind; those were closed unsaved and the run repeated.</p>
-<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section">#</a></h2>
+<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section: Observation">#</a></h2>
 <p>All 24 recipes ran and made their documents. Besides the differences 0461 found in every document (the format version, the build, the type-4011 record), the comparison found only this:</p>
 <div class="table"><table><thead><tr><th>Documents</th><th>15.4</th><th>14.5</th></tr></thead><tbody><tr><td>All 16 Numbers documents</td><td>one more paragraph style (type 2022) in the stylesheet: <code>text-12-paragraphstyle-Table Title 1</code></td><td>without it</td></tr><tr><td>All 8 Pages documents</td><td></td><td>the same parts, record types, versions and fields</td></tr></tbody></table></div>
 <p>The same ZIP entries, the same parts, the same number of records of each other type, and the same top-level fields for every type were found in all 24 pairs.</p>
-<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section">#</a></h2>
+<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section: Conclusion">#</a></h2>
 <p>Pages and Numbers 14.5 write text boxes, shapes, lines, tables, cells of every kind, formulas, formats, styles, merges, sizes and sheets with the same records as 15.4. The one difference in content is a paragraph style that the 15.4 Numbers template adds, <em>Table Title 1</em>, for tables' titles; a reader finds styles by reference, so it needs nothing for it. What the spec says about these structures holds for 14.5 as written.</p>
-<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section">#</a></h2>
+<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section: Confidence">#</a></h2>
 <p><em>Confirmed</em>: for the 24 documents of these recipes, 14.5 writes the same structure as 15.4, apart from Numbers' <em>Table Title 1</em> style.</p>
-<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Last built from <a href="https://github.com/alehel/iwork-format">alehel/iwork-format</a>.</p></footer>
+<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Source: <a href="https://github.com/alehel/iwork-format/blob/main/experiments/0464-recipes-rerun-in-14-5.md"><code>experiments/0464-recipes-rerun-in-14-5.md</code></a>.</p></footer>
 </main>
-
 </div>
 <script>
 // On narrow screens the contents and on-this-page lists start folded; on wide ones they stay open.
 (function () {
+  // From 48rem to 72rem the on-this-page list sits folded above the page instead of beside it.
   var narrow = window.matchMedia("(max-width: 48rem)");
-  var lists = document.querySelectorAll(".side > details, .toc > details");
-  function fit() { for (var i = 0; i < lists.length; i++) lists[i].open = !narrow.matches; }
+  var middle = window.matchMedia("(max-width: 72rem)");
+  var side = document.querySelector(".side > details"), toc = document.querySelector(".toc > details");
+  function fit() {
+    if (side) side.open = !narrow.matches;
+    if (toc) toc.open = !middle.matches;
+  }
   fit();
-  if (narrow.addEventListener) narrow.addEventListener("change", fit);
+  if (narrow.addEventListener) { narrow.addEventListener("change", fit); middle.addEventListener("change", fit); }
   // The release dropdown closes when you click anywhere else.
   document.addEventListener("click", function (e) {
     var release = document.querySelector(".side .release[open]");
@@ -57,7 +63,7 @@ done</code></pre>
     if (release && e.key === "Escape") { release.open = false; release.querySelector("summary").focus(); }
   });
   document.addEventListener("click", function (e) {
-    if (narrow.matches && e.target.closest && e.target.closest(".toc a")) fit();
+    if (middle.matches && e.target.closest && e.target.closest(".toc a")) fit();
   });
 })();
 </script>

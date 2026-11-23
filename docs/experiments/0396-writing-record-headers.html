@@ -8,17 +8,19 @@
 <link rel="stylesheet" href="../style.css">
 </head>
 <body>
+<a class="skip" href="#page-content">Skip to content</a>
 <header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
 <p class="wip"><strong>Work in progress.</strong> This specification is incomplete and changes as new experiments run. Each finding says how sure it is: <em>confirmed</em>, <em>likely</em> or <em>unknown</em>. See <a href="../spec/index.html">what each layer covers so far</a>.</p>
 <div class="layout">
 <nav class="side" aria-label="Contents"><details open><summary>Contents</summary><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="../guides/anatomy.html">Reading a Pages document</a></li><li><a href="../guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="../guides/writing.html">Writing a document</a></li><li><a href="../guides/samples.html">Sample files</a></li><li class="group">Specification</li><li class="releases-line"><a href="../spec/releases.html">Describes 15.4 · also checked: 14.5</a></li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2–5. Text, styles, objects, layout</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li><a href="../spec/releases.html">Releases</a></li><li class="group">Evidence</li><li><a href="index.html">All experiments</a></li></ul></details></nav>
-<main>
-<h1 id="0396-writing-a-record-headers-type-version-and-references">0396: Writing a record header's type, version and references<a class="anchor" href="#0396-writing-a-record-headers-type-version-and-references" aria-label="Link to this section">#</a></h1><p class="ran">App release: <span class="release">15.4</span></p>
+
+<main id="page-content" tabindex="-1">
+<h1 id="0396-writing-a-record-headers-type-version-and-references">0396: Writing a record header's type, version and references<a class="anchor" href="#0396-writing-a-record-headers-type-version-and-references" aria-label="Link to this section: 0396: Writing a record header&#x27;s type, version and references">#</a></h1><p class="ran">App release: <span class="release">15.4</span></p>
 <p><strong>Status:</strong> run</p>
 <p>Each payload of a record has a message in header field 2. Field 2.1 differs between records whose payloads are shaped differently and is probably the payload's type; field 2.2, three packed varints such as <code>1 0 5</code>, is probably a version; both are <em>unknown</em> (<a href="0001-empty-document.html">0001</a>). Field 2.5 lists the objects the payload refers to (<a href="0022-header-references.html">0022</a>). This experiment changes each for the body text and asks whether Pages still opens the document and shows its text.</p>
-<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section">#</a></h2>
+<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section: Setup">#</a></h2>
 <div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Pages</td><td>15.4, in Norwegian</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-18</td></tr><tr><td>Input</td><td><code>samples/0002/hello.pages</code>: the body <code>hello</code> in text record 1732539, whose header has 2.1 = 2001, 2.2 = 1, 0, 5 and four IDs in 2.5. Of the document's 577 payloads, 562 have 2.2 = 1, 0, 5; the six records with two payloads have 2, 0, 0 and 2, 4, 0; two have 3, 2, 10 and one 1, 1, 0. Three headers have a field 2.6</td></tr><tr><td>Writer</td><td>The new [<code>recipes/0396-record-header.py</code>](../recipes/0396-record-header.py); read back with [<code>recipes/0372-in-app.sh</code>](../recipes/0372-in-app.sh)</td></tr></tbody></table></div>
-<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section">#</a></h2>
+<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section: Recipe">#</a></h2>
 <pre class="lang-bash"><code>mkdir -p samples/0396
 R=recipes/0396-record-header.py
 F=samples/0002/hello.pages
@@ -35,26 +37,30 @@ for f in $O/*.pages; do
   sh recipes/0372-in-app.sh Pages $f &#x27;return {body text of d, font of word 1 of body text of d}&#x27;
 done</code></pre>
 <p>Pages' alerts were read and dismissed through System Events.</p>
-<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section">#</a></h2>
+<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section: Observation">#</a></h2>
 <div class="table"><table><thead><tr><th>File</th><th>Header written</th><th>Pages</th></tr></thead><tbody><tr><td><code>text-ver-106.pages</code></td><td>text 2.2 = 1, 0, 6</td><td>opens: <code>hello</code>, HelveticaNeue</td></tr><tr><td><code>text-ver-900.pages</code></td><td>text 2.2 = 9, 0, 0</td><td>opens: <code>hello</code>, HelveticaNeue</td></tr><tr><td><code>text-ver-000.pages</code></td><td>text 2.2 = 0, 0, 0</td><td>opens: <code>hello</code>, HelveticaNeue</td></tr><tr><td><code>text-ver-none.pages</code></td><td>text 2.2 removed</td><td>opens: <code>hello</code>, HelveticaNeue</td></tr><tr><td><code>root-ver-900.pages</code></td><td>document root 2.2 = 9, 0, 0</td><td>opens: <code>hello</code>, HelveticaNeue</td></tr><tr><td><code>text-refs-none.pages</code></td><td>text 2.5 removed</td><td>opens: <code>hello</code>, HelveticaNeue</td></tr><tr><td><code>text-type-9999.pages</code></td><td>text 2.1 = 9999</td><td>opens with no body text</td></tr><tr><td><code>text-type-2022.pages</code></td><td>text 2.1 = 2022, a paragraph style's</td><td>"is damaged and can't be opened"</td></tr></tbody></table></div>
-<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section">#</a></h2>
+<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section: Conclusion">#</a></h2>
 <p>Field 2.1 is the payload's type: Pages decodes the payload by it. Given a type it doesn't know, it skips the record and the body is empty; given the type of a paragraph style, it reads the text's payload as a style and gives up. The type is the number this project has called each record's type all along.</p>
 <p>Field 2.2 doesn't decide whether Pages can read a record: a higher, lower or missing value changes nothing, for the body text and for the document root. If it is a version, Pages 15.4 doesn't check it when opening.</p>
 <p>Removing a payload's references in 2.5 changes nothing either. Pages doesn't need them to load this document; they matter to tools that follow the object tree from the headers alone.</p>
-<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section">#</a></h2>
+<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section: Confidence">#</a></h2>
 <p><em>Confirmed</em>: header field 2.1 as the payload's type, by writing it. <em>Likely</em>: field 2.2 isn't checked when opening, and 2.5 isn't needed to load. What 2.2 and 2.6 mean is still <em>unknown</em>.</p>
-<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Last built from <a href="https://github.com/alehel/iwork-format">alehel/iwork-format</a>.</p></footer>
+<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Source: <a href="https://github.com/alehel/iwork-format/blob/main/experiments/0396-writing-record-headers.md"><code>experiments/0396-writing-record-headers.md</code></a>.</p></footer>
 </main>
-
 </div>
 <script>
 // On narrow screens the contents and on-this-page lists start folded; on wide ones they stay open.
 (function () {
+  // From 48rem to 72rem the on-this-page list sits folded above the page instead of beside it.
   var narrow = window.matchMedia("(max-width: 48rem)");
-  var lists = document.querySelectorAll(".side > details, .toc > details");
-  function fit() { for (var i = 0; i < lists.length; i++) lists[i].open = !narrow.matches; }
+  var middle = window.matchMedia("(max-width: 72rem)");
+  var side = document.querySelector(".side > details"), toc = document.querySelector(".toc > details");
+  function fit() {
+    if (side) side.open = !narrow.matches;
+    if (toc) toc.open = !middle.matches;
+  }
   fit();
-  if (narrow.addEventListener) narrow.addEventListener("change", fit);
+  if (narrow.addEventListener) { narrow.addEventListener("change", fit); middle.addEventListener("change", fit); }
   // The release dropdown closes when you click anywhere else.
   document.addEventListener("click", function (e) {
     var release = document.querySelector(".side .release[open]");
@@ -65,7 +71,7 @@ done</code></pre>
     if (release && e.key === "Escape") { release.open = false; release.querySelector("summary").focus(); }
   });
   document.addEventListener("click", function (e) {
-    if (narrow.matches && e.target.closest && e.target.closest(".toc a")) fit();
+    if (middle.matches && e.target.closest && e.target.closest(".toc a")) fit();
   });
 })();
 </script>

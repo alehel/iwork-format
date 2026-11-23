@@ -21,6 +21,8 @@ import html
 import os
 import re
 import shutil
+import subprocess
+import sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT = os.path.join(ROOT, "docs")
@@ -128,7 +130,7 @@ def render(md, here, toc=None):
             anchor = slug(m.group(2))
             if toc is not None and level == 2:
                 toc.append((anchor, re.sub(r"<[^>]+>", "", text)))
-            out.append(f'<h{level} id="{anchor}">{text}<a class="anchor" href="#{anchor}" aria-label="Link to this section">#</a></h{level}>')
+            out.append(f'<h{level} id="{anchor}">{text}<a class="anchor" href="#{anchor}" aria-label="Link to this section: {html.escape(re.sub(r'<[^>]+>', '', text), quote=True)}">#</a></h{level}>')
             i += 1
             continue
         if line.strip() == "<!-- release-differences -->":
@@ -326,6 +328,7 @@ NAV = [
 
 
 VERSIONS = []      # filled by main(): (release, source folder, output folder), newest first
+BUILD_REVISION = None  # filled by main(): (commit the build was made on, whether sources had uncommitted changes)
 OTHER_RELEASES = []  # filled by main(): releases other than CURRENT_VERSION that experiments ran with
 VERSION_PAGES = {}  # output folder -> the page names that version has
 
@@ -356,8 +359,9 @@ def releases_line(out_path, view):
     return f'<li class="releases-line"><a href="{relpath(target, out_path)}">{html.escape(text)}</a></li>'
 
 
-def page(out_path, title, body, toc=None, description="", version=None):
-    """version is the output folder of the spec release this page belongs to, or None outside the spec."""
+def page(out_path, title, body, toc=None, description="", version=None, source=None):
+    """version is the output folder of the spec release this page belongs to, or None outside the spec.
+    source is the repository path of the Markdown the page is built from, linked in the footer."""
     view = version or "spec"
     name = out_path[len(view) + 1:] if version else "index.html"
     nav = []
@@ -372,7 +376,7 @@ def page(out_path, title, body, toc=None, description="", version=None):
             continue
         if href.startswith("spec:"):
             href = f"{view}/{href[5:]}"
-        cls = ' class="current"' if href == out_path else ""
+        cls = ' class="current" aria-current="page"' if href == out_path else ""
         nav.append(f'<li><a{cls} href="{relpath(href, out_path)}">{html.escape(label)}</a></li>')
     archived = ""
     if version and version != "spec":
@@ -387,6 +391,13 @@ def page(out_path, title, body, toc=None, description="", version=None):
             f'<li><a href="#{a}">{html.escape(t)}</a></li>' for a, t in toc) + "</ul></details></nav>"
     css = relpath("style.css", out_path)
     home = relpath("index.html", out_path)
+    footer = "Built from the repository's Markdown. Every finding links to the experiment behind it."
+    if source:
+        footer += f' Source: <a href="{REPO}/blob/main/{html.escape(source)}"><code>{html.escape(source)}</code></a>.'
+    if out_path == "index.html" and BUILD_REVISION:
+        rev, dirty = BUILD_REVISION
+        footer += (f' Built on revision <a href="{REPO}/commit/{rev}"><code>{rev[:7]}</code></a>'
+                   + (", with the changes committed alongside this build." if dirty else "."))
     doc = f"""<!doctype html>
 <html lang="en">
 <head>
@@ -397,24 +408,30 @@ def page(out_path, title, body, toc=None, description="", version=None):
 <link rel="stylesheet" href="{css}">
 </head>
 <body>
+<a class="skip" href="#page-content">Skip to content</a>
 <header class="top"><a class="brand" href="{home}">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><a class="repo" href="{REPO}">Repository</a></header>
 <p class="wip"><strong>Work in progress.</strong> This specification is incomplete and changes as new experiments run. Each finding says how sure it is: <em>confirmed</em>, <em>likely</em> or <em>unknown</em>. See <a href="{relpath("spec/index.html", out_path)}">what each layer covers so far</a>.</p>{archived}
 <div class="layout">
 <nav class="side" aria-label="Contents"><details open><summary>Contents</summary><ul>{''.join(nav)}</ul></details></nav>
-<main>
-{body}
-<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Last built from <a href="{REPO}">alehel/iwork-format</a>.</p></footer>
-</main>
 {toc_html}
+<main id="page-content" tabindex="-1">
+{body}
+<footer><p>{footer}</p></footer>
+</main>
 </div>
 <script>
 // On narrow screens the contents and on-this-page lists start folded; on wide ones they stay open.
 (function () {{
+  // From 48rem to 72rem the on-this-page list sits folded above the page instead of beside it.
   var narrow = window.matchMedia("(max-width: 48rem)");
-  var lists = document.querySelectorAll(".side > details, .toc > details");
-  function fit() {{ for (var i = 0; i < lists.length; i++) lists[i].open = !narrow.matches; }}
+  var middle = window.matchMedia("(max-width: 72rem)");
+  var side = document.querySelector(".side > details"), toc = document.querySelector(".toc > details");
+  function fit() {{
+    if (side) side.open = !narrow.matches;
+    if (toc) toc.open = !middle.matches;
+  }}
   fit();
-  if (narrow.addEventListener) narrow.addEventListener("change", fit);
+  if (narrow.addEventListener) {{ narrow.addEventListener("change", fit); middle.addEventListener("change", fit); }}
   // The release dropdown closes when you click anywhere else.
   document.addEventListener("click", function (e) {{
     var release = document.querySelector(".side .release[open]");
@@ -425,7 +442,7 @@ def page(out_path, title, body, toc=None, description="", version=None):
     if (release && e.key === "Escape") {{ release.open = false; release.querySelector("summary").focus(); }}
   }});
   document.addEventListener("click", function (e) {{
-    if (narrow.matches && e.target.closest && e.target.closest(".toc a")) fit();
+    if (middle.matches && e.target.closest && e.target.closest(".toc a")) fit();
   }});
 }})();
 </script>
@@ -453,6 +470,8 @@ def main():
         shutil.rmtree(OUT)
     os.makedirs(OUT)
 
+    global BUILD_REVISION
+    BUILD_REVISION = build_revision()
     VERSIONS[:] = spec_versions()
     found = set()
     for f in os.listdir(os.path.join(ROOT, "experiments")):
@@ -481,13 +500,13 @@ def main():
     md = read("site/guides/index.md")
     SITE_PAGES["site/guides/index.md"] = "index.html"
     toc = []
-    page("index.html", "Overview", render(md, "site/guides/index.md", toc), toc)
+    page("index.html", "Overview", render(md, "site/guides/index.md", toc), toc, source="site/guides/index.md")
 
     for src, (out, version) in spec_map.items():
         md = read(src)
         toc = []
         body = render(md, src, toc)
-        page(out, title_of(md), body, toc, version=version)
+        page(out, title_of(md), body, toc, version=version, source=src)
 
     for f in guides:
         if f == "index.md":
@@ -495,7 +514,7 @@ def main():
         src = f"site/guides/{f}"
         md = read(src)
         toc = []
-        page(f"guides/{f[:-3]}.html", title_of(md), render(md, src, toc), toc)
+        page(f"guides/{f[:-3]}.html", title_of(md), render(md, src, toc), toc, source=src)
 
     rows = []
     for f in experiments:
@@ -507,7 +526,7 @@ def main():
         if releases:
             badge = f'<p class="ran">App release: ' + ", ".join(f'<span class="release">{html.escape(r)}</span>' for r in releases) + "</p>"
             body = body.replace("</h1>", "</h1>" + badge, 1)
-        page(f"experiments/{f[:-3]}.html", title, body, None)
+        page(f"experiments/{f[:-3]}.html", title, body, None, source=src)
         num, _, name = title.partition(": ")
         rel = ", ".join(releases) or "tool only"
         rows.append(f'<tr><td class="num">{html.escape(num)}</td><td><a href="{f[:-3]}.html">{html.escape(name or title)}</a></td>'
@@ -533,6 +552,53 @@ def main():
         shutil.copytree(files, os.path.join(OUT, "files"))
     open(os.path.join(OUT, ".nojekyll"), "w").close()
     print(f"built {len(experiments) + len(spec_map) + len(guides) + 1} pages into docs/")
+    problems = check_links(OUT)
+    for p in problems:
+        print("broken:", p, file=sys.stderr)
+    if problems:
+        sys.exit(f"{len(problems)} broken links or fragments; fix the Markdown they come from")
+
+
+def build_revision():
+    """The commit the site is built on, and whether anything outside docs/ differs from it; None outside git."""
+    try:
+        rev = subprocess.run(["git", "-C", ROOT, "rev-parse", "HEAD"], capture_output=True, text=True, check=True).stdout.strip()
+        dirty = subprocess.run(["git", "-C", ROOT, "status", "--porcelain", "--", ".", ":!docs"],
+                               capture_output=True, text=True, check=True).stdout.strip()
+        return rev, bool(dirty)
+    except (OSError, subprocess.CalledProcessError):
+        return None
+
+
+def check_links(out):
+    """Every local link and image in the built site must reach a file, and every #fragment an id on that page.
+    Also reports ids used twice on one page. Returns a list of problems."""
+    ids, links, problems = {}, [], []
+    for d, _, fs in os.walk(out):
+        for f in fs:
+            if not f.endswith(".html"):
+                continue
+            p = os.path.join(d, f)
+            with open(p, encoding="utf-8") as fh:
+                text = fh.read()
+            found = re.findall(r'\sid="([^"]+)"', text)
+            seen = set()
+            for i in found:
+                if i in seen:
+                    problems.append(f"{os.path.relpath(p, out)}: id {i} used twice")
+                seen.add(i)
+            ids[os.path.normpath(p)] = seen
+            links += [(p, html.unescape(h)) for h in re.findall(r'(?:href|src)="([^"]+)"', text)]
+    for p, h in links:
+        if re.match(r"^(?:[a-z]+:|#$)", h):
+            continue
+        path, _, frag = h.partition("#")
+        target = os.path.normpath(os.path.join(os.path.dirname(p), path)) if path else os.path.normpath(p)
+        if not os.path.exists(target):
+            problems.append(f"{os.path.relpath(p, out)}: {h} (no such file)")
+        elif frag and target.endswith(".html") and frag not in ids.get(target, ()):
+            problems.append(f"{os.path.relpath(p, out)}: {h} (no such section)")
+    return problems
 
 
 if __name__ == "__main__":

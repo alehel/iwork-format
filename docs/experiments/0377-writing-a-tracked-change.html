@@ -8,17 +8,19 @@
 <link rel="stylesheet" href="../style.css">
 </head>
 <body>
+<a class="skip" href="#page-content">Skip to content</a>
 <header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
 <p class="wip"><strong>Work in progress.</strong> This specification is incomplete and changes as new experiments run. Each finding says how sure it is: <em>confirmed</em>, <em>likely</em> or <em>unknown</em>. See <a href="../spec/index.html">what each layer covers so far</a>.</p>
 <div class="layout">
 <nav class="side" aria-label="Contents"><details open><summary>Contents</summary><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="../guides/anatomy.html">Reading a Pages document</a></li><li><a href="../guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="../guides/writing.html">Writing a document</a></li><li><a href="../guides/samples.html">Sample files</a></li><li class="group">Specification</li><li class="releases-line"><a href="../spec/releases.html">Describes 15.4 · also checked: 14.5</a></li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2–5. Text, styles, objects, layout</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li><a href="../spec/releases.html">Releases</a></li><li class="group">Evidence</li><li><a href="index.html">All experiments</a></li></ul></details></nav>
-<main>
-<h1 id="0377-writing-a-tracked-changes-kind-and-its-authors-colour">0377: Writing a tracked change's kind and its author's colour<a class="anchor" href="#0377-writing-a-tracked-changes-kind-and-its-authors-colour" aria-label="Link to this section">#</a></h1><p class="ran">App release: <span class="release">15.4</span></p>
+
+<main id="page-content" tabindex="-1">
+<h1 id="0377-writing-a-tracked-changes-kind-and-its-authors-colour">0377: Writing a tracked change's kind and its author's colour<a class="anchor" href="#0377-writing-a-tracked-changes-kind-and-its-authors-colour" aria-label="Link to this section: 0377: Writing a tracked change&#x27;s kind and its author&#x27;s colour">#</a></h1><p class="ran">App release: <span class="release">15.4</span></p>
 <p><strong>Status:</strong> run</p>
 <p>A tracked change is a type-2060 record in run table 21 or 22, whose field 1 is 1 for an insertion and 2 for a deletion. Field 2 names a type-2062 record that names the author, a type-212 record with a name (field 1) and a colour (field 2) (<a href="0193-tracked-insertion.html">0193</a>, <a href="0194-tracked-deletion.html">0194</a>). When Pages exports a document with comments included, it draws tracked changes in the author's markup colour, and strikes deleted text through. This experiment swaps the kinds and changes the author's colour.</p>
-<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section">#</a></h2>
+<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section: Setup">#</a></h2>
 <div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Pages</td><td>15.4, in Norwegian</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-17</td></tr><tr><td>Input</td><td><code>samples/0193/tracked.pages</code>: <code>One two</code> with <code> two</code> a tracked insertion, change record 1732729. <code>samples/0194/deleted.pages</code>: <code>One two</code> with <code> two</code> a tracked deletion, change record 1732736, author 1732734 with the colour 0.98, 0.94, 0.35</td></tr><tr><td>Writer</td><td>[<code>recipes/0302-set-path.py</code>](../recipes/0302-set-path.py); exported with [<code>recipes/0372-in-app.sh</code>](../recipes/0372-in-app.sh) and drawn with [<code>recipes/0373-draw-pdf.swift</code>](../recipes/0373-draw-pdf.swift), which now also marks coloured pixels with <code>o</code></td></tr></tbody></table></div>
-<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section">#</a></h2>
+<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section: Recipe">#</a></h2>
 <pre class="lang-bash"><code>mkdir -p samples/0377
 R=recipes/0302-set-path.py
 O=samples/0377
@@ -35,28 +37,32 @@ for f in inserted deleted deleted-as-insertion inserted-as-deletion deleted-blue
   swift recipes/0373-draw-pdf.swift $O/$f.pdf 226 172 14 12 0.25
 done</code></pre>
 <p>With comments included, the page is drawn smaller beside a margin, and <code>two</code> sits between x = 226 and 240. The count of coloured pixels in each row of that box was taken from the drawing, and the colour of one pixel on the strike line (232, 177.5) read the same way.</p>
-<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section">#</a></h2>
+<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section: Observation">#</a></h2>
 <p>AppleScript's <code>body text</code> is <code>One two</code> for every file. Coloured pixels per row across <code>two</code>, from the top of the letters:</p>
 <div class="table"><table><thead><tr><th>File</th><th>Kind written</th><th>Coloured pixels per row</th></tr></thead><tbody><tr><td><code>inserted.pages</code></td><td>1 (as made)</td><td>2 3 3 3 3 27 30 31 22 22 22 21 21 21 22 20 21 21 25 24 19</td></tr><tr><td><code>deleted.pages</code></td><td>2 (as made)</td><td>2 3 3 3 3 27 30 31 22 22 22 21 25 <strong>54</strong> 22 20 21 21 25 24 19</td></tr><tr><td><code>deleted-as-insertion.pages</code></td><td>1</td><td>2 3 3 3 3 27 30 31 22 22 22 21 21 21 22 20 21 21 25 24 19</td></tr><tr><td><code>inserted-as-deletion.pages</code></td><td>2</td><td>2 3 3 3 3 27 30 31 22 22 22 21 25 <strong>54</strong> 22 20 21 21 25 24 19</td></tr></tbody></table></div>
 <p>The row of 54 is the strike line. The colour drawn for each author colour:</p>
 <div class="table"><table><thead><tr><th>Author colour written (RGB)</th><th>Markup drawn</th></tr></thead><tbody><tr><td>0.98, 0.94, 0.35 (as made)</td><td>0.77, 0.64, 0.23</td></tr><tr><td>0, 0, 1</td><td>0.36, 0.78, 0.69</td></tr><tr><td>1, 0, 0</td><td>0.98, 0.60, 0.21</td></tr><tr><td>0, 1, 0</td><td>0.43, 0.76, 0.27</td></tr></tbody></table></div>
-<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section">#</a></h2>
+<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section: Conclusion">#</a></h2>
 <p>Field 1 of a change record decides how Pages treats it: written as 2, an insertion becomes a deletion and is struck through; written as 1, a deletion becomes an insertion and the strike goes. The text is unchanged either way, so the kind alone decides whether a reader should show the range.</p>
 <p>The author's colour does steer the markup, but Pages doesn't draw it as stored: each colour written was drawn as a different colour, nearer some colours than others (red as orange, blue as teal). It seems to pick from a set of its own markup colours. Which set, and how it chooses, is <em>unknown</em>; a writer should keep the colours Pages itself gives authors.</p>
-<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section">#</a></h2>
+<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section: Confidence">#</a></h2>
 <p><em>Confirmed</em>: field 1 of a type-2060 change as its kind, 1 insertion and 2 deletion, by writing it both ways. That the author's colour selects the markup colour is <em>likely</em>; how it maps is <em>unknown</em>.</p>
-<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Last built from <a href="https://github.com/alehel/iwork-format">alehel/iwork-format</a>.</p></footer>
+<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Source: <a href="https://github.com/alehel/iwork-format/blob/main/experiments/0377-writing-a-tracked-change.md"><code>experiments/0377-writing-a-tracked-change.md</code></a>.</p></footer>
 </main>
-
 </div>
 <script>
 // On narrow screens the contents and on-this-page lists start folded; on wide ones they stay open.
 (function () {
+  // From 48rem to 72rem the on-this-page list sits folded above the page instead of beside it.
   var narrow = window.matchMedia("(max-width: 48rem)");
-  var lists = document.querySelectorAll(".side > details, .toc > details");
-  function fit() { for (var i = 0; i < lists.length; i++) lists[i].open = !narrow.matches; }
+  var middle = window.matchMedia("(max-width: 72rem)");
+  var side = document.querySelector(".side > details"), toc = document.querySelector(".toc > details");
+  function fit() {
+    if (side) side.open = !narrow.matches;
+    if (toc) toc.open = !middle.matches;
+  }
   fit();
-  if (narrow.addEventListener) narrow.addEventListener("change", fit);
+  if (narrow.addEventListener) { narrow.addEventListener("change", fit); middle.addEventListener("change", fit); }
   // The release dropdown closes when you click anywhere else.
   document.addEventListener("click", function (e) {
     var release = document.querySelector(".side .release[open]");
@@ -67,7 +73,7 @@ done</code></pre>
     if (release && e.key === "Escape") { release.open = false; release.querySelector("summary").focus(); }
   });
   document.addEventListener("click", function (e) {
-    if (narrow.matches && e.target.closest && e.target.closest(".toc a")) fit();
+    if (middle.matches && e.target.closest && e.target.closest(".toc a")) fit();
   });
 })();
 </script>

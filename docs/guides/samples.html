@@ -8,53 +8,59 @@
 <link rel="stylesheet" href="../style.css">
 </head>
 <body>
+<a class="skip" href="#page-content">Skip to content</a>
 <header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
 <p class="wip"><strong>Work in progress.</strong> This specification is incomplete and changes as new experiments run. Each finding says how sure it is: <em>confirmed</em>, <em>likely</em> or <em>unknown</em>. See <a href="../spec/index.html">what each layer covers so far</a>.</p>
 <div class="layout">
-<nav class="side" aria-label="Contents"><details open><summary>Contents</summary><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="anatomy.html">Reading a Pages document</a></li><li><a href="numbers-table.html">Reading a Numbers table</a></li><li><a href="writing.html">Writing a document</a></li><li><a class="current" href="samples.html">Sample files</a></li><li class="group">Specification</li><li class="releases-line"><a href="../spec/releases.html">Describes 15.4 · also checked: 14.5</a></li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2–5. Text, styles, objects, layout</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li><a href="../spec/releases.html">Releases</a></li><li class="group">Evidence</li><li><a href="../experiments/index.html">All experiments</a></li></ul></details></nav>
-<main>
-<h1 id="sample-files">Sample files<a class="anchor" href="#sample-files" aria-label="Link to this section">#</a></h1>
+<nav class="side" aria-label="Contents"><details open><summary>Contents</summary><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="anatomy.html">Reading a Pages document</a></li><li><a href="numbers-table.html">Reading a Numbers table</a></li><li><a href="writing.html">Writing a document</a></li><li><a class="current" aria-current="page" href="samples.html">Sample files</a></li><li class="group">Specification</li><li class="releases-line"><a href="../spec/releases.html">Describes 15.4 · also checked: 14.5</a></li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2–5. Text, styles, objects, layout</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li><a href="../spec/releases.html">Releases</a></li><li class="group">Evidence</li><li><a href="../experiments/index.html">All experiments</a></li></ul></details></nav>
+<nav class="toc" aria-label="On this page"><details open><summary>On this page</summary><ul><li><a href="#pages">Pages</a></li><li><a href="#numbers">Numbers</a></li><li><a href="#all-fixtures">All fixtures</a></li></ul></details></nav>
+<main id="page-content" tabindex="-1">
+<h1 id="sample-files">Sample files<a class="anchor" href="#sample-files" aria-label="Link to this section: Sample files">#</a></h1>
 <p>These documents were made for the experiments and are used as examples on this site. Each holds only text typed for the experiment: no images from Apple's templates and no personal details. They were saved by Pages and Numbers 15.4 on macOS 26.5, in Norwegian, so built-in names such as style names appear in Norwegian.</p>
 <p>Open any of them with <code>iwork-probe</code> to follow along:</p>
 <pre class="lang-bash"><code>iwork-probe list hello.pages
 iwork-probe records hello.pages Index/Document.iwa
 iwork-probe text hello.pages</code></pre>
-<h2 id="pages">Pages<a class="anchor" href="#pages" aria-label="Link to this section">#</a></h2>
-<h3 id="hellopages">hello.pages<a class="anchor" href="#hellopages" aria-label="Link to this section">#</a></h3>
+<h2 id="pages">Pages<a class="anchor" href="#pages" aria-label="Link to this section: Pages">#</a></h2>
+<h3 id="hellopages">hello.pages<a class="anchor" href="#hellopages" aria-label="Link to this section: hello.pages">#</a></h3>
 <p><a href="../files/hello.pages">Download</a>. A new blank document with the word <code>hello</code>, from <a href="../experiments/0002-one-word.html">0002</a>. The smallest useful document: one paragraph in the Body style. <a href="anatomy.html">Reading a Pages document</a> walks through it.</p>
 <figure><img src="../files/hello.png" alt="hello.pages" loading="lazy"><figcaption>hello.pages</figcaption></figure>
-<h3 id="two-paragraphspages">two-paragraphs.pages<a class="anchor" href="#two-paragraphspages" aria-label="Link to this section">#</a></h3>
+<h3 id="two-paragraphspages">two-paragraphs.pages<a class="anchor" href="#two-paragraphspages" aria-label="Link to this section: two-paragraphs.pages">#</a></h3>
 <p><a href="../files/two-paragraphs.pages">Download</a>. <code>one</code> and <code>two</code> as two paragraphs, from <a href="../experiments/0005-paragraphs.html">0005</a>. The text holds U+000A between them, and the paragraph run table (field 5 of the body's text record) has an entry at 0 and one at 4.</p>
 <figure><img src="../files/two-paragraphs.png" alt="two-paragraphs.pages" loading="lazy"><figcaption>two-paragraphs.pages</figcaption></figure>
-<h3 id="tablepages">table.pages<a class="anchor" href="#tablepages" aria-label="Link to this section">#</a></h3>
+<h3 id="tablepages">table.pages<a class="anchor" href="#tablepages" aria-label="Link to this section: table.pages">#</a></h3>
 <p><a href="../files/table.pages">Download</a>. A paragraph <code>one</code> and a table, from <a href="../experiments/0020-a-table.html">0020</a>. The table is anchored in the text by an attachment character, U+FFFC, which points through a type-2003 attachment to a drawable and table model in <code>CalculationEngine.iwa</code>, as in Numbers.</p>
 <figure><img src="../files/table.png" alt="table.pages" loading="lazy"><figcaption>table.pages</figcaption></figure>
-<h3 id="written-by-scriptpages">written-by-script.pages<a class="anchor" href="#written-by-scriptpages" aria-label="Link to this section">#</a></h3>
+<h3 id="written-by-scriptpages">written-by-script.pages<a class="anchor" href="#written-by-scriptpages" aria-label="Link to this section: written-by-script.pages">#</a></h3>
 <p><a href="../files/written-by-script.pages">Download</a>. Not saved by Pages: written by the Python writer from <a href="../experiments/0288-writing-new-text.html">0288</a>, with new body text and no previews. Pages opens it as an ordinary document. See <a href="writing.html">Writing a document</a>.</p>
 <figure><img src="../files/written-by-script.png" alt="written-by-script.pages" loading="lazy"><figcaption>written-by-script.pages</figcaption></figure>
-<h2 id="numbers">Numbers<a class="anchor" href="#numbers" aria-label="Link to this section">#</a></h2>
-<h3 id="kinds-and-numbersnumbers">kinds-and-numbers.numbers<a class="anchor" href="#kinds-and-numbersnumbers" aria-label="Link to this section">#</a></h3>
+<h2 id="numbers">Numbers<a class="anchor" href="#numbers" aria-label="Link to this section: Numbers">#</a></h2>
+<h3 id="kinds-and-numbersnumbers">kinds-and-numbers.numbers<a class="anchor" href="#kinds-and-numbersnumbers" aria-label="Link to this section: kinds-and-numbers.numbers">#</a></h3>
 <p><a href="../files/kinds-and-numbers.numbers">Download</a>. A table with a header row <code>kind</code>, <code>n</code> and four rows of a letter and a number, from <a href="../experiments/0226-category.html">0226</a>. <a href="numbers-table.html">Reading a Numbers table</a> decodes its cells.</p>
 <figure><img src="../files/kinds-and-numbers.png" alt="kinds-and-numbers.numbers" loading="lazy"><figcaption>kinds-and-numbers.numbers</figcaption></figure>
-<h3 id="written-cellnumbers">written-cell.numbers<a class="anchor" href="#written-cellnumbers" aria-label="Link to this section">#</a></h3>
+<h3 id="written-cellnumbers">written-cell.numbers<a class="anchor" href="#written-cellnumbers" aria-label="Link to this section: written-cell.numbers">#</a></h3>
 <p><a href="../files/written-cell.numbers">Download</a>. Written by script in <a href="../experiments/0290-writing-a-cell.html">0290</a>: one cell's decimal128 replaced with 42.</p>
 <figure><img src="../files/written-cell.png" alt="written-cell.numbers" loading="lazy"><figcaption>written-cell.numbers</figcaption></figure>
-<h2 id="all-fixtures">All fixtures<a class="anchor" href="#all-fixtures" aria-label="Link to this section">#</a></h2>
+<h2 id="all-fixtures">All fixtures<a class="anchor" href="#all-fixtures" aria-label="Link to this section: All fixtures">#</a></h2>
 <p><a href="https://github.com/alehel/iwork-format/releases/download/fixtures/iwork-format-fixtures.zip">Download all fixtures</a> (zip, about 197 MB): 634 documents from the experiments, from Pages, Numbers and Keynote. The <a href="https://github.com/alehel/iwork-format/blob/main/fixtures/INDEX.md">index</a> lists each file with its experiment, size, SHA-256 and, for encrypted documents, the test password.</p>
 <p>The Keynote presentations were made again with the project's own test theme, which replaces Basic White's photos with labelled test cards (<a href="../experiments/0291-test-theme.html">0291</a>, <a href="../experiments/0292-test-theme-reruns.html">0292</a>). Left out are the few documents that hold Apple's theme photos or the placeholder text Apple wrote for a template. Folder packages are included as folders. Documents with comments, highlights or tracked changes record their author's name, here the project owner's. Every experiment's recipe says how to make its documents again with AppleScript.</p>
 <p>What the project contributed to the fixtures is released under CC0; see <a href="https://github.com/alehel/iwork-format/blob/main/fixtures/LICENSE.md">LICENSE.md</a>.</p>
-<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Last built from <a href="https://github.com/alehel/iwork-format">alehel/iwork-format</a>.</p></footer>
+<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Source: <a href="https://github.com/alehel/iwork-format/blob/main/site/guides/samples.md"><code>site/guides/samples.md</code></a>.</p></footer>
 </main>
-<nav class="toc" aria-label="On this page"><details open><summary>On this page</summary><ul><li><a href="#pages">Pages</a></li><li><a href="#numbers">Numbers</a></li><li><a href="#all-fixtures">All fixtures</a></li></ul></details></nav>
 </div>
 <script>
 // On narrow screens the contents and on-this-page lists start folded; on wide ones they stay open.
 (function () {
+  // From 48rem to 72rem the on-this-page list sits folded above the page instead of beside it.
   var narrow = window.matchMedia("(max-width: 48rem)");
-  var lists = document.querySelectorAll(".side > details, .toc > details");
-  function fit() { for (var i = 0; i < lists.length; i++) lists[i].open = !narrow.matches; }
+  var middle = window.matchMedia("(max-width: 72rem)");
+  var side = document.querySelector(".side > details"), toc = document.querySelector(".toc > details");
+  function fit() {
+    if (side) side.open = !narrow.matches;
+    if (toc) toc.open = !middle.matches;
+  }
   fit();
-  if (narrow.addEventListener) narrow.addEventListener("change", fit);
+  if (narrow.addEventListener) { narrow.addEventListener("change", fit); middle.addEventListener("change", fit); }
   // The release dropdown closes when you click anywhere else.
   document.addEventListener("click", function (e) {
     var release = document.querySelector(".side .release[open]");
@@ -65,7 +71,7 @@ iwork-probe text hello.pages</code></pre>
     if (release && e.key === "Escape") { release.open = false; release.querySelector("summary").focus(); }
   });
   document.addEventListener("click", function (e) {
-    if (narrow.matches && e.target.closest && e.target.closest(".toc a")) fit();
+    if (middle.matches && e.target.closest && e.target.closest(".toc a")) fit();
   });
 })();
 </script>
