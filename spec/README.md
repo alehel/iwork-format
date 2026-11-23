@@ -17,4 +17,4 @@ Layer 1 is confirmed for Keynote and Numbers 15.4 too ([0024](../experiments/002
 | Pages and Numbers | macOS | First experiment |
 | --- | --- | --- |
 | 15.4 | 26.5.2 | [0001](../experiments/0001-empty-document.md) |
-| 14.5 | 26.5.2 | [0461](../experiments/0461-new-documents-in-14-5.md): the same format as 15.4, apart from the differences noted where they occur |
+| 14.5 | 26.5.2 | [0461](../experiments/0461-new-documents-in-14-5.md): the same format as 15.4, apart from the differences noted where they occur; it opens and reads the 15.4 samples ([0462](../experiments/0462-opening-15-4-documents-in-14-5.md)) |
