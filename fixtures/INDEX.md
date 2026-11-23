@@ -2,7 +2,7 @@
 
 Sample documents from the experiments, for testing readers and writers. They are published as a zip attached to the repository's GitHub release `fixtures`, not committed. Built by `python3 -I fixtures/build.py`, which leaves out anything from Apple's templates or images, and anything holding a personal name except the six whose comments, highlights or tracked changes name the project owner as their author. See [LICENSE.md](LICENSE.md).
 
-634 documents. Keynote presentations, under `keynote/`, were made with the project's test theme ([0291](../experiments/0291-test-theme.md), [0292](../experiments/0292-test-theme-reruns.md)). Encrypted documents list their test password. A folder package's SHA-256 is taken over each of its files in path order, as the path, a zero byte and the contents.
+1120 documents. Keynote presentations, under `keynote/`, were made with the project's test theme ([0291](../experiments/0291-test-theme.md), [0292](../experiments/0292-test-theme-reruns.md)). Encrypted documents list their test password. A folder package's SHA-256 is taken over each of its files in path order, as the path, a zero byte and the contents.
 
 | File | Experiment | Bytes | SHA-256 | Note |
 | --- | --- | --- | --- | --- |
@@ -562,6 +562,492 @@ Sample documents from the experiments, for testing readers and writers. They are
 | `0345/plain.numbers` | [0345: Writing a table's gridlines and name visibility](../experiments/0345-writing-gridlines-and-title.md) | 138,837 | `317c41bb605f4f3e2e492fdee400ab0f24f0989884239cee3a3f2ac7f2dcedd1` | |
 | `0346/original.key` | [0346: Writing a slide's background colour](../experiments/0346-writing-a-slide-background.md) | 885,748 | `3e5e6327488684553880bebce619f933855b3727106f0e9f003c61b5c312a432` | |
 | `0346/written.key` | [0346: Writing a slide's background colour](../experiments/0346-writing-a-slide-background.md) | 1,223,065 | `31b49e4d6abf1c1656a021aea437dff4c83743b305f94e4d9a348783f74bd48c` | |
+| `0348/both.pages` | [0348: Writing an image's size, measured on the page](../experiments/0348-writing-an-image-size.md) | 395,956 | `2c83a516678d3a43b30c173e83c96471087b643950e6980effa723362a6269d7` | |
+| `0348/field4-only.pages` | [0348: Writing an image's size, measured on the page](../experiments/0348-writing-an-image-size.md) | 395,956 | `23e493c2e897000f8d44e2805a095a3ebb8ed262ee137115e2976402568ea152` | |
+| `0348/geometry-only.pages` | [0348: Writing an image's size, measured on the page](../experiments/0348-writing-an-image-size.md) | 395,956 | `ba681d58b17ee6574d3a4e382335e027cc4d7b72aaa0a2ff555aaa29d9cf0250` | |
+| `0348/original.pages` | [0348: Writing an image's size, measured on the page](../experiments/0348-writing-an-image-size.md) | 91,240 | `8276979523a753a81dbe06c6e792abe0f549bad808593d5967cf7370e43f6b7a` | |
+| `0349/original.pages` | [0349: Writing a text box's text](../experiments/0349-writing-text-in-a-box.md) | 91,269 | `95c51f646f50ce78a409199397d74727297afdeb122c5ffed0be0d92c49f7112` | |
+| `0349/written.pages` | [0349: Writing a text box's text](../experiments/0349-writing-text-in-a-box.md) | 396,101 | `ed4e12a7a1526269be8ba0ad8f144ab39f9eabbc75f9cec059ceb0f609c89254` | |
+| `0350/column.key` | [0350: Writing a chart's grouping](../experiments/0350-writing-chart-grouping.md) | 1,242,311 | `d1e02ab3e8ecb8271f44cd4b797dbbdeba49ff1172bc5829b20c1ad136edf1ce` | |
+| `0350/row.key` | [0350: Writing a chart's grouping](../experiments/0350-writing-chart-grouping.md) | 904,185 | `a988fbe07c49f066e7d72b277110f27eb0fab4d0581d76be07ffad1fcf4e4438` | |
+| `0351/bold-resaved.pages` | [0351: Writing a character style run](../experiments/0351-writing-a-character-run.md) | 90,886 | `b6c93b41cc6cd48574d879bc27be33d2bf0f925ebe559ae2a4c5f51e65105fc6` | |
+| `0351/bold.pages` | [0351: Writing a character style run](../experiments/0351-writing-a-character-run.md) | 395,067 | `2ede30db53c8cb46c9e66101497a5ead795347df809118b9f07885fc58b6ef48` | |
+| `0351/plain.pages` | [0351: Writing a character style run](../experiments/0351-writing-a-character-run.md) | 395,051 | `54d6064c55da12e7ae7c08cdbb0fd0f3392e7333fa2a09c8c7fbdca0612aa786` | |
+| `0352/original.pages` | [0352: Writing paragraph style runs](../experiments/0352-writing-paragraph-style-runs.md) | 90,565 | `bc1544ab1eee11cc1b5484a04196ca8203f879b5b90009c93e1b983f14bd52b8` | |
+| `0352/title.pages` | [0352: Writing paragraph style runs](../experiments/0352-writing-paragraph-style-runs.md) | 395,174 | `6a1e1701e2c9d778fa3d0913700b30f5a71261e78f49e1ce8c19019dd5fe0097` | |
+| `0353/list-resaved.pages` | [0353: Writing a list](../experiments/0353-writing-a-list.md) | 90,725 | `edf106d85ec5653b855253e8ae4c0c7cdb26acb258c3640bf27cdbd3a48265b7` | |
+| `0353/list.pages` | [0353: Writing a list](../experiments/0353-writing-a-list.md) | 395,178 | `82749a9553f1268ed4a0505f0d21baedc98577bc542a7de57d5dc0a98cdb3513` | |
+| `0353/original.pages` | [0353: Writing a list](../experiments/0353-writing-a-list.md) | 90,565 | `bc1544ab1eee11cc1b5484a04196ca8203f879b5b90009c93e1b983f14bd52b8` | |
+| `0354/original.pages` | [0354: Writing a link's address](../experiments/0354-writing-a-link.md) | 90,396 | `7c28df6d409974c61f6c1d96486b812670906a77ebd1f3b83b74c15ea27e9f23` | |
+| `0354/written.pages` | [0354: Writing a link's address](../experiments/0354-writing-a-link.md) | 395,031 | `5fb0d3546f263a6257fc12f8692d7ebf2a32e332188bc1ca21954d1959d19526` | |
+| `0355/email.pages` | [0355: Writing email and phone links](../experiments/0355-writing-email-and-phone-links.md) | 395,026 | `6bf00d61e7155407423fe73dd81b5b177b41553077d8b926bfffd5f26ecea96c` | |
+| `0355/phone.pages` | [0355: Writing email and phone links](../experiments/0355-writing-email-and-phone-links.md) | 395,017 | `528f758b68abd9b8b9523943519719355cd6967257f17971a580ce6e9f2e9f1b` | |
+| `0356/original.pages` | [0356: Writing a footnote's text](../experiments/0356-writing-a-footnote.md) | 91,544 | `0ba243a9fa8cda7d9a681b4877c64d2e0efed1579e6f645162652d0536d162bf` | |
+| `0356/written.pages` | [0356: Writing a footnote's text](../experiments/0356-writing-a-footnote.md) | 396,320 | `d5605a2489d1ae89dcb2719496bbce4bef75f2806358532c1fb21926262499a5` | |
+| `0357/date.pages` | [0357: Writing a date field](../experiments/0357-writing-a-date-field.md) | 397,578 | `62b16c5e8c1d943766dc950c6a3ae41de2ba2717ad57d71db0bf9e43156d6858` | |
+| `0357/f5.pages` | [0357: Writing a date field](../experiments/0357-writing-a-date-field.md) | 397,574 | `6e0fdea62a74665ca0f294ee0493bd938b74fdc5300beb20db5e89d5c411d230` | |
+| `0357/f6.pages` | [0357: Writing a date field](../experiments/0357-writing-a-date-field.md) | 397,574 | `a66e0ad2b9247b5e887a5b26b74cb114825d3209e21073b8177a71ab7479c06d` | |
+| `0357/f7.pages` | [0357: Writing a date field](../experiments/0357-writing-a-date-field.md) | 397,574 | `b0df2880ac871ec8f90e048f8d70b677d635b2231f1879a76e8c2ab94391ecaf` | |
+| `0357/original.pages` | [0357: Writing a date field](../experiments/0357-writing-a-date-field.md) | 92,940 | `430659fab08556c8fc151734402e46f2ab93e04ee0017cb6699c715e9d43358c` | |
+| `0357/pattern.pages` | [0357: Writing a date field](../experiments/0357-writing-a-date-field.md) | 397,574 | `a5986d7f4dc8cf0902c54d617049eb77640e39f47d02bdeb0f2c57642cf7337f` | |
+| `0358/lower-alpha.pages` | [0358: Writing a page number's format](../experiments/0358-writing-a-page-number-format.md) | 395,379 | `3fce5407e07a7b4f0ea4d7b3dda6fdac4db8d5d4711fdd5018527f17d100cda2` | |
+| `0358/lower-alphabetic.pages` | [0358: Writing a page number's format](../experiments/0358-writing-a-page-number-format.md) | 395,384 | `514cacc281a6c3945900c8a2b4247277fe436d7dfab5255f806d9281af093081` | |
+| `0358/lower-latin.pages` | [0358: Writing a page number's format](../experiments/0358-writing-a-page-number-format.md) | 395,379 | `20bd87f1166f19109fc05531a7df3cb450a4b5cedb1ebe62089cb7167d9ddac4` | |
+| `0358/lower-roman.pages` | [0358: Writing a page number's format](../experiments/0358-writing-a-page-number-format.md) | 395,379 | `1df6ce1b453454fbe91bc869f890fff2416c159e3cef96f64c00a9b2c7b65009` | |
+| `0358/original.pages` | [0358: Writing a page number's format](../experiments/0358-writing-a-page-number-format.md) | 90,756 | `8f4a98ae31e23af1758c6c29e9a7e461d7089158dade032145f83240ad3e35a2` | |
+| `0358/upper-alpha.pages` | [0358: Writing a page number's format](../experiments/0358-writing-a-page-number-format.md) | 395,379 | `28aef7a8c51b0948cb6202674aa42dee89a87535abf668667db35655f959232d` | |
+| `0358/upper-alphabetic.pages` | [0358: Writing a page number's format](../experiments/0358-writing-a-page-number-format.md) | 395,384 | `5704366e1558b982a881b7c37850c47c33e02372c2690ca0258d076e7a8c9733` | |
+| `0358/upper-latin.pages` | [0358: Writing a page number's format](../experiments/0358-writing-a-page-number-format.md) | 395,379 | `03dc457b51674d1dff2b081eaefec9a197d9b9daa5b684197f8ae58f7a1e0494` | |
+| `0358/upper-letter.pages` | [0358: Writing a page number's format](../experiments/0358-writing-a-page-number-format.md) | 395,380 | `8a6671fb37ad7dad553f415ab298707f3c58f3d502d45067bb3da012fabba301` | |
+| `0358/upper-roman.pages` | [0358: Writing a page number's format](../experiments/0358-writing-a-page-number-format.md) | 395,379 | `1f18ab5f6da6b60647c730d594de1ceae2fccffb903da245983a0158799bf5c7` | |
+| `0359/count.pages` | [0359: Writing a page break and a page count](../experiments/0359-writing-a-page-break-and-page-count.md) | 395,387 | `5752ab86b7b533f0ed9528350849bb2d2ff25e3e61cd0a7c4cd43060113959a0` | |
+| `0359/two-pages.pages` | [0359: Writing a page break and a page count](../experiments/0359-writing-a-page-break-and-page-count.md) | 395,387 | `cbb09bb7322f7b38aebf624dc18a7b9646a1775166ac70465d0386f0dd99b7df` | |
+| `0360/column-break.pages` | [0360: Writing a line break and a column break](../experiments/0360-writing-line-and-column-breaks.md) | 395,076 | `63f9a09d1d385dc2c2179ba7018665021c1b23d71ea0053244175c825000b199` | |
+| `0360/line-break.pages` | [0360: Writing a line break and a column break](../experiments/0360-writing-line-and-column-breaks.md) | 395,065 | `57a317c43771143cd676acd3ffc5c58a0b733b7ce556c345f59bc606ab020afd` | |
+| `0361/char-only-resaved.pages` | [0361: Writing a section break](../experiments/0361-writing-a-section-break.md) | 91,360 | `09e5fb9e194f9d7085e71ec624cf5f054b7ef0e24bffeabaf623df63aed77455` | |
+| `0361/char-only.pages` | [0361: Writing a section break](../experiments/0361-writing-a-section-break.md) | 395,053 | `861507eb6630ba2c98da8841c5112ee6f3e7fceb607ffbf685c3c66fa01b6bcf` | |
+| `0361/with-run-resaved.pages` | [0361: Writing a section break](../experiments/0361-writing-a-section-break.md) | 90,377 | `1b9ebbda2da77ae6a137f88ee93bd70cf0debe15ee55086c1013544a46f1914d` | |
+| `0361/with-run.pages` | [0361: Writing a section break](../experiments/0361-writing-a-section-break.md) | 395,063 | `6bc283b79c7ad704ae747d000bd92b9051acc560dfdbf45597efd3b3da4ccdb6` | |
+| `0362/both.pages` | [0362: Writing first-page headers](../experiments/0362-writing-first-page-headers.md) | 395,087 | `b463e4e5404c375ed834ff8f4d5d82e0f406b9ae0fa9271f72db4f5b714f4dc3` | |
+| `0362/field-18.pages` | [0362: Writing first-page headers](../experiments/0362-writing-first-page-headers.md) | 395,087 | `baed1f9937f18ad07322d2e70d0566e06e2fc04097814ba77d8583c8d71d7e92` | |
+| `0362/field-20.pages` | [0362: Writing first-page headers](../experiments/0362-writing-first-page-headers.md) | 395,087 | `43681e7f2925a5e59309110e6f210e5780f12af26d7fb7af0f4e2e7b751aa72d` | |
+| `0362/field-21.pages` | [0362: Writing first-page headers](../experiments/0362-writing-first-page-headers.md) | 395,087 | `aa09786cda64480fd5b0f69df7a31a8441d9589381240f35f7a62971eeef3d9d` | |
+| `0362/hide-first.pages` | [0362: Writing first-page headers](../experiments/0362-writing-first-page-headers.md) | 395,087 | `6f28995fd4c97b6ef2359ce325e1062ca1d7ad5e21f12e51395e2b373cfcbb03` | |
+| `0364/five-by-four-resaved.numbers` | [0364: Writing names and a table's size](../experiments/0364-writing-names-and-table-size.md) | 112,821 | `3b89b264fe14d92f7c6c62af3beaec9728e5b5e366181c22f5e5e13195e1bbe9` | |
+| `0364/five-by-four.numbers` | [0364: Writing names and a table's size](../experiments/0364-writing-names-and-table-size.md) | 456,626 | `ec079457be0a54b0007c5445bc45a16284ddb862f4c90faaf9a570b2e4b97606` | |
+| `0364/lists-only.numbers` | [0364: Writing names and a table's size](../experiments/0364-writing-names-and-table-size.md) | 456,626 | `d2624761f549f78186b956bcd58e2f62d1fdee0d9cd9bfbbd13d7315f200471e` | |
+| `0364/more-rows.numbers` | [0364: Writing names and a table's size](../experiments/0364-writing-names-and-table-size.md) | 457,165 | `e794109e939026e9f0e465b80a5896c33ed2850a6f4cca244d692983508f4040` | |
+| `0364/names.numbers` | [0364: Writing names and a table's size](../experiments/0364-writing-names-and-table-size.md) | 457,163 | `6cb7464b5efb539ce8f0496a4c6b6176454d39d60ccda1b8048b9267a8795f81` | |
+| `0365/thirty-by-nine-resaved.numbers` | [0365: Growing a table](../experiments/0365-growing-a-table.md) | 152,294 | `92e5587c9f04c64675e40e4fdd35f8b72acc0a9d8babe4fc8a58df634cb0bd21` | |
+| `0365/thirty-by-nine.numbers` | [0365: Growing a table](../experiments/0365-growing-a-table.md) | 457,434 | `d62beb0a4f1949f3d62adbde64b6fe77e1c908337791af696127c5dafca79dde` | |
+| `0366/base.pages` | [0366: Writing the bottom margin and the header and footer distances](../experiments/0366-writing-bottom-margin-and-header-distances.md) | 395,532 | `393ca00f2488e07ac4bdda0958df72f0ead2c56366c32741448b54fc39092163` | |
+| `0366/bottom-200.pages` | [0366: Writing the bottom margin and the header and footer distances](../experiments/0366-writing-bottom-margin-and-header-distances.md) | 395,532 | `fb8eb7947a71951168b3fb4c5e20be067d0fe27bdc7c10c0603f66979817e903` | |
+| `0366/footer-72.pages` | [0366: Writing the bottom margin and the header and footer distances](../experiments/0366-writing-bottom-margin-and-header-distances.md) | 395,532 | `2812b1d2c03d8c410f0c20e50fbca0b1844430c0ea885d43c564483d0094aa3e` | |
+| `0366/header-72.pages` | [0366: Writing the bottom margin and the header and footer distances](../experiments/0366-writing-bottom-margin-and-header-distances.md) | 395,532 | `ea2027d86f9f8ae4247b1568c068d83b199bb249c753a73fe95164b396017a46` | |
+| `0367/both-resaved.pages` | [0367: Writing the orientation](../experiments/0367-writing-orientation.md) | 84,968 | `0fa8d312d8552ee7d35ca8d697ecb8c5679f6b3063d0129c6ada110f1f183c5d` | |
+| `0367/both.pages` | [0367: Writing the orientation](../experiments/0367-writing-orientation.md) | 395,046 | `5f7c3bb9c4435589c4dd9c886036b2e2d607ad230f56778f53c663ed55355741` | |
+| `0367/flag-only-resaved.pages` | [0367: Writing the orientation](../experiments/0367-writing-orientation.md) | 90,443 | `bd50cb5cffbb5e72cffa5be79e15256c39abe6b13f66c9482c9b25cbcb97f534` | |
+| `0367/flag-only.pages` | [0367: Writing the orientation](../experiments/0367-writing-orientation.md) | 395,046 | `f55d233f0694c25414dd91aa351b177f315df2b946c1d26252bc10fc336e927b` | |
+| `0367/swap-only-resaved.pages` | [0367: Writing the orientation](../experiments/0367-writing-orientation.md) | 84,968 | `6b1642a4433894925fe47bbe452f213c5f907c4c09ac65c7c1a1dfa76c04d255` | |
+| `0367/swap-only.pages` | [0367: Writing the orientation](../experiments/0367-writing-orientation.md) | 395,046 | `d6522a336d48ee6238ddfa201aa66f60186f9734316b7a732784e1c5e0804026` | |
+| `0369/nbsp.pages` | [0369: Writing a tab and a non-breaking space](../experiments/0369-writing-a-tab-and-a-non-breaking-space.md) | 395,283 | `9b16819ac56ec5a613a645d40813883760889b7201d4eba86ccaa7d2a39230b5` | |
+| `0369/no-tab.pages` | [0369: Writing a tab and a non-breaking space](../experiments/0369-writing-a-tab-and-a-non-breaking-space.md) | 395,052 | `fdd99619502ed8776cb1942a262791e005c7d576b841f5065bc9724fe8055463` | |
+| `0369/spaces.pages` | [0369: Writing a tab and a non-breaking space](../experiments/0369-writing-a-tab-and-a-non-breaking-space.md) | 395,282 | `f07e955e11e0e6f33436a83a4ba9075b5eb0e4aaa13620894f55ffedf66fdea9` | |
+| `0369/tab.pages` | [0369: Writing a tab and a non-breaking space](../experiments/0369-writing-a-tab-and-a-non-breaking-space.md) | 395,052 | `593a06305dc3191ad1fa1db0effb7b9c19af150153e26afc3e55a1883437bb37` | |
+| `0370/b-only.numbers` | [0370: Writing a formula's range](../experiments/0370-writing-a-formula-range.md) | 451,675 | `c414f097a7813b96da413d9b17429498619036714b81a1aa09b967b0b4bd3f61` | |
+| `0370/b-to-c-rows.numbers` | [0370: Writing a formula's range](../experiments/0370-writing-a-formula-range.md) | 451,677 | `0a53bdc7eb9f59dfe36aa18076efe659019e4f2f1c7ca47a4221a36c625f131e` | |
+| `0370/c-only.numbers` | [0370: Writing a formula's range](../experiments/0370-writing-a-formula-range.md) | 451,675 | `caf8eb04040826f37e5bcbf877da0248314b0efeebed98564bc92f4c29234549` | |
+| `0371/abs-c.numbers` | [0371: Writing a cell reference](../experiments/0371-writing-a-cell-reference.md) | 451,511 | `0c4b9fe473e325fa7cf9f92398a2a6499cd04723b78002a1684ba379e99c417f` | |
+| `0371/all-absolute.numbers` | [0371: Writing a cell reference](../experiments/0371-writing-a-cell-reference.md) | 451,511 | `c7ca936410b5e7a3430973b62506b09a6ac845715461bd411b89659591e7396f` | |
+| `0371/all-relative.numbers` | [0371: Writing a cell reference](../experiments/0371-writing-a-cell-reference.md) | 451,511 | `1acc297129bfcaf1e1e22e6b3dfe7640a459888c660cf1f9b21c1878e9c823bd` | |
+| `0371/rel-c.numbers` | [0371: Writing a cell reference](../experiments/0371-writing-a-cell-reference.md) | 451,511 | `a17c275925a0682595fae38121f103c9ef077f6646d9cd3bbd393e9b99c915a2` | |
+| `0372/group-moved.pages` | [0372: Writing a group's position and a member's offset](../experiments/0372-writing-a-group.md) | 400,915 | `365a2e6c3cf27f308b27695bed74b7f6ade5e4bd5e56deeed171893eb3fe8a6e` | |
+| `0372/member.pages` | [0372: Writing a group's position and a member's offset](../experiments/0372-writing-a-group.md) | 400,915 | `2f7039c794850ecb3b505670404ea56458f1dab6e6e2d2a9b9b4971e025b801d` | |
+| `0373/flipped-180.pages` | [0373: Writing a flip](../experiments/0373-writing-a-flip.md) | 397,250 | `0ece61a09aeea4f88b7d95db596e9685e6c7d01486a6cb6431759b391cb877eb` | |
+| `0373/flipped.pages` | [0373: Writing a flip](../experiments/0373-writing-a-flip.md) | 397,250 | `0446e26ccbf5e4f1a9fc76e90e54b1ae203c23a6c1225b02d4f78bf59ff9cd33` | |
+| `0373/original.pages` | [0373: Writing a flip](../experiments/0373-writing-a-flip.md) | 397,250 | `061b7c2cb58632fd07501b6497543fb9fa4ea853ff3dbd2b532bdd88caa7fc47` | |
+| `0373/rotated-180.pages` | [0373: Writing a flip](../experiments/0373-writing-a-flip.md) | 397,250 | `3b7757c4390cc8668ae91fc057fd660eec08bb92d47b281c1badb281e0e37b23` | |
+| `0374/both.pages` | [0374: Writing a caption's and a title's text](../experiments/0374-writing-a-caption-and-title.md) | 401,052 | `532a592b74a4119a67aacf1d7ff07c24ffdc901a4be7e7b3de4aca8902df30c3` | |
+| `0374/caption.pages` | [0374: Writing a caption's and a title's text](../experiments/0374-writing-a-caption-and-title.md) | 401,037 | `5fff2ce667e3719e0ff2830f60a1ba226e75c49fc16cc0bbd3cf82eb4fd90123` | |
+| `0374/original.pages` | [0374: Writing a caption's and a title's text](../experiments/0374-writing-a-caption-and-title.md) | 95,797 | `1e2d32b5862fca8695d33cdef37721474270d9924ff6b5ceb0839c7a0a46e6ba` | |
+| `0374/title.pages` | [0374: Writing a caption's and a title's text](../experiments/0374-writing-a-caption-and-title.md) | 401,035 | `557bb2278f3e43cf3f5a846320600b8cd542488484ef108e7d76ec12cf360eb1` | |
+| `0375/author.pages` | [0375: Writing a comment's text, time and author](../experiments/0375-writing-a-comment.md) | 395,207 | `554cb87545c4b93f8fdf5df15876bd06740e975bba3ba71f1313758ec3ac7882` | |
+| `0378/original.key` | [0378: Writing the slide order](../experiments/0378-writing-slide-order.md) | 886,912 | `1e56d02d37f1b4ddc4cb0135f4695009337753f77782592d38f5a209e421f2a2` | |
+| `0378/reversed.key` | [0378: Writing the slide order](../experiments/0378-writing-slide-order.md) | 1,226,786 | `ae02685aedc4493cb137e42fa435d455437d8898efe8223a9d0d8402e71c6f02` | |
+| `0378/rotated.key` | [0378: Writing the slide order](../experiments/0378-writing-slide-order.md) | 1,226,786 | `3702c4103cd5440739ba56759cb6bee512b105e38b996ae3913f56aa152eb75c` | |
+| `0378/two.key` | [0378: Writing the slide order](../experiments/0378-writing-slide-order.md) | 1,226,779 | `d98a68219278827ee9cbefacf06677d6612ff768a8459fcdf6f1c4de9df10316` | |
+| `0379/blank.key` | [0379: Writing a slide's layout](../experiments/0379-writing-a-slide-layout.md) | 1,226,786 | `a4a75a821776ac6d96036bddd22b792929474ea4cef4614d1263d89ff0575917` | |
+| `0379/original.key` | [0379: Writing a slide's layout](../experiments/0379-writing-a-slide-layout.md) | 886,912 | `1e56d02d37f1b4ddc4cb0135f4695009337753f77782592d38f5a209e421f2a2` | |
+| `0379/picture.key` | [0379: Writing a slide's layout](../experiments/0379-writing-a-slide-layout.md) | 1,226,786 | `578535cb4ad4c4ce7dc4ac5e28eb345fcd27203e33eb12fc7607f5b14f8d7e94` | |
+| `0379/rewritten.key` | [0379: Writing a slide's layout](../experiments/0379-writing-a-slide-layout.md) | 1,226,786 | `7a70949628c5e7e032b1fa8eef1d3a8621de0ef9fb05cda40d244c6152e2a611` | |
+| `0379/same-as-c.key` | [0379: Writing a slide's layout](../experiments/0379-writing-a-slide-layout.md) | 1,226,786 | `9c849e492d6467ab98c8a6abe0ead17ebc341d89ea631680869408d8951fa6b5` | |
+| `0380/both.key` | [0380: Writing auto restart and the idle time](../experiments/0380-writing-auto-restart-and-idle-time.md) | 1,226,786 | `ea25c36c8c1ea85cc8717b35c3f8bab3637bf63a827d3fe689f74c84f203227f` | |
+| `0380/idle-150.key` | [0380: Writing auto restart and the idle time](../experiments/0380-writing-auto-restart-and-idle-time.md) | 1,226,786 | `d1037e65458aa3a566ed2129603e136219dab2ef3a85cc8dd238095e8355e90a` | |
+| `0380/idle-179.key` | [0380: Writing auto restart and the idle time](../experiments/0380-writing-auto-restart-and-idle-time.md) | 1,226,786 | `cd625f9d1005b4cd2534181594729a1d84c398052a6fe664e0afd53a57a51433` | |
+| `0380/idle-300.key` | [0380: Writing auto restart and the idle time](../experiments/0380-writing-auto-restart-and-idle-time.md) | 1,226,786 | `9ccd715ec1b4261b2016d3ab4a981db7ab9ef5ab2fcbb33d845b01334b61e7a4` | |
+| `0380/idle-60.key` | [0380: Writing auto restart and the idle time](../experiments/0380-writing-auto-restart-and-idle-time.md) | 1,226,786 | `e57d85107ecf2200b4b8e600e416c76fc854f167c114143648c4802621caa8bd` | |
+| `0380/original.key` | [0380: Writing auto restart and the idle time](../experiments/0380-writing-auto-restart-and-idle-time.md) | 886,912 | `1e56d02d37f1b4ddc4cb0135f4695009337753f77782592d38f5a209e421f2a2` | |
+| `0380/restart.key` | [0380: Writing auto restart and the idle time](../experiments/0380-writing-auto-restart-and-idle-time.md) | 1,226,786 | `74cbafd5038f1cd22c0a703b4833cc96f319eccc35c7e45282184a19a5c30983` | |
+| `0381/a-and-b-numbered.key` | [0381: Writing a slide number](../experiments/0381-writing-a-slide-number.md) | 1,226,786 | `fbf20535224cf6f1c3e6057269616965c9fc413c3986a3f894788950aae1787a` | |
+| `0381/a-numbered-placeholder.key` | [0381: Writing a slide number](../experiments/0381-writing-a-slide-number.md) | 1,226,801 | `b50f39b3cd4abb69c56724db9e531222f64899f909844780e43e82dc9631fd5b` | |
+| `0381/a-numbered.key` | [0381: Writing a slide number](../experiments/0381-writing-a-slide-number.md) | 1,226,786 | `57d4cfa56d5100fcc8acea5f544f9f1ef3ec0d80af1759d2cce8678f610e737a` | |
+| `0381/a-placeholder.key` | [0381: Writing a slide number](../experiments/0381-writing-a-slide-number.md) | 1,226,801 | `646fd8c85c1c6b73342623c2f4cea54851884e60edc2151df740a35486c295e1` | |
+| `0381/all-numbered.key` | [0381: Writing a slide number](../experiments/0381-writing-a-slide-number.md) | 1,226,786 | `98907d0fce7ce0c08121e6b720e786947f066950703c4d81d33ab3323823960e` | |
+| `0381/original.key` | [0381: Writing a slide number](../experiments/0381-writing-a-slide-number.md) | 886,912 | `1e56d02d37f1b4ddc4cb0135f4695009337753f77782592d38f5a209e421f2a2` | |
+| `0382/column-b.numbers` | [0382: Writing a merged range](../experiments/0382-writing-merged-cells.md) | 451,554 | `feafed3e2b3cc76a2aa472d96f7763fa1d80e1b2b428b79110f7fc20f1cb90ae` | |
+| `0382/columns-c-d.numbers` | [0382: Writing a merged range](../experiments/0382-writing-merged-cells.md) | 451,556 | `7588f7513a39c7b16563c4860e9955c66bdf73f95670c00321c72cc375d34c84` | |
+| `0382/original.numbers` | [0382: Writing a merged range](../experiments/0382-writing-merged-cells.md) | 137,614 | `3cbb3e1a2c668655b7355a22ef1e1d67ef7ac40d4c67d4afe0e90323601f4a85` | |
+| `0382/rows-2-5.numbers` | [0382: Writing a merged range](../experiments/0382-writing-merged-cells.md) | 451,554 | `0b82c9ac8c0a1db859f7343eee2db0e12bbcbedbd94bd488d82a4a62db36f1d5` | |
+| `0383/all-unhidden.numbers` | [0383: Writing a filter's value and its hidden rows](../experiments/0383-writing-a-filter.md) | 420,922 | `c882f255b20fe2fae80326e8136a3b1d4b31fb06c7c3b08fdf034faee31559a5` | |
+| `0383/only-522-0.numbers` | [0383: Writing a filter's value and its hidden rows](../experiments/0383-writing-a-filter.md) | 420,922 | `0ea3ac8973569ee68e2dd1ed1038750685c2251b6b74c5260c24e3c47640e3e5` | |
+| `0383/only-522-3.numbers` | [0383: Writing a filter's value and its hidden rows](../experiments/0383-writing-a-filter.md) | 420,922 | `e8bac385f49549b719f6d3440ef51fb92fd4c8dffe091307d57111ac1e8fa7b9` | |
+| `0383/original-off.numbers` | [0383: Writing a filter's value and its hidden rows](../experiments/0383-writing-a-filter.md) | 139,382 | `333f00ad9a41a172d6d93c3f9806a02a45010c9b71cf4b293a0c0a2cd2bab5ed` | |
+| `0383/original-toggled.numbers` | [0383: Writing a filter's value and its hidden rows](../experiments/0383-writing-a-filter.md) | 101,831 | `99afe4ade8666283baea20655767080feff3e99fdc3d03c9d106cb0c0ae7ce44` | |
+| `0383/original.numbers` | [0383: Writing a filter's value and its hidden rows](../experiments/0383-writing-a-filter.md) | 101,831 | `af1efcd55da08324c4e63bde2ea166001c7d9440c47509ab728fcb220f9b764e` | |
+| `0383/value-0-off.numbers` | [0383: Writing a filter's value and its hidden rows](../experiments/0383-writing-a-filter.md) | 144,632 | `b087bc37360c38607c019e1922febcacf9450f65718ead999242422b2fcb3d9d` | |
+| `0383/value-0-toggled.numbers` | [0383: Writing a filter's value and its hidden rows](../experiments/0383-writing-a-filter.md) | 107,081 | `d6f5f165926ec4f6b4533c7ee8ddd0f769aef2ef9f3b1a84cb9e90aa805414f3` | |
+| `0383/value-0.numbers` | [0383: Writing a filter's value and its hidden rows](../experiments/0383-writing-a-filter.md) | 420,922 | `6d70c7808f6eb96165cffc42eea6fb0310d4813ae97c71c0e625a3b44b780fdd` | |
+| `0383/value-3-off.numbers` | [0383: Writing a filter's value and its hidden rows](../experiments/0383-writing-a-filter.md) | 144,633 | `7c83008c695fba542f2f1a03274f0f2e0e2ba10490a395524f1873dbd2bab5ef` | |
+| `0383/value-3-toggled.numbers` | [0383: Writing a filter's value and its hidden rows](../experiments/0383-writing-a-filter.md) | 107,082 | `aeee94813f2cb0d437b573e4de021c18c725f0e9c382e00ac7ad42fc1816bf49` | |
+| `0383/value-3.numbers` | [0383: Writing a filter's value and its hidden rows](../experiments/0383-writing-a-filter.md) | 420,922 | `fb8ffb566966450c0e0be24bf7d005d11f1c6ddab67f1be641308ae1e3ef0b2e` | |
+| `0384/angle-0.pages` | [0384: Writing a gradient's stops and angle](../experiments/0384-writing-a-gradient.md) | 398,470 | `b865bec3388e28a98a38a90aa13a7c3d4bfac59a757a092a8db873b9011a3adf` | |
+| `0384/original.pages` | [0384: Writing a gradient's stops and angle](../experiments/0384-writing-a-gradient.md) | 93,600 | `6122e8d9e9e0fb67a19d72fd2169117fda575f46047d1516e2c88c4d51d11566` | |
+| `0384/radial.pages` | [0384: Writing a gradient's stops and angle](../experiments/0384-writing-a-gradient.md) | 398,470 | `a793bc73927a6b76a6487880354cf932e6ff978bf00643c03216eb5507975ebb` | |
+| `0384/red-green.pages` | [0384: Writing a gradient's stops and angle](../experiments/0384-writing-a-gradient.md) | 398,470 | `c2cc28314d6df559bff4c4aa7c2bbe3ea173c3acb54280c8e11fbf0cf0c91e62` | |
+| `0384/stops-moved.pages` | [0384: Writing a gradient's stops and angle](../experiments/0384-writing-a-gradient.md) | 398,470 | `d8e69bc8b58dc0952f531129e0e7bade9bc6f0cdacc9e990ec45d1de06bb976e` | |
+| `0385/pages-radial.pages` | [0385: Writing a radial gradient's angle](../experiments/0385-writing-a-radial-gradient.md) | 93,792 | `cb289716fed95f7790409b1006168a205b28569f719f59b1f8b68d355c604841` | |
+| `0385/radial-315.pages` | [0385: Writing a radial gradient's angle](../experiments/0385-writing-a-radial-gradient.md) | 398,470 | `619f4f8dd0c6d22b63d07765d91e54833425f121119ed44a3d9e4fc59cfd1c9d` | |
+| `0385/radial-90.pages` | [0385: Writing a radial gradient's angle](../experiments/0385-writing-a-radial-gradient.md) | 398,470 | `fce604c474bbd81c6b461c97eccbd3e5272eadf4dcf0436ed8c1acd154e9024c` | |
+| `0385/radial-advanced.pages` | [0385: Writing a radial gradient's angle](../experiments/0385-writing-a-radial-gradient.md) | 398,470 | `6d08f2841433967d9d2478020fb89a9cf6aee91bddb26ac286bdc04129d5c40d` | |
+| `0385/written-radial.pages` | [0385: Writing a radial gradient's angle](../experiments/0385-writing-a-radial-gradient.md) | 398,470 | `a793bc73927a6b76a6487880354cf932e6ff978bf00643c03216eb5507975ebb` | |
+| `0386/not-facing.pages` | [0386: Writing left and right pages](../experiments/0386-writing-left-and-right-pages.md) | 396,081 | `cc785e9a536c876f15f8f69557f6f49452dab4162b9d663d6ef8ce165de11450` | |
+| `0386/original.pages` | [0386: Writing left and right pages](../experiments/0386-writing-left-and-right-pages.md) | 91,358 | `84006b7f5a65341814d7059bcb187e097fbf9f6fae51a40e4ea01ace1df76e16` | |
+| `0386/same.pages` | [0386: Writing left and right pages](../experiments/0386-writing-left-and-right-pages.md) | 396,081 | `2be3b444cdf40920b3f44fd69bc1b8954bb158bcffba9a0bb317efc8cd2a7d69` | |
+| `0387/both-own.pages` | [0387: Writing *same as previous section*](../experiments/0387-writing-same-as-previous-section.md) | 397,815 | `252cb840fad486582c6e7abfec4054b77dabbc0f90f8bdb4a3c563b4b523acbd` | |
+| `0387/both.pages` | [0387: Writing *same as previous section*](../experiments/0387-writing-same-as-previous-section.md) | 397,815 | `e20d5fee34ff4a94ad44de9b94f4fb2bb036a1b1d346d90860a0bb586ecbccf0` | |
+| `0387/first-only-own.pages` | [0387: Writing *same as previous section*](../experiments/0387-writing-same-as-previous-section.md) | 397,800 | `e9d7747a0bf1eb8651bae592f845c7814d8c5fd22bd54d6d377d18d4bb87c7f3` | |
+| `0387/first-only.pages` | [0387: Writing *same as previous section*](../experiments/0387-writing-same-as-previous-section.md) | 397,800 | `c5df57390832da8d0ef0af4e9f07315ac9d977b7b51ede9d04e0f750b40f80b7` | |
+| `0388/level-0.pages` | [0388: Writing a list level](../experiments/0388-writing-a-list-level.md) | 396,091 | `d35a513775a5091d89c75fb475f6e89afe38589c28378b9083d90df610c38526` | |
+| `0388/level-2.pages` | [0388: Writing a list level](../experiments/0388-writing-a-list-level.md) | 396,091 | `27fa138ec0b23c6e0f1c176bcd6667efa718da662492380f5f6b0b76d2dcf37f` | |
+| `0388/level-4.pages` | [0388: Writing a list level](../experiments/0388-writing-a-list-level.md) | 396,091 | `93a42838fc2adeee856ea79d85a91464adb0f52fc11015d7ca98f1b7c27edfee` | |
+| `0388/original.pages` | [0388: Writing a list level](../experiments/0388-writing-a-list-level.md) | 91,508 | `d9a5f544cc549c2222849ac8a08b5c061692e2a539ed5ec94a09bb893433cf0b` | |
+| `0389/both-renamed.pages` | [0389: Writing a bookmark and a link to it](../experiments/0389-writing-a-bookmark-link.md) | 395,492 | `0950df54354e95f98dc29e7afdfbd9dc7a1503d109099c1c17694418dc8bdf95` | |
+| `0389/link-elsewhere.pages` | [0389: Writing a bookmark and a link to it](../experiments/0389-writing-a-bookmark-link.md) | 395,492 | `91101f28642389fdf0f77e87f2d828b27636585f10bc2b759735dc682e2c1acf` | |
+| `0389/moved.pages` | [0389: Writing a bookmark and a link to it](../experiments/0389-writing-a-bookmark-link.md) | 395,492 | `811ae3bba79f42ee73b3b33f668d2f900316bedd0653cfe5b84b07680682ed35` | |
+| `0389/original.pages` | [0389: Writing a bookmark and a link to it](../experiments/0389-writing-a-bookmark-link.md) | 90,821 | `241881ca339ca09787aceee9fe0a38ec0a4623bf88561521948910769f31fcdf` | |
+| `0390/left.pages` | [0390: Writing an image mask's position and size](../experiments/0390-writing-an-image-mask.md) | 399,988 | `99444c3e6cb1bfeb6f80c8691daa8ecd95fab0c86ecc982068c50ec0525bb1db` | |
+| `0390/natural-200.pages` | [0390: Writing an image mask's position and size](../experiments/0390-writing-an-image-mask.md) | 399,988 | `829e87af211956f80252af4bf985492df6ee7a4063e795ea8ed96f3acec06f4c` | |
+| `0390/natural-50.pages` | [0390: Writing an image mask's position and size](../experiments/0390-writing-an-image-mask.md) | 399,988 | `f1dd591a718e36f729a556c19ecedaef4f2f0e6cbd66cab6cca0c92108d4d3e3` | |
+| `0390/original.pages` | [0390: Writing an image mask's position and size](../experiments/0390-writing-an-image-mask.md) | 95,114 | `fc157925e2fc4640ce7ba4b30a7c7ddf721dcc1d8394885750f818faa00883eb` | |
+| `0390/wide.pages` | [0390: Writing an image mask's position and size](../experiments/0390-writing-an-image-mask.md) | 399,988 | `3813f3778c8809544882d2dedb3f2fe74a2e4a6619b701d909c74d074565e058` | |
+| `0391/b2-cached-match.numbers` | [0391: Writing the value of a highlighting rule and a filter](../experiments/0391-writing-a-rule-value.md) | 459,075 | `124faf912be42d1769d3b13f50e57732a0d522029f9c8681e18ce735c4482c9b` | |
+| `0391/b5-cached-none.numbers` | [0391: Writing the value of a highlighting rule and a filter](../experiments/0391-writing-a-rule-value.md) | 459,075 | `488ed3cc7565ac347bbb47e47829468efbf5c9d82830b0fdba9e3e99efbd1e78` | |
+| `0391/only-522-zero.numbers` | [0391: Writing the value of a highlighting rule and a filter](../experiments/0391-writing-a-rule-value.md) | 459,075 | `0511ab30b0b93dc7a537cb61910c24d9bd58c7556d4c3f5ab4b06dcb0d2ab5ca` | |
+| `0391/only-522.numbers` | [0391: Writing the value of a highlighting rule and a filter](../experiments/0391-writing-a-rule-value.md) | 459,075 | `a56d5a58fc881e22bcf59dde5d4890f17fbc4a0a4555d01390ec4b47ddd4086a` | |
+| `0391/original-edited.numbers` | [0391: Writing the value of a highlighting rule and a filter](../experiments/0391-writing-a-rule-value.md) | 140,483 | `67bf292c7f81819641fc18c15e4870d4d5ce8254a473d0fb514ecd50f304a376` | |
+| `0391/original.numbers` | [0391: Writing the value of a highlighting rule and a filter](../experiments/0391-writing-a-rule-value.md) | 140,220 | `92adee3afad6131393013c3e77656ad82a57caddfe8913b82aa3f1ea4e78891c` | |
+| `0391/rule-all-0-edited.numbers` | [0391: Writing the value of a highlighting rule and a filter](../experiments/0391-writing-a-rule-value.md) | 140,544 | `ed8daaf493b5a6bcdf14b3afed64bf640c32745af3c1aa00fb77cbd75fd7532e` | |
+| `0391/rule-all-0.numbers` | [0391: Writing the value of a highlighting rule and a filter](../experiments/0391-writing-a-rule-value.md) | 459,075 | `c09f1f760e679ae224154690b9b2ad85e4b31be95499a8a3aa8a8706f45b717d` | |
+| `0391/rule-all-3-and-522.numbers` | [0391: Writing the value of a highlighting rule and a filter](../experiments/0391-writing-a-rule-value.md) | 459,075 | `6d5a615c43fdc355aa091fd19071cb9279747905d69c30857098adaebb1df3ac` | |
+| `0391/rule-all-3-edited.numbers` | [0391: Writing the value of a highlighting rule and a filter](../experiments/0391-writing-a-rule-value.md) | 140,547 | `e45f0de5050277befa292ac1addba65ad83544ab2937660320514b39eeff90eb` | |
+| `0391/rule-all-3.numbers` | [0391: Writing the value of a highlighting rule and a filter](../experiments/0391-writing-a-rule-value.md) | 459,075 | `60c8d5c9094c543bc823905751ecebb0fcb389539073bc3e6f9eb80155dbd5bc` | |
+| `0391/rule-formula-3.numbers` | [0391: Writing the value of a highlighting rule and a filter](../experiments/0391-writing-a-rule-value.md) | 459,075 | `62d48350c06924544e3649a63e2163302228e6a24c5f2b922711963e30c96803` | |
+| `0391/rule-settings-3.numbers` | [0391: Writing the value of a highlighting rule and a filter](../experiments/0391-writing-a-rule-value.md) | 459,075 | `7e06a76d5d39e42fe5b56ff53d4933736ef8ace5cf3081855e69bf40a720b3a7` | |
+| `0392/body-bold-emph-off.pages` | [0392: Writing an inherited and a cleared character property](../experiments/0392-writing-inherited-properties.md) | 395,067 | `5b445ef873dabb062827f07e29b659a08913bc35aad15bb921290a481b9cd06a` | |
+| `0392/body-bold.pages` | [0392: Writing an inherited and a cleared character property](../experiments/0392-writing-inherited-properties.md) | 395,067 | `c5173f61464e1294788422e6d91c2298708c2a98fc24e9bbe5296f654ca62888` | |
+| `0392/body-italic-emph-off.pages` | [0392: Writing an inherited and a cleared character property](../experiments/0392-writing-inherited-properties.md) | 395,069 | `0a9411d0bc93b7a0d2200d40ff599852285b917a772f01c4e13ce7e2cb7fe3a5` | |
+| `0392/body-italic.pages` | [0392: Writing an inherited and a cleared character property](../experiments/0392-writing-inherited-properties.md) | 395,067 | `b4d960c1d7ed309398080435fe20e5b5e44e7b1ae712fc09ea9b15262b4e5ecf` | |
+| `0392/original.pages` | [0392: Writing an inherited and a cleared character property](../experiments/0392-writing-inherited-properties.md) | 395,067 | `2ede30db53c8cb46c9e66101497a5ead795347df809118b9f07885fc58b6ef48` | |
+| `0393/original.pages` | [0393: Writing an unnamed style's parent](../experiments/0393-writing-a-style-parent.md) | 91,218 | `5fa04c6cc124ad99db5c0475740b06ceb877fd7ac999601e0ed1c1c4a45e5e6d` | |
+| `0393/parent-heading.pages` | [0393: Writing an unnamed style's parent](../experiments/0393-writing-a-style-parent.md) | 395,868 | `0845507410d7fbec52bfc255d19e1098ed238e8eb26e9f0a61f7eed83184d36a` | |
+| `0393/parent-title.pages` | [0393: Writing an unnamed style's parent](../experiments/0393-writing-a-style-parent.md) | 395,868 | `f094e98cd0c988b3a2df68402ecfeb3c7141ce443f51cccba4fec5de353a2599` | |
+| `0394/annotation-plain-listed.pages` | [0394: Renaming a part](../experiments/0394-renaming-a-part.md) | 94,567 | `d169abaf555bed78a87ffa50dd7515ac55afde5cdb6b1615cdb07001bbd3d187` | |
+| `0394/annotation-plain.pages` | [0394: Renaming a part](../experiments/0394-renaming-a-part.md) | 90,302 | `b31d372d4efd8bbff94610782dda204aa37ea2fb58608266f379a3a7e4b25eff` | |
+| `0394/document-numbered.pages` | [0394: Renaming a part](../experiments/0394-renaming-a-part.md) | 90,334 | `72b87ad327d66d00ec036156a4464e60d5ef32b503c0c8900318d02626d2114b` | |
+| `0394/document-other.pages` | [0394: Renaming a part](../experiments/0394-renaming-a-part.md) | 90,312 | `2a3e01bfcf79e8ee69381169ea161df9c02c5491587b00dedf63dffce5be848c` | |
+| `0394/document-zebra-listed.pages` | [0394: Renaming a part](../experiments/0394-renaming-a-part.md) | 94,617 | `1d986920247d24ad92c6b7c8590c66baa6b6bc0beb2663f5abff12f6f6ce1209` | |
+| `0394/metadata-other.pages` | [0394: Renaming a part](../experiments/0394-renaming-a-part.md) | 90,312 | `259952389b54dc0bfafa31ef7cb8ff9f87b960bb85c3fb3ce35c8dbafd112607` | |
+| `0394/metadata-renamed-only.pages` | [0394: Renaming a part](../experiments/0394-renaming-a-part.md) | 90,312 | `259952389b54dc0bfafa31ef7cb8ff9f87b960bb85c3fb3ce35c8dbafd112607` | |
+| `0394/original.pages` | [0394: Renaming a part](../experiments/0394-renaming-a-part.md) | 90,438 | `96db185563729e8d065f4825fb7763535b54571fa59d55d6eb351c7000f43349` | |
+| `0394/stylesheet-numbered.pages` | [0394: Renaming a part](../experiments/0394-renaming-a-part.md) | 90,324 | `c966e83a4489968f3ff0849eb50d3c365c247b3cd5c3d0d48701cbad073f8fa5` | |
+| `0394/stylesheet-own-id.pages` | [0394: Renaming a part](../experiments/0394-renaming-a-part.md) | 90,334 | `d942379a653e7067fec4bfe21605b59b9af91c950c450b46c53207e4ad2fed35` | |
+| `0394/viewstate-99-listed.pages` | [0394: Renaming a part](../experiments/0394-renaming-a-part.md) | 94,636 | `145b865909c98d736ec3dd3a62684dac73587f1075a0ee78f353628badf3a82a` | |
+| `0394/viewstate-other.pages` | [0394: Renaming a part](../experiments/0394-renaming-a-part.md) | 90,324 | `86f37e26ed559a4584f10b15c71760a35eb1db60930078a97681ce8ec7a1643a` | |
+| `0394/viewstate-own-id.pages` | [0394: Renaming a part](../experiments/0394-renaming-a-part.md) | 90,334 | `5757bba7e9fecb9b125f997dbfe018e17d630ab34f460971aac5bb4c2b3bc475` | |
+| `0395/original-name.pages` | [0395: Renaming and replacing a data file](../experiments/0395-writing-a-data-file.md) | 95,431 | `18df798105fba565a7cba9a0eff21d192e6211fc3a19608531a84ce83ccfb906` | |
+| `0395/original.pages` | [0395: Renaming and replacing a data file](../experiments/0395-writing-a-data-file.md) | 91,240 | `8276979523a753a81dbe06c6e792abe0f549bad808593d5967cf7370e43f6b7a` | |
+| `0395/replaced.pages` | [0395: Renaming and replacing a data file](../experiments/0395-writing-a-data-file.md) | 95,429 | `d73d12cab12885eba8317b3472aa691e4802aa26eb5a3bcc75c8d706ad3942df` | |
+| `0396/root-ver-900.pages` | [0396: Writing a record header's type, version and references](../experiments/0396-writing-record-headers.md) | 395,046 | `3d14c345f8735967f4a4bc834a8d684d98d3d324329cf7ea31669d4e776fab8b` | |
+| `0396/text-refs-none.pages` | [0396: Writing a record header's type, version and references](../experiments/0396-writing-record-headers.md) | 395,032 | `4bb79cbd0810e3de3775769929432d53f3be0314d7e613c483bbeaba35d9a0c2` | |
+| `0396/text-type-2022.pages` | [0396: Writing a record header's type, version and references](../experiments/0396-writing-record-headers.md) | 395,046 | `72e1da77576c2591be3f649bc997f584a12a9bc491ee35378c3cdb7ab384fba2` | |
+| `0396/text-type-9999.pages` | [0396: Writing a record header's type, version and references](../experiments/0396-writing-record-headers.md) | 395,046 | `7d33574bea43cd9cb115555a2111274778a682526dfacbed89c3841d671c3aad` | |
+| `0396/text-ver-000.pages` | [0396: Writing a record header's type, version and references](../experiments/0396-writing-record-headers.md) | 395,046 | `673ab3c0f43f682ad5da63117ea2815d33a333395906eb2364fa09ec5a7b431a` | |
+| `0396/text-ver-106.pages` | [0396: Writing a record header's type, version and references](../experiments/0396-writing-record-headers.md) | 395,046 | `df49c3b595505fb2e92087563d4060066c49f951b2bb15c20cafa51d0d2d456a` | |
+| `0396/text-ver-900.pages` | [0396: Writing a record header's type, version and references](../experiments/0396-writing-record-headers.md) | 395,046 | `4fd9879258d627e6905fc116c131265ac649e79a793154a50c1b6cde0f4c1912` | |
+| `0396/text-ver-none.pages` | [0396: Writing a record header's type, version and references](../experiments/0396-writing-record-headers.md) | 395,041 | `7611e5afc3de01c9e2eaa2477461160aad3af1fa77dd1bca7ba79675eef27e79` | |
+| `0397/image-no-data-refs-saved.pages` | [0397: Header field 2.6, the data a payload uses](../experiments/0397-the-data-references-field.md) | 91,246 | `548644181644a5812317d69f1ad899996f8aa0f92cfae316010730807690ce95` | |
+| `0397/image-no-data-refs.pages` | [0397: Header field 2.6, the data a payload uses](../experiments/0397-the-data-references-field.md) | 395,953 | `33ce081425d9ae6e5a7179e161023f038e06062b489159675d34355267cf7c04` | |
+| `0397/image-other-data-ref-saved.pages` | [0397: Header field 2.6, the data a payload uses](../experiments/0397-the-data-references-field.md) | 91,243 | `23071922e58616f680c16faca713c5575cfa1a01905ccc6fce40060703cd341b` | |
+| `0397/image-other-data-ref.pages` | [0397: Header field 2.6, the data a payload uses](../experiments/0397-the-data-references-field.md) | 395,956 | `c2b92e58f4bd56a2b90d3e001a436ec733d01cba0e544241c880921edb079878` | |
+| `0397/original-saved.pages` | [0397: Header field 2.6, the data a payload uses](../experiments/0397-the-data-references-field.md) | 91,246 | `78bf37d237b57d1185f39de586fdfa5240043aaee4facaed4a13ce175c3d3b58` | |
+| `0397/original.pages` | [0397: Header field 2.6, the data a payload uses](../experiments/0397-the-data-references-field.md) | 91,240 | `8276979523a753a81dbe06c6e792abe0f549bad808593d5967cf7370e43f6b7a` | |
+| `0398/donut-extra-bar.pages` | [0398: Header versions and extra payloads](../experiments/0398-extra-payloads.md) | 422,665 | `a7dd5fa43b1c483a62c7f5862b243c48f25e7fef4f8555e38f7d013e5a10102b` | |
+| `0398/donut-main-pie.pages` | [0398: Header versions and extra payloads](../experiments/0398-extra-payloads.md) | 422,665 | `fbc92c04c1a423bf5af0c482045f3d88ff67ff1d2085666be662ac6ef1377b82` | |
+| `0398/donut-no-extra.pages` | [0398: Header versions and extra payloads](../experiments/0398-extra-payloads.md) | 422,622 | `86ab933ebb610017c1424b73e43561228b51109543975d48142f72d3e688c4f0` | |
+| `0398/donut.pages` | [0398: Header versions and extra payloads](../experiments/0398-extra-payloads.md) | 117,360 | `e0b264282745859fed0bb98ff85af3c7a00991974b765c0e7908653c384b5e01` | |
+| `0398/pie-no-extra.pages` | [0398: Header versions and extra payloads](../experiments/0398-extra-payloads.md) | 422,622 | `b2984fce09aad534734f47d5d66684a61dbcac78f4b5ca9b550175c988244fec` | |
+| `0399/axis-line.key` | [0399: Writing a chart's border and axis options](../experiments/0399-writing-chart-border-and-axes.md) | 1,242,316 | `df89993f83b857ac440fdc2fdec4ed8232597f1ea555be6d897ae7f66408b388` | |
+| `0399/axis-name.key` | [0399: Writing a chart's border and axis options](../experiments/0399-writing-chart-border-and-axes.md) | 1,242,318 | `f483671ae481e110fe0a89b61b171166dd7cc705252537eee3af85785914e8c0` | |
+| `0399/baseline.key` | [0399: Writing a chart's border and axis options](../experiments/0399-writing-chart-border-and-axes.md) | 904,201 | `a595c00777b5da2f922d7efd0241ca7e46e3994814a45107dc0553b0576c080e` | |
+| `0399/border.key` | [0399: Writing a chart's border and axis options](../experiments/0399-writing-chart-border-and-axes.md) | 1,242,316 | `9bcf356257255beede3b89523bd7a8fc0ae8547107220f230d8f2cf99d7726fe` | |
+| `0399/keynote-axis-line.key` | [0399: Writing a chart's border and axis options](../experiments/0399-writing-chart-border-and-axes.md) | 914,552 | `38573dc480398ee19ed5747b4afaa171eae6f493ac36ea9fbb93f12a65e65bad` | |
+| `0399/keynote-axis-title.key` | [0399: Writing a chart's border and axis options](../experiments/0399-writing-chart-border-and-axes.md) | 915,757 | `33b53cafe7e4e82a4bfa78f033fcb3ff5d6e277e0aa96381160b27499299bffa` | |
+| `0399/keynote-border-off.key` | [0399: Writing a chart's border and axis options](../experiments/0399-writing-chart-border-and-axes.md) | 1,253,943 | `641a0828f1fc97b858792c4025348d12381003e333d27eab6f7a0ea9511d5d9f` | |
+| `0399/keynote-border.key` | [0399: Writing a chart's border and axis options](../experiments/0399-writing-chart-border-and-axes.md) | 915,879 | `add0935a376777fb0f877dd15f612da59fd78621ceee010391bc7bce0e58520d` | |
+| `0399/keynote-no-minimum.key` | [0399: Writing a chart's border and axis options](../experiments/0399-writing-chart-border-and-axes.md) | 913,663 | `a0effc2b98d684a70239f8deadab5e2d22d60300ae215ca5e68f38242d9c41c5` | |
+| `0399/no-minimum.key` | [0399: Writing a chart's border and axis options](../experiments/0399-writing-chart-border-and-axes.md) | 1,242,316 | `08b8d930c0d5ac08766534c2dbe979851fc14535ceabeddd5429613ba27744fa` | |
+| `0400/baseline.key` | [0400: Writing a category axis name](../experiments/0400-writing-a-category-axis-name.md) | 904,185 | `a988fbe07c49f066e7d72b277110f27eb0fab4d0581d76be07ffad1fcf4e4438` | |
+| `0400/category-14.key` | [0400: Writing a category axis name](../experiments/0400-writing-a-category-axis-name.md) | 1,242,313 | `f362a1c1f576dbcc19d7de8664dab8df8754939b4a0262647350b4c13be68491` | |
+| `0400/category-name.key` | [0400: Writing a category axis name](../experiments/0400-writing-a-category-axis-name.md) | 1,242,313 | `45823195dbf9d2a675910c83d2922fe348061acd5b0c0656b9c00b0f3ea08243` | |
+| `0400/keynote-x-axis-name.key` | [0400: Writing a category axis name](../experiments/0400-writing-a-category-axis-name.md) | 916,680 | `56eda796b2caec1d481116c9d9d5eac31d3cc8914dedd9317c4371534cb72950` | |
+| `0401/columns-unfrozen.numbers` | [0401: Writing frozen header columns](../experiments/0401-writing-frozen-header-columns.md) | 457,165 | `9acc0e4014477a12c18c3064b5a1a26c6ccd1f05b5f9718a5707697e4420c07b` | |
+| `0401/original.numbers` | [0401: Writing frozen header columns](../experiments/0401-writing-frozen-header-columns.md) | 138,837 | `317c41bb605f4f3e2e492fdee400ab0f24f0989884239cee3a3f2ac7f2dcedd1` | |
+| `0401/two-columns-unfrozen.numbers` | [0401: Writing frozen header columns](../experiments/0401-writing-frozen-header-columns.md) | 457,165 | `b5575a83ee474e514dc3bfca6d2603885dded505225f5d770984cf1e4e5753be` | |
+| `0402/no-repeat-grown.pages` | [0402: Writing repeated header rows](../experiments/0402-writing-repeated-header-rows.md) | 155,896 | `5ce18d56addd12dfa185d055dce8e22af8707a45ebad72d27a58930795a5639f` | |
+| `0402/no-repeat.pages` | [0402: Writing repeated header rows](../experiments/0402-writing-repeated-header-rows.md) | 109,485 | `1df2e30d0942464fa4d9339816f681772035b82532e1994162713ae29f676c92` | |
+| `0402/plain-table-grown.pages` | [0402: Writing repeated header rows](../experiments/0402-writing-repeated-header-rows.md) | 155,721 | `e4d80c866ef63d1602671bab28cd6be31fd85d17a1c29cdd418696f9e921a468` | |
+| `0402/plain-table.pages` | [0402: Writing repeated header rows](../experiments/0402-writing-repeated-header-rows.md) | 109,446 | `3bd8d763eba804becd046d479b5218e6c6b177deb7004fe0bba0f965de1febf3` | |
+| `0402/repeat-off-written-grown.pages` | [0402: Writing repeated header rows](../experiments/0402-writing-repeated-header-rows.md) | 155,824 | `521d621774b0f3c142b9271baf3752f92d1c4b0bd1f93d58302eab1714e1097a` | |
+| `0402/repeat-off-written.pages` | [0402: Writing repeated header rows](../experiments/0402-writing-repeated-header-rows.md) | 418,911 | `7c8f46219849e42050dd2c191a1e149c3542ac3623df5a9c06071c4cecb886f8` | |
+| `0402/repeat-written-grown.pages` | [0402: Writing repeated header rows](../experiments/0402-writing-repeated-header-rows.md) | 155,844 | `205c78f6407cb8a5bedeca0a2f4fa8ce4aba688dd8d1d098f188d22431de3ea0` | |
+| `0402/repeat-written.pages` | [0402: Writing repeated header rows](../experiments/0402-writing-repeated-header-rows.md) | 418,949 | `7e91a08f464f14ba467ab6cea990cf7025bfc3523bbc83f4c5a8023de6356178` | |
+| `0403/original.pages` | [0403: Writing a line's rotation and width](../experiments/0403-writing-a-line.md) | 93,444 | `94f8045c2a8ab0d26bfab023dca69db2cf1967c699c071ff6bcd5fe482ed4ee7` | |
+| `0403/rot-0.pages` | [0403: Writing a line's rotation and width](../experiments/0403-writing-a-line.md) | 398,180 | `948e1c63e9123e45a75c62e66986c0d40b166e48b3a8ef5b34b4a790e2f21af8` | |
+| `0403/rot-180.pages` | [0403: Writing a line's rotation and width](../experiments/0403-writing-a-line.md) | 398,180 | `4641bcc2c69eb68ca6690a53641ad6c8b23332325c3a265115a2bd7b50a68fbf` | |
+| `0403/rot-90.pages` | [0403: Writing a line's rotation and width](../experiments/0403-writing-a-line.md) | 398,180 | `d33cee1a33af0281ba2a0056fe6d6c148f1c866648ec77ea51ec6431b0f95c43` | |
+| `0403/width-100.pages` | [0403: Writing a line's rotation and width](../experiments/0403-writing-a-line.md) | 398,180 | `edbe02c4716a3c37966b5161f3c47af2f0a662a2a787b4edcaf123279d9db07d` | |
+| `0404/natural-100-width-100.pages` | [0404: Writing a line's length](../experiments/0404-writing-a-line-length.md) | 398,180 | `330b25c3eda590b580999be12d75ab0177cc10deba523da8bb7734c89d5e990a` | |
+| `0404/natural-100.pages` | [0404: Writing a line's length](../experiments/0404-writing-a-line-length.md) | 398,180 | `a2e6b7ffbfb1d24d9d1b79696e87c95f2bbfe2ad60ef883838c15014380459f9` | |
+| `0404/original.pages` | [0404: Writing a line's length](../experiments/0404-writing-a-line-length.md) | 93,444 | `94f8045c2a8ab0d26bfab023dca69db2cf1967c699c071ff6bcd5fe482ed4ee7` | |
+| `0404/point-100.pages` | [0404: Writing a line's length](../experiments/0404-writing-a-line-length.md) | 398,180 | `bcd9d35e3149c4c0997a99df438c2b9baf94cdb7779691b1ce25012fe8f32686` | |
+| `0405/both-200.pages` | [0405: Writing a shape's size](../experiments/0405-writing-a-shape-size.md) | 398,765 | `6d08e9bc0d1f60b81b02463864020083693dd98d76d41ba15bde71c598adbda7` | |
+| `0405/box-200.pages` | [0405: Writing a shape's size](../experiments/0405-writing-a-shape-size.md) | 398,765 | `02283359c5a04d801c7fb91575e67d1d410177938c402a4fe892f77730d4fb05` | |
+| `0405/natural-200.pages` | [0405: Writing a shape's size](../experiments/0405-writing-a-shape-size.md) | 398,765 | `0b1d2e7271eabeef7cf67b6f108f9501083876b54ff8b4b92d42f83b7d4f209b` | |
+| `0405/original.pages` | [0405: Writing a shape's size](../experiments/0405-writing-a-shape-size.md) | 93,910 | `afa0f2763c220f2fad55bba7bc90f7498b966ea095f621c5291f65adcec41d53` | |
+| `0406/field3.pages` | [0406: Writing placeholder text](../experiments/0406-writing-placeholder-text.md) | 395,402 | `0d97ecc1c354225958f4ec041adbd60efee27a58c23ba8450f3cb85533e581c7` | |
+| `0406/first-word.pages` | [0406: Writing placeholder text](../experiments/0406-writing-placeholder-text.md) | 395,395 | `c027f2fb70bd20040647e66ae25e402af0b4f945b5f612357bfccfc5454872b0` | |
+| `0406/none.pages` | [0406: Writing placeholder text](../experiments/0406-writing-placeholder-text.md) | 395,385 | `1cdf0b2a476d804ff363374eafded00cfaf726e45f40d26fbca1fa346144bd03` | |
+| `0406/original.pages` | [0406: Writing placeholder text](../experiments/0406-writing-placeholder-text.md) | 90,778 | `67f0aba65e0983244760c7e3f0cf049e2c8c756148300052fb5be85bef130f7a` | |
+| `0406/template-kind.pages` | [0406: Writing placeholder text](../experiments/0406-writing-placeholder-text.md) | 395,395 | `17dc37c37bb697590331c92d9a0befcbe76dd921788f8b36392b4e1efe9734ea` | |
+| `0406/whole.pages` | [0406: Writing placeholder text](../experiments/0406-writing-placeholder-text.md) | 395,391 | `c8cba89fcca855e04e2f4f0a75b9291127ce0c2abcf86bd46aaf805333ee69c2` | |
+| `0407/entry-model-field2.pages` | [0407: Writing a table of contents](../experiments/0407-writing-a-table-of-contents.md) | 397,261 | `bf10e0ec244a636747067e0ff5242b9bcd2a9f5f9d951a2b7fb51b7565e66cc4` | |
+| `0407/entry-model-roman.pages` | [0407: Writing a table of contents](../experiments/0407-writing-a-table-of-contents.md) | 397,265 | `4f4b33f8a90d614ca508099cc82f8d410edb585118445254f8015b334ef6cddb` | |
+| `0407/entry-model-text.pages` | [0407: Writing a table of contents](../experiments/0407-writing-a-table-of-contents.md) | 397,271 | `bdfec5773f6fbc6f760559c1024839307a8443578187d4022761e5deef193b85` | |
+| `0407/entry-text.pages` | [0407: Writing a table of contents](../experiments/0407-writing-a-table-of-contents.md) | 397,261 | `7d27dcfc80ccaeaaeb64e707d20a227b81e14071fe2abb9e0312dec6cce7ce2b` | |
+| `0407/heading-renamed.pages` | [0407: Writing a table of contents](../experiments/0407-writing-a-table-of-contents.md) | 397,261 | `1f8c825f5081965318af7c96d9162d49e3da0acdc55bdba7219ed50d414a2bb9` | |
+| `0407/original.pages` | [0407: Writing a table of contents](../experiments/0407-writing-a-table-of-contents.md) | 92,330 | `b22d0740745cce16a5ccae294d5037860f31c475e8234010f3be124fe79c6d49` | |
+| `0407/page-number.pages` | [0407: Writing a table of contents](../experiments/0407-writing-a-table-of-contents.md) | 397,261 | `0bc3bc727472c2f75eb76e36fb794bcbe51127c3ef82247fe4b6c56cbb36f283` | |
+| `0409/cache-9.numbers` | [0409: Writing a Numbers chart's link to its cells](../experiments/0409-writing-a-numbers-chart-link.md) | 453,694 | `cc0689fddabfd13756e2612130f288b5f1dc1af7af1f65c5ccdac7f89f7535d9` | |
+| `0409/cell-b2-9.numbers` | [0409: Writing a Numbers chart's link to its cells](../experiments/0409-writing-a-numbers-chart-link.md) | 453,694 | `83268de029c150a611975d91a9ed68ab32e67201fdefa5b0860a5de55baffdef` | |
+| `0409/link-to-c2.numbers` | [0409: Writing a Numbers chart's link to its cells](../experiments/0409-writing-a-numbers-chart-link.md) | 453,694 | `eaf4c3304d7e2fb3ae91b07d0e98a774f25b1c92a2113092fd1b93c473264710` | |
+| `0409/link-to-column-c.numbers` | [0409: Writing a Numbers chart's link to its cells](../experiments/0409-writing-a-numbers-chart-link.md) | 453,694 | `e21e8776af0958507fd47d0da7bc94b0a70f5613f36b78ddad19ba42ea143ac4` | |
+| `0409/numbers-b2-2.numbers` | [0409: Writing a Numbers chart's link to its cells](../experiments/0409-writing-a-numbers-chart-link.md) | 137,834 | `a99022af6c84519f8d1cb2736a562f7980c82225bfe11f32cfc43cc2b5bdb701` | |
+| `0409/numbers-b2-9.numbers` | [0409: Writing a Numbers chart's link to its cells](../experiments/0409-writing-a-numbers-chart-link.md) | 136,578 | `cc036e37e7515a2c6e8c11ada39edfa176583a6a0d5140a1af3f2f190ac7c0e3` | |
+| `0409/numbers-x-is-y.numbers` | [0409: Writing a Numbers chart's link to its cells](../experiments/0409-writing-a-numbers-chart-link.md) | 138,191 | `a826efdececf96b8fed1bbe6dfb4e998a90f0789b19e8a8a0b1ff0a988e1df91` | |
+| `0409/original.numbers` | [0409: Writing a Numbers chart's link to its cells](../experiments/0409-writing-a-numbers-chart-link.md) | 137,249 | `eb73722d82dfcd750b5c731cbd3113b240d96c618aefcb1fb5a6f2caf7568c78` | |
+| `0410/numbers-average.numbers` | [0410: Writing a pivot table's summary function](../experiments/0410-writing-a-pivot-summary.md) | 153,044 | `111775ae8704e4a5c0bd2687e97cd8fd749ae2eb985acc7d74a3a8444121b017` | |
+| `0410/sum-edited.numbers` | [0410: Writing a pivot table's summary function](../experiments/0410-writing-a-pivot-summary.md) | 153,278 | `33f8705574cc0ac82a421fae281552943608ef261edd8d4d3e1c88b12aca357c` | |
+| `0410/sum.numbers` | [0410: Writing a pivot table's summary function](../experiments/0410-writing-a-pivot-summary.md) | 153,069 | `0645ae445578c670e9e654316fdec72ac55b4a92e87db17eb5782311f25ab785` | |
+| `0410/written-average-edited.numbers` | [0410: Writing a pivot table's summary function](../experiments/0410-writing-a-pivot-summary.md) | 156,825 | `4d860efcf38f68425342edcd68bf92da8c6cdf7c91487fe98341e64ef87b22d3` | |
+| `0410/written-average.numbers` | [0410: Writing a pivot table's summary function](../experiments/0410-writing-a-pivot-summary.md) | 486,874 | `7bffbabb2284250270efac8df29d9cca2e012763ca74194fbd53050c8a80f91a` | |
+| `0411/original.numbers` | [0411: Writing a category's value and rows](../experiments/0411-writing-categories.md) | 146,960 | `d3effbe19f95289167edf7e259f581844b2dbf6e5ca8331fd09815db75d28616` | |
+| `0411/rows-swapped.numbers` | [0411: Writing a category's value and rows](../experiments/0411-writing-categories.md) | 469,137 | `ded1864395a4337a477eda21227d6e1ea5ae1f315f0874e6d48c2a0d31c0d459` | |
+| `0411/value-z-6-only.numbers` | [0411: Writing a category's value and rows](../experiments/0411-writing-categories.md) | 469,137 | `c8a176bfd1682400b96fa3c1a3426380e7416659b75abed78ab3f8600cf1130b` | |
+| `0411/value-z.numbers` | [0411: Writing a category's value and rows](../experiments/0411-writing-categories.md) | 469,137 | `2bacd78d475330753d6797dc6a702673f0eb54378cdea4cd26b1d73027eada93` | |
+| `0412/exposure-minus-no-copy.pages` | [0412: Writing image adjustments](../experiments/0412-writing-image-adjustments.md) | 399,430 | `7c9a2560989537f4280e4087e6344f035f91674010f24644b17aaebac5babd3c` | |
+| `0412/exposure-minus.pages` | [0412: Writing image adjustments](../experiments/0412-writing-image-adjustments.md) | 399,434 | `fe8ec7b8d425dc61e7dfefe117a129afc8944b6d4281af4ffdce1b3f979ae327` | |
+| `0412/no-filtered-copy.pages` | [0412: Writing image adjustments](../experiments/0412-writing-image-adjustments.md) | 399,430 | `9be17474a3c86b05b4eff1fea25c226c65fd7c6ff67b6a66c87876b78de527b2` | |
+| `0412/original.pages` | [0412: Writing image adjustments](../experiments/0412-writing-image-adjustments.md) | 94,686 | `42f06e68e685c72b827079aefb783aff87de2b97e6ea1b8b6a5fce3e5eef253c` | |
+| `0412/unadjusted.pages` | [0412: Writing image adjustments](../experiments/0412-writing-image-adjustments.md) | 91,240 | `8276979523a753a81dbe06c6e792abe0f549bad808593d5967cf7370e43f6b7a` | |
+| `0413/original.pages` | [0413: Writing a shape's style preset](../experiments/0413-writing-a-shape-style-preset.md) | 92,381 | `2cfedb21087e089187adb53f48797bd950d7d1b0d0461f57c70520d55150a335` | |
+| `0413/pages-blue.pages` | [0413: Writing a shape's style preset](../experiments/0413-writing-a-shape-style-preset.md) | 95,552 | `6d6311ec79353e445e997c2508a35c0f33adc2685b354bae32bb6f63548846ba` | |
+| `0413/style-1731554.pages` | [0413: Writing a shape's style preset](../experiments/0413-writing-a-shape-style-preset.md) | 397,164 | `6136fb298807dfb5b2f0442865e40f0003f8afd395e685dba995aeb6702d08bc` | |
+| `0413/style-1731556.pages` | [0413: Writing a shape's style preset](../experiments/0413-writing-a-shape-style-preset.md) | 397,164 | `3ad6087358a2ad61b8ad4787fb7b00fb8ef8fe179145bac21b4608cd3380b0f4` | |
+| `0414/arrow-level0.key` | [0414: Writing a Keynote bullet](../experiments/0414-writing-a-keynote-bullet.md) | 1,223,072 | `b024a461217a7fdbf307cbd3b5730675ff30d23a4bd08ed82c835bebfd50cf33` | |
+| `0414/original.key` | [0414: Writing a Keynote bullet](../experiments/0414-writing-a-keynote-bullet.md) | 885,783 | `24f9ef5d878fd684eced45f812bca2de0811149edc978dba6b020ea3b9965088` | |
+| `0414/star-all.key` | [0414: Writing a Keynote bullet](../experiments/0414-writing-a-keynote-bullet.md) | 1,223,054 | `6dd5e429003724670977e8eb0671108c84ebff08a9cb4655a1c6868d11f40f1e` | |
+| `0415/original.key` | [0415: Writing a layout's name](../experiments/0415-writing-a-layout-name.md) | 886,912 | `1e56d02d37f1b4ddc4cb0135f4695009337753f77782592d38f5a209e421f2a2` | |
+| `0415/renamed-blank.key` | [0415: Writing a layout's name](../experiments/0415-writing-a-layout-name.md) | 1,226,793 | `1c28bc67bef04df9feb8f9cf740cf21e36eb801bc967d50f4b16a1133e7c5291` | |
+| `0415/renamed.key` | [0415: Writing a layout's name](../experiments/0415-writing-a-layout-name.md) | 1,226,794 | `82960eadb922b73f07b6326118cfdfb059ae9294a92a0dcabe413d862f9eb88b` | |
+| `0416/original.numbers` | [0416: Writing the order of sheets](../experiments/0416-writing-sheet-order.md) | 145,624 | `6097ec4360217b5858be9265c95c434b4cd06c8b0e93a2d387b45a8b762728c9` | |
+| `0416/reversed.numbers` | [0416: Writing the order of sheets](../experiments/0416-writing-sheet-order.md) | 464,875 | `7bbf498e9aa8e09ca665bce03882081902bc6c4ae9d832ee746936b28ed2c815` | |
+| `0416/second-only.numbers` | [0416: Writing the order of sheets](../experiments/0416-writing-sheet-order.md) | 464,869 | `1413966295810d20a16cf9330abf59419b5f83f9e0532e322857bd0dc74bc22a` | |
+| `0417/first-only.numbers` | [0417: Writing the objects on a sheet](../experiments/0417-writing-sheet-objects.md) | 461,848 | `70b51954672621752e653ff637a6122e09247764959dcbe41e3440f5a363da9f` | |
+| `0417/original.numbers` | [0417: Writing the objects on a sheet](../experiments/0417-writing-sheet-objects.md) | 144,736 | `8caa08fca4b142998db4ca34c9791a7c09c0818aba72592bb5cc63bc3fb1af12` | |
+| `0417/reversed.numbers` | [0417: Writing the objects on a sheet](../experiments/0417-writing-sheet-objects.md) | 461,854 | `2d0a7f4a742ce4f41f8232578f8ab9d7c604efdc03607777ed69c6093b82251f` | |
+| `0418/no-name-y-100.numbers` | [0418: Writing a Numbers table's position](../experiments/0418-writing-a-table-position.md) | 457,165 | `0451417fbf3de019aee071e7366c163e2a058965d855b87015b86fd4b20c9deb` | |
+| `0418/no-name.numbers` | [0418: Writing a Numbers table's position](../experiments/0418-writing-a-table-position.md) | 457,165 | `40e73e19183bb5eca67a04c3d6c54715eda0ce44c94673c2bda53fafea7e5872` | |
+| `0418/original.numbers` | [0418: Writing a Numbers table's position](../experiments/0418-writing-a-table-position.md) | 138,837 | `317c41bb605f4f3e2e492fdee400ab0f24f0989884239cee3a3f2ac7f2dcedd1` | |
+| `0418/x-50-y-0.numbers` | [0418: Writing a Numbers table's position](../experiments/0418-writing-a-table-position.md) | 457,165 | `490bbc11ec1647079f43bfcfd4daf7d36cf7ef511adf573d55185c6968b5bf5f` | |
+| `0418/y-100.numbers` | [0418: Writing a Numbers table's position](../experiments/0418-writing-a-table-position.md) | 457,165 | `68ac5756efb3b8e60c15d3319445996d2bb7ac64e542c8f037cfe25202d6e1ff` | |
+| `0418/y-minus-28.numbers` | [0418: Writing a Numbers table's position](../experiments/0418-writing-a-table-position.md) | 457,165 | `99ce88b699e41df001e1f913c1998ca6dc403799992f0233365eb02ef8445ce0` | |
+| `0419/no-body.pages` | [0419: Writing the document body setting](../experiments/0419-writing-the-document-body-setting.md) | 395,046 | `579ee07113dcb299a742a5a289d341e74b9ba1c1cb181e167c88155a5d51c955` | |
+| `0419/original.pages` | [0419: Writing the document body setting](../experiments/0419-writing-the-document-body-setting.md) | 90,438 | `96db185563729e8d065f4825fb7763535b54571fa59d55d6eb351c7000f43349` | |
+| `0419/pages-no-body-on.pages` | [0419: Writing the document body setting](../experiments/0419-writing-the-document-body-setting.md) | 394,624 | `99e2429f1ef28b5026dff627f4dc5fe876042d50ca637c3fbb3d2a8ec569bbe2` | |
+| `0419/pages-no-body.pages` | [0419: Writing the document body setting](../experiments/0419-writing-the-document-body-setting.md) | 89,806 | `b6f963b0cad955e3628292148efcf135a16a82adce0678c6298bcd8e37b54d36` | |
+| `0420/hyphenate.pages` | [0420: Writing hyphenation](../experiments/0420-writing-hyphenation.md) | 395,421 | `cac74ab3f5588f1c19900ab76104d3729b3696352b4a92366040f4b7503a6bbb` | |
+| `0420/no-hyphenate.pages` | [0420: Writing hyphenation](../experiments/0420-writing-hyphenation.md) | 395,421 | `fd9097853a28447e8c28698b8aeca631fd5e8e5741bba0e0e6ee20c5b27d9419` | |
+| `0420/text.pages` | [0420: Writing hyphenation](../experiments/0420-writing-hyphenation.md) | 395,421 | `fd9097853a28447e8c28698b8aeca631fd5e8e5741bba0e0e6ee20c5b27d9419` | |
+| `0421/ligatures-off.pages` | [0421: Writing document ligatures](../experiments/0421-writing-document-ligatures.md) | 395,080 | `b9809bccd8a227d1380c1aa06b5313a6a527a53dd02c325da82feeefe5ff54e6` | |
+| `0421/ligatures-on.pages` | [0421: Writing document ligatures](../experiments/0421-writing-document-ligatures.md) | 395,080 | `bacc3f1bc38d33af6a99b5bb6152a03eca34af0671e119e9bbb2f0c2ff548018` | |
+| `0421/text.pages` | [0421: Writing document ligatures](../experiments/0421-writing-document-ligatures.md) | 395,080 | `bacc3f1bc38d33af6a99b5bb6152a03eca34af0671e119e9bbb2f0c2ff548018` | |
+| `0422/both-off.pages` | [0422: Writing the header and footer switches](../experiments/0422-writing-header-and-footer-switches.md) | 395,072 | `1657d3fc547c21f71a782f80f056c6056d539373aef5aa2fea884e02876d8962` | |
+| `0422/footer-hidden.pages` | [0422: Writing the header and footer switches](../experiments/0422-writing-header-and-footer-switches.md) | 395,059 | `8d43b5c550e8ade0def645931fd45f7a8d472c4ab56cfc4bcf1299dfb5f453a7` | |
+| `0422/footer.pages` | [0422: Writing the header and footer switches](../experiments/0422-writing-header-and-footer-switches.md) | 395,059 | `d920a66b09d03e8202a0d7cc25fe5b52842d97936fa3cd629c67cdba3460d560` | |
+| `0422/footers-off.pages` | [0422: Writing the header and footer switches](../experiments/0422-writing-header-and-footer-switches.md) | 395,072 | `640e44ac719aa254631005e299278ef80640f349077bc4e3c99512b6ea1c8c8a` | |
+| `0422/headers-off.pages` | [0422: Writing the header and footer switches](../experiments/0422-writing-header-and-footer-switches.md) | 395,072 | `be5b08c3ad585a002de5d89a61a4864db2a6e1ac6bbfcfd10f59370f790d8a50` | |
+| `0422/texts.pages` | [0422: Writing the header and footer switches](../experiments/0422-writing-header-and-footer-switches.md) | 395,072 | `489589b6350c709eb794f70eb95f5257a577833920e565ce3793aa6154a9b73c` | |
+| `0423/char-moved-only.pages` | [0423: Writing an object's place in the text](../experiments/0423-writing-an-object-in-the-text.md) | 418,850 | `7e21c6befcbbbecc6050187124dc83d26924c7445b5ec1fff5ca8b5e48b4819e` | |
+| `0423/entry-moved-only.pages` | [0423: Writing an object's place in the text](../experiments/0423-writing-an-object-in-the-text.md) | 418,850 | `770232d1e2344e9a780b26599f3ef7dd17ca87ff776ed410ab64a69f1bc12542` | |
+| `0423/original.pages` | [0423: Writing an object's place in the text](../experiments/0423-writing-an-object-in-the-text.md) | 109,537 | `35c583b3f068e769ad9ab06a3f720322fa37add9fd65ee31e975d0b983f9a4a0` | |
+| `0423/table-first.pages` | [0423: Writing an object's place in the text](../experiments/0423-writing-an-object-in-the-text.md) | 418,850 | `c8c0de00c9ef6c02b25e9ffac885c77c2893f76a68fe8e9a8b11a35e1194d288` | |
+| `0424/body-dropped.pages` | [0424: Writing the list of objects on the page](../experiments/0424-writing-the-page-objects-list.md) | 397,158 | `502a30f2d6f3d31027ff25c26a69a05b2d42bba31dff9ae6775f7ca689703f77` | |
+| `0424/original.pages` | [0424: Writing the list of objects on the page](../experiments/0424-writing-the-page-objects-list.md) | 92,381 | `2cfedb21087e089187adb53f48797bd950d7d1b0d0461f57c70520d55150a335` | |
+| `0424/shape-dropped.pages` | [0424: Writing the list of objects on the page](../experiments/0424-writing-the-page-objects-list.md) | 397,158 | `301c8a94ff00cfb99e01b3cad600e29de98485837366374d61eaa6579102dd85` | |
+| `0424/shape-first.pages` | [0424: Writing the list of objects on the page](../experiments/0424-writing-the-page-objects-list.md) | 397,164 | `29014c4ea493546d1092916208fbc6bc58145b6bae6a9aea10c1a36931f9fb1b` | |
+| `0425/over-text.pages` | [0425: Writing the stacking order of the page](../experiments/0425-writing-stacking-order.md) | 397,164 | `dad17e1aadca8e481e5c8b2d38b2ac9ace13ce6b6c5bdeb7f8acf910ddb608b5` | |
+| `0425/shape-first.pages` | [0425: Writing the stacking order of the page](../experiments/0425-writing-stacking-order.md) | 397,164 | `42a3399c3d90af2412702e05452619da4d84cc9f976ea2c545c811afa8b0c071` | |
+| `0426/a2-b3.numbers` | [0426: Writing a merge over a value that isn't in its first cell](../experiments/0426-writing-a-merge-over-a-value.md) | 451,556 | `acfcba25d59ca50f07cead8eef727b95f4dbbb4320cbe405436e6d5b99f13914` | |
+| `0426/b1-b2.numbers` | [0426: Writing a merge over a value that isn't in its first cell](../experiments/0426-writing-a-merge-over-a-value.md) | 451,554 | `59784edf93b7f41e20f8d4d9c646c801117870e9eead1e205643c93a559b4e15` | |
+| `0426/b2-b3.numbers` | [0426: Writing a merge over a value that isn't in its first cell](../experiments/0426-writing-a-merge-over-a-value.md) | 451,554 | `feafed3e2b3cc76a2aa472d96f7763fa1d80e1b2b428b79110f7fc20f1cb90ae` | |
+| `0427/text.pages` | [0427: Writing paragraph runs without a style](../experiments/0427-writing-paragraph-runs-without-a-style.md) | 395,054 | `271bb0ceeae7f6bb57312bc25afa570038c3d9929d079cff15078404c825daad` | |
+| `0427/title-body-none.pages` | [0427: Writing paragraph runs without a style](../experiments/0427-writing-paragraph-runs-without-a-style.md) | 395,068 | `e58d7914b876ce30b68490a12fa0f6d61636d8d5b837ed1330ade84306f9ff0f` | |
+| `0427/title-none-body.pages` | [0427: Writing paragraph runs without a style](../experiments/0427-writing-paragraph-runs-without-a-style.md) | 395,068 | `276c9c535ae15f5b69cbd2f6ef81ba2c4c04d1e294f87fb264e2b384b36c61d1` | |
+| `0427/title-only.pages` | [0427: Writing paragraph runs without a style](../experiments/0427-writing-paragraph-runs-without-a-style.md) | 395,054 | `683e85cc2ea098631944a25b714d863ddceb966a7b5d69905b195c0b5dd6dd48` | |
+| `0428/font-bold-name-and-flag.pages` | [0428: Writing a font name with a weight](../experiments/0428-writing-a-font-name-with-a-weight.md) | 395,051 | `59ff7cd48de6368603063c7d5d9d5cd0e600af7f9bfbcfccb7e1674af0c7a629` | |
+| `0428/font-bold-name.pages` | [0428: Writing a font name with a weight](../experiments/0428-writing-a-font-name-with-a-weight.md) | 395,051 | `4c0f33e3b51a0fa37d4c3da7db6a02cd474324019eb2232e732d70d05603721d` | |
+| `0428/font-italic-name.pages` | [0428: Writing a font name with a weight](../experiments/0428-writing-a-font-name-with-a-weight.md) | 395,053 | `53da038ecf62ecdc27afb4ec7f8ed2309892acf7872479363eca5ce63c162ca1` | |
+| `0428/font-light-name-and-flag.pages` | [0428: Writing a font name with a weight](../experiments/0428-writing-a-font-name-with-a-weight.md) | 395,052 | `28eebd64f5d0d30a30c0d66c1c54a733a8364b72672ae535107142b7d6c55459` | |
+| `0428/original.pages` | [0428: Writing a font name with a weight](../experiments/0428-writing-a-font-name-with-a-weight.md) | 90,438 | `96db185563729e8d065f4825fb7763535b54571fa59d55d6eb351c7000f43349` | |
+| `0429/cr.key` | [0429: Writing breaks in a Keynote title](../experiments/0429-writing-breaks-in-a-keynote-title.md) | 1,223,082 | `42163376c60743056125dd50a6953f685e34db83bab43cb2dc19d466f1ec5063` | |
+| `0429/lf.key` | [0429: Writing breaks in a Keynote title](../experiments/0429-writing-breaks-in-a-keynote-title.md) | 1,223,082 | `b9db7971a8c1413207b94e06a2789c3091ea18a331b2d17738b9e4ea316e82d5` | |
+| `0429/line-sep.key` | [0429: Writing breaks in a Keynote title](../experiments/0429-writing-breaks-in-a-keynote-title.md) | 1,223,073 | `56e4604c885a398f9c2c76dd4b63470af3dab84b7b5b28332b43999fd245ce06` | |
+| `0429/original.key` | [0429: Writing breaks in a Keynote title](../experiments/0429-writing-breaks-in-a-keynote-title.md) | 885,748 | `3e5e6327488684553880bebce619f933855b3727106f0e9f003c61b5c312a432` | |
+| `0430/caption-text.key` | [0430: Writing a chart's caption](../experiments/0430-writing-a-chart-caption.md) | 1,252,655 | `5df6c9d85ddc4840da83a8d9eb6cf9323495d7ec6aad221fbd8ce98f353b9de3` | |
+| `0430/original.key` | [0430: Writing a chart's caption](../experiments/0430-writing-a-chart-caption.md) | 914,239 | `fd7a5d05c7fe008fa183fa40504f4668b6bbf431888a99115d1756b199aa0f0e` | |
+| `0431/original.pages` | [0431: Writing a non-ASCII name into the ZIP](../experiments/0431-writing-a-non-ascii-part-name.md) | 91,240 | `8276979523a753a81dbe06c6e792abe0f549bad808593d5967cf7370e43f6b7a` | |
+| `0432/deflate-all.pages` | [0432: Writing compressed ZIP entries](../experiments/0432-writing-compressed-zip-entries.md) | 48,586 | `42afae1c0f0963ba87398da4094a57a934fa0f7c395199493c28bba9de1a6e28` | |
+| `0432/deflate-data.pages` | [0432: Writing compressed ZIP entries](../experiments/0432-writing-compressed-zip-entries.md) | 91,116 | `f770a4a02cccac058dfb466e4f98834f830bd3cd035185ddddbed97df2ef1a31` | |
+| `0432/deflate-iwa.pages` | [0432: Writing compressed ZIP entries](../experiments/0432-writing-compressed-zip-entries.md) | 62,171 | `c1a3e85d0228d2c1e534bf652dde8e7fe0c572f8fc7621f647d27cf94108fec6` | |
+| `0432/original.pages` | [0432: Writing compressed ZIP entries](../experiments/0432-writing-compressed-zip-entries.md) | 91,240 | `8276979523a753a81dbe06c6e792abe0f549bad808593d5967cf7370e43f6b7a` | |
+| `0433/chunks-1000.pages` | [0433: Writing other chunk sizes](../experiments/0433-writing-chunk-sizes.md) | 398,350 | `288e196a81e1849ab49d7c964870b4b41119d3f8e9020ac1cabc0a2bced2197e` | |
+| `0433/chunks-1000000.pages` | [0433: Writing other chunk sizes](../experiments/0433-writing-chunk-sizes.md) | 395,012 | `7d649ed002444498c38b8f617224e8235f2c72b206243bb8110742a174bb9f62` | |
+| `0433/chunks-65536.pages` | [0433: Writing other chunk sizes](../experiments/0433-writing-chunk-sizes.md) | 395,046 | `08e2b36153e26defc175bbb71e432b0b837f3b5c973e6da58e7bc7ad71d021b9` | |
+| `0434/no-history.pages` | [0434: Leaving out package files](../experiments/0434-leaving-out-package-files.md) | 89,903 | `b61f02589c7814ea344d8d3561e6da1b09efe25c5a784f32b8bd9360d3d2ba85` | |
+| `0434/no-identifier.pages` | [0434: Leaving out package files](../experiments/0434-leaving-out-package-files.md) | 90,152 | `3b4c763034a4b2fe7d4fd5b336b6a9d9f81bd4f45c7ba7a85b50fb3dfe235ee2` | |
+| `0434/no-metadata-folder.pages` | [0434: Leaving out package files](../experiments/0434-leaving-out-package-files.md) | 89,086 | `bd2c84091a4928c1bae884be26022f65f00b57ac0d6e9522472bf86d217b5bce` | |
+| `0434/no-previews.pages` | [0434: Leaving out package files](../experiments/0434-leaving-out-package-files.md) | 73,802 | `a79abdcbacfb29ebfb7b96b7b31a9562eb1be41e14e9b8e07e53150da996bf61` | |
+| `0434/no-properties.pages` | [0434: Leaving out package files](../experiments/0434-leaving-out-package-files.md) | 89,667 | `4cc086b16b80c4d90915fe539efcd8dfa70190c424939b25376aa5e355e09ada` | |
+| `0434/no-viewstate.pages` | [0434: Leaving out package files](../experiments/0434-leaving-out-package-files.md) | 89,481 | `bcdc75bd7071da86c3632069d90cd5fbf9bb4566f0489f072edea4d26b41dd22` | |
+| `0434/only-index.pages` | [0434: Leaving out package files](../experiments/0434-leaving-out-package-files.md) | 72,570 | `88e243e9f6e4bfefa594a689937c7521a2ddbbeb970fa00747c6501f488e78be` | |
+| `0435/extra-listed-saved.pages` | [0435: Writing a data file that nothing uses](../experiments/0435-writing-an-unused-data-file.md) | 91,245 | `a267d8b25552ffed0b26da95eea05227817eaba6aacffa66992484a8ed2e41f2` | |
+| `0435/extra-unlisted-saved.pages` | [0435: Writing a data file that nothing uses](../experiments/0435-writing-an-unused-data-file.md) | 91,245 | `4bf9a0f56f35d7b861a220d24ffab4d8bed5f8c2e7c98a7bc26364c0f815a512` | |
+| `0436/plain.pages` | [0436: Writing a soft hyphen](../experiments/0436-writing-a-soft-hyphen.md) | 395,221 | `d20dc70c2f41e71b02ad7897bf69c01da53c2c71670e912c9d04d3bb53b43050` | |
+| `0436/soft-hyphens.pages` | [0436: Writing a soft hyphen](../experiments/0436-writing-a-soft-hyphen.md) | 395,225 | `ae4c48fbca1933d251cdb13b204f5a21efb53b9064e90b77e1300c98f41203e2` | |
+| `0437/count-0.numbers` | [0437: Writing a tile's row count](../experiments/0437-writing-a-tile-row-count.md) | 457,165 | `8311052c6817f5589e94774fa0f48dd2165a9805d9613b8212ebad39d9a8749e` | |
+| `0437/count-2.numbers` | [0437: Writing a tile's row count](../experiments/0437-writing-a-tile-row-count.md) | 457,165 | `6f9517cac1cc6a85d398046571eb35350a4e3e47ddca3060d3e50628a239943a` | |
+| `0437/count-9.numbers` | [0437: Writing a tile's row count](../experiments/0437-writing-a-tile-row-count.md) | 457,165 | `dedb71dea1e665e4cb0cfd390d59a94190d6c2b725d56410b987b8b2d12ae9ee` | |
+| `0437/field6-2.numbers` | [0437: Writing a tile's row count](../experiments/0437-writing-a-tile-row-count.md) | 457,165 | `8bff05cd4a2628ab7e4f6fb07e89fdf01e7c818b03b839ad9f1d175b34fc48a9` | |
+| `0437/original.numbers` | [0437: Writing a tile's row count](../experiments/0437-writing-a-tile-row-count.md) | 138,837 | `317c41bb605f4f3e2e492fdee400ab0f24f0989884239cee3a3f2ac7f2dcedd1` | |
+| `0438/image-package.pages` | [0438: Writing a document as a package](../experiments/0438-writing-a-package.md) | 90,292 | `9132c2597dbefedd85d3ea03a4ac02dfbaeae49acc199ef68a7404aec8f541c6` | a folder package |
+| `0439/box-100.key` | [0439: Writing a Keynote line](../experiments/0439-writing-a-keynote-line.md) | 1,221,006 | `71bf2796d20d8eaeb21f5f6845485c4d05ec2f1f8e5405df2978a127894dc042` | |
+| `0439/natural-100.key` | [0439: Writing a Keynote line](../experiments/0439-writing-a-keynote-line.md) | 1,221,006 | `d1c96dc5d59a599f990ab5b6bac651d33cd4ad81ed2de99438f9de10a778c275` | |
+| `0439/original.key` | [0439: Writing a Keynote line](../experiments/0439-writing-a-keynote-line.md) | 883,432 | `b927affb08322ac6affda34e08a1a82cb444a483971c5d6297cf8fe884895c4f` | |
+| `0439/rot-90.key` | [0439: Writing a Keynote line](../experiments/0439-writing-a-keynote-line.md) | 1,221,006 | `86fb04240677143fc6fd7ed4208956074159fd4dd052957e641732b112f1deb1` | |
+| `0441/arabic.pages` | [0441: Writing right-to-left text](../experiments/0441-writing-right-to-left-text.md) | 395,066 | `fe380084e82d9e768a9c0c1d0f31d083d20438a07031c7a27415c0e7113f7d96` | |
+| `0441/latin.pages` | [0441: Writing right-to-left text](../experiments/0441-writing-right-to-left-text.md) | 395,052 | `84773a195257061f456367dfafa40efebcc7e5c2ef4088a20700a47a6c4acd90` | |
+| `0441/mixed.pages` | [0441: Writing right-to-left text](../experiments/0441-writing-right-to-left-text.md) | 395,071 | `7383829065578e3c4d6c6dbd312a04712fe9879db5b7e8053f967d8648f07a1b` | |
+| `0444/angle-0.pages` | [0444: Where a radial gradient is centred](../experiments/0444-where-a-radial-gradient-is-centred.md) | 398,470 | `f49c4dae711ea8cbc24577cc460df4eabad26090758bb375946a6fcd29dedf69` | |
+| `0444/angle-135.pages` | [0444: Where a radial gradient is centred](../experiments/0444-where-a-radial-gradient-is-centred.md) | 398,470 | `754b40d7f586840eb3daee878a1d705d591ab3e7ae65bf65ba3b9d9395400c05` | |
+| `0444/angle-180.pages` | [0444: Where a radial gradient is centred](../experiments/0444-where-a-radial-gradient-is-centred.md) | 398,470 | `25781c800278ddc1de43f6ed9cc4fa5691b1c46b891c4506307ddce85b5c7fd9` | |
+| `0444/angle-225.pages` | [0444: Where a radial gradient is centred](../experiments/0444-where-a-radial-gradient-is-centred.md) | 398,470 | `d78a66731a4502254d5ccc10a1e3a147903f49001342f880a7e4fd1fd180968c` | |
+| `0444/angle-270.pages` | [0444: Where a radial gradient is centred](../experiments/0444-where-a-radial-gradient-is-centred.md) | 398,470 | `a793bc73927a6b76a6487880354cf932e6ff978bf00643c03216eb5507975ebb` | |
+| `0444/angle-315.pages` | [0444: Where a radial gradient is centred](../experiments/0444-where-a-radial-gradient-is-centred.md) | 398,470 | `619f4f8dd0c6d22b63d07765d91e54833425f121119ed44a3d9e4fc59cfd1c9d` | |
+| `0444/angle-45.pages` | [0444: Where a radial gradient is centred](../experiments/0444-where-a-radial-gradient-is-centred.md) | 398,470 | `aa6e6bbf7d4bf34ca23cf928360f7445f42584f0a638a0e8499dd1be0ccce2b6` | |
+| `0444/angle-90.pages` | [0444: Where a radial gradient is centred](../experiments/0444-where-a-radial-gradient-is-centred.md) | 398,470 | `6d8fd7317de8a760eec55fca1e9ae3d16ba841464dc28b0391c7544efa136fab` | |
+| `0445/wide-0.pages` | [0445: A radial gradient in a wide shape](../experiments/0445-a-radial-gradient-in-a-wide-shape.md) | 398,470 | `fc3a4a3b1c01432cc36481e671216161cb54ac226e54f4f6e4c3aabe63cc5f7d` | |
+| `0445/wide-225.pages` | [0445: A radial gradient in a wide shape](../experiments/0445-a-radial-gradient-in-a-wide-shape.md) | 398,470 | `be37f77e7d540a288ba6332a6cfa5fb37c865c666338713c5d8fec7d86f19ebb` | |
+| `0445/wide-270.pages` | [0445: A radial gradient in a wide shape](../experiments/0445-a-radial-gradient-in-a-wide-shape.md) | 398,470 | `e14bf8fa132f4ed01be0d96416301ab228e3864bcfc296d4321d508e7b8fda0d` | |
+| `0445/wide-315.pages` | [0445: A radial gradient in a wide shape](../experiments/0445-a-radial-gradient-in-a-wide-shape.md) | 398,470 | `c4e9c5d9fd73ff8d20beb76592e565b03017927d1265f9677bf0d2aa36e3ee1b` | |
+| `0445/wide-45.pages` | [0445: A radial gradient in a wide shape](../experiments/0445-a-radial-gradient-in-a-wide-shape.md) | 398,470 | `944a6348b833e9753198adcd804f8d132b789ec96fbcdddcbbbaf8e69838b7db` | |
+| `0445/wide.pages` | [0445: A radial gradient in a wide shape](../experiments/0445-a-radial-gradient-in-a-wide-shape.md) | 398,470 | `e14bf8fa132f4ed01be0d96416301ab228e3864bcfc296d4321d508e7b8fda0d` | |
+| `0446/blue.pages` | [0446: Writing a removed background](../experiments/0446-writing-a-removed-background.md) | 398,021 | `229c458c1e5e8d74d752aa189883af451a1753c7f553463e8624dc045b2cb842` | |
+| `0446/no-10-19-22.pages` | [0446: Writing a removed background](../experiments/0446-writing-a-removed-background.md) | 397,715 | `f43d21de6bd6c3ba088db063cdc8a8d07910a6698d93143441d0512d80cd9466` | |
+| `0446/no-19.pages` | [0446: Writing a removed background](../experiments/0446-writing-a-removed-background.md) | 397,934 | `19a37540de0ac2af032e2743e5f5c7b0f0e21608cf9a77c70576eb38eec0a260` | |
+| `0446/no-5-10-19-22.pages` | [0446: Writing a removed background](../experiments/0446-writing-a-removed-background.md) | 397,709 | `52107eb29276c3af918cb39fdfdecc636a9369792b804cd6735e0001f42a4bf2` | |
+| `0446/no-5-10-19.pages` | [0446: Writing a removed background](../experiments/0446-writing-a-removed-background.md) | 397,712 | `264a03d5f1c7c77396809bacc7f301d24e60dbdccfe2c08fdd5f64dd64c5e701` | |
+| `0446/no-5-10.pages` | [0446: Writing a removed background](../experiments/0446-writing-a-removed-background.md) | 397,800 | `dc996eadc08e590a3bb2a0d6dddc147c211f6eafe99a6c12701b3b6278b6c132` | |
+| `0446/no-5-19-22.pages` | [0446: Writing a removed background](../experiments/0446-writing-a-removed-background.md) | 397,925 | `eaa65cd57186a4921b1e91367260b73821b69a6d45835248f68a6789a2dd8089` | |
+| `0446/no-5-19.pages` | [0446: Writing a removed background](../experiments/0446-writing-a-removed-background.md) | 397,928 | `86b43132e76b7753e0db63b512bd17b85b0ce18da0582423962421513936c0e1` | |
+| `0446/no-5-22.pages` | [0446: Writing a removed background](../experiments/0446-writing-a-removed-background.md) | 398,012 | `a3bf46ea6b35a6f78064326bead360431de292c430a496be91affc93393ea935` | |
+| `0446/no-5.pages` | [0446: Writing a removed background](../experiments/0446-writing-a-removed-background.md) | 398,015 | `a7f9e127edb4c9f89a2e9543772b58c6506739dd9c4c95be7ef73899ecfc22a2` | |
+| `0447/both-80.pages` | [0447: Writing an image's three sizes](../experiments/0447-writing-an-image-s-sizes.md) | 395,956 | `7a757912829cab3ee7f6fef6940cb1315dad2b325e677d3dd27fe56edd2e40c4` | |
+| `0447/field4-80.pages` | [0447: Writing an image's three sizes](../experiments/0447-writing-an-image-s-sizes.md) | 395,956 | `d365d562c97d3fdd183b11b9582611cd861294178d250abf9a805f4d369f770b` | |
+| `0447/field9-80.pages` | [0447: Writing an image's three sizes](../experiments/0447-writing-an-image-s-sizes.md) | 395,956 | `d58b718a322ef7de11853f9d0f418be39c103b6ed25dee74b9ce60d511dff182` | |
+| `0447/geometry-80.pages` | [0447: Writing an image's three sizes](../experiments/0447-writing-an-image-s-sizes.md) | 395,956 | `ede60495bcd20bdd17ca180b6baeb9f7228263079d69f3730931159ce0d3fc2e` | |
+| `0447/original.pages` | [0447: Writing an image's three sizes](../experiments/0447-writing-an-image-s-sizes.md) | 91,240 | `8276979523a753a81dbe06c6e792abe0f549bad808593d5967cf7370e43f6b7a` | |
+| `0448/build.key` | [0448: Writing a build's stages](../experiments/0448-writing-a-build-s-stages.md) | 889,263 | `f7b55015a602e2dcd67058a1d8cb34707fb232d220c81b505e2fb06da801f63f` | |
+| `0448/no-builds-no-stages.key` | [0448: Writing a build's stages](../experiments/0448-writing-a-build-s-stages.md) | 1,226,704 | `bece001e3caabae26020f4cfedb1c8cde31f71df3165ae094473214a8845e5ca` | |
+| `0448/no-builds.key` | [0448: Writing a build's stages](../experiments/0448-writing-a-build-s-stages.md) | 1,226,712 | `294d623641389177195f0790f11fb888ba9441ffae8e6ed6674c60ba7e943fdf` | |
+| `0448/no-stages.key` | [0448: Writing a build's stages](../experiments/0448-writing-a-build-s-stages.md) | 1,226,711 | `53710da65459973138caa869797f704ef1f6cc6e8a5098a491a1c2f82ac65117` | |
+| `0448/plain.key` | [0448: Writing a build's stages](../experiments/0448-writing-a-build-s-stages.md) | 885,372 | `c5873f36ac3fe9d4300a36d42530f144b27def4a7f620bdd2697327c0c72d800` | |
+| `0448/stage-twice.key` | [0448: Writing a build's stages](../experiments/0448-writing-a-build-s-stages.md) | 1,226,727 | `025c9e8231ba177d98a29c6ece9f99e24f9a4f3c164180f1acb8d45a2614afec` | |
+| `0449/out.key` | [0449: Writing a build's direction](../experiments/0449-writing-a-build-direction.md) | 1,226,720 | `dd36fd9ccefbd30936575711ad0d7021803714670fa55f3bfe379faf243aa0dd` | |
+| `0449/plain.key` | [0449: Writing a build's direction](../experiments/0449-writing-a-build-direction.md) | 885,372 | `c5873f36ac3fe9d4300a36d42530f144b27def4a7f620bdd2697327c0c72d800` | |
+| `0450/body-text.key` | [0450: Writing which object a build moves](../experiments/0450-writing-a-build-s-object.md) | 1,226,731 | `762fe83ce8f7edfecb9c3a89bae8468a6aea3c902c4f602e9c5d26eebdca010c` | |
+| `0450/build-body.key` | [0450: Writing which object a build moves](../experiments/0450-writing-a-build-s-object.md) | 1,226,731 | `bb88c4c90a9648bd253ade2d3bbe2ee5dc378c61a2fc548f53de72adeec1d763` | |
+| `0450/no-build.key` | [0450: Writing which object a build moves](../experiments/0450-writing-a-build-s-object.md) | 1,226,716 | `a725ee0542e73ce9d35a5736ebf21e28481c2aabd9d00c3c18087dfc3201256f` | |
+| `0451/body-kind-1.pages` | [0451: Writing what a text storage is for](../experiments/0451-writing-a-text-storage-kind.md) | 395,046 | `06766f90be48d7660c4623e43f477d12e56abc2329f630dbd23f6a3f384f109e` | |
+| `0451/body-kind-2.pages` | [0451: Writing what a text storage is for](../experiments/0451-writing-a-text-storage-kind.md) | 395,046 | `28bc3ca37ee5e9bb68b499d87f0f1d0dd2e2a0510ff6e45b7d707bbfe49cb4f2` | |
+| `0451/body-kind-7.pages` | [0451: Writing what a text storage is for](../experiments/0451-writing-a-text-storage-kind.md) | 395,046 | `a1bbd350754993c4ce06cf62dd00c5591d89362450a02591f68dffed37bcf4e0` | |
+| `0451/header-kind-0.pages` | [0451: Writing what a text storage is for](../experiments/0451-writing-a-text-storage-kind.md) | 395,059 | `bfafeb005db8acc915b472c411ae201a55a45a040ccf1201bf733f9405c9598b` | |
+| `0451/header-text.pages` | [0451: Writing what a text storage is for](../experiments/0451-writing-a-text-storage-kind.md) | 395,059 | `20ca7693f5be80f056f7816f3a8901c0c9c9019597661fcad430c5f690a29895` | |
+| `0452/original.key` | [0452: Writing a hidden title](../experiments/0452-writing-a-hidden-title.md) | 885,748 | `3e5e6327488684553880bebce619f933855b3727106f0e9f003c61b5c312a432` | |
+| `0452/title-hidden.key` | [0452: Writing a hidden title](../experiments/0452-writing-a-hidden-title.md) | 1,223,050 | `060908f4088210d784a3c58326c80bc9279d83557f120d165c903345a0bf0881` | |
+| `0453/fill-blue.numbers` | [0453: Writing a highlighting rule's style](../experiments/0453-writing-a-highlighting-style.md) | 459,075 | `06497041da8a6362f1141f61162cb8082037e202bdd3215bee2c51525433930b` | |
+| `0453/original.numbers` | [0453: Writing a highlighting rule's style](../experiments/0453-writing-a-highlighting-style.md) | 140,220 | `92adee3afad6131393013c3e77656ad82a57caddfe8913b82aa3f1ea4e78891c` | |
+| `0453/text-red.numbers` | [0453: Writing a highlighting rule's style](../experiments/0453-writing-a-highlighting-style.md) | 459,075 | `84e629dd48e9ef23e5a7ccf127c9a1b863140c62fdea4bce23ba4ef256cdf655` | |
+| `0454/kind-0.numbers` | [0454: Writing a rule's comparison](../experiments/0454-writing-a-rule-s-comparison.md) | 459,075 | `633dfc57b0546f435408aa55c243caf9fad30250afee60726527e781ee600fd0` | |
+| `0454/kind-1.numbers` | [0454: Writing a rule's comparison](../experiments/0454-writing-a-rule-s-comparison.md) | 459,075 | `d68156a7642d774f15c23a1879100f6e4d45952bb8b49a44430933a3fb40ad8b` | |
+| `0454/kind-10.numbers` | [0454: Writing a rule's comparison](../experiments/0454-writing-a-rule-s-comparison.md) | 459,075 | `aaf6875f9d08817b6c6f541ea788af4640166976bb8a2beec722c7616d3aa942` | |
+| `0454/kind-11.numbers` | [0454: Writing a rule's comparison](../experiments/0454-writing-a-rule-s-comparison.md) | 459,075 | `e4f1efbefe86b9e01cdb22651743d01045c247f0ed7368dc6d564dd6066e17b9` | |
+| `0454/kind-12.numbers` | [0454: Writing a rule's comparison](../experiments/0454-writing-a-rule-s-comparison.md) | 459,075 | `c9a6a19704ae97dabada4e1067365f94ea950efae746fe3a0093dfad2d77c883` | |
+| `0454/kind-2.numbers` | [0454: Writing a rule's comparison](../experiments/0454-writing-a-rule-s-comparison.md) | 459,075 | `3df996c50773c1e3fb7cb22b27e0fb1d674b29707d3129d76b6759e509010d69` | |
+| `0454/kind-3.numbers` | [0454: Writing a rule's comparison](../experiments/0454-writing-a-rule-s-comparison.md) | 459,075 | `af4981591e096ef1e4040d9ab5ca19f8f40d121720f5c0833ef40bd0a2f3b214` | |
+| `0454/kind-4.numbers` | [0454: Writing a rule's comparison](../experiments/0454-writing-a-rule-s-comparison.md) | 459,075 | `d2793b03a0ac238028bd7e786ed3f5568f37d38bf4e59ece21f11487988f849f` | |
+| `0454/kind-5.numbers` | [0454: Writing a rule's comparison](../experiments/0454-writing-a-rule-s-comparison.md) | 459,075 | `cbddd12b15fcfd93cba6b9d9210580ab00cf533fa796d57842c5b37aa66fbb64` | |
+| `0454/kind-6.numbers` | [0454: Writing a rule's comparison](../experiments/0454-writing-a-rule-s-comparison.md) | 459,075 | `1a159532eaddefab44595ca4a87cfbb5dcfab91b900fff5f5a318492a7d73523` | |
+| `0454/kind-7.numbers` | [0454: Writing a rule's comparison](../experiments/0454-writing-a-rule-s-comparison.md) | 459,075 | `102c11bdf0a6851f1040da9cc944b5c93fd7c4dbc0bb7275946e7b6fa2f9e055` | |
+| `0454/kind-8.numbers` | [0454: Writing a rule's comparison](../experiments/0454-writing-a-rule-s-comparison.md) | 459,075 | `a6344a33e3c24437854ecf52ff3e538402ba4c07489c70e9a4d838e83d5aa79a` | |
+| `0454/kind-9.numbers` | [0454: Writing a rule's comparison](../experiments/0454-writing-a-rule-s-comparison.md) | 459,075 | `c3a1867c93918426b8f7b65ac7c04b8dc48304d84e6c068d7172bff6cab26744` | |
+| `0455/kind-11-2-3.numbers` | [0455: Looking for a rule's second value](../experiments/0455-looking-for-a-second-rule-value.md) | 459,088 | `811c7bf78f1ff17288974990e97dbf0cb4d8213111acf49cd2080d30801d70f0` | |
+| `0455/kind-12-2-3.numbers` | [0455: Looking for a rule's second value](../experiments/0455-looking-for-a-second-rule-value.md) | 459,088 | `791af756163895c91ff5710e46099da0605cc7b4cb34ecb1b1072f24bfa31441` | |
+| `0456/baseline.key` | [0456: Writing a chart series' colour](../experiments/0456-writing-a-series-colour.md) | 904,201 | `a595c00777b5da2f922d7efd0241ca7e46e3994814a45107dc0553b0576c080e` | |
+| `0456/prop-10.key` | [0456: Writing a chart series' colour](../experiments/0456-writing-a-series-colour.md) | 1,242,316 | `75f8fbd211f1cb5bfd6cd602ea090480b3f2cad12656a107530d42d10c0bedfc` | |
+| `0456/prop-11.key` | [0456: Writing a chart series' colour](../experiments/0456-writing-a-series-colour.md) | 1,242,316 | `4c5b7e67ce0b3c32c485e3112e167bb6a8d75c1e41d9e09e36aa9334557a00ff` | |
+| `0456/prop-12.key` | [0456: Writing a chart series' colour](../experiments/0456-writing-a-series-colour.md) | 1,242,316 | `3d976635cec881d573d19f9b131a109bab73a05df3a2693d37819f2d14d9de6f` | |
+| `0456/prop-13.key` | [0456: Writing a chart series' colour](../experiments/0456-writing-a-series-colour.md) | 1,242,316 | `bbde9ea4362eda138c4de239eec242af35da07b5d3b460c7fee0ca0184da4853` | |
+| `0456/prop-14.key` | [0456: Writing a chart series' colour](../experiments/0456-writing-a-series-colour.md) | 1,242,316 | `19bbb19905a4990982b26ac44e6d4e68a638773cd477d8dc9873f431d780ce64` | |
+| `0456/prop-15.key` | [0456: Writing a chart series' colour](../experiments/0456-writing-a-series-colour.md) | 1,242,316 | `54cb08559798253b670894408065cf016b18efae5fb89fa809158358dbfa0978` | |
+| `0456/prop-16.key` | [0456: Writing a chart series' colour](../experiments/0456-writing-a-series-colour.md) | 1,242,316 | `4ffc1f2db365ddf198d4e8887fb328a52cfebb5e4daa3f6fa55c37a46a92d6ad` | |
+| `0456/prop-17.key` | [0456: Writing a chart series' colour](../experiments/0456-writing-a-series-colour.md) | 1,242,316 | `2f437d986bb5b4ac840dc3e301984b56e8c24dbdff57de5ee8e016c733d867f0` | |
+| `0456/prop-6.key` | [0456: Writing a chart series' colour](../experiments/0456-writing-a-series-colour.md) | 1,242,316 | `e2301242d1aec3cf0ba896019a9970f558b646b335cc4cb2002637e0fd68e4fb` | |
+| `0456/prop-7.key` | [0456: Writing a chart series' colour](../experiments/0456-writing-a-series-colour.md) | 1,242,316 | `64e5a44658db343b7b9f324ae9882ec0a82e683a466deb0a16964f2c1c6ae0ab` | |
+| `0456/prop-8.key` | [0456: Writing a chart series' colour](../experiments/0456-writing-a-series-colour.md) | 1,242,316 | `7755dd719dbce83ae4058845eca36204c75f2525ff1d7f168ef26f073de42fde` | |
+| `0456/prop-9.key` | [0456: Writing a chart series' colour](../experiments/0456-writing-a-series-colour.md) | 1,242,316 | `be51768b740264c64a011df04bb009707de8dc54d15138f82e19e262a20ca726` | |
+| `0457/palette.key` | [0457: A series' colours by chart type](../experiments/0457-series-colours-by-chart-type.md) | 1,242,316 | `79996da5e846cfc7f62e0306a0a4526b13769136aed7355947a5e2d68007265f` | |
+| `0457/type-1.key` | [0457: A series' colours by chart type](../experiments/0457-series-colours-by-chart-type.md) | 1,242,316 | `79996da5e846cfc7f62e0306a0a4526b13769136aed7355947a5e2d68007265f` | |
+| `0457/type-3.key` | [0457: A series' colours by chart type](../experiments/0457-series-colours-by-chart-type.md) | 1,242,316 | `a43e939582f319c26dfe93e643a5f5a5ad8fb0f3ceafdccab12fb401101e6d41` | |
+| `0457/type-4.key` | [0457: A series' colours by chart type](../experiments/0457-series-colours-by-chart-type.md) | 1,242,316 | `5a90575b31ffe586385470c5ed993c185860cd9ac3c6fec6a1423f859ea844c0` | |
+| `0457/type-5.key` | [0457: A series' colours by chart type](../experiments/0457-series-colours-by-chart-type.md) | 1,242,316 | `189696ae29f5239ae09e6b7648b3b25d7364c3a538db28cc6f629309bb87ee62` | |
+| `0457/type-9.key` | [0457: A series' colours by chart type](../experiments/0457-series-colours-by-chart-type.md) | 1,242,316 | `9a118b4419ca942da895d007825dcff4cf3e892fc4eadae45488a66bd7af2f66` | |
+| `0458/line-47.key` | [0458: A series' line in a line chart](../experiments/0458-a-series-line-stroke.md) | 1,242,316 | `fc290bbab5d053f7ce6f2537eb74c1a848925e50481ee630b3e1db33748616fa` | |
+| `0458/line-48.key` | [0458: A series' line in a line chart](../experiments/0458-a-series-line-stroke.md) | 1,242,316 | `5b4ee0c8fcf69800a309f6fbf4ad2f1b7496312ffb708433b253f609e6483298` | |
+| `0458/line-50.key` | [0458: A series' line in a line chart](../experiments/0458-a-series-line-stroke.md) | 1,242,316 | `68ea36427313b5415b7d3d67d6dbe608a2df99d65dfdb9c6ae215cc9a4f850d7` | |
+| `0458/line-51.key` | [0458: A series' line in a line chart](../experiments/0458-a-series-line-stroke.md) | 1,242,316 | `c2aa7b38cd031a0de464fffe99d0cf8eb7920623272defebf0a804e3b6e3dc07` | |
+| `0458/line-53.key` | [0458: A series' line in a line chart](../experiments/0458-a-series-line-stroke.md) | 1,242,316 | `577dd11302757239c3bac2301f293bafa2d7d64cad17e599f1f3ebe20bd2bd4c` | |
+| `0458/line.key` | [0458: A series' line in a line chart](../experiments/0458-a-series-line-stroke.md) | 1,242,316 | `c1596247fbbddda17f29d5819aeb3de66d150c16796d316ece3747845b1bb47c` | |
+| `0459/scatter-54.key` | [0459: A series' points in a scatter chart](../experiments/0459-a-series-points.md) | 1,242,316 | `a8530a6d8574e92a9caf92ab53482fd45cd9ab8ab9f7b4f6246f5de493d41a9d` | |
+| `0459/scatter-55.key` | [0459: A series' points in a scatter chart](../experiments/0459-a-series-points.md) | 1,242,316 | `b0e03bd288b6e01659c353c10a36e29c4b67241bd72466ce4dc5d9242e2d47fd` | |
+| `0459/scatter-56.key` | [0459: A series' points in a scatter chart](../experiments/0459-a-series-points.md) | 1,242,316 | `3fde49ea7f301660a29e87e6a32adcda53626d00d296f68673ceca2d82e6ac8c` | |
+| `0459/scatter-57.key` | [0459: A series' points in a scatter chart](../experiments/0459-a-series-points.md) | 1,242,316 | `3f3c898b64cdadc0e9d5b304f4359f687621b2bda612bd5a51566ecfb08a29ce` | |
+| `0459/scatter-58.key` | [0459: A series' points in a scatter chart](../experiments/0459-a-series-points.md) | 1,242,316 | `de0447865e7ba242dbe584ecbd03ffc34b24b47d8a1b0def6e96b040632c2371` | |
+| `0459/scatter-s47.key` | [0459: A series' points in a scatter chart](../experiments/0459-a-series-points.md) | 1,242,316 | `44efef06576f02a8ff48239ffedd2ce9558f56fa21b570b000462b3b66da55e2` | |
+| `0459/scatter-s48.key` | [0459: A series' points in a scatter chart](../experiments/0459-a-series-points.md) | 1,242,316 | `54d52532f81fbdc860af7a8dd1c96aba01d5a9b2797b79aa9f6fcc8e98cc389a` | |
+| `0459/scatter-s50.key` | [0459: A series' points in a scatter chart](../experiments/0459-a-series-points.md) | 1,242,316 | `52829087103f5d7223e20479b25256b1db5647488d999afc861da39e4a161efe` | |
+| `0459/scatter-s51.key` | [0459: A series' points in a scatter chart](../experiments/0459-a-series-points.md) | 1,242,316 | `20bf14bc94f43929d1f145c3e1baa5d2549e4d456aea4a88232dd440490d73ac` | |
+| `0459/scatter-s53.key` | [0459: A series' points in a scatter chart](../experiments/0459-a-series-points.md) | 1,242,316 | `396113966280642b45430a5d4ddf2d0898e9ae6e6dfd70e40680cae632a5f38b` | |
+| `0459/scatter.key` | [0459: A series' points in a scatter chart](../experiments/0459-a-series-points.md) | 1,242,316 | `6edb48a40ea3c4ea3b1b2846272827db3c3558054f56a5c5efd7fa8192dd6955` | |
 | `keynote/0024/empty-a.key` | [0024: Keynote and Numbers](../experiments/0024-keynote-and-numbers.md) | 882,066 | `912b4de37a6cd26f79bf830b1fe894e608e2cccfefa0cadc626d92e0f0358a85` | |
 | `keynote/0024/empty-b.key` | [0024: Keynote and Numbers](../experiments/0024-keynote-and-numbers.md) | 882,065 | `95a5a1cbe9b95a8b5fb33a29d585e0fc999983bd08a717ed3e3eaa84af118085` | |
 | `keynote/0025/empty.key` | [0025: Text on a Keynote slide](../experiments/0025-keynote-title.md) | 882,066 | `912b4de37a6cd26f79bf830b1fe894e608e2cccfefa0cadc626d92e0f0358a85` | |
@@ -643,7 +1129,7 @@ Sample documents from the experiments, for testing readers and writers. They are
 
 ## Left out
 
-14 documents, besides 78 Keynote presentations in Basic White that are included as their test-theme versions under `keynote/`.
+64 documents, besides 78 Keynote presentations in Basic White that are included as their test-theme versions under `keynote/`.
 
 | File | Why |
 | --- | --- |
@@ -659,5 +1145,55 @@ Sample documents from the experiments, for testing readers and writers. They are
 | `0291/theme-source.key` | a step in building or testing the test theme, which is in theme/ |
 | `0292/empty-default.key` | a step in building or testing the test theme, which is in theme/ |
 | `0292/empty.key` | a step in building or testing the test theme, which is in theme/ |
+| `0363/back-and-forth.key` | media not made by the project: 910457886_1434x1669-small-5644.jpeg, 660384004_1290x1720-small-5876.jpeg, 660384004_rotate_1964x1473-small-8049.jpeg |
+| `0363/movie-silent.key` | media not made by the project: 910457886_1434x1669-small-5644.jpeg, 660384004_1290x1720-small-5876.jpeg, 660384004_rotate_1964x1473-small-8049.jpeg |
+| `0363/quarter-loop.key` | media not made by the project: 910457886_1434x1669-small-5644.jpeg, 660384004_1290x1720-small-5876.jpeg, 660384004_rotate_1964x1473-small-8049.jpeg |
+| `0368/by-bullet.key` | media not made by the project: 910457886_1434x1669-small-5644.jpeg, 660384004_1290x1720-small-5876.jpeg, 660384004_rotate_1964x1473-small-8049.jpeg |
+| `0368/by-char.key` | media not made by the project: 910457886_1434x1669-small-5644.jpeg, 660384004_1290x1720-small-5876.jpeg, 660384004_rotate_1964x1473-small-8049.jpeg |
+| `0368/by-paragraph.key` | media not made by the project: 910457886_1434x1669-small-5644.jpeg, 660384004_1290x1720-small-5876.jpeg, 660384004_rotate_1964x1473-small-8049.jpeg |
+| `0368/by-word.key` | media not made by the project: 910457886_1434x1669-small-5644.jpeg, 660384004_1290x1720-small-5876.jpeg, 660384004_rotate_1964x1473-small-8049.jpeg |
+| `0368/f4_20-2.key` | media not made by the project: 910457886_1434x1669-small-5644.jpeg, 660384004_1290x1720-small-5876.jpeg, 660384004_rotate_1964x1473-small-8049.jpeg |
+| `0368/f4_21-2.key` | media not made by the project: 910457886_1434x1669-small-5644.jpeg, 660384004_1290x1720-small-5876.jpeg, 660384004_rotate_1964x1473-small-8049.jpeg |
+| `0368/f4_4-2.key` | media not made by the project: 910457886_1434x1669-small-5644.jpeg, 660384004_1290x1720-small-5876.jpeg, 660384004_rotate_1964x1473-small-8049.jpeg |
+| `0368/f4_4-3.key` | media not made by the project: 910457886_1434x1669-small-5644.jpeg, 660384004_1290x1720-small-5876.jpeg, 660384004_rotate_1964x1473-small-8049.jpeg |
+| `0368/f5-2.key` | media not made by the project: 910457886_1434x1669-small-5644.jpeg, 660384004_1290x1720-small-5876.jpeg, 660384004_rotate_1964x1473-small-8049.jpeg |
+| `0368/f5-3.key` | media not made by the project: 910457886_1434x1669-small-5644.jpeg, 660384004_1290x1720-small-5876.jpeg, 660384004_rotate_1964x1473-small-8049.jpeg |
+| `0368/three-paras.key` | media not made by the project: 910457886_1434x1669-small-5644.jpeg, 660384004_1290x1720-small-5876.jpeg, 660384004_rotate_1964x1473-small-8049.jpeg |
+| `0368/three-words.key` | media not made by the project: 910457886_1434x1669-small-5644.jpeg, 660384004_1290x1720-small-5876.jpeg, 660384004_rotate_1964x1473-small-8049.jpeg |
+| `0375/text.pages` | holds the user's name |
+| `0375/time.pages` | holds the user's name |
+| `0376/comment-emptied.pages` | holds the user's name |
+| `0376/comment.pages` | holds the user's name |
+| `0376/highlight-with-text.pages` | holds the user's name |
+| `0376/highlight.pages` | holds the user's name |
+| `0377/deleted-as-insertion.pages` | holds the user's name |
+| `0377/deleted-blue.pages` | holds the user's name |
+| `0377/deleted-green.pages` | holds the user's name |
+| `0377/deleted-red.pages` | holds the user's name |
+| `0377/deleted.pages` | holds the user's name |
+| `0377/inserted-as-deletion.pages` | holds the user's name |
+| `0377/inserted.pages` | holds the user's name |
+| `0395/stored-renamed-listed.pages` | media not made by the project: picture.png |
+| `0395/stored-renamed.pages` | media not made by the project: picture.png |
+| `0408/email-to-custom.pages` | holds the user's name |
+| `0408/email-to-phone.pages` | holds the user's name |
+| `0408/original.pages` | holds the user's name |
+| `0431/blabaer-flag-clear.pages` | media not made by the project: blåbær.png |
+| `0431/blabaer-flag-set.pages` | media not made by the project: blåbær.png |
+| `0435/extra-listed.pages` | media not made by the project: green-99.png |
+| `0435/extra-unlisted.pages` | media not made by the project: green-99.png |
+| `0440/motion-red.key` | media not made by the project: motionBackground-9094.jpeg |
+| `0440/original.key` | media not made by the project: motionBackground-9094.jpeg |
+| `0440/still-green.key` | media not made by the project: motionBackground-9094.jpeg |
+| `0443/c-0-0-0.pages` | holds the user's name |
+| `0443/c-0-1-1.pages` | holds the user's name |
+| `0443/c-0.36-0.78-0.69.pages` | holds the user's name |
+| `0443/c-0.5-0-1.pages` | holds the user's name |
+| `0443/c-0.5-0.5-0.5.pages` | holds the user's name |
+| `0443/c-0.98-0.6-0.21.pages` | holds the user's name |
+| `0443/c-1-0-1.pages` | holds the user's name |
+| `0443/c-1-0.5-0.pages` | holds the user's name |
+| `0443/c-1-1-0.pages` | holds the user's name |
+| `0443/c-1-1-1.pages` | holds the user's name |
 | `theme/0090/theme.key` | holds Basic Black's photos |
 | `theme/0271/dynamic.key` | media not made by the project: motionBackground-9094.jpeg |
