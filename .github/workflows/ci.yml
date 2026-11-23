@@ -19,3 +19,17 @@ jobs:
       - run: cargo fmt --all --check
       - run: cargo clippy --all-targets -- -D warnings
       - run: cargo test
+
+  site:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - run: python3 -I site/test_build.py
+      # Fails on Markdown the builder can't render and on broken links in the built site.
+      - run: python3 -I site/build.py
+      # The committed site must be what the Markdown builds. The overview names the build's revision, so it differs.
+      - name: docs/ is up to date
+        run: git diff --stat --exit-code -- docs ':!docs/index.html'

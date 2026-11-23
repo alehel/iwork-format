@@ -31,7 +31,7 @@ In your first pull request, add this line to its description:
 
 The site in `docs/` is built from the Markdown; never edit the HTML. Before pushing a change that touches the spec, an experiment, a guide or `site/`:
 
-1. `python3 -I site/test_build.py` tests the builder's Markdown subset and its checks.
+1. `python3 -I site/test_build.py` tests the builder's Markdown subset and its checks. CI runs it too, builds the site, and fails when the committed `docs/` differs from what the Markdown builds.
 2. If a guide's excerpts or the samples they come from changed, `python3 -I site/examples.py` makes them again. It needs the gitignored `samples/` and `target/release/iwork-probe`, and stops, writing nothing, when either is missing.
 3. `python3 -I site/build.py` writes `docs/`. It fails on Markdown it can't render faithfully (an unclosed code block, a table row with the wrong number of cells, raw HTML, a link to a missing file or excerpt) and on any broken local link, missing `#section` or repeated id in the built pages. Fix the Markdown it names.
 4. Look at a changed page at phone, middle (about 960 pixels) and desktop widths, and Tab through it once: the skip link comes first, and every link and menu shows where the focus is.
