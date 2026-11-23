@@ -5,6 +5,10 @@ Usage: python3 -I site/build.py
 Sources:
   spec/*.md            the specification for the current app release, one page per layer
   spec/versions/*/     the specification as frozen for earlier releases (site/archive.py)
+
+A statement in the spec that holds for some releases only carries a release mark, `[release: TEXT]`,
+such as `[release: 15.4 only]`. It is drawn as a badge, and spec/releases.md gathers every marked
+statement where it says `<!-- release-differences -->`.
   experiments/*.md     every experiment, one page each
   site/guides/*.md     walkthroughs written for the site, which may embed generated excerpts
   site/examples/*.txt  excerpts of iwork-probe output, made by site/examples.py from local samples
@@ -26,10 +30,13 @@ TITLE = "iWork file format specification"
 # The specification is versioned by the release of the apps it describes. spec/ holds the current
 # release and is published at spec/. When a new release is taken up, site/archive.py freezes a copy
 # of spec/ in spec/versions/<release>/, published at spec/<release>/, and CURRENT_VERSION moves on.
-# Experiments and guides aren't versioned: each experiment records the release it ran on.
+# That is for a release that changes the format. Releases that write the same format share one spec,
+# whose release marks note what differs (spec/releases.md). Experiments and guides aren't versioned:
+# each experiment records the release it ran on, which the experiment list shows.
 CURRENT_VERSION = "15.4"
 SPEC_PAGES = [("README.md", "index.html"), ("container.md", "container.html"), ("text.md", "text.html"),
-              ("keynote.md", "keynote.html"), ("numbers.md", "numbers.html")]
+              ("keynote.md", "keynote.html"), ("numbers.md", "numbers.html"), ("releases.md", "releases.html")]
+RELEASE_MARK = re.compile(r"\[release: ([^\]]+)\]")
 
 
 def version_key(name):
@@ -80,6 +87,7 @@ def inline(text, here):
             out.append("<code>" + html.escape(part[1:-1]) + "</code>")
             continue
         s = html.escape(part, quote=False)
+        s = RELEASE_MARK.sub(lambda m: f'<span class="release" title="Holds for some releases only">{m.group(1)}</span>', s)
         s = re.sub(r"\[([^\]]+)\]\(([^)\s]+)\)", lambda m: f'<a href="{html.escape(link_target(html.unescape(m.group(2)), here))}">{m.group(1)}</a>', s)
         s = re.sub(r"\*\*([^*]+)\*\*", r"<strong>\1</strong>", s)
         s = re.sub(r"(?<![\w*])\*([^*\s][^*]*?)\*(?![\w*])", r"<em>\1</em>", s)
@@ -121,6 +129,11 @@ def render(md, here, toc=None):
             if toc is not None and level == 2:
                 toc.append((anchor, re.sub(r"<[^>]+>", "", text)))
             out.append(f'<h{level} id="{anchor}">{text}<a class="anchor" href="#{anchor}" aria-label="Link to this section">#</a></h{level}>')
+            i += 1
+            continue
+        if line.strip() == "<!-- release-differences -->":
+            flush()
+            out.append(release_differences(here))
             i += 1
             continue
         m = re.match(r"^<!--\s*include:\s*(\S+)\s*-->$", line.strip())
@@ -215,6 +228,68 @@ def include_excerpt(name):
     return f'<pre class="excerpt"><code>{html.escape(text)}</code></pre>'
 
 
+
+RELEASE_NOTES = []  # (mark, statement Markdown, source page, section anchor, section title), filled by main()
+
+
+def statement_after(text, start):
+    """The sentence a release mark begins, up to its full stop (links and code kept whole)."""
+    rest = text[start:]
+    depth, i = 0, 0
+    while i < len(rest):
+        c = rest[i]
+        if c in "([`":
+            close = {"(": ")", "[": "]", "`": "`"}[c]
+            j = rest.find(close, i + 1)
+            i = j + 1 if j > 0 else i + 1
+            continue
+        if c == "." and (i + 1 == len(rest) or rest[i + 1] in " |"):
+            return rest[:i + 1].strip()
+        if c == "|":
+            return rest[:i].strip()
+        i += 1
+    return rest.strip()
+
+
+def collect_release_notes(sources):
+    notes = []
+    for src in sources:
+        anchor, section = "", ""
+        for line in read(src).split("\n"):
+            m = re.match(r"^#{2,3}\s+(.*)$", line)
+            if m:
+                anchor, section = slug(m.group(1)), m.group(1)
+                continue
+            for mark in RELEASE_MARK.finditer(line):
+                notes.append((mark.group(1), statement_after(line, mark.end()), src, anchor, section))
+    return notes
+
+
+def release_differences(here):
+    if not RELEASE_NOTES:
+        return "<p>No statement in the specification is marked as holding for some releases only.</p>"
+    rows = []
+    for mark, statement, src, anchor, section in sorted(RELEASE_NOTES, key=lambda n: (n[0], n[2])):
+        where = relpath(SITE_PAGES[src] + (f"#{anchor}" if anchor else ""), here_out(here))
+        page_name = title_of(read(src))
+        rows.append(f'<tr><td><span class="release">{html.escape(mark)}</span></td><td>{inline(statement, src)}'
+                    f'<span class="where">In <a href="{html.escape(where)}">{html.escape(page_name)}'
+                    f'{": " + inline(section, src) if section else ""}</a></span></td></tr>')
+    return ('<div class="table"><table class="differences"><thead><tr><th>Release</th><th>Statement</th></tr></thead><tbody>'
+            + "".join(rows) + "</tbody></table></div>")
+
+
+def experiment_releases(md):
+    """The app releases an experiment ran with, from the Pages, Numbers, Keynote or Apps rows of its setup."""
+    found = []
+    app = r"(?:Pages|Numbers|Keynote|Apps)"
+    for m in re.finditer(rf"^\|\s*({app}(?:,?\s+(?:and\s+)?{app})*)\s*\|([^|\n]*)\|", md, re.M):
+        for v in re.findall(r"\b(\d{2}\.\d+)\b", m.group(2)):
+            if v not in found:
+                found.append(v)
+    return found
+
+
 # --- Pages -----------------------------------------------------------------------------------
 
 SITE_PAGES = {}
@@ -241,6 +316,7 @@ NAV = [
     ("2–5. Text, styles, objects, layout", "spec:text.html"),
     ("Keynote", "spec:keynote.html"),
     ("Numbers", "spec:numbers.html"),
+    ("Releases", "spec:releases.html"),
     ("Evidence", None),
     ("All experiments", "experiments/index.html"),
 ]
@@ -373,6 +449,8 @@ def main():
     experiments = sorted(f for f in os.listdir(os.path.join(ROOT, "experiments")) if re.match(r"^\d{4}-.*\.md$", f))
     for f in experiments:
         SITE_PAGES[f"experiments/{f}"] = f"experiments/{f[:-3]}.html"
+    RELEASE_NOTES[:] = collect_release_notes([src for src, (_, version) in spec_map.items()
+                                                if version == "spec" and not src.endswith("releases.md")])
     guides = sorted(f for f in os.listdir(os.path.join(ROOT, "site", "guides")) if f.endswith(".md"))
     for f in guides:
         SITE_PAGES[f"site/guides/{f}"] = f"guides/{f[:-3]}.html"
@@ -402,12 +480,28 @@ def main():
         md = read(f"experiments/{f}")
         title = title_of(md)
         src = f"experiments/{f}"
-        page(f"experiments/{f[:-3]}.html", title, render(md, src), None)
+        releases = experiment_releases(md)
+        body = render(md, src)
+        if releases:
+            badge = f'<p class="ran">App release: ' + ", ".join(f'<span class="release">{html.escape(r)}</span>' for r in releases) + "</p>"
+            body = body.replace("</h1>", "</h1>" + badge, 1)
+        page(f"experiments/{f[:-3]}.html", title, body, None)
         num, _, name = title.partition(": ")
-        rows.append(f'<tr><td class="num">{html.escape(num)}</td><td><a href="{f[:-3]}.html">{html.escape(name or title)}</a></td></tr>')
+        rel = ", ".join(releases) or "tool only"
+        rows.append(f'<tr><td class="num">{html.escape(num)}</td><td><a href="{f[:-3]}.html">{html.escape(name or title)}</a></td>'
+                    f'<td class="rel">{html.escape(rel)}</td></tr>')
+    counts = {}
+    for f in experiments:
+        for r in experiment_releases(read(f"experiments/{f}")):
+            counts[r] = counts.get(r, 0) + 1
+    by_release = " and ".join(f"{n} with the {r} apps" for r, n in sorted(counts.items(), key=lambda x: version_key(x[0]), reverse=True))
+    tool_only = sum(1 for f in experiments if not experiment_releases(read(f"experiments/{f}")))
     body = ("<h1>All experiments</h1><p>Each experiment changes one thing in a document, saves it, and "
             "records what changed in the file. The specification cites them as its evidence. "
-            f"{len(experiments)} have been run.</p><div class=\"table\"><table><thead><tr><th>No.</th><th>Experiment</th></tr></thead><tbody>"
+            f"{len(experiments)} have been run: {by_release}, as each one's setup records"
+            + (f", and {tool_only} with the tool alone. " if tool_only else ". ") +
+            f'The <a href="../spec/releases.html">releases</a> page says how the releases differ.</p>'
+            "<div class=\"table\"><table><thead><tr><th>No.</th><th>Experiment</th><th>App release</th></tr></thead><tbody>"
             + "".join(rows) + "</tbody></table></div>")
     page("experiments/index.html", "All experiments", body)
 

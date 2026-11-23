@@ -24,8 +24,8 @@ A new document holds these 13 parts. *Confirmed* ([0001](../experiments/0001-emp
 | --- | --- |
 | `Index/*.iwa` (seven parts) | The document's objects, encoded as below |
 | `Metadata/DocumentIdentifier` | A UUID as 36 ASCII characters, with no line ending |
-| `Metadata/Properties.plist` | A binary property list of UUIDs, a file format version (`fileFormatVersion`: `26.4.0` from the 15.4 apps, `14.4.1` from 14.5, [0461](../experiments/0461-new-documents-in-14-5.md)) and flags |
-| `Metadata/BuildVersionHistory.plist` | A list of strings naming the template and the Pages build, such as `M15.4-7051.0.79-2` or `M14.5-7045.0.17-4` |
+| `Metadata/Properties.plist` | A binary property list of UUIDs, a file format version and flags. [release: differs by release] Its `fileFormatVersion` is `26.4.0` from the 15.4 apps and `14.4.1` from 14.5, and 14.5 writes one flag, `hasExternalReferenceOrMissingOrUnmaterializedRemoteData`, where 15.4 writes two ([0461](../experiments/0461-new-documents-in-14-5.md)). |
+| `Metadata/BuildVersionHistory.plist` | A list of strings naming the template and the Pages build. [release: differs by release] The build is `M15.4-7051.0.79-2` from 15.4 and `M14.5-7045.0.17-4` from 14.5 ([0461](../experiments/0461-new-documents-in-14-5.md)). |
 | `preview.jpg`, `preview-web.jpg`, `preview-micro.jpg` | JPEG previews of the first page |
 
 The seven `.iwa` parts of a new document are `AnnotationAuthorStorage-N`, `CalculationEngine-N`, `Document`, `DocumentMetadata`, `DocumentStylesheet`, `Metadata` and `ViewState`. Where a name ends in a number, it is the ID of the part's first object. *Confirmed* ([0001](../experiments/0001-empty-document.md), [0002](../experiments/0002-one-word.md))

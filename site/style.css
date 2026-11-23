@@ -202,3 +202,14 @@ footer { margin-top: 4rem; padding-top: 1rem; border-top: 1px solid var(--rule);
 .side .release a { font-variant-numeric: tabular-nums; }
 .wip.archived { background: var(--accent-soft); border-bottom-color: var(--rule); }
 .wip.archived strong { color: var(--accent); }
+
+/* Release marks: statements that hold for some app releases only, and the release an experiment ran with. */
+.release { display: inline-block; font-family: var(--sans); font-size: .74em; font-weight: 600; line-height: 1.5;
+  padding: 0 .45em; margin: 0 .15em; border-radius: 999px; color: var(--accent); background: var(--accent-soft);
+  border: 1px solid var(--rule); white-space: nowrap; vertical-align: .08em; }
+p.ran { margin-top: -.4rem; color: var(--fg-soft); font-size: .9em; }
+p.ran .release { margin-left: .3em; }
+td.rel { font-family: var(--mono); color: var(--fg-soft); white-space: nowrap; }
+table.differences td:first-child { width: 1%; white-space: nowrap; }
+table.differences .where { display: block; margin-top: .25rem; font-size: .85em; color: var(--fg-soft); }
+td code { overflow-wrap: anywhere; }
