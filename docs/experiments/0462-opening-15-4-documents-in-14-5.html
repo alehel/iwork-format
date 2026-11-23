@@ -24,10 +24,15 @@
 <h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section">#</a></h2>
 <div class="table"><table><thead><tr><th>Result</th><th>Documents</th></tr></thead><tbody><tr><td>Opened, and the body text agrees with the file (Pages) or the sheets and table were read (Numbers)</td><td>590</td></tr><tr><td>Opened, and read through the password prompt, with the test password typed by hand</td><td>2 (<code>0180/accent.pages</code>, <code>0180/image.pages</code>, body <code>one</code>)</td></tr><tr><td>Not opened: the password prompt was cancelled</td><td>2 (<code>0179/locked.pages</code>, <code>0179/locked2.pages</code>)</td></tr></tbody></table></div>
 <p>No alert other than the password prompts was shown, and no document failed to open.</p>
+<p>A second run covered the newer samples, experiments 0372 to 0460, leaving out 0394, 0396, 0424, 0434 and 0451, whose files were written to make Pages fail:</p>
+<pre class="lang-bash"><code>for r in &quot;372 393&quot; &quot;395 395&quot; &quot;397 423&quot; &quot;425 433&quot; &quot;435 450&quot; &quot;452 460&quot;; do
+  python3 -I recipes/0462-open-in-app.py samples $r
+done</code></pre>
+<p>All 301 documents opened, and 300 agreed. The exception is <code>0419/no-body.pages</code>, whose body switch was written off over the body's text (<a href="0419-writing-the-document-body-setting.html">0419</a>): 14.5 reports no body text, as for any page-layout document (<a href="0463-drawing-15-4-documents-in-14-5.html">0463</a>).</p>
 <h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section">#</a></h2>
 <p>Pages and Numbers 14.5 open every document the 15.4 apps saved in these experiments, and every one written from this spec in experiments 0287 to 0371, and read the same text and tables from them. Nothing 15.4 writes stops the older release reading it, including the type-4011 record 14.5 doesn't write. Whether 14.5 also draws them the same is the next experiment's question.</p>
 <h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section">#</a></h2>
-<p><em>Confirmed</em>: 14.5 opens 594 documents from 15.4 and from the spec's writer, and reads the same body text and tables, apart from the two password-protected documents not opened.</p>
+<p><em>Confirmed</em>: 14.5 opens 895 documents from 15.4 and from the spec's writer, and reads the same body text and tables, apart from the two password-protected documents not opened and the one written oddity of 0419.</p>
 <footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Last built from <a href="https://github.com/alehel/iwork-format">alehel/iwork-format</a>.</p></footer>
 </main>
 

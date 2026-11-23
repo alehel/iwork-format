@@ -33,10 +33,20 @@ The comparison leaves out spaces, control characters (breaks and footnote marks,
 
 No alert other than the password prompts was shown, and no document failed to open.
 
+A second run covered the newer samples, experiments 0372 to 0460, leaving out 0394, 0396, 0424, 0434 and 0451, whose files were written to make Pages fail:
+
+```bash
+for r in "372 393" "395 395" "397 423" "425 433" "435 450" "452 460"; do
+  python3 -I recipes/0462-open-in-app.py samples $r
+done
+```
+
+All 301 documents opened, and 300 agreed. The exception is `0419/no-body.pages`, whose body switch was written off over the body's text ([0419](0419-writing-the-document-body-setting.md)): 14.5 reports no body text, as for any page-layout document ([0463](0463-drawing-15-4-documents-in-14-5.md)).
+
 ## Conclusion
 
 Pages and Numbers 14.5 open every document the 15.4 apps saved in these experiments, and every one written from this spec in experiments 0287 to 0371, and read the same text and tables from them. Nothing 15.4 writes stops the older release reading it, including the type-4011 record 14.5 doesn't write. Whether 14.5 also draws them the same is the next experiment's question.
 
 ## Confidence
 
-*Confirmed*: 14.5 opens 594 documents from 15.4 and from the spec's writer, and reads the same body text and tables, apart from the two password-protected documents not opened.
+*Confirmed*: 14.5 opens 895 documents from 15.4 and from the spec's writer, and reads the same body text and tables, apart from the two password-protected documents not opened and the one written oddity of 0419.
