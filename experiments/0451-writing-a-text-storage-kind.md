@@ -1,6 +1,6 @@
 # 0451: Writing what a text storage is for
 
-**Status:** run
+**Status:** run; corrected on 2026-11-23: the body files crash Pages rather than failing to open
 
 Field 1 of a type-2001 text record says what it is for: 0 a body, 1 a header or footer, 2 a footnote, 4 a slide's presenter notes and 7 a table of contents ([0003](0003-non-ascii-word.md), [0016](0016-header-and-footer.md), [text.md](../spec/text.md#where-the-text-is)). This experiment writes other kinds into the body and a header.
 
@@ -35,16 +35,16 @@ done
 | File | Written | Pages |
 | --- | --- | --- |
 | `header-text.pages` | header text, kinds as made | opens: header `Header text`, body `hello` |
-| `body-kind-1.pages` | body's kind 1 | doesn't open, with no alert |
-| `body-kind-2.pages` | body's kind 2 | doesn't open, with no alert |
-| `body-kind-7.pages` | body's kind 7 | doesn't open, with no alert |
+| `body-kind-1.pages` | body's kind 1 | Pages quits while opening it |
+| `body-kind-2.pages` | body's kind 2 | Pages quits while opening it |
+| `body-kind-7.pages` | body's kind 7 | Pages quits while opening it |
 | `header-kind-0.pages` | header's kind 0 | Pages quits while opening it |
 
-After `body-kind-1.pages` was opened a second time, Pages opened no other document, as after the files of [0434](0434-leaving-out-package-files.md), and declined to quit when asked through AppleScript.
+The recipe's helper reported only that these documents didn't open; macOS's crash reports, five between 01:28 and 01:30, one for each of these four opens and a second try of `body-kind-1.pages`, show that Pages quit each time. (Only the reports' names and times were read.) After the second try, the relaunched Pages opened no other document and declined to quit when asked through AppleScript.
 
 ## Conclusion
 
-Pages relies on field 1: a body storage must say 0, and a header's storage mustn't. Given another kind, the body isn't opened at all, and a header storage claiming to be a body makes Pages quit. So the kind isn't only a label for readers: a writer must give each text storage the kind of the place it is used.
+Pages relies on field 1: a body storage must say 0, and a header's storage mustn't. Given another kind, a body makes Pages quit while opening the document, and so does a header storage claiming to be a body. So the kind isn't only a label for readers: a writer must give each text storage the kind of the place it is used.
 
 ## Confidence
 
