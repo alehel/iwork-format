@@ -295,6 +295,134 @@ def experiment_releases(md):
     return found
 
 
+# --- Record type index -------------------------------------------------------------------------
+
+# "type 6001", "type-6001 record", "types 401, 2022 and 2023", "Type-10012 field"
+TYPE_MENTION = re.compile(r"\b[Tt]ypes?[- ](\d{1,5}(?:(?:,\s*(?:and\s+|or\s+)?|\s+and\s+|\s+or\s+|–)\d{1,5})*)\b")
+# Numbers that aren't record types: formula node types, list types, a cell value's type
+NOT_RECORD_BEFORE = re.compile(r"(?:node|list|list of|value|cell|boolean \()\s*$", re.I)
+NOT_RECORD_AFTER = re.compile(r"^\s+list\b")
+
+
+def record_types(text):
+    """The record type numbers a piece of text names."""
+    for m in TYPE_MENTION.finditer(text):
+        if NOT_RECORD_BEFORE.search(text[max(0, m.start() - 12):m.start()]) or NOT_RECORD_AFTER.match(text[m.end():]):
+            continue
+        for n in re.findall(r"\d+", m.group(1)):
+            yield int(n)
+
+
+CHAPTERS = {"README.md": "Layers and status", "container.md": "Container", "text.md": "Text",
+            "keynote.md": "Keynote", "numbers.md": "Numbers"}
+
+
+def type_mentions(md):
+    """Yield (type, heading of the section it is in, row of a type table or None) for each record type named."""
+    heading, in_type_table = None, False
+    for line in md.split("\n"):
+        m = re.match(r"^#{1,4}\s+(.*)$", line)
+        if m:
+            heading, in_type_table = m.group(1), False
+            continue
+        cells = [c.strip() for c in line.strip().strip("|").split("|")] if line.startswith("|") else None
+        if cells is None:
+            in_type_table = False
+        elif cells[0] == "Type":
+            in_type_table = True
+            continue
+        elif in_type_table and re.fullmatch(r"\d{1,5}", cells[0]):
+            yield int(cells[0]), heading, cells
+        for n in record_types(line):
+            yield n, heading, None
+
+
+def plain(md_text, here):
+    return re.sub(r"<[^>]+>", "", html.unescape(inline(md_text, here)))
+
+
+def first_sentence(text, limit=160):
+    m = re.match(r"(.+?[.:])(?:\s|$)", text)
+    text = m.group(1).rstrip(":") if m else text
+    return text if len(text) <= limit else text[:limit].rsplit(" ", 1)[0] + "…"
+
+
+def excerpt(sentence, number, limit=240):
+    """The sentence, or a window of it around the first place it names the number when it is long."""
+    if len(sentence) <= limit:
+        return sentence
+    at = sentence.find(number)
+    start = 0 if at < limit // 2 else sentence.rfind(" ", 0, at - limit // 3) + 1
+    window = sentence[start:start + limit]
+    if start + limit < len(sentence):
+        window = window.rsplit(" ", 1)[0] + "…"
+    return ("…" if start else "") + window
+
+
+def types_page(spec_sources, experiments):
+    """Build spec/types.html: every record type the current spec names, where it is described and which experiments name it."""
+    out_path = "spec/types.html"
+    found = {}  # type -> {"holds": str, "part": str, "where": [(src, heading)], "experiments": [file]}
+    for src in spec_sources:
+        md = read(f"spec/{src}")
+        for n, heading, row in type_mentions(md):
+            t = found.setdefault(n, {"holds": "", "part": "", "where": [], "experiments": []})
+            if row and not t["holds"]:
+                t["holds"] = f"{CHAPTERS[src]}: " + first_sentence(plain(row[1], f"spec/{src}"))
+                t["part"] = plain(row[2], f"spec/{src}") if len(row) > 2 else ""
+            if (src, heading) not in t["where"]:
+                t["where"].append((src, heading))
+    # Types no table describes get the first sentence of the spec that names them, as context.
+    for src in spec_sources:
+        for line in read(f"spec/{src}").split("\n"):
+            if line.startswith(("#", "```")):
+                continue
+            for chunk in line.strip("|").split(" | ") if line.startswith("|") else [line]:
+                for sentence in re.split(r"(?<=[.)])\s+(?=[A-Z*`(])", plain(chunk, f"spec/{src}")):
+                    for n in record_types(sentence):
+                        t = found.get(n)
+                        if t and not t["holds"] and not t.get("said"):
+                            t["said"] = excerpt(sentence.strip(), str(n))
+    for f in experiments:
+        for n in sorted({n for n, _, _ in type_mentions(read(f"experiments/{f}"))}):
+            if n in found:
+                found[n]["experiments"].append(f)
+    rows = []
+    for n in sorted(found):
+        t = found[n]
+        where = []
+        for src, heading in t["where"]:
+            target = SITE_PAGES[f"spec/{src}"] + (f"#{slug(heading)}" if heading and not heading.startswith(title_of(read(f'spec/{src}'))) else "")
+            label = CHAPTERS.get(src, src) + (f" › {plain(heading, f'spec/{src}')}" if heading and not re.match(r"^\d", heading) else "")
+            where.append(f'<a href="{relpath(target, out_path)}">{html.escape(label)}</a>')
+        exps = t["experiments"]
+        ex_html = ""
+        if exps:
+            links = ", ".join(f'<a href="{relpath(SITE_PAGES["experiments/" + f], out_path)}">{f[:4]}</a>' for f in exps)
+            ex_html = f"<details><summary>{len(exps)}</summary>{links}</details>"
+        if t["holds"]:
+            holds = html.escape(t["holds"]) + (f' <span class="part">in {html.escape(t["part"])}</span>' if t["part"] else "")
+        else:
+            holds = f'<span class="said">{html.escape(t.get("said", ""))}</span>'
+
+        rows.append(f'<tr id="type-{n}"><td class="num"><a href="#type-{n}">{n}</a></td><td>{holds}</td>'
+                    f'<td class="where">{"<br>".join(where)}</td><td class="exps">{ex_html}</td></tr>')
+    body = ("<h1>Record types</h1>"
+            f"<p>Every record type the specification names, {len(found)} in all, with the sections that describe it. "
+            "Types are the numbers in field 2.1 of a record's header (<a href=\"container.html\">Container</a>). "
+            "The same number means the same kind of record in Pages, Keynote and Numbers wherever the spec has compared them, "
+            "but most types have been seen in one app only. <em>What it is</em> comes from the type tables in the "
+            "Keynote and Numbers chapters where there is one; otherwise it is the first sentence of the spec that names the "
+            "type, shown in grey, for context only. The linked sections give the rules, with their confidence. "
+            "<em>Experiments</em> lists those that name the type, as evidence.</p>"
+            "<p>This page is generated from the specification's Markdown each time the site is built. "
+            "Link to a type as <code>types.html#type-6001</code>.</p>"
+            '<div class="table"><table class="types"><thead><tr><th>Type</th><th>What it is</th><th>Described in</th>'
+            "<th>Experiments</th></tr></thead><tbody>" + "".join(rows) + "</tbody></table></div>")
+    page(out_path, "Record types", body, description="Every iWork record type the specification names, with where it is described.", wide=True)
+    return len(found)
+
+
 # --- Pages -----------------------------------------------------------------------------------
 
 SITE_PAGES = {}
@@ -322,6 +450,7 @@ NAV = [
     ("Keynote", "spec:keynote.html"),
     ("Numbers", "spec:numbers.html"),
     ("Releases", "spec:releases.html"),
+    ("Record types", "spec/types.html"),
     ("Evidence", None),
     ("All experiments", "experiments/index.html"),
 ]
@@ -359,9 +488,10 @@ def releases_line(out_path, view):
     return f'<li class="releases-line"><a href="{relpath(target, out_path)}">{html.escape(text)}</a></li>'
 
 
-def page(out_path, title, body, toc=None, description="", version=None, source=None):
+def page(out_path, title, body, toc=None, description="", version=None, source=None, wide=False):
     """version is the output folder of the spec release this page belongs to, or None outside the spec.
-    source is the repository path of the Markdown the page is built from, linked in the footer."""
+    source is the repository path of the Markdown the page is built from, linked in the footer.
+    wide lets a page without an on-this-page list use that column too, for wide tables."""
     view = version or "spec"
     name = out_path[len(view) + 1:] if version else "index.html"
     nav = []
@@ -411,7 +541,7 @@ def page(out_path, title, body, toc=None, description="", version=None, source=N
 <a class="skip" href="#page-content">Skip to content</a>
 <header class="top"><a class="brand" href="{home}">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><a class="repo" href="{REPO}">Repository</a></header>
 <p class="wip"><strong>Work in progress.</strong> This specification is incomplete and changes as new experiments run. Each finding says how sure it is: <em>confirmed</em>, <em>likely</em> or <em>unknown</em>. See <a href="{relpath("spec/index.html", out_path)}">what each layer covers so far</a>.</p>{archived}
-<div class="layout">
+<div class="layout{'' if toc_html else ' no-toc'}{' wide' if wide and not toc_html else ''}">
 <nav class="side" aria-label="Contents"><details open><summary>Contents</summary><ul>{''.join(nav)}</ul></details></nav>
 {toc_html}
 <main id="page-content" tabindex="-1">
@@ -545,13 +675,14 @@ def main():
             "<div class=\"table\"><table><thead><tr><th>No.</th><th>Experiment</th><th>App release</th></tr></thead><tbody>"
             + "".join(rows) + "</tbody></table></div>")
     page("experiments/index.html", "All experiments", body)
+    n_types = types_page([src for src, _ in SPEC_PAGES if src != "releases.md"], experiments)
 
     shutil.copy(os.path.join(ROOT, "site", "style.css"), os.path.join(OUT, "style.css"))
     files = os.path.join(ROOT, "site", "files")
     if os.path.isdir(files):
         shutil.copytree(files, os.path.join(OUT, "files"))
     open(os.path.join(OUT, ".nojekyll"), "w").close()
-    print(f"built {len(experiments) + len(spec_map) + len(guides) + 1} pages into docs/")
+    print(f"built {len(experiments) + len(spec_map) + len(guides) + 2} pages into docs/, indexing {n_types} record types")
     problems = check_links(OUT)
     for p in problems:
         print("broken:", p, file=sys.stderr)

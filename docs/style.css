@@ -147,6 +147,7 @@ footer { margin-top: 4rem; padding-top: 1rem; border-top: 1px solid var(--rule);
 .side { grid-column: 1; grid-row: 1; }
 main { grid-column: 2; grid-row: 1; }
 .toc { grid-column: 3; grid-row: 1; }
+.layout.wide main { grid-column: 2 / 4; }
 
 /* Middle widths: two columns, the on-this-page list folded above the page */
 @media (max-width: 72rem) and (min-width: 48.01rem) {
@@ -155,6 +156,7 @@ main { grid-column: 2; grid-row: 1; }
   .toc { grid-column: 2; grid-row: 1; position: static; max-height: none; overflow: visible;
     padding: 1rem 0 0; border-bottom: 1px solid var(--rule); }
   main { grid-row: 2; }
+  .layout.no-toc main { grid-row: 1; grid-column: 2; }
   .toc summary {
     display: flex; align-items: center; justify-content: space-between;
     pointer-events: auto; cursor: pointer; margin: 0; padding: .4rem 0 .6rem; color: var(--fg);
@@ -250,3 +252,24 @@ td.rel { font-family: var(--mono); color: var(--fg-soft); white-space: nowrap; }
 table.differences td:first-child { width: 1%; white-space: nowrap; }
 table.differences .where { display: block; margin-top: .25rem; font-size: .85em; color: var(--fg-soft); }
 td code { overflow-wrap: anywhere; }
+
+/* Record type index */
+table.types td.num a { color: inherit; }
+table.types tr:target { background: var(--accent-soft); }
+table.types .part { color: var(--fg-soft); white-space: nowrap; }
+table.types .said { color: var(--fg-soft); font-size: .88rem; }
+table.types td.exps { white-space: nowrap; }
+table.types td.where { min-width: 13rem; font-size: .88rem; }
+table.types td.where a { white-space: nowrap; }
+table.types td.exps details[open] { white-space: normal; min-width: 12rem; }
+table.types td.exps summary { cursor: pointer; color: var(--accent); }
+/* Narrow screens: each type becomes a block, its number beside what it is, then where and the experiments */
+@media (max-width: 60rem) {
+  table.types thead { display: none; }
+  table.types tr { display: grid; grid-template-columns: 4.2rem minmax(0, 1fr); border-bottom: 1px solid var(--rule); padding: .4rem 0; }
+  table.types td { border: 0; padding: .15rem .4rem; }
+  table.types td.where, table.types td.exps { grid-column: 2; min-width: 0; }
+  table.types td.where a { white-space: normal; }
+  table.types td.exps:empty { display: none; }
+  table.types td.exps summary::after { content: " experiments"; }
+}
