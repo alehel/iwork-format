@@ -16,7 +16,7 @@ Keynote 14.5 hasn't been checked yet.
 
 ## Telling which release saved a document
 
-`Metadata/Properties.plist` holds the file format version in `fileFormatVersion`, and `Metadata/BuildVersionHistory.plist` lists the template and the build of the app that saved it, such as `M14.5-7045.0.17-4`. The format version doesn't follow the app's version: 14.5 writes `14.4.1` and 15.4 writes `26.4.0` ([0461](../experiments/0461-new-documents-in-14-5.md)). A reader doesn't need either to read a document, but they say which differences below can apply.
+`Metadata/Properties.plist` holds the file format version in `fileFormatVersion`, and `Metadata/BuildVersionHistory.plist` lists the template and the build of the app that saved it, such as `M14.5-7045.0.17-4`. The format version doesn't follow the app's version: 14.5 writes `14.4.1` and 15.4 writes `26.4.0` ([0461](../experiments/0461-new-documents-in-14-5.md)). A reader doesn't need either to read a document, but they say which differences below can apply. Every sample document's build was checked against the release its experiment names, and all matched ([0465](../experiments/0465-which-release-saved-each-sample.md)).
 
 ## Differences
 

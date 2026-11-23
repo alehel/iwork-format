@@ -11,10 +11,23 @@
 #
 # The app is "APP Creator Studio" (15.4) when that is installed, and otherwise plain "APP" (such as
 # Pages 14.5, from experiment 0461 on). Set IWORK_APP to the full name to choose another.
+#
+# From experiment 0465 on, it prints to stderr which app it used, its version and build, and a
+# warning when Spotlight knows more than one copy of that app, since the system then picks one.
 set -eu
 if [ -n "${IWORK_APP:-}" ]; then app="$IWORK_APP"
 elif [ -d "/Applications/$1 Creator Studio.app" ]; then app="$1 Creator Studio"
 else app="$1"; fi
+path=$(osascript -e "POSIX path of (path to application \"$app\")" 2>/dev/null || true)
+if [ -n "$path" ]; then
+  plist="${path%/}/Contents/Info"
+  bid=$(defaults read "$plist" CFBundleIdentifier 2>/dev/null || true)
+  echo "[in-app: $app $(defaults read "$plist" CFBundleShortVersionString 2>/dev/null) ($(defaults read "$plist" CFBundleVersion 2>/dev/null)) at $path]" >&2
+  copies=$(mdfind "kMDItemCFBundleIdentifier == '$bid'" 2>/dev/null | grep -c '\.app$' || true)
+  if [ "${copies:-0}" -gt 1 ]; then
+    echo "[in-app: warning: $copies copies of $bid are installed; the system may open another one]" >&2
+  fi
+fi
 file=$(cd "$(dirname "$2")" && pwd -P)/$(basename "$2")
 inner=$(mktemp -t in-app).applescript
 trap 'rm -f "$inner"' EXIT

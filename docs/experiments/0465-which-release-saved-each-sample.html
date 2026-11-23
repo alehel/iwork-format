@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0465: Which release saved each sample · iWork file format specification</title>
+<meta name="description" content="iWork file format specification">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
+<p class="wip"><strong>Work in progress.</strong> This specification is incomplete and changes as new experiments run. Each finding says how sure it is: <em>confirmed</em>, <em>likely</em> or <em>unknown</em>. See <a href="../spec/index.html">what each layer covers so far</a>.</p>
+<div class="layout">
+<nav class="side" aria-label="Contents"><details open><summary>Contents</summary><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="../guides/anatomy.html">Reading a Pages document</a></li><li><a href="../guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="../guides/writing.html">Writing a document</a></li><li><a href="../guides/samples.html">Sample files</a></li><li class="group">Specification</li><li class="versions"><details class="release"><summary><span class="label">App release</span><span class="value">15.4 (current)</span></summary><ul><li><a class="current" aria-current="page" href="../spec/index.html">15.4 (current)</a></li></ul></details></li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2–5. Text, styles, objects, layout</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li><a href="../spec/releases.html">Releases</a></li><li class="group">Evidence</li><li><a href="index.html">All experiments</a></li></ul></details></nav>
+<main>
+<h1 id="0465-which-release-saved-each-sample">0465: Which release saved each sample<a class="anchor" href="#0465-which-release-saved-each-sample" aria-label="Link to this section">#</a></h1><p class="ran">App release: <span class="release">14.5</span>, <span class="release">13.1</span></p>
+<p><strong>Status:</strong> run</p>
+<p>With more than one release of the apps on the same Mac, a run can open or save a document in another copy than the one meant: the copies share a bundle ID, so <code>open -a Pages</code> and AppleScript's <code>tell application &quot;Pages&quot;</code> let the system choose. Each document an app saves records the app's build in <code>Metadata/BuildVersionHistory.plist</code> (<a href="0461-new-documents-in-14-5.html">0461</a>). This experiment checks every sample's builds against the release its experiment says it used, and lists the copies of the apps installed.</p>
+<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Apps</td><td>Pages and Numbers 14.5 installed in <code>/Applications</code>; no Keynote there</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-23</td></tr><tr><td>Input</td><td>Every <code>.pages</code>, <code>.key</code> and <code>.numbers</code> in <code>samples/</code>, including <code>samples/theme/</code>: 1,299 documents</td></tr><tr><td>Script</td><td>The new [<code>recipes/0465-saved-by.py</code>](../recipes/0465-saved-by.py), which reads each document's build history and compares its last build's release with the releases its experiment's setup names, as the site reads them</td></tr></tbody></table></div>
+<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section">#</a></h2>
+<pre class="lang-bash"><code>python3 -I recipes/0465-saved-by.py samples
+for id in com.apple.iWork.Pages com.apple.iWork.Numbers com.apple.iWork.Keynote; do
+  mdfind &quot;kMDItemCFBundleIdentifier == &#x27;$id&#x27;&quot;
+done</code></pre>
+<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th>Documents</th><th>Saved by</th></tr></thead><tbody><tr><td>574 <code>.pages</code>, 360 <code>.numbers</code>, 328 <code>.key</code></td><td>15.4 only (<code>M15.4-7051.0.79-2</code>)</td></tr><tr><td>10 <code>.pages</code>, 17 <code>.numbers</code></td><td>14.5 only (<code>M14.5-7045.0.17-4</code>), all from 0461 and 0464</td></tr><tr><td>10</td><td>unreadable: encrypted, so their build history is too</td></tr></tbody></table></div>
+<p>No document was saved by more than one release, and none by a release its experiment doesn't name. No other build appears in any document.</p>
+<p>Spotlight knows these copies of the apps:</p>
+<div class="table"><table><thead><tr><th>App</th><th>Copies</th></tr></thead><tbody><tr><td>Pages</td><td><code>/Applications/Pages.app</code> (14.5), <code>~/Desktop/backup/13.1/Pages.app</code> (13.1)</td></tr><tr><td>Numbers</td><td><code>/Applications/Numbers.app</code> (14.5), <code>~/Desktop/backup/13.1/Numbers.app</code> (13.1)</td></tr><tr><td>Keynote</td><td><code>~/Desktop/backup/13.1/Keynote.app</code> (13.1)</td></tr></tbody></table></div>
+<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section">#</a></h2>
+<p>Every document an app saved in these experiments was saved by the release its experiment names: the 15.4 apps up to 0460, including all 328 Keynote presentations, and 14.5 in 0461 and 0464. No saved document came from the 13.1 copies or from an update.</p>
+<p>Runs that only opened a document, to read from it or export it, leave no record in the file, and an exported PDF names only the app, not its version. From 0372 to 0460, [<code>recipes/0372-in-app.sh</code>](../recipes/0372-in-app.sh) addressed the 15.4 apps by their own names ("Pages Creator Studio" and so on), which no other copy has. In 0462 and 0463 each document had to open in the copy AppleScript addressed, <code>/Applications/Pages.app</code> or <code>/Applications/Numbers.app</code>, or the run would have reported it as not opened. Readings in Keynote before 0372 that saved nothing can't be checked from their files; rerunning them is the way to check them.</p>
+<p>Since a second copy of an app makes the choice the system's, the helper now prints to stderr which app, version and build it used, and warns when Spotlight knows more than one copy of it.</p>
+<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section">#</a></h2>
+<p><em>Confirmed</em>: the release that saved each of 1,289 documents matches its experiment. <em>Unknown</em>: which copy performed reads that saved nothing before 0372.</p>
+<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Last built from <a href="https://github.com/alehel/iwork-format">alehel/iwork-format</a>.</p></footer>
+</main>
+
+</div>
+<script>
+// On narrow screens the contents and on-this-page lists start folded; on wide ones they stay open.
+(function () {
+  var narrow = window.matchMedia("(max-width: 48rem)");
+  var lists = document.querySelectorAll(".side > details, .toc > details");
+  function fit() { for (var i = 0; i < lists.length; i++) lists[i].open = !narrow.matches; }
+  fit();
+  if (narrow.addEventListener) narrow.addEventListener("change", fit);
+  // The release dropdown closes when you click anywhere else.
+  document.addEventListener("click", function (e) {
+    var release = document.querySelector(".side .release[open]");
+    if (release && !release.contains(e.target)) release.open = false;
+  });
+  document.addEventListener("keydown", function (e) {
+    var release = document.querySelector(".side .release[open]");
+    if (release && e.key === "Escape") { release.open = false; release.querySelector("summary").focus(); }
+  });
+  document.addEventListener("click", function (e) {
+    if (narrow.matches && e.target.closest && e.target.closest(".toc a")) fit();
+  });
+})();
+</script>
+</body>
+</html>
