@@ -6,10 +6,15 @@
 # APP is Pages, Numbers or Keynote. FILE is opened through Launch Services (CONTRIBUTING.md), then
 # SCRIPT runs inside `tell application ...` with `d` set to that document, found by its file, and
 # whatever it returns is printed. Other open documents are left alone. The document is closed
-# without saving, but an app may autosave a change a script makes first, so run such scripts on copies. Waits up to 30 seconds for
-# the document to open.
+# without saving, but an app may autosave a change a script makes first, so run such scripts on
+# copies. Waits up to 30 seconds for the document to open.
+#
+# The app is "APP Creator Studio" (15.4) when that is installed, and otherwise plain "APP" (such as
+# Pages 14.5, from experiment 0461 on). Set IWORK_APP to the full name to choose another.
 set -eu
-app="$1 Creator Studio"
+if [ -n "${IWORK_APP:-}" ]; then app="$IWORK_APP"
+elif [ -d "/Applications/$1 Creator Studio.app" ]; then app="$1 Creator Studio"
+else app="$1"; fi
 file=$(cd "$(dirname "$2")" && pwd -P)/$(basename "$2")
 inner=$(mktemp -t in-app).applescript
 trap 'rm -f "$inner"' EXIT

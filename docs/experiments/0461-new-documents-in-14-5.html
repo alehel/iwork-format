@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0461: New documents in Pages and Numbers 14.5 · iWork file format specification</title>
+<meta name="description" content="iWork file format specification">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
+<p class="wip"><strong>Work in progress.</strong> This specification is incomplete and changes as new experiments run. Each finding says how sure it is: <em>confirmed</em>, <em>likely</em> or <em>unknown</em>. See <a href="../spec/index.html">what each layer covers so far</a>.</p>
+<div class="layout">
+<nav class="side" aria-label="Contents"><details open><summary>Contents</summary><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="../guides/anatomy.html">Reading a Pages document</a></li><li><a href="../guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="../guides/writing.html">Writing a document</a></li><li><a href="../guides/samples.html">Sample files</a></li><li class="group">Specification</li><li class="versions"><details class="release"><summary><span class="label">App release</span><span class="value">15.4 (current)</span></summary><ul><li><a class="current" aria-current="page" href="../spec/index.html">15.4 (current)</a></li></ul></details></li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2–5. Text, styles, objects, layout</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li class="group">Evidence</li><li><a href="index.html">All experiments</a></li></ul></details></nav>
+<main>
+<h1 id="0461-new-documents-in-pages-and-numbers-145">0461: New documents in Pages and Numbers 14.5<a class="anchor" href="#0461-new-documents-in-pages-and-numbers-145" aria-label="Link to this section">#</a></h1>
+<p><strong>Status:</strong> run</p>
+<p>Everything so far was found with the 15.4 apps. This experiment saves the simplest documents with the older Pages and Numbers 14.5, using the recipes of the first experiments unchanged, and compares their structure with the 15.4 documents those recipes made.</p>
+<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section">#</a></h2>
+<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Pages</td><td>14.5 (build <code>M14.5-7045.0.17-4</code>), in Norwegian</td></tr><tr><td>Numbers</td><td>14.5</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-23</td></tr><tr><td>Compared with</td><td><code>samples/0001/empty-a.pages</code>, <code>samples/0002/hello.pages</code> and <code>samples/0026/cells.numbers</code>, from Pages and Numbers 15.4</td></tr><tr><td>Script</td><td>The new [<code>recipes/0461-compare-structure.py</code>](../recipes/0461-compare-structure.py), which compares two documents' ZIP entries, <code>Properties.plist</code> and <code>BuildVersionHistory.plist</code>, and for each part the records of each type, each type's version (header field 2.2) and the top-level fields each type uses</td></tr></tbody></table></div>
+<p>The 14.5 apps are installed as <code>Pages</code> and <code>Numbers</code>, without the 15.4 apps' "Creator Studio" in their names. [<code>recipes/0372-in-app.sh</code>](../recipes/0372-in-app.sh) now uses whichever is installed.</p>
+<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section">#</a></h2>
+<pre class="lang-bash"><code>mkdir -p samples/0461
+osascript recipes/0001-empty-document.applescript &quot;$PWD/samples/0461/empty.pages&quot;
+osascript recipes/0002-one-word.applescript &quot;$PWD/samples/0461/hello.pages&quot;
+osascript recipes/0026-numbers-cells.applescript &quot;$PWD/samples/0461/cells.numbers&quot;
+python3 -I recipes/0461-compare-structure.py samples/0001/empty-a.pages samples/0461/empty.pages
+python3 -I recipes/0461-compare-structure.py samples/0002/hello.pages samples/0461/hello.pages
+python3 -I recipes/0461-compare-structure.py samples/0026/cells.numbers samples/0461/cells.numbers</code></pre>
+<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section">#</a></h2>
+<p>The same in all three pairs: the same ZIP entries, the same parts, the same number of records of every type in every part but one, and the same version in header field 2.2 for every type both releases write.</p>
+<p>The differences, besides UUIDs:</p>
+<div class="table"><table><thead><tr><th></th><th>15.4</th><th>14.5</th></tr></thead><tbody><tr><td><code>Properties.plist</code> <code>fileFormatVersion</code></td><td><code>26.4.0</code></td><td><code>14.4.1</code></td></tr><tr><td><code>Properties.plist</code> flags</td><td><code>hasExternalReferenceOrMissingData</code> and <code>hasUnmaterializedRemoteData</code>, both false</td><td><code>hasExternalReferenceOrMissingOrUnmaterializedRemoteData</code>, false</td></tr><tr><td><code>BuildVersionHistory.plist</code></td><td><code>Template: Blank (dev/15.4)</code>, <code>M15.4-7051.0.79-2</code></td><td><code>Template: Blank (13.2)</code> (Numbers: <code>(11.2)</code>), <code>M14.5-7045.0.17-4</code></td></tr><tr><td><code>CalculationEngine.iwa</code></td><td>a type-4011 record, empty, named by field 15 of the engine's root (type 4000)</td><td>neither the record nor field 15</td></tr><tr><td>Numbers' <code>DocumentStylesheet.iwa</code></td><td>245 paragraph styles (type 2022)</td><td>244</td></tr></tbody></table></div>
+<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section">#</a></h2>
+<p>Pages and Numbers 14.5 write the same format as 15.4: everything the spec describes for these documents is laid out the same way, down to the record versions. The release that saved a document can be told from <code>fileFormatVersion</code> in <code>Properties.plist</code> and from the build in <code>BuildVersionHistory.plist</code>; the format version doesn't follow the app's version (14.5 writes 14.4.1, 15.4 writes 26.4.0). 15.4 adds an empty type-4011 record to the calculation engine, which a reader can ignore as it ignores the engine. Whether larger documents differ more is for the next experiments.</p>
+<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section">#</a></h2>
+<p><em>Confirmed</em>: for an empty document, a one-word document and a spreadsheet with cells, 14.5 writes the same parts, record types and versions as 15.4, apart from the differences listed.</p>
+<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Last built from <a href="https://github.com/alehel/iwork-format">alehel/iwork-format</a>.</p></footer>
+</main>
+
+</div>
+<script>
+// On narrow screens the contents and on-this-page lists start folded; on wide ones they stay open.
+(function () {
+  var narrow = window.matchMedia("(max-width: 48rem)");
+  var lists = document.querySelectorAll(".side > details, .toc > details");
+  function fit() { for (var i = 0; i < lists.length; i++) lists[i].open = !narrow.matches; }
+  fit();
+  if (narrow.addEventListener) narrow.addEventListener("change", fit);
+  // The release dropdown closes when you click anywhere else.
+  document.addEventListener("click", function (e) {
+    var release = document.querySelector(".side .release[open]");
+    if (release && !release.contains(e.target)) release.open = false;
+  });
+  document.addEventListener("keydown", function (e) {
+    var release = document.querySelector(".side .release[open]");
+    if (release && e.key === "Escape") { release.open = false; release.querySelector("summary").focus(); }
+  });
+  document.addEventListener("click", function (e) {
+    if (narrow.matches && e.target.closest && e.target.closest(".toc a")) fit();
+  });
+})();
+</script>
+</body>
+</html>
