@@ -59,6 +59,13 @@ def spec_versions():
 
 # --- Markdown subset -------------------------------------------------------------------------
 
+PROBLEMS = []  # (source, message) for Markdown the builder can't render faithfully; main() fails if any
+
+
+def problem(here, message):
+    PROBLEMS.append((here, message))
+
+
 def slug(text):
     text = re.sub(r"<[^>]+>", "", text)
     text = re.sub(r"[^\w\s-]", "", text.lower(), flags=re.UNICODE)
@@ -78,6 +85,8 @@ def link_target(url, here):
         page = SITE_PAGES.get(target)
         if page:
             return relpath(page, here_out(here)) + anchor
+        if SITE_PAGES and not os.path.isfile(os.path.join(ROOT, target)):
+            problem(here, f"link to a missing file: {url}")
     return f"{REPO}/blob/main/{target}{anchor}"
 
 
@@ -102,6 +111,7 @@ def render(md, here, toc=None):
     out = []
     i = 0
     para = []
+    anchors = set()
 
     def flush():
         if para:
@@ -110,24 +120,36 @@ def render(md, here, toc=None):
 
     while i < len(lines):
         line = lines[i]
-        if line.startswith("```"):
+        fence = re.match(r"^( {0,3})```", line)  # a fence may be indented up to three spaces, as in Markdown
+        if fence:
             flush()
-            lang = line[3:].strip()
+            pad = len(fence.group(1))
+            lang = line.strip()[3:].strip()
             body = []
             i += 1
-            while i < len(lines) and not lines[i].startswith("```"):
-                body.append(lines[i])
+            while i < len(lines) and not re.match(r"^ {0,3}```", lines[i]):
+                body.append(lines[i][min(pad, len(lines[i]) - len(lines[i].lstrip(" "))):])
                 i += 1
+            if i >= len(lines):
+                problem(here, "code block not closed with ```")
             cls = f' class="lang-{lang}"' if lang else ""
             out.append(f"<pre{cls}><code>" + html.escape("\n".join(body)) + "</code></pre>")
             i += 1
             continue
+        if re.match(r"^#{5,}\s", line):
+            problem(here, f"heading deeper than ####: {line.strip()[:60]}")
         m = re.match(r"^(#{1,4})\s+(.*)$", line)
         if m:
             flush()
             level = len(m.group(1))
             text = inline(m.group(2), here)
             anchor = slug(m.group(2))
+            # A repeated heading gets -2, -3 and so on, so every section keeps its own link.
+            n = 2
+            while anchor in anchors:
+                anchor = f"{slug(m.group(2))}-{n}"
+                n += 1
+            anchors.add(anchor)
             if toc is not None and level == 2:
                 toc.append((anchor, re.sub(r"<[^>]+>", "", text)))
             out.append(f'<h{level} id="{anchor}">{text}<a class="anchor" href="#{anchor}" aria-label="Link to this section: {html.escape(re.sub(r'<[^>]+>', '', text), quote=True)}">#</a></h{level}>')
@@ -141,7 +163,7 @@ def render(md, here, toc=None):
         m = re.match(r"^<!--\s*include:\s*(\S+)\s*-->$", line.strip())
         if m:
             flush()
-            out.append(include_excerpt(m.group(1)))
+            out.append(include_excerpt(m.group(1), here))
             i += 1
             continue
         m = re.match(r"^!\[([^\]]*)\]\(([^)]+)\)$", line.strip())
@@ -161,6 +183,8 @@ def render(md, here, toc=None):
             rows = []
             while i < len(lines) and lines[i].startswith("|"):
                 rows.append([c.strip() for c in lines[i].strip().strip("|").split("|")])
+                if len(rows[-1]) != len(header):
+                    problem(here, f"table row has {len(rows[-1])} cells, its header {len(header)}: {lines[i][:60]}")
                 i += 1
             t = ["<div class=\"table\"><table><thead><tr>"]
             t += [f"<th>{inline(c, here)}</th>" for c in header]
@@ -173,7 +197,10 @@ def render(md, here, toc=None):
         if re.match(r"^\s*([-*]|\d+\.)\s+", line):
             flush()
             block = []
-            while i < len(lines) and (re.match(r"^\s*([-*]|\d+\.)\s+", lines[i]) or (lines[i].startswith("   ") and lines[i].strip())):
+            # An item goes on through indented lines, and through a blank line when the next line is indented.
+            while i < len(lines) and (re.match(r"^\s*([-*]|\d+\.)\s+", lines[i]) or (lines[i].startswith("  ") and lines[i].strip())
+                                      or (not lines[i].strip() and i + 1 < len(lines) and lines[i + 1].startswith("  ")
+                                          and lines[i + 1].strip())):
                 block.append(lines[i])
                 i += 1
             out.append(render_list(block, here))
@@ -190,6 +217,8 @@ def render(md, here, toc=None):
             flush()
             i += 1
             continue
+        if re.match(r"^\s*<(?!https?:)[A-Za-z!/]", line):
+            problem(here, f"raw HTML or an unknown directive isn't supported: {line.strip()[:60]}")
         para.append(line.strip())
         i += 1
     flush()
@@ -202,19 +231,22 @@ def render_list(block, here):
     ordered = bool(re.match(r"^\s*\d+\.", first))
     base = len(first) - len(first.lstrip())
     items = []
+    offset = base + 2
     for line in block:
         indent = len(line) - len(line.lstrip())
-        m = re.match(r"^\s*([-*]|\d+\.)\s+(.*)$", line)
+        m = re.match(r"^(\s*([-*]|\d+\.)\s+)(.*)$", line)
         if m and indent == base:
-            items.append([m.group(2)])
+            items.append([m.group(3)])
+            offset = len(m.group(1))  # where the item's text starts: 2 after "- ", 3 after "1. "
         elif items:
-            items[-1].append(line[base + 2:] if len(line) > base + 2 else line.strip())
+            # Continuation lines lose the item's indentation, so code fences and nested lists inside start at column 0.
+            items[-1].append(line[min(offset, indent):] if line.strip() else "")
     tag = "ol" if ordered else "ul"
     out = [f"<{tag}>"]
     for item in items:
         head, rest = item[0], item[1:]
         if rest:
-            inner = render("\n".join([head] + [r if not r.startswith(" ") else r for r in rest]), here)
+            inner = render("\n".join([head] + rest), here)
             inner = re.sub(r"^<p>(.*?)</p>", r"\1", inner, count=1, flags=re.S)
             out.append(f"<li>{inner}</li>")
         else:
@@ -223,8 +255,11 @@ def render_list(block, here):
     return "".join(out)
 
 
-def include_excerpt(name):
+def include_excerpt(name, here=None):
     path = os.path.join(ROOT, "site", "examples", name)
+    if not os.path.isfile(path):
+        problem(here, f"included excerpt site/examples/{name} doesn't exist; run site/examples.py")
+        return f'<pre class="excerpt"><code>(missing excerpt: {html.escape(name)})</code></pre>'
     with open(path, encoding="utf-8") as f:
         text = f.read().rstrip("\n")
     return f'<pre class="excerpt"><code>{html.escape(text)}</code></pre>'
@@ -683,11 +718,14 @@ def main():
         shutil.copytree(files, os.path.join(OUT, "files"))
     open(os.path.join(OUT, ".nojekyll"), "w").close()
     print(f"built {len(experiments) + len(spec_map) + len(guides) + 2} pages into docs/, indexing {n_types} record types")
+    for here, message in PROBLEMS:
+        print(f"markdown: {here}: {message}", file=sys.stderr)
     problems = check_links(OUT)
     for p in problems:
         print("broken:", p, file=sys.stderr)
-    if problems:
-        sys.exit(f"{len(problems)} broken links or fragments; fix the Markdown they come from")
+    if problems or PROBLEMS:
+        sys.exit(f"{len(PROBLEMS)} Markdown problems and {len(problems)} broken links or fragments; "
+                 "fix the Markdown they come from")
 
 
 def build_revision():

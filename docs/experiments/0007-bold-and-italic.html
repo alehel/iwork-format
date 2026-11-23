@@ -22,8 +22,12 @@
 <div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Pages</td><td>15.4 (build <code>M15.4-7051.0.79-2</code>), with a Norwegian (nb) user interface</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-09</td></tr><tr><td>Baseline</td><td>Experiment <a href="0004-larger-word.html">0004</a>: <code>plain.pages</code>, and <code>large.pages</code> for the same change with a size</td></tr></tbody></table></div>
 <h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section: Recipe">#</a></h2>
 <p>The text was set through AppleScript, so it is the same as in 0004 and Pages doesn't autocorrect it (see <a href="0006-typing-in-pages.html">0006</a>). Each document was made like this:</p>
-<ol><li>With AppleScript, make a new document and set its body text to <code>hello world</code>: ``<code>applescript tell application &quot;Pages&quot; set d to make new document set body text of d to &quot;hello world&quot; end tell </code><code></code></li><li>In the Pages window, double-click <code>world</code> to select it, then click buttons in the Style tab of the Format sidebar:</li></ol>
-<p>| File | Buttons | | --- | --- | | <code>bold.pages</code> | Bold | | <code>italic.pages</code> | Italic | | <code>bold-italic.pages</code> | Bold, then Italic |</p>
+<ol><li>With AppleScript, make a new document and set its body text to <code>hello world</code>:
+<pre class="lang-applescript"><code>tell application &quot;Pages&quot;
+    set d to make new document
+    set body text of d to &quot;hello world&quot;
+end tell</code></pre></li><li>In the Pages window, double-click <code>world</code> to select it, then click buttons in the Style tab of the Format sidebar:
+<div class="table"><table><thead><tr><th>File</th><th>Buttons</th></tr></thead><tbody><tr><td><code>bold.pages</code></td><td>Bold</td></tr><tr><td><code>italic.pages</code></td><td>Italic</td></tr><tr><td><code>bold-italic.pages</code></td><td>Bold, then Italic</td></tr></tbody></table></div></li></ol>
 <ol><li>Save with AppleScript, <code>save front document in POSIX file &quot;…&quot;</code>, and close.</li></ol>
 <h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section: Observation">#</a></h2>
 <h3 id="the-run-table">The run table<a class="anchor" href="#the-run-table" aria-label="Link to this section: The run table">#</a></h3>

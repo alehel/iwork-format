@@ -21,7 +21,8 @@
 <h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section: Setup">#</a></h2>
 <div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Keynote</td><td>15.4, in Norwegian</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-09</td></tr><tr><td>Baseline</td><td><code>samples/0271/plain.key</code>, a new presentation</td></tr></tbody></table></div>
 <h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section: Recipe">#</a></h2>
-<ol><li>Make a new presentation: ``<code>bash osascript -e &#x27;tell application &quot;Keynote&quot; to make new document&#x27; </code><code></code></li><li>In the Format sidebar's Slide tab, click Dynamic (<em>Dynamiske</em>) under Background (<em>Bakgrunn</em>). Keynote applies its first preset, a shifting rainbow gradient. The sidebar shows an angle of 352.7°, a scale of 1.40 and a speed of 41.67.</li><li>Save it as <code>samples/0271/dynamic.key</code>.</li></ol>
+<ol><li>Make a new presentation:
+<pre class="lang-bash"><code>osascript -e &#x27;tell application &quot;Keynote&quot; to make new document&#x27;</code></pre></li><li>In the Format sidebar's Slide tab, click Dynamic (<em>Dynamiske</em>) under Background (<em>Bakgrunn</em>). Keynote applies its first preset, a shifting rainbow gradient. The sidebar shows an angle of 352.7°, a scale of 1.40 and a speed of 41.67.</li><li>Save it as <code>samples/0271/dynamic.key</code>.</li></ol>
 <h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section: Observation">#</a></h2>
 <p>The package gains <code>Data/motionBackground-9091.jpeg</code>, a 36-kilobyte still of the background.</p>
 <p>The slide's style reference (field 1) names a new slide style (type 9) whose property 11.1 is a fill with field 3, an image fill:</p>

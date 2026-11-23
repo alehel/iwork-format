@@ -21,7 +21,12 @@
 <h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section: Setup">#</a></h2>
 <div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Pages</td><td>15.4 (build <code>M15.4-7051.0.79-2</code>), in Norwegian</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-09</td></tr><tr><td>Baseline</td><td><code>samples/0023/image.pages</code>, an image without a caption</td></tr></tbody></table></div>
 <h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section: Recipe">#</a></h2>
-<ol><li>Make a document with an image on the page: ``<code>bash osascript -e &#x27;tell application &quot;Pages&quot;&#x27; \ -e &#x27;set d to make new document&#x27; -e &#x27;set body text of d to &quot;One&quot;&#x27; \ -e &quot;tell page 1 of d to make new image with properties {file:POSIX file \&quot;$PWD/samples/0023/red-8x4.png\&quot;, position:{300, 300}, width:200, height:100}&quot; \ -e &#x27;end tell&#x27; </code>`` The new image is left selected.</li><li>In the Format sidebar's Style tab, tick Caption (<em>Infotekst</em>). Pages shows the prompt <code>Infotekst</code> under the image.</li><li>Save it as <code>samples/0228/caption.pages</code>.</li></ol>
+<ol><li>Make a document with an image on the page:
+<pre class="lang-bash"><code>osascript -e &#x27;tell application &quot;Pages&quot;&#x27; \
+  -e &#x27;set d to make new document&#x27; -e &#x27;set body text of d to &quot;One&quot;&#x27; \
+  -e &quot;tell page 1 of d to make new image with properties {file:POSIX file \&quot;$PWD/samples/0023/red-8x4.png\&quot;, position:{300, 300}, width:200, height:100}&quot; \
+  -e &#x27;end tell&#x27;</code></pre>
+<p>The new image is left selected.</p></li><li>In the Format sidebar's Style tab, tick Caption (<em>Infotekst</em>). Pages shows the prompt <code>Infotekst</code> under the image.</li><li>Save it as <code>samples/0228/caption.pages</code>.</li></ol>
 <h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section: Observation">#</a></h2>
 <p>In the image (type 3005), drawable field 1.11 no longer names a type-3097 record but a new record of type 633. Field 1.10 still names a type-3097 record.</p>
 <p>The type-633 record:</p>

@@ -22,7 +22,8 @@
 <div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Pages</td><td>15.4 (build <code>M15.4-7051.0.79-2</code>), in Norwegian</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-09</td></tr><tr><td>Baseline</td><td><code>samples/0246/plain-table.pages</code>, the same table untouched</td></tr></tbody></table></div>
 <h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section: Recipe">#</a></h2>
 <p>For the sample:</p>
-<ol><li>Make a document with the body text <code>One</code>: ``<code>bash osascript -e &#x27;tell application &quot;Pages&quot; to set body text of (make new document) to &quot;One&quot;&#x27; </code><code></code></li><li>Choose Insert → Table → Header Cells (<em>Sett inn → Tabell → Tittelceller</em>). The new table is selected.</li><li>Choose Format → Table → Repeat Header Rows on Each Page (<em>Format → Tabell → Repeter tittelrader på hver side</em>).</li><li>Save it as <code>samples/0246/no-repeat.pages</code>.</li></ol>
+<ol><li>Make a document with the body text <code>One</code>:
+<pre class="lang-bash"><code>osascript -e &#x27;tell application &quot;Pages&quot; to set body text of (make new document) to &quot;One&quot;&#x27;</code></pre></li><li>Choose Insert → Table → Header Cells (<em>Sett inn → Tabell → Tittelceller</em>). The new table is selected.</li><li>Choose Format → Table → Repeat Header Rows on Each Page (<em>Format → Tabell → Repeter tittelrader på hver side</em>).</li><li>Save it as <code>samples/0246/no-repeat.pages</code>.</li></ol>
 <p>For the baseline, repeat steps 1 and 2 and save as <code>samples/0246/plain-table.pages</code>.</p>
 <h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section: Observation">#</a></h2>
 <p>Apart from IDs and UUIDs, the table models (type 6001) differ in one field. The untouched table has</p>

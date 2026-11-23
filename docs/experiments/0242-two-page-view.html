@@ -21,7 +21,8 @@
 <h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section: Setup">#</a></h2>
 <div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Pages</td><td>15.4 (build <code>M15.4-7051.0.79-2</code>), in Norwegian</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-09</td></tr><tr><td>Baseline</td><td><code>samples/0236/plain.pages</code></td></tr></tbody></table></div>
 <h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section: Recipe">#</a></h2>
-<ol><li>Make a document with the body text <code>One</code>: ``<code>bash osascript -e &#x27;tell application &quot;Pages&quot; to set body text of (make new document) to &quot;One&quot;&#x27; </code><code></code></li><li>Choose View → Zoom → Two Pages (<em>Vis → Zoom → To sider</em>).</li><li>Save it as <code>samples/0242/two-pages.pages</code>.</li></ol>
+<ol><li>Make a document with the body text <code>One</code>:
+<pre class="lang-bash"><code>osascript -e &#x27;tell application &quot;Pages&quot; to set body text of (make new document) to &quot;One&quot;&#x27;</code></pre></li><li>Choose View → Zoom → Two Pages (<em>Vis → Zoom → To sider</em>).</li><li>Save it as <code>samples/0242/two-pages.pages</code>.</li></ol>
 <h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section: Observation">#</a></h2>
 <p>In the type-10133 record:</p>
 <ul><li><strong>Field 33:</strong> changes from 0 to 1.</li><li><strong>Field 2, a point:</strong> moves from (0, 0) to (−272.4, 0).</li><li><strong>Fields 7 and 17:</strong> the first value of each grows, 7.1 from 582.4 to 1140 and 17.1 from 1031 to 1728.</li><li><strong>Field 16:</strong> its first value drops from 342 to 0.</li><li><strong>Field 15, the zoom:</strong> stays 1.25.</li></ul>

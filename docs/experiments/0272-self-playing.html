@@ -21,7 +21,8 @@
 <h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section: Setup">#</a></h2>
 <div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Keynote</td><td>15.4, in Norwegian</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-09</td></tr><tr><td>Baseline</td><td><code>samples/0271/plain.key</code>, a new presentation</td></tr></tbody></table></div>
 <h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section: Recipe">#</a></h2>
-<ol><li>Make a new presentation: ``<code>bash osascript -e &#x27;tell application &quot;Keynote&quot; to make new document&#x27; </code><code></code></li><li>With Keynote in front, open the Document sidebar and choose Self-Playing (<em>Selvspillende</em>) from Presentation Type. The sidebar shows delays of 5.0 s between transitions and 2.0 s between builds.</li><li>Save it as <code>samples/0272/self-playing.key</code>.</li></ol>
+<ol><li>Make a new presentation:
+<pre class="lang-bash"><code>osascript -e &#x27;tell application &quot;Keynote&quot; to make new document&#x27;</code></pre></li><li>With Keynote in front, open the Document sidebar and choose Self-Playing (<em>Selvspillende</em>) from Presentation Type. The sidebar shows delays of 5.0 s between transitions and 2.0 s between builds.</li><li>Save it as <code>samples/0272/self-playing.key</code>.</li></ol>
 <h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section: Observation">#</a></h2>
 <p>Apart from IDs, the only change is in the presentation record (type 2):</p>
 <pre><code>9: 0 → 1</code></pre>

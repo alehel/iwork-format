@@ -21,7 +21,8 @@
 <h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section: Setup">#</a></h2>
 <div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Pages</td><td>15.4 (build <code>M15.4-7051.0.79-2</code>), in Norwegian</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-09</td></tr><tr><td>Baseline</td><td>A new document with the body text <code>One two</code></td></tr></tbody></table></div>
 <h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section: Recipe">#</a></h2>
-<ol><li>Make a document with the body text <code>One two</code>: ``<code>bash osascript -e &#x27;tell application &quot;Pages&quot; to set body text of (make new document) to &quot;One two&quot;&#x27; </code><code></code></li><li>Double-click <code>two</code>, then choose Format → Font → Ligatures → Use None (<em>Ligatur → Bruk ingen</em>). No visible change: <code>two</code> has no letters that join.</li><li>Save it as <code>samples/0208/no-ligatures.pages</code>.</li></ol>
+<ol><li>Make a document with the body text <code>One two</code>:
+<pre class="lang-bash"><code>osascript -e &#x27;tell application &quot;Pages&quot; to set body text of (make new document) to &quot;One two&quot;&#x27;</code></pre></li><li>Double-click <code>two</code>, then choose Format → Font → Ligatures → Use None (<em>Ligatur → Bruk ingen</em>). No visible change: <code>two</code> has no letters that join.</li><li>Save it as <code>samples/0208/no-ligatures.pages</code>.</li></ol>
 <h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section: Observation">#</a></h2>
 <p>The body's character style runs (field 8) gain an entry at 4, pointing at a new character style (type 2021) whose parent (1.3) is the default character style. Its only property, in field 11, is:</p>
 <pre><code>16: 0</code></pre>

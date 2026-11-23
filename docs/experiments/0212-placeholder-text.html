@@ -21,7 +21,8 @@
 <h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section: Setup">#</a></h2>
 <div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Pages</td><td>15.4 (build <code>M15.4-7051.0.79-2</code>), in Norwegian</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-09</td></tr><tr><td>Baseline</td><td>Experiments <a href="0158-essay-template.html">0158</a> and <a href="0199-letter-merge-fields.html">0199</a></td></tr></tbody></table></div>
 <h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section: Recipe">#</a></h2>
-<ol><li>Make a document with the body text <code>One two</code>: ``<code>bash osascript -e &#x27;tell application &quot;Pages&quot; to set body text of (make new document) to &quot;One two&quot;&#x27; </code><code></code></li><li>Double-click <code>two</code>, then choose Format → Advanced → Define as Placeholder Text (<em>Format → Avansert → Definer som eksempeltekst</em>).</li><li>Save it as <code>samples/0212/placeholder.pages</code>.</li></ol>
+<ol><li>Make a document with the body text <code>One two</code>:
+<pre class="lang-bash"><code>osascript -e &#x27;tell application &quot;Pages&quot; to set body text of (make new document) to &quot;One two&quot;&#x27;</code></pre></li><li>Double-click <code>two</code>, then choose Format → Advanced → Define as Placeholder Text (<em>Format → Avansert → Definer som eksempeltekst</em>).</li><li>Save it as <code>samples/0212/placeholder.pages</code>.</li></ol>
 <h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section: Observation">#</a></h2>
 <p>The body text is still <code>One two</code>, and no character style is added. Run table 11 has no field at 0, then at 4 a type-2031 record:</p>
 <pre><code>1: { 1: &quot;74FB6F12-D794-4ADF-BCF4-47E22B2F8ECD&quot; }

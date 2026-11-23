@@ -21,7 +21,8 @@
 <h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section: Setup">#</a></h2>
 <div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Pages</td><td>15.4 (build <code>M15.4-7051.0.79-2</code>), in Norwegian</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-09</td></tr><tr><td>Baseline</td><td>Experiment <a href="0217-editable-shape.html">0217</a></td></tr></tbody></table></div>
 <h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section: Recipe">#</a></h2>
-<ol><li>Make a document with the body text <code>One</code>: ``<code>bash osascript -e &#x27;tell application &quot;Pages&quot; to set body text of (make new document) to &quot;One&quot;&#x27; </code><code></code></li><li>Choose Insert → Shape → Oval (<em>Sett inn → Figur → Oval</em>).</li><li>Save it as <code>samples/0218/oval.pages</code>.</li></ol>
+<ol><li>Make a document with the body text <code>One</code>:
+<pre class="lang-bash"><code>osascript -e &#x27;tell application &quot;Pages&quot; to set body text of (make new document) to &quot;One&quot;&#x27;</code></pre></li><li>Choose Insert → Shape → Oval (<em>Sett inn → Figur → Oval</em>).</li><li>Save it as <code>samples/0218/oval.pages</code>.</li></ol>
 <h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section: Observation">#</a></h2>
 <p>Inserted from the menu, the oval goes into the text. The body becomes <code>One</code> and U+FFFC, and the shape's field 1.2 names the body (1732539). It is 100 × 100.</p>
 <p>Its outline is a field-1.3.5 path with a natural size of 100 × 100 and seven elements, of kinds 1, 4, 4, 4, 4, 5, 1. The first two:</p>

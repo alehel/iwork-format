@@ -132,7 +132,21 @@ end timeout'''
     os.remove(pdf)
 
 
+def missing_inputs():
+    """The local-only inputs this script needs that aren't here: the samples it reads and iwork-probe."""
+    needed = {"samples/0002/hello.pages", "samples/0226/plain.numbers"} | {src for src, _, _, _ in SAMPLES}
+    gone = [p for p in sorted(needed) if not os.path.exists(os.path.join(ROOT, p))]
+    if not os.path.exists(PROBE):
+        gone.append(os.path.relpath(PROBE, ROOT) + " (cargo build --release)")
+    return gone
+
+
 def main():
+    gone = missing_inputs()
+    if gone:
+        # Say so plainly rather than leave the old excerpts in place as if they had been made again.
+        raise SystemExit("examples.py needs these local-only inputs, which aren't here; nothing was written:\n  "
+                         + "\n  ".join(gone))
     os.makedirs(EX, exist_ok=True)
     if os.path.isdir(FILES):
         shutil.rmtree(FILES)

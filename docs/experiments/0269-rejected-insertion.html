@@ -21,7 +21,8 @@
 <h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section: Setup">#</a></h2>
 <div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Pages</td><td>15.4 (build <code>M15.4-7051.0.79-2</code>), in Norwegian</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-09</td></tr><tr><td>Baseline</td><td><code>samples/0236/plain.pages</code>, the same text untracked</td></tr></tbody></table></div>
 <h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section: Recipe">#</a></h2>
-<ol><li>Make a document with the body text <code>One</code>: ``<code>bash osascript -e &#x27;tell application &quot;Pages&quot; to set body text of (make new document) to &quot;One&quot;&#x27; </code><code></code></li><li>Choose Edit → Track Changes, click after <code>One</code> and type <code> two</code>.</li><li>Choose Edit → Reject Change (<em>Rediger → Forkast endring</em>). The text is <code>One</code> again.</li><li>Save it as <code>samples/0269/rejected.pages</code>.</li></ol>
+<ol><li>Make a document with the body text <code>One</code>:
+<pre class="lang-bash"><code>osascript -e &#x27;tell application &quot;Pages&quot; to set body text of (make new document) to &quot;One&quot;&#x27;</code></pre></li><li>Choose Edit → Track Changes, click after <code>One</code> and type <code> two</code>.</li><li>Choose Edit → Reject Change (<em>Rediger → Forkast endring</em>). The text is <code>One</code> again.</li><li>Save it as <code>samples/0269/rejected.pages</code>.</li></ol>
 <h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section: Observation">#</a></h2>
 <p>The body text is <code>One</code>, with no run table 21 and no type-2060 record. One type-2062 record remains, naming the author and holding a time.</p>
 <p>The document root (type 10000) differs from the untracked baseline in three fields:</p>

@@ -21,7 +21,8 @@
 <h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section: Setup">#</a></h2>
 <div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Pages</td><td>15.4 (build <code>M15.4-7051.0.79-2</code>), in Norwegian</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-09</td></tr><tr><td>Baseline</td><td>Experiment <a href="0067-chart.html">0067</a></td></tr></tbody></table></div>
 <h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section: Recipe">#</a></h2>
-<ol><li>Make a document with the body text <code>One</code>: ``<code>bash osascript -e &#x27;tell application &quot;Pages&quot; to set body text of (make new document) to &quot;One&quot;&#x27; </code><code></code></li><li>Choose Insert → Chart → 2D Column (<em>Sett inn → Diagram → 2D-søyle</em>). Pages inserts a chart with its sample data.</li><li>Save it as <code>samples/0222/column.pages</code>.</li></ol>
+<ol><li>Make a document with the body text <code>One</code>:
+<pre class="lang-bash"><code>osascript -e &#x27;tell application &quot;Pages&quot; to set body text of (make new document) to &quot;One&quot;&#x27;</code></pre></li><li>Choose Insert → Chart → 2D Column (<em>Sett inn → Diagram → 2D-søyle</em>). Pages inserts a chart with its sample data.</li><li>Save it as <code>samples/0222/column.pages</code>.</li></ol>
 <h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section: Observation">#</a></h2>
 <p>The chart goes into the text: the body becomes <code>One</code> and U+FFFC, and <code>Document.iwa</code> holds one type-5021 record whose drawable field 1.2 names the body. Its field 10000 has:</p>
 <ul><li><strong>10000.1:</strong> 1, a vertical bar (column) chart, as in Keynote.</li><li><strong>10000.5:</strong> 1, grouped by row.</li><li><strong>10000.7:</strong> the sample data, in Keynote's layout:

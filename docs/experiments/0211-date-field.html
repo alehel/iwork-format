@@ -21,7 +21,8 @@
 <h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section: Setup">#</a></h2>
 <div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Pages</td><td>15.4 (build <code>M15.4-7051.0.79-2</code>), in Norwegian</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-09</td></tr><tr><td>Baseline</td><td>Experiment <a href="0158-essay-template.html">0158</a></td></tr></tbody></table></div>
 <h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section: Recipe">#</a></h2>
-<ol><li>Make a document with the body text <code>One</code>: ``<code>bash osascript -e &#x27;tell application &quot;Pages&quot; to set body text of (make new document) to &quot;One&quot;&#x27; </code><code></code></li><li>Click after <code>One</code>, then choose Insert → Date &amp; Time (<em>Sett inn → Dato og tid</em>). Pages shows <code>Onemandag 9. november 2026</code>.</li><li>Save it as <code>samples/0211/date.pages</code>.</li></ol>
+<ol><li>Make a document with the body text <code>One</code>:
+<pre class="lang-bash"><code>osascript -e &#x27;tell application &quot;Pages&quot; to set body text of (make new document) to &quot;One&quot;&#x27;</code></pre></li><li>Click after <code>One</code>, then choose Insert → Date &amp; Time (<em>Sett inn → Dato og tid</em>). Pages shows <code>Onemandag 9. november 2026</code>.</li><li>Save it as <code>samples/0211/date.pages</code>.</li></ol>
 <h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section: Observation">#</a></h2>
 <p>The body text is <code>Onemandag 9. november 2026</code>: the date is stored as ordinary text. Run table 11 has no field at 0, then at 3 a type-2034 record:</p>
 <pre><code>1: { 1: &quot;0C451A4D-9FFC-4441-9506-0DECA302B808&quot; }

@@ -21,7 +21,8 @@
 <h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section: Setup">#</a></h2>
 <div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Pages</td><td>15.4 (build <code>M15.4-7051.0.79-2</code>), in Norwegian</td></tr><tr><td>macOS</td><td>26.5.2 (25F84)</td></tr><tr><td>Date</td><td>2026-11-09</td></tr><tr><td>Baseline</td><td>Experiments <a href="0189-web-link.html">0189</a> and <a href="0191-bookmark.html">0191</a></td></tr></tbody></table></div>
 <h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section: Recipe">#</a></h2>
-<ol><li>Make a document with the body text <code>one two</code>: ``<code>bash osascript -e &#x27;tell application &quot;Pages&quot; to set body text of (make new document) to &quot;one two&quot;&#x27; </code><code></code></li><li>Double-click <code>two</code>, then choose Insert → Bookmark.</li><li>Double-click <code>one</code>, then choose Format → Add Link → Bookmark (<em>Bokmerke</em>). Pages links to the only bookmark.</li><li>Save it as <code>samples/0192/bookmark-link.pages</code>.</li></ol>
+<ol><li>Make a document with the body text <code>one two</code>:
+<pre class="lang-bash"><code>osascript -e &#x27;tell application &quot;Pages&quot; to set body text of (make new document) to &quot;one two&quot;&#x27;</code></pre></li><li>Double-click <code>two</code>, then choose Insert → Bookmark.</li><li>Double-click <code>one</code>, then choose Format → Add Link → Bookmark (<em>Bokmerke</em>). Pages links to the only bookmark.</li><li>Save it as <code>samples/0192/bookmark-link.pages</code>.</li></ol>
 <h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section: Observation">#</a></h2>
 <p><code>Document.iwa</code> gains a type-2035 bookmark and a type-2039 record:</p>
 <pre><code>type 2035:  1: { 1: &quot;B3EA9C7C-BDCF-41C7-9E6B-E441FE2FEF95&quot; }, 3: 1, 4: 0
