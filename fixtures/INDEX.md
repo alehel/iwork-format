@@ -1,8 +1,8 @@
 # Fixtures
 
-Sample documents from the experiments, for testing readers and writers. They are published as a zip attached to the repository's GitHub release `fixtures`, not committed. Built by `python3 -I fixtures/build.py`, which leaves out anything from Apple's templates or images, and anything holding a personal name except the six whose comments, highlights or tracked changes name the project owner as their author. See [LICENSE.md](LICENSE.md).
+Sample documents from the experiments, for testing readers and writers. They are published as a zip attached to the repository's GitHub release `fixtures`, not committed. Built by `python3 -I fixtures/build.py`, which leaves out anything from Apple's templates or images, and anything holding a personal name except those whose comments, highlights or tracked changes name the project owner as their author. See [LICENSE.md](LICENSE.md).
 
-1143 documents. Keynote presentations, under `keynote/`, were made with the project's test theme ([0291](../experiments/0291-test-theme.md), [0292](../experiments/0292-test-theme-reruns.md)). Encrypted documents list their test password. A folder package's SHA-256 is taken over each of its files in path order, as the path, a zero byte and the contents.
+1170 documents. Keynote presentations, under `keynote/`, were made with the project's test theme ([0291](../experiments/0291-test-theme.md), [0292](../experiments/0292-test-theme-reruns.md)). Documents were saved by the 15.4 apps unless their note names another release, such as 14.5. Encrypted documents list their test password. A folder package's SHA-256 is taken over each of its files in path order, as the path, a zero byte and the contents.
 
 | File | Experiment | Bytes | SHA-256 | Note |
 | --- | --- | --- | --- | --- |
@@ -1071,6 +1071,33 @@ Sample documents from the experiments, for testing readers and writers. They are
 | `0459/scatter-s51.key` | [0459: A series' points in a scatter chart](../experiments/0459-a-series-points.md) | 1,242,316 | `20bf14bc94f43929d1f145c3e1baa5d2549e4d456aea4a88232dd440490d73ac` | |
 | `0459/scatter-s53.key` | [0459: A series' points in a scatter chart](../experiments/0459-a-series-points.md) | 1,242,316 | `396113966280642b45430a5d4ddf2d0898e9ae6e6dfd70e40680cae632a5f38b` | |
 | `0459/scatter.key` | [0459: A series' points in a scatter chart](../experiments/0459-a-series-points.md) | 1,242,316 | `6edb48a40ea3c4ea3b1b2846272827db3c3558054f56a5c5efd7fa8192dd6955` | |
+| `0461/cells.numbers` | [0461: New documents in Pages and Numbers 14.5](../experiments/0461-new-documents-in-14-5.md) | 136,057 | `9c56eab5503fadce84faf9d75c9343e09ddfd58ec43edf983aa4ddba267ae593` | saved by 14.5 |
+| `0461/empty.pages` | [0461: New documents in Pages and Numbers 14.5](../experiments/0461-new-documents-in-14-5.md) | 88,266 | `85c2ac607762ca3c1fff21a5a2995423fa8b08c94d0b1261f2961e67bbbe78e7` | saved by 14.5 |
+| `0461/hello.pages` | [0461: New documents in Pages and Numbers 14.5](../experiments/0461-new-documents-in-14-5.md) | 88,938 | `acc5ffacde510034d15337b9dda4c8e9c9ff41b5bd4891def40f763e8729ea70` | saved by 14.5 |
+| `0464/0030-row-300.numbers` | [0464: The recipes rerun in 14.5](../experiments/0464-recipes-rerun-in-14-5.md) | 170,480 | `244fae08ea8cbce5fee51a252e5705d3199cd174b4e6c0725fff71e072a7d47f` | saved by 14.5 |
+| `0464/0031-kinds.numbers` | [0464: The recipes rerun in 14.5](../experiments/0464-recipes-rerun-in-14-5.md) | 138,795 | `f9c08124d00a71f65307cdbc13f0b980bce9daa0fe947b50ab38b5c76fbbcbdc` | saved by 14.5 |
+| `0464/0035-formulas.numbers` | [0464: The recipes rerun in 14.5](../experiments/0464-recipes-rerun-in-14-5.md) | 136,937 | `e77ff2d5a4cbc3fa0a5dbf044ee4527b472f2c5a099f7054752974d93f984565` | saved by 14.5 |
+| `0464/0036-formats.numbers` | [0464: The recipes rerun in 14.5](../experiments/0464-recipes-rerun-in-14-5.md) | 138,515 | `eae8a96193694d3f34608b8d4d5a6c1f52558ca7a66b2e45d2450e90e1b34f06` | saved by 14.5 |
+| `0464/0037-two-sheets.numbers` | [0464: The recipes rerun in 14.5](../experiments/0464-recipes-rerun-in-14-5.md) | 143,976 | `9a6f4dae085c6041c84278492affcc0407b2582b2fa468e3f3a6ca22e8e22b82` | saved by 14.5 |
+| `0464/0043-styles.numbers` | [0464: The recipes rerun in 14.5](../experiments/0464-recipes-rerun-in-14-5.md) | 138,339 | `0cf4b5ea560047dbfbcf04b418ef6a241ca5a94e2f7eafb71f423dba03f37388` | saved by 14.5 |
+| `0464/0044-merged.numbers` | [0464: The recipes rerun in 14.5](../experiments/0464-recipes-rerun-in-14-5.md) | 136,086 | `5a07e7c781e97331809974ba8ef9e1c861b2b9cb3508d241d091512422424e9c` | saved by 14.5 |
+| `0464/0045-sizes.numbers` | [0464: The recipes rerun in 14.5](../experiments/0464-recipes-rerun-in-14-5.md) | 133,582 | `5e1e2f77f5b3916eacdcfb1ccedff27b2e8d24823fb3fc9e2948028c79b90226` | saved by 14.5 |
+| `0464/0047-two-tables.numbers` | [0464: The recipes rerun in 14.5](../experiments/0464-recipes-rerun-in-14-5.md) | 142,951 | `63a7a523df85c0ea3c7a61c26667ca389c0ce830507c77c1886d5a6a5be83bfe` | saved by 14.5 |
+| `0464/0049-text-box.pages` | [0464: The recipes rerun in 14.5](../experiments/0464-recipes-rerun-in-14-5.md) | 89,694 | `26d35c26ea0202607a43fca7c429ae3cb67130fb754705aae04cc1caaeea613d` | saved by 14.5 |
+| `0464/0050-shape.pages` | [0464: The recipes rerun in 14.5](../experiments/0464-recipes-rerun-in-14-5.md) | 91,430 | `5f788061de71efbd20be7fb180671c17210f7ba3ebd6652d691974ee9ef000b7` | saved by 14.5 |
+| `0464/0051-line.pages` | [0464: The recipes rerun in 14.5](../experiments/0464-recipes-rerun-in-14-5.md) | 91,932 | `2f12f40a2a762f6a618ccc082fdb6b35d0f042de05ba283d4163ba40d6502826` | saved by 14.5 |
+| `0464/0052-table.pages` | [0464: The recipes rerun in 14.5](../experiments/0464-recipes-rerun-in-14-5.md) | 103,074 | `0304fca773c64ad087a40926d0dfa11be504a0b8c7301f618981f3acdf7624e0` | saved by 14.5 |
+| `0464/0053-font.pages` | [0464: The recipes rerun in 14.5](../experiments/0464-recipes-rerun-in-14-5.md) | 89,784 | `b717c5c085605f88c1ceb2eac063908779f040b5fdf1cb756e5b2d1bfd1978aa` | saved by 14.5 |
+| `0464/0054-sizes.pages` | [0464: The recipes rerun in 14.5](../experiments/0464-recipes-rerun-in-14-5.md) | 90,391 | `0e3214d5c0e879cebe29c03a8d9f4aab77ab27a0479014d76f6cf615c001c342` | saved by 14.5 |
+| `0464/0058-tab.pages` | [0464: The recipes rerun in 14.5](../experiments/0464-recipes-rerun-in-14-5.md) | 88,949 | `da78ed48d0a449f96a60339028534b228ed083ae6223d80079c76c4368d90358` | saved by 14.5 |
+| `0464/0059-geometry.numbers` | [0464: The recipes rerun in 14.5](../experiments/0464-recipes-rerun-in-14-5.md) | 122,808 | `4daad043cebe6337499dffd66197c062c19602152dfee0f9022aac112e467ee8` | saved by 14.5 |
+| `0464/0060-headers.numbers` | [0464: The recipes rerun in 14.5](../experiments/0464-recipes-rerun-in-14-5.md) | 135,092 | `f7f0e9dc3c2acd8f9e114d24dcd0f98728831abab4fad900daf712e64d9037e6` | saved by 14.5 |
+| `0464/0063-sparse.numbers` | [0464: The recipes rerun in 14.5](../experiments/0464-recipes-rerun-in-14-5.md) | 209,925 | `b9536fe3b783ac7e302b7b90c51e94b8860a99cb7f818c0c7b68cb7ad20ce0f7` | saved by 14.5 |
+| `0464/0064-functions.numbers` | [0464: The recipes rerun in 14.5](../experiments/0464-recipes-rerun-in-14-5.md) | 138,179 | `b76045b152ecc449167f99255d9f906f8fee05eaf47630b415d75a937bb21a0d` | saved by 14.5 |
+| `0464/0065-cross.numbers` | [0464: The recipes rerun in 14.5](../experiments/0464-recipes-rerun-in-14-5.md) | 143,940 | `58fc7bf77e55f39d8a9f04240d6c61e0f93cbcae1193cf88d80ff8d8e0e77204` | saved by 14.5 |
+| `0464/0066-if.numbers` | [0464: The recipes rerun in 14.5](../experiments/0464-recipes-rerun-in-14-5.md) | 138,407 | `34a5ee240665c21e33126de3faa007a2f99fde032f37f65cce0af5ee60e0f616` | saved by 14.5 |
+| `0464/0078-error.numbers` | [0464: The recipes rerun in 14.5](../experiments/0464-recipes-rerun-in-14-5.md) | 135,617 | `dfa7189b9df1f426efda6b8254cfe9443da0c9c1388c613d044109aece6175dd` | saved by 14.5 |
+| `0464/0198-book.pages` | [0464: The recipes rerun in 14.5](../experiments/0464-recipes-rerun-in-14-5.md) | 84,519 | `a4eb8a7407c1ae6cbed880f449fd47beeb4f25b9c1941f73aacb661a970ee9cf` | saved by 14.5 |
 | `keynote/0024/empty-a.key` | [0024: Keynote and Numbers](../experiments/0024-keynote-and-numbers.md) | 882,066 | `912b4de37a6cd26f79bf830b1fe894e608e2cccfefa0cadc626d92e0f0358a85` | |
 | `keynote/0024/empty-b.key` | [0024: Keynote and Numbers](../experiments/0024-keynote-and-numbers.md) | 882,065 | `95a5a1cbe9b95a8b5fb33a29d585e0fc999983bd08a717ed3e3eaa84af118085` | |
 | `keynote/0025/empty.key` | [0025: Text on a Keynote slide](../experiments/0025-keynote-title.md) | 882,066 | `912b4de37a6cd26f79bf830b1fe894e608e2cccfefa0cadc626d92e0f0358a85` | |

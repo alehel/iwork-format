@@ -15,6 +15,7 @@ Folder packages and documents that fail a check are listed as left out, with the
 import hashlib
 import importlib.util
 import os
+import plistlib
 import re
 import subprocess
 import sys
@@ -64,6 +65,21 @@ PASSWORDS = {"samples/0179/locked.pages": "pw1234", "samples/0179/locked2.pages"
              "samples/0180/accent.pages": "påss", "samples/0180/image.pages": "pw1234",
              "samples/0180/locked.numbers": "pw1234",
              "samples/theme/0180/locked.key": "pw1234"}
+
+
+def saved_by(rel):
+    """A note naming the release that last saved a document, when it isn't 15.4, from its build history."""
+    try:
+        if os.path.isdir(rel):
+            data = open(os.path.join(rel, "Metadata", "BuildVersionHistory.plist"), "rb").read()
+        else:
+            with zipfile.ZipFile(rel) as z:
+                data = z.read("Metadata/BuildVersionHistory.plist")
+        builds = [b for b in plistlib.loads(data) if isinstance(b, str) and re.match(r"^M\d+\.\d+-", b)]
+    except Exception:
+        return ""
+    release = builds[-1][1:].split("-")[0] if builds else ""
+    return f"saved by {release}" if release and release != "15.4" else ""
 
 
 def fix_name(info):
@@ -200,17 +216,21 @@ def main(out_zip):
             num = arc.split("/")[-2]
             title = titles.get(num, ("", num))[1]
             pw = PASSWORDS.get(rel)
+            notes = [f"password `{pw}`" if pw else "names its author" if rel in AUTHOR_NAMED else "a folder package" if os.path.isdir(rel) else ""]
+            notes.append(saved_by(rel))
+            note = "; ".join(n for n in notes if n)
             rows.append(f"| `{arc}` | [{title}](../experiments/{titles.get(num, (num,))[0]}) | {size:,} | `{digest}` |"
-                        + (f" password `{pw}` |" if pw else " names its author |" if rel in AUTHOR_NAMED else " a folder package |" if os.path.isdir(rel) else " |"))
+                        + (f" {note} |" if note else " |"))
         z.write("fixtures/LICENSE.md", "LICENSE.md")
 
     index = ["# Fixtures", "",
              "Sample documents from the experiments, for testing readers and writers. They are published as a zip "
              "attached to the repository's GitHub release `fixtures`, not committed. Built by `python3 -I fixtures/build.py`, "
-             "which leaves out anything from Apple's templates or images, and anything holding a personal name except the six whose comments, highlights or tracked changes name the project owner as their author. "
+             "which leaves out anything from Apple's templates or images, and anything holding a personal name except those whose comments, highlights or tracked changes name the project owner as their author. "
              f"See [LICENSE.md](LICENSE.md).", "",
              f"{len(kept)} documents. Keynote presentations, under `keynote/`, were made with the project's test theme "
              "([0291](../experiments/0291-test-theme.md), [0292](../experiments/0292-test-theme-reruns.md)). "
+             "Documents were saved by the 15.4 apps unless their note names another release, such as 14.5. "
              "Encrypted documents list their test password. A folder package's SHA-256 is taken over each of its files in path order, as the path, a zero byte and the contents.", "",
              "| File | Experiment | Bytes | SHA-256 | Note |", "| --- | --- | --- | --- | --- |"] + rows
     kept_paths = {rel for rel, _ in kept}
