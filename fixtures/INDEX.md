@@ -2,7 +2,7 @@
 
 Sample documents from the experiments, for testing readers and writers. They are published as a zip attached to the repository's GitHub release `fixtures`, not committed. Built by `python3 -I fixtures/build.py`, which leaves out anything from Apple's templates or images, and anything holding a personal name except the six whose comments, highlights or tracked changes name the project owner as their author. See [LICENSE.md](LICENSE.md).
 
-1120 documents. Keynote presentations, under `keynote/`, were made with the project's test theme ([0291](../experiments/0291-test-theme.md), [0292](../experiments/0292-test-theme-reruns.md)). Encrypted documents list their test password. A folder package's SHA-256 is taken over each of its files in path order, as the path, a zero byte and the contents.
+1143 documents. Keynote presentations, under `keynote/`, were made with the project's test theme ([0291](../experiments/0291-test-theme.md), [0292](../experiments/0292-test-theme-reruns.md)). Encrypted documents list their test password. A folder package's SHA-256 is taken over each of its files in path order, as the path, a zero byte and the contents.
 
 | File | Experiment | Bytes | SHA-256 | Note |
 | --- | --- | --- | --- | --- |
@@ -652,6 +652,19 @@ Sample documents from the experiments, for testing readers and writers. They are
 | `0374/original.pages` | [0374: Writing a caption's and a title's text](../experiments/0374-writing-a-caption-and-title.md) | 95,797 | `1e2d32b5862fca8695d33cdef37721474270d9924ff6b5ceb0839c7a0a46e6ba` | |
 | `0374/title.pages` | [0374: Writing a caption's and a title's text](../experiments/0374-writing-a-caption-and-title.md) | 401,035 | `557bb2278f3e43cf3f5a846320600b8cd542488484ef108e7d76ec12cf360eb1` | |
 | `0375/author.pages` | [0375: Writing a comment's text, time and author](../experiments/0375-writing-a-comment.md) | 395,207 | `554cb87545c4b93f8fdf5df15876bd06740e975bba3ba71f1313758ec3ac7882` | |
+| `0375/text.pages` | [0375: Writing a comment's text, time and author](../experiments/0375-writing-a-comment.md) | 395,226 | `31703a6aab98da59ad88a798c8c492cbf4fb521bdbef814ec148aafa843d8b67` | names its author |
+| `0375/time.pages` | [0375: Writing a comment's text, time and author](../experiments/0375-writing-a-comment.md) | 395,215 | `5034810ebdfd664fc08ae16c4c9825957bfbdd99066b8be7f34ab70040f3aef8` | names its author |
+| `0376/comment-emptied.pages` | [0376: A highlight is a comment without text](../experiments/0376-highlight-and-comment.md) | 395,211 | `dd2734572dca5a3c765efc19d953b7d3a8b01fb66085946ad73fe987ddba1ff1` | names its author |
+| `0376/comment.pages` | [0376: A highlight is a comment without text](../experiments/0376-highlight-and-comment.md) | 90,582 | `5d4fba777858429ebdc8d1346f121567eae763fea92463b5c0ede3d09db3a6e2` | names its author |
+| `0376/highlight-with-text.pages` | [0376: A highlight is a comment without text](../experiments/0376-highlight-and-comment.md) | 395,228 | `2ca156f7376f38ce723ccffc037b0fe8dc92046a1438eba352fb5b17bef9ed6e` | names its author |
+| `0376/highlight.pages` | [0376: A highlight is a comment without text](../experiments/0376-highlight-and-comment.md) | 90,590 | `ddacfc01c1f916ceee3ab1506b0f6fdb22cf49ca368a875260eee25db045d5fb` | names its author |
+| `0377/deleted-as-insertion.pages` | [0377: Writing a tracked change's kind and its author's colour](../experiments/0377-writing-a-tracked-change.md) | 395,730 | `b677f5b556ab18e1fe9a0a8a9a65cab6d3b23f61022b0996c860ca6c598252d1` | names its author |
+| `0377/deleted-blue.pages` | [0377: Writing a tracked change's kind and its author's colour](../experiments/0377-writing-a-tracked-change.md) | 395,730 | `79a66146fa5e68bd62fdd7a2f71b9398a2a1f277f2fceca26c8e6a794d4643e8` | names its author |
+| `0377/deleted-green.pages` | [0377: Writing a tracked change's kind and its author's colour](../experiments/0377-writing-a-tracked-change.md) | 395,730 | `2ede5c7ebcfaa7d0d0eb27d753a1187fcf7ed084f358b9272f097cab4ac78911` | names its author |
+| `0377/deleted-red.pages` | [0377: Writing a tracked change's kind and its author's colour](../experiments/0377-writing-a-tracked-change.md) | 395,730 | `f0f2e622354260a364c877a61fc7119dcd87848bb6015d2780f6df8115837204` | names its author |
+| `0377/deleted.pages` | [0377: Writing a tracked change's kind and its author's colour](../experiments/0377-writing-a-tracked-change.md) | 90,932 | `eecbe112ce8fb4e10e1880f5dff21bde5d8261f12c29e14c3da67ee6f0cd9380` | names its author |
+| `0377/inserted-as-deletion.pages` | [0377: Writing a tracked change's kind and its author's colour](../experiments/0377-writing-a-tracked-change.md) | 395,753 | `b6163179a43e485a88b3f186aec8edb2a57adec58db1f13ad5c0193c829d3685` | names its author |
+| `0377/inserted.pages` | [0377: Writing a tracked change's kind and its author's colour](../experiments/0377-writing-a-tracked-change.md) | 90,954 | `8c091a38124ae34ba5e702d6fe1efd2fe7ea0f6c4ccb921f0ef75569751976ba` | names its author |
 | `0378/original.key` | [0378: Writing the slide order](../experiments/0378-writing-slide-order.md) | 886,912 | `1e56d02d37f1b4ddc4cb0135f4695009337753f77782592d38f5a209e421f2a2` | |
 | `0378/reversed.key` | [0378: Writing the slide order](../experiments/0378-writing-slide-order.md) | 1,226,786 | `ae02685aedc4493cb137e42fa435d455437d8898efe8223a9d0d8402e71c6f02` | |
 | `0378/rotated.key` | [0378: Writing the slide order](../experiments/0378-writing-slide-order.md) | 1,226,786 | `3702c4103cd5440739ba56759cb6bee512b105e38b996ae3913f56aa152eb75c` | |
@@ -947,6 +960,16 @@ Sample documents from the experiments, for testing readers and writers. They are
 | `0441/arabic.pages` | [0441: Writing right-to-left text](../experiments/0441-writing-right-to-left-text.md) | 395,066 | `fe380084e82d9e768a9c0c1d0f31d083d20438a07031c7a27415c0e7113f7d96` | |
 | `0441/latin.pages` | [0441: Writing right-to-left text](../experiments/0441-writing-right-to-left-text.md) | 395,052 | `84773a195257061f456367dfafa40efebcc7e5c2ef4088a20700a47a6c4acd90` | |
 | `0441/mixed.pages` | [0441: Writing right-to-left text](../experiments/0441-writing-right-to-left-text.md) | 395,071 | `7383829065578e3c4d6c6dbd312a04712fe9879db5b7e8053f967d8648f07a1b` | |
+| `0443/c-0-0-0.pages` | [0443: The colours tracked changes are drawn in](../experiments/0443-author-colours.md) | 395,730 | `cb8acfe0770188bab0462ed2bc5001644d1962d48186872802da23a969d9a488` | names its author |
+| `0443/c-0-1-1.pages` | [0443: The colours tracked changes are drawn in](../experiments/0443-author-colours.md) | 395,730 | `8be42f2ea4e364ef318b2372373fe3c5cf1febfc95748d2be51a329ddb8ab004` | names its author |
+| `0443/c-0.36-0.78-0.69.pages` | [0443: The colours tracked changes are drawn in](../experiments/0443-author-colours.md) | 395,730 | `dcd08eb0e5bb38f87799159544397417eaa5cd204c35db0e1a96ff9fa5db165a` | names its author |
+| `0443/c-0.5-0-1.pages` | [0443: The colours tracked changes are drawn in](../experiments/0443-author-colours.md) | 395,730 | `0a9418e1bd1fd45489aeab631f92300eeee3f4c7f9f0c05b0ce5ca063a332ba3` | names its author |
+| `0443/c-0.5-0.5-0.5.pages` | [0443: The colours tracked changes are drawn in](../experiments/0443-author-colours.md) | 395,730 | `652726ccf232e2063903f32c15753e60b913e7cd8d6aaf900a9a21cc50b85bed` | names its author |
+| `0443/c-0.98-0.6-0.21.pages` | [0443: The colours tracked changes are drawn in](../experiments/0443-author-colours.md) | 395,730 | `f101f8c317a64b343c2564eccc4c2e92b17f1b8938c79096184785f39771fc3a` | names its author |
+| `0443/c-1-0-1.pages` | [0443: The colours tracked changes are drawn in](../experiments/0443-author-colours.md) | 395,730 | `ee2660861b4970adf230ea4855c9ab7a78ab39a3ef701e5610e91904c8cc97f6` | names its author |
+| `0443/c-1-0.5-0.pages` | [0443: The colours tracked changes are drawn in](../experiments/0443-author-colours.md) | 395,730 | `a4ed6afe2ef5b4aaf1af16dbb9706ee75223fca7bc25c1db7d5f5f635691e1a8` | names its author |
+| `0443/c-1-1-0.pages` | [0443: The colours tracked changes are drawn in](../experiments/0443-author-colours.md) | 395,730 | `725a601399ec1054b57cbcbf262cb8108079caad1a93bd6263088087808487d0` | names its author |
+| `0443/c-1-1-1.pages` | [0443: The colours tracked changes are drawn in](../experiments/0443-author-colours.md) | 395,730 | `45b162aadde32185ec2dc91fe01ea3249d377ffbc282b57c44a4e3e9e99a52e2` | names its author |
 | `0444/angle-0.pages` | [0444: Where a radial gradient is centred](../experiments/0444-where-a-radial-gradient-is-centred.md) | 398,470 | `f49c4dae711ea8cbc24577cc460df4eabad26090758bb375946a6fcd29dedf69` | |
 | `0444/angle-135.pages` | [0444: Where a radial gradient is centred](../experiments/0444-where-a-radial-gradient-is-centred.md) | 398,470 | `754b40d7f586840eb3daee878a1d705d591ab3e7ae65bf65ba3b9d9395400c05` | |
 | `0444/angle-180.pages` | [0444: Where a radial gradient is centred](../experiments/0444-where-a-radial-gradient-is-centred.md) | 398,470 | `25781c800278ddc1de43f6ed9cc4fa5691b1c46b891c4506307ddce85b5c7fd9` | |
@@ -1129,7 +1152,7 @@ Sample documents from the experiments, for testing readers and writers. They are
 
 ## Left out
 
-64 documents, besides 78 Keynote presentations in Basic White that are included as their test-theme versions under `keynote/`.
+41 documents, besides 78 Keynote presentations in Basic White that are included as their test-theme versions under `keynote/`.
 
 | File | Why |
 | --- | --- |
@@ -1160,19 +1183,6 @@ Sample documents from the experiments, for testing readers and writers. They are
 | `0368/f5-3.key` | media not made by the project: 910457886_1434x1669-small-5644.jpeg, 660384004_1290x1720-small-5876.jpeg, 660384004_rotate_1964x1473-small-8049.jpeg |
 | `0368/three-paras.key` | media not made by the project: 910457886_1434x1669-small-5644.jpeg, 660384004_1290x1720-small-5876.jpeg, 660384004_rotate_1964x1473-small-8049.jpeg |
 | `0368/three-words.key` | media not made by the project: 910457886_1434x1669-small-5644.jpeg, 660384004_1290x1720-small-5876.jpeg, 660384004_rotate_1964x1473-small-8049.jpeg |
-| `0375/text.pages` | holds the user's name |
-| `0375/time.pages` | holds the user's name |
-| `0376/comment-emptied.pages` | holds the user's name |
-| `0376/comment.pages` | holds the user's name |
-| `0376/highlight-with-text.pages` | holds the user's name |
-| `0376/highlight.pages` | holds the user's name |
-| `0377/deleted-as-insertion.pages` | holds the user's name |
-| `0377/deleted-blue.pages` | holds the user's name |
-| `0377/deleted-green.pages` | holds the user's name |
-| `0377/deleted-red.pages` | holds the user's name |
-| `0377/deleted.pages` | holds the user's name |
-| `0377/inserted-as-deletion.pages` | holds the user's name |
-| `0377/inserted.pages` | holds the user's name |
 | `0395/stored-renamed-listed.pages` | media not made by the project: picture.png |
 | `0395/stored-renamed.pages` | media not made by the project: picture.png |
 | `0408/email-to-custom.pages` | holds the user's name |
@@ -1185,15 +1195,5 @@ Sample documents from the experiments, for testing readers and writers. They are
 | `0440/motion-red.key` | media not made by the project: motionBackground-9094.jpeg |
 | `0440/original.key` | media not made by the project: motionBackground-9094.jpeg |
 | `0440/still-green.key` | media not made by the project: motionBackground-9094.jpeg |
-| `0443/c-0-0-0.pages` | holds the user's name |
-| `0443/c-0-1-1.pages` | holds the user's name |
-| `0443/c-0.36-0.78-0.69.pages` | holds the user's name |
-| `0443/c-0.5-0-1.pages` | holds the user's name |
-| `0443/c-0.5-0.5-0.5.pages` | holds the user's name |
-| `0443/c-0.98-0.6-0.21.pages` | holds the user's name |
-| `0443/c-1-0-1.pages` | holds the user's name |
-| `0443/c-1-0.5-0.pages` | holds the user's name |
-| `0443/c-1-1-0.pages` | holds the user's name |
-| `0443/c-1-1-1.pages` | holds the user's name |
 | `theme/0090/theme.key` | holds Basic Black's photos |
 | `theme/0271/dynamic.key` | media not made by the project: motionBackground-9094.jpeg |

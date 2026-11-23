@@ -46,7 +46,20 @@ OURS = re.compile(
 # their author (record type 212). Published with the owner's agreement; the name is in that
 # record only.
 AUTHOR_NAMED = {"samples/0193/tracked.pages", "samples/0194/deleted.pages", "samples/0200/highlight.pages",
-                "samples/0249/comment.pages", "samples/0268/accepted.pages", "samples/0269/rejected.pages"}
+                "samples/0249/comment.pages", "samples/0268/accepted.pages", "samples/0269/rejected.pages",
+                # Copies of those written in experiments 0375-0377 and 0443, also published with the owner's
+                # agreement (2026-11-23); the name is still only in the type-212 record.
+                "samples/0375/text.pages", "samples/0375/time.pages", "samples/0376/comment-emptied.pages",
+                "samples/0376/comment.pages", "samples/0376/highlight-with-text.pages",
+                "samples/0376/highlight.pages", "samples/0377/deleted-as-insertion.pages",
+                "samples/0377/deleted-blue.pages", "samples/0377/deleted-green.pages",
+                "samples/0377/deleted-red.pages", "samples/0377/deleted.pages",
+                "samples/0377/inserted-as-deletion.pages", "samples/0377/inserted.pages",
+                "samples/0443/c-0-0-0.pages", "samples/0443/c-0-1-1.pages",
+                "samples/0443/c-0.36-0.78-0.69.pages", "samples/0443/c-0.5-0-1.pages",
+                "samples/0443/c-0.5-0.5-0.5.pages", "samples/0443/c-0.98-0.6-0.21.pages",
+                "samples/0443/c-1-0-1.pages", "samples/0443/c-1-0.5-0.pages", "samples/0443/c-1-1-0.pages",
+                "samples/0443/c-1-1-1.pages"}
 PASSWORDS = {"samples/0179/locked.pages": "pw1234", "samples/0179/locked2.pages": "pw1234",
              "samples/0180/accent.pages": "påss", "samples/0180/image.pages": "pw1234",
              "samples/0180/locked.numbers": "pw1234",
