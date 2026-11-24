@@ -2,7 +2,7 @@
 
 Sample documents from the experiments, for testing readers and writers. They are published as a zip attached to the repository's GitHub release `fixtures`, not committed. Built by `python3 -I fixtures/build.py`, which leaves out anything from Apple's templates or images, and anything holding a personal name except those whose comments, highlights or tracked changes name the project owner as their author. See [LICENSE.md](LICENSE.md).
 
-1203 documents. Keynote presentations, under `keynote/`, were made with the project's test theme ([0291](../experiments/0291-test-theme.md), [0292](../experiments/0292-test-theme-reruns.md)). Documents were saved by the 15.4 apps unless their note names another release, such as 14.5. Encrypted documents list their test password. A folder package's SHA-256 is taken over each of its files in path order, as the path, a zero byte and the contents.
+1219 documents. Keynote presentations, under `keynote/`, were made with the project's test theme ([0291](../experiments/0291-test-theme.md), [0292](../experiments/0292-test-theme-reruns.md)). Documents were saved by the 15.4 apps unless their note names another release, such as 14.5. Encrypted documents list their test password. A folder package's SHA-256 is taken over each of its files in path order, as the path, a zero byte and the contents.
 
 | File | Experiment | Bytes | SHA-256 | Note |
 | --- | --- | --- | --- | --- |
@@ -1209,6 +1209,22 @@ Sample documents from the experiments, for testing readers and writers. They are
 | `keynote/0264/action.key` | [0264: An action build](../experiments/0264-action-build.md) | 889,267 | `ce9e081278b3f946a875352b7592667b8f4879e766a953de2d9b4dc1bd6c5e3c` | |
 | `keynote/0271/plain.key` | [0271: A dynamic background](../experiments/0271-dynamic-background.md) | 882,060 | `1ddcdbfe366a7f435e5eb48f353fc1fdaee0b43039f085541168b625d252ca59` | |
 | `keynote/0272/self-playing.key` | [0272: A self-playing presentation](../experiments/0272-self-playing.md) | 882,092 | `652970768c781348d0f410f358f55f97fd7abae5fe06583c90e698e1233eb8bb` | |
+| `keynote/0472/0024-empty-a.key` | [0472: Keynote 16.0 with the test theme](../experiments/0472-keynote-16-0-with-the-test-theme.md) | 2,475,380 | `3774d3ed4a547439c26f625cbe37a2d32053b0581fc82c61b6fb30a948f96397` | saved by 16.0 |
+| `keynote/0472/0025-hello.key` | [0472: Keynote 16.0 with the test theme](../experiments/0472-keynote-16-0-with-the-test-theme.md) | 2,479,034 | `0cb0298d8219b35a65d484c51971c42cb95acc973e9a3450c70eec03dd336063` | saved by 16.0 |
+| `keynote/0472/0038-two-slides.key` | [0472: Keynote 16.0 with the test theme](../experiments/0472-keynote-16-0-with-the-test-theme.md) | 2,480,499 | `29702babf323e196abb3359784a33a57fdac4abfac052d245438eb17b201884a` | saved by 16.0 |
+| `keynote/0472/0039-notes.key` | [0472: Keynote 16.0 with the test theme](../experiments/0472-keynote-16-0-with-the-test-theme.md) | 2,475,377 | `f83cd3fa8935e229aca0b7b9123cb822f7eddd1656f1c1fa902c965e61d2f76b` | saved by 16.0 |
+| `keynote/0472/0046-blank-layout.key` | [0472: Keynote 16.0 with the test theme](../experiments/0472-keynote-16-0-with-the-test-theme.md) | 2,475,047 | `d08296106de5cdcc39576aeed9653310dbd77440caf947a7df584b0caf2b354f` | saved by 16.0 |
+| `keynote/0472/0067-chart.key` | [0472: Keynote 16.0 with the test theme](../experiments/0472-keynote-16-0-with-the-test-theme.md) | 2,497,479 | `a49c0da367bd4e494d8bdeda961b46ade3fc5a8fb3f53cce8f43bd890ed9845e` | saved by 16.0 |
+| `keynote/0472/0068-textbox.key` | [0472: Keynote 16.0 with the test theme](../experiments/0472-keynote-16-0-with-the-test-theme.md) | 2,476,661 | `793332c3edc00f5a34d9387f039aa252cd8693ad2784a1d29f3bfc3bd6274832` | saved by 16.0 |
+| `keynote/0472/0087-autoplay.key` | [0472: Keynote 16.0 with the test theme](../experiments/0472-keynote-16-0-with-the-test-theme.md) | 2,475,345 | `7e809e9f08031c3844fe22180f944b97c06a962de9ab64b810b9b9942ded170f` | saved by 16.0 |
+| `keynote/0472/0091-movein.key` | [0472: Keynote 16.0 with the test theme](../experiments/0472-keynote-16-0-with-the-test-theme.md) | 2,475,361 | `6aecae781e2d231ff004824b5fdcc67c4dc64826df247c9051baeab563531b25` | saved by 16.0 |
+| `keynote/0472/0096-textstyle.key` | [0472: Keynote 16.0 with the test theme](../experiments/0472-keynote-16-0-with-the-test-theme.md) | 2,476,678 | `79a4dd9574e4c3db9fb415faff86a171de3f938e602f59e0883beb6f7f061ba1` | saved by 16.0 |
+| `keynote/0472/0159-dup.key` | [0472: Keynote 16.0 with the test theme](../experiments/0472-keynote-16-0-with-the-test-theme.md) | 2,478,467 | `b6becd6d50a1846c1b48c89373fd1cff27b3749a99b64e3d0fc14ac3ca608a3a` | saved by 16.0 |
+| `keynote/0472/0196-all.key` | [0472: Keynote 16.0 with the test theme](../experiments/0472-keynote-16-0-with-the-test-theme.md) | 2,549,678 | `12f7c65bc18aee64bea5f2981730ae2d829ad15527fe337ee4e2d09d714ce421` | saved by 16.0 |
+| `keynote/0472/0197-default.key` | [0472: Keynote 16.0 with the test theme](../experiments/0472-keynote-16-0-with-the-test-theme.md) | 2,475,363 | `3208e5aeba00ebf80b00a98384449ea8f746f592d5afbf25e9fc186f5d4881b4` | saved by 16.0 |
+| `keynote/0472/0197-idle.key` | [0472: Keynote 16.0 with the test theme](../experiments/0472-keynote-16-0-with-the-test-theme.md) | 2,475,361 | `8b560784f2ecf6f1459ee70a7fa3629dbde6a046b014dd5f9cb1b3cae05c56cb` | saved by 16.0 |
+| `keynote/0472/0243-body.key` | [0472: Keynote 16.0 with the test theme](../experiments/0472-keynote-16-0-with-the-test-theme.md) | 2,477,232 | `1307699c1c7c04137eb7d07a8c5d67355c5957a8f757a84d374300d12afdb2af` | saved by 16.0 |
+| `keynote/0472/0243-no-body.key` | [0472: Keynote 16.0 with the test theme](../experiments/0472-keynote-16-0-with-the-test-theme.md) | 2,477,220 | `68ea3c2b41439e97784888a9c005985725d64c32ca8389f1c50b17c4a5bc7205` | saved by 16.0 |
 
 ## Left out
 

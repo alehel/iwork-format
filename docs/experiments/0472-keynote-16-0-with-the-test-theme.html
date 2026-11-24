@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0472: Keynote 16.0 with the test theme · iWork file format specification</title>
+<meta name="description" content="iWork file format specification">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<a class="skip" href="#page-content">Skip to content</a>
+<header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><form class="search" action="../search.html" role="search"><input type="search" name="q" aria-label="Search the specification" placeholder="Search, e.g. 6001"></form><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
+<p class="wip"><strong>Work in progress.</strong> This specification is incomplete and changes as new experiments run. Each finding says how sure it is: <em>confirmed</em>, <em>likely</em> or <em>unknown</em>. See <a href="../spec/index.html">what each chapter covers so far</a>.</p>
+<div class="layout no-toc">
+<nav class="side" aria-label="Contents"><details open><summary>Contents</summary><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="../guides/anatomy.html">Reading a Pages document</a></li><li><a href="../guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="../guides/writing.html">Writing a document</a></li><li><a href="../guides/samples.html">Sample files</a></li><li class="group">Specification</li><li class="releases-line"><a href="../spec/releases.html">Describes 15.4 · also checked: 16.0, 14.5</a></li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2. Text</a></li><li><a href="../spec/styles.html">3. Styles</a></li><li><a href="../spec/tables.html">4. Tables</a></li><li><a href="../spec/drawables.html">5. Drawables, media and charts</a></li><li class="group">Apps</li><li><a href="../spec/pages.html">Pages</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li class="group">Reference</li><li><a href="../search.html">Search</a></li><li><a href="../spec/types.html">Record types</a></li><li><a href="../spec/releases.html">Releases</a></li><li class="group">Evidence</li><li><a href="index.html">All experiments</a></li><li><a href="topics.html">By topic</a></li></ul></details></nav>
+
+<main id="page-content" tabindex="-1">
+<h1 id="0472-keynote-160-with-the-test-theme">0472: Keynote 16.0 with the test theme<a class="anchor" href="#0472-keynote-160-with-the-test-theme" aria-label="Link to this section: 0472: Keynote 16.0 with the test theme">#</a></h1><p class="ran">App release: <span class="release">16.0</span></p>
+<p><strong>Status:</strong> run</p>
+<p>The Keynote presentations of <a href="0466-keynote-14-5.html">0466</a> and <a href="0469-the-16-0-apps.html">0469</a> were made with Basic White, whose photos are Apple's, so none can be published with the fixtures. This experiment reruns the same 14 recipes in Keynote 16.0 with the project's test theme (<a href="0291-test-theme.html">0291</a>), and compares each presentation with the test-theme one Keynote 15.4 made from the same recipe in <a href="0292-test-theme-reruns.html">0292</a>.</p>
+<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section: Setup">#</a></h2>
+<div class="table"><table><tbody><tr><th scope="row">Keynote</th><td>16.0 (build <code>M16.0-7052.0.68-2</code>), in Norwegian</td></tr><tr><th scope="row">macOS</th><td>26.5.2 (25F84)</td></tr><tr><th scope="row">Date</th><td>2026-11-24</td></tr><tr><th scope="row">Theme</th><td><code>iwork-format test</code>, made with 15.4 in <a href="0291-test-theme.html">0291</a>, which 16.0 still lists among its themes</td></tr><tr><th scope="row">Recipes</th><td>The 14 Keynote recipes of 0466 and 0469: 16 presentations</td></tr><tr><th scope="row">Compared with</th><td>Each recipe's test-theme presentation from 15.4, under <code>samples/theme/</code>, with [<code>recipes/0461-compare-structure.py</code>](../recipes/0461-compare-structure.py)</td></tr><tr><th scope="row">Script</th><td>The new [<code>recipes/0472-keynote-test-theme-rerun.sh</code>](../recipes/0472-keynote-test-theme-rerun.sh)</td></tr></tbody></table></div>
+<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section: Recipe">#</a></h2>
+<pre class="lang-bash"><code>bash recipes/0472-keynote-test-theme-rerun.sh samples/theme/0472
+python3 -I fixtures/build.py /tmp/iwork-format-fixtures.zip</code></pre>
+<p>The presentations of 0197 and 0243 are saved into folders by their recipes and then moved up as <code>0197-default.key</code> and so on, since the fixtures builder reads only the files directly under an experiment's folder.</p>
+<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section: Observation">#</a></h2>
+<p>Every recipe ran, 0196 with its radial wipe. In all 16 pairs: the same parts, the same number of records of every type, the same version in header field 2.2 for every type, and the same top-level fields for every type but two. The differences, besides UUIDs, the build history and the format version (<a href="0469-the-16-0-apps.html">0469</a>):</p>
+<div class="table"><table><thead><tr><th scope="col"></th><th scope="col">15.4</th><th scope="col">16.0</th></tr></thead><tbody><tr><td><code>ViewState.iwa</code>, types 3 and 23</td><td></td><td>type 3 field 43 and type 23 field 13, as in 0469</td></tr><tr><td>Master thumbnails <code>Data/mt-UUID-N.jpg</code></td><td>16</td><td>16, with other UUIDs and data IDs; in 0024's pair, 4 of the 16 images are byte for byte the same as one of 15.4's, and the other 12 differ</td></tr></tbody></table></div>
+<p>So the test theme gives the same structure in 16.0 as Basic White does (<a href="0469-the-16-0-apps.html">0469</a>), and the same as it gave in 15.4.</p>
+<p>The fixtures builder keeps all 16: their <code>Data/</code> holds only the test cards and Keynote's thumbnails of them, and no part holds a personal name.</p>
+<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section: Conclusion">#</a></h2>
+<p>Keynote 16.0 makes the same presentations with the test theme as 15.4 did, apart from the view-state fields every 16.0 document has and its own drawing of the master thumbnails. The 16 presentations are published with the fixtures under <code>keynote/0472/</code>, the first from a release other than 15.4.</p>
+<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section: Confidence">#</a></h2>
+<p><em>Confirmed</em>: for the 16 presentations of these recipes, Keynote 16.0 with the test theme writes the same structure as 15.4 with it.</p>
+<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Source: <a href="https://github.com/alehel/iwork-format/blob/main/experiments/0472-keynote-16-0-with-the-test-theme.md"><code>experiments/0472-keynote-16-0-with-the-test-theme.md</code></a>.</p></footer>
+</main>
+</div>
+<script>
+// On narrow screens the contents and on-this-page lists start folded; on wide ones they stay open.
+(function () {
+  // From 48rem to 72rem the on-this-page list sits folded above the page instead of beside it.
+  var narrow = window.matchMedia("(max-width: 48rem)");
+  var middle = window.matchMedia("(max-width: 72rem)");
+  var side = document.querySelector(".side > details"), toc = document.querySelector(".toc > details");
+  var tocSummary = document.querySelector(".toc summary");
+  function fit() {
+    if (side) side.open = !narrow.matches;
+    if (toc) toc.open = !middle.matches;
+    // On wide screens the list can't fold, so its heading isn't a control.
+    if (tocSummary) { if (middle.matches) tocSummary.removeAttribute("tabindex"); else tocSummary.tabIndex = -1; }
+    scrollers();
+  }
+  // A table or code block wider than the page scrolls sideways; make it reachable by keyboard, with a name.
+  function scrollers() {
+    var boxes = document.querySelectorAll("main .table, main pre");
+    for (var i = 0; i < boxes.length; i++) {
+      var b = boxes[i];
+      if (b.scrollWidth > b.clientWidth + 1) {
+        b.tabIndex = 0; b.setAttribute("role", "region");
+        b.setAttribute("aria-label", (b.tagName === "PRE" ? "Code" : "Table") + ", scrolls sideways");
+      } else if (b.hasAttribute("role")) {
+        b.removeAttribute("tabindex"); b.removeAttribute("role"); b.removeAttribute("aria-label");
+      }
+    }
+  }
+  window.addEventListener("resize", scrollers);
+  fit();
+  if (narrow.addEventListener) { narrow.addEventListener("change", fit); middle.addEventListener("change", fit); }
+  // The release dropdown closes when you click anywhere else.
+  document.addEventListener("click", function (e) {
+    var release = document.querySelector(".side .release[open]");
+    if (release && !release.contains(e.target)) release.open = false;
+  });
+  document.addEventListener("keydown", function (e) {
+    var release = document.querySelector(".side .release[open]");
+    if (release && e.key === "Escape") { release.open = false; release.querySelector("summary").focus(); }
+  });
+  document.addEventListener("click", function (e) {
+    if (middle.matches && e.target.closest && e.target.closest(".toc a")) fit();
+  });
+})();
+</script>
+</body>
+</html>
