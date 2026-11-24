@@ -17,7 +17,7 @@
 
 ```bash
 mkdir -p samples/0104
-osascript recipes/0103-numbers-formula.applescript "$PWD/samples/0104/nested-functions.numbers" '=ROUND(AVERAGE(B2:C2)*1,5;0)'
+osascript recipes/0103-numbers-formula.applescript "$PWD/samples/0104/nested.numbers" '=ROUND(AVERAGE(B2:C2)*1,5;0)'
 ```
 
 The recipe sets B2 to 4 and C2 to 2, and writes `=ROUND(AVERAGE(B2:C2)*1,5;0)` in E2.

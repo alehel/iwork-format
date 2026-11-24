@@ -17,7 +17,7 @@
 
 ```bash
 mkdir -p samples/0106
-osascript recipes/0103-numbers-formula.applescript "$PWD/samples/0106/mixed-references.numbers" '=$B2+B$2'
+osascript recipes/0103-numbers-formula.applescript "$PWD/samples/0106/mixed.numbers" '=$B2+B$2'
 ```
 
 The recipe sets B2 to 4 and C2 to 2, and writes `=$B2+B$2` in E2.

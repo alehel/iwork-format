@@ -17,7 +17,7 @@
 
 ```bash
 mkdir -p samples/0109
-osascript recipes/0103-numbers-formula.applescript "$PWD/samples/0109/string-literal.numbers" '=LEN("abc")'
+osascript recipes/0103-numbers-formula.applescript "$PWD/samples/0109/len.numbers" '=LEN("abc")'
 ```
 
 The recipe sets B2 to 4 and C2 to 2, and writes `=LEN("abc")` in E2.

@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0473: Every scripted sample in 16.0 · iWork file format specification</title>
+<meta name="description" content="iWork file format specification">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<a class="skip" href="#page-content">Skip to content</a>
+<header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><form class="search" action="../search.html" role="search"><input type="search" name="q" aria-label="Search the specification" placeholder="Search, e.g. 6001"></form><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
+<p class="wip"><strong>Work in progress.</strong> This specification is incomplete and changes as new experiments run. Each finding says how sure it is: <em>confirmed</em>, <em>likely</em> or <em>unknown</em>. See <a href="../spec/index.html">what each chapter covers so far</a>.</p>
+<div class="layout no-toc">
+<nav class="side" aria-label="Contents"><details open><summary>Contents</summary><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="../guides/anatomy.html">Reading a Pages document</a></li><li><a href="../guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="../guides/writing.html">Writing a document</a></li><li><a href="../guides/samples.html">Sample files</a></li><li class="group">Specification</li><li class="releases-line"><a href="../spec/releases.html">Describes 15.4 · also checked: 16.0, 14.5</a></li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2. Text</a></li><li><a href="../spec/styles.html">3. Styles</a></li><li><a href="../spec/tables.html">4. Tables</a></li><li><a href="../spec/drawables.html">5. Drawables, media and charts</a></li><li class="group">Apps</li><li><a href="../spec/pages.html">Pages</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li class="group">Reference</li><li><a href="../search.html">Search</a></li><li><a href="../spec/types.html">Record types</a></li><li><a href="../spec/releases.html">Releases</a></li><li class="group">Evidence</li><li><a href="index.html">All experiments</a></li><li><a href="topics.html">By topic</a></li></ul></details></nav>
+
+<main id="page-content" tabindex="-1">
+<h1 id="0473-every-scripted-sample-in-160">0473: Every scripted sample in 16.0<a class="anchor" href="#0473-every-scripted-sample-in-160" aria-label="Link to this section: 0473: Every scripted sample in 16.0">#</a></h1><p class="ran">App release: <span class="release">16.0</span></p>
+<p><strong>Status:</strong> run</p>
+<p>The release experiments so far reran a few dozen recipes in each new release (<a href="0461-new-documents-in-14-5.html">0461</a>, <a href="0464-recipes-rerun-in-14-5.html">0464</a>, <a href="0466-keynote-14-5.html">0466</a>, <a href="0469-the-16-0-apps.html">0469</a>). This experiment makes a script that reruns every recipe the experiments before 0461 ran, in whatever release is installed, and runs it for 16.0. Each release then has its own set of the samples the apps make from a script alone, for testing readers against more than one release.</p>
+<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section: Setup">#</a></h2>
+<div class="table"><table><tbody><tr><th scope="row">Apps</th><td>Pages, Numbers and Keynote 16.0 (build <code>M16.0-7052.0.68-2</code>), in Norwegian</td></tr><tr><th scope="row">macOS</th><td>26.5.2 (25F84)</td></tr><tr><th scope="row">Date</th><td>2026-11-24</td></tr><tr><th scope="row">Theme</th><td>Keynote: <code>iwork-format test</code> (<a href="0291-test-theme.html">0291</a>), so the presentations can be published</td></tr><tr><th scope="row">Script</th><td>The new [<code>recipes/0473-release-set.py</code>](../recipes/0473-release-set.py)</td></tr><tr><th scope="row">Compared with</th><td>Each document's namesake from 15.4 under <code>samples/</code>, or for Keynote the test-theme one under <code>samples/theme/</code> when there is one</td></tr></tbody></table></div>
+<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section: Recipe">#</a></h2>
+<pre class="lang-bash"><code>python3 -I recipes/0473-release-set.py 16.0 --list     # the commands, without running them
+python3 -I recipes/0473-release-set.py 16.0            # makes samples/release/16.0/NNNN/...
+python3 -I recipes/0473-release-set.py 16.0 --compare
+python3 -I fixtures/build.py /tmp/iwork-format-fixtures.zip
+osascript recipes/0047-numbers-second-table.applescript &quot;$PWD/samples/0473/0047-two-tables-run4.numbers&quot;</code></pre>
+<p>The script reads the Recipe section of every experiment before 0461 and collects each <code>osascript recipes/NNNN-*.applescript</code> command, with a recipe named as <code>R=recipes/…</code> substituted, each <code>for</code> or <code>while</code> loop around one, and each <code>cp</code> of a document that a recipe then opens. It runs them in experiment order with every document path moved from <code>samples/NNNN/</code> to <code>samples/release/16.0/NNNN/</code>, while input images, sound and movies are still read from <code>samples/</code>. A document a recipe opens, such as 0139's input or 0140's copy, is therefore the release's own.</p>
+<p>It leaves out what a script can't make alone:</p>
+<ul><li>calls through <code>osascript -e</code> or recipes that act on a document already open (0189 to 0287), which were followed by steps in the app;</li><li>the documents of 0146, 0147, 0296 and 0297 that were changed by hand after their recipe and saved under the same name. The script makes them and removes them again;</li><li>0291, which builds the test theme.</li></ul>
+<p>The writing experiments (0287 on), which edit 15.4 documents byte by byte, run no recipe of this kind, so they aren't in the set either.</p>
+<p>Two fixes came out of the first run. A path with a space in it, 0144's <code>rød bilde.png</code>, was cut at the space, and the recipe placed no image; the script now reads a quoted path to its closing quote. 0140's recipe edits a copy of <code>0002/hello.pages</code>, and the copy wasn't made. Both were run again.</p>
+<p>The Recipe sections of 0104, 0106 and 0109 to 0112 named their documents differently from the files the experiments kept, such as <code>nested-functions.numbers</code> for <code>nested.numbers</code>. They now name the files as kept.</p>
+<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section: Observation">#</a></h2>
+<p>190 commands from 172 experiments, all run without an error, made 319 documents in 16.0 (323, before the four hand-changed ones were removed).</p>
+<div class="table"><table><thead><tr><th scope="col"><code>--compare</code></th><th scope="col">Documents</th></tr></thead><tbody><tr><td>The same as 15.4 but for what every 16.0 document differs in (<a href="0469-the-16-0-apps.html">0469</a>)</td><td>313</td></tr><tr><td>Different</td><td>0</td></tr><tr><td>Not compared: encrypted, so the survey can't decode them</td><td>6</td></tr></tbody></table></div>
+<p>The six encrypted documents (0179 and 0180) decrypt with their test passwords in <code>iwork-probe</code> and hold the same body text, <code>one</code>, as the 15.4 ones.</p>
+<p>What <code>--compare</code> counts as known: the format version and build history, the view-state fields of 0469, Basic White's and the test theme's master thumbnails, Numbers' <em>Table Title 1</em> style, and the calculation engine's owners and lists (types 4008 and 4009), its UUID (type 4000 field 17) and, new here, field 6 of its type-4011 record. That field appeared once, in this run's <code>0047/two-tables.numbers</code>, as a list like the type-4009 lists; it wasn't in four other runs of the same recipe in 16.0 (0469's three and <code>samples/0473/0047-two-tables-run4.numbers</code>), nor in 15.4's or 14.5's, so it varies with the run as the owners do.</p>
+<p>The fixtures builder keeps 316 of the 319, and leaves out 0090, 0158 and 0199 as it does their 15.4 versions, since they hold Apple's template photos or text. The presentations pass its check for media the project didn't make, so every one was made with the test theme.</p>
+<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section: Conclusion">#</a></h2>
+<p>Every document the experiments' recipes make, 319 of them across all three apps, comes out of 16.0 with the same structure as from 15.4. This widens <a href="0469-the-16-0-apps.html">0469</a>'s 43 recipes to all of them: cells, formulas and formats, styles, shapes, images, media, charts, slides, transitions, builds, passwords and the container options.</p>
+<p>The set is published with the fixtures under <code>release/16.0/</code>. For the next release, the same three commands make and check its set.</p>
+<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section: Confidence">#</a></h2>
+<p><em>Confirmed</em>: for 313 documents made by the experiments' recipes, 16.0 writes the same structure as 15.4, apart from the differences every 16.0 document has.</p>
+<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Source: <a href="https://github.com/alehel/iwork-format/blob/main/experiments/0473-every-scripted-sample-in-16-0.md"><code>experiments/0473-every-scripted-sample-in-16-0.md</code></a>.</p></footer>
+</main>
+</div>
+<script>
+// On narrow screens the contents and on-this-page lists start folded; on wide ones they stay open.
+(function () {
+  // From 48rem to 72rem the on-this-page list sits folded above the page instead of beside it.
+  var narrow = window.matchMedia("(max-width: 48rem)");
+  var middle = window.matchMedia("(max-width: 72rem)");
+  var side = document.querySelector(".side > details"), toc = document.querySelector(".toc > details");
+  var tocSummary = document.querySelector(".toc summary");
+  function fit() {
+    if (side) side.open = !narrow.matches;
+    if (toc) toc.open = !middle.matches;
+    // On wide screens the list can't fold, so its heading isn't a control.
+    if (tocSummary) { if (middle.matches) tocSummary.removeAttribute("tabindex"); else tocSummary.tabIndex = -1; }
+    scrollers();
+  }
+  // A table or code block wider than the page scrolls sideways; make it reachable by keyboard, with a name.
+  function scrollers() {
+    var boxes = document.querySelectorAll("main .table, main pre");
+    for (var i = 0; i < boxes.length; i++) {
+      var b = boxes[i];
+      if (b.scrollWidth > b.clientWidth + 1) {
+        b.tabIndex = 0; b.setAttribute("role", "region");
+        b.setAttribute("aria-label", (b.tagName === "PRE" ? "Code" : "Table") + ", scrolls sideways");
+      } else if (b.hasAttribute("role")) {
+        b.removeAttribute("tabindex"); b.removeAttribute("role"); b.removeAttribute("aria-label");
+      }
+    }
+  }
+  window.addEventListener("resize", scrollers);
+  fit();
+  if (narrow.addEventListener) { narrow.addEventListener("change", fit); middle.addEventListener("change", fit); }
+  // The release dropdown closes when you click anywhere else.
+  document.addEventListener("click", function (e) {
+    var release = document.querySelector(".side .release[open]");
+    if (release && !release.contains(e.target)) release.open = false;
+  });
+  document.addEventListener("keydown", function (e) {
+    var release = document.querySelector(".side .release[open]");
+    if (release && e.key === "Escape") { release.open = false; release.querySelector("summary").focus(); }
+  });
+  document.addEventListener("click", function (e) {
+    if (middle.matches && e.target.closest && e.target.closest(".toc a")) fit();
+  });
+})();
+</script>
+</body>
+</html>

@@ -5,8 +5,8 @@ Usage: python3 -I fixtures/build.py OUT.zip
 Reads the local samples/ folder (gitignored), writes fixtures/INDEX.md (committed) and OUT.zip
 (published as a GitHub release asset). A document is published only if:
   - it isn't from an experiment on Apple's templates (0090, 0155-0158, 0198, 0199);
-  - a Keynote presentation comes from samples/theme/, made with the project's test theme
-    (experiments 0291, 0292), never from Basic White;
+  - a Keynote presentation comes from samples/theme/ or samples/release/, made with the project's
+    test theme (experiments 0291, 0292, 0473), never from Basic White;
   - every file under Data/ is one the project made: the test cards, Keynote's thumbnails of
     them, or the project's own images, sound and movie;
   - no part, decoded or decrypted, holds a name this Mac knows its user by (site/examples.py).
@@ -67,6 +67,14 @@ PASSWORDS = {"samples/0179/locked.pages": "pw1234", "samples/0179/locked2.pages"
              "samples/theme/0180/locked.key": "pw1234"}
 
 
+def password(rel):
+    """The test password of an encrypted document, also for its copy in a release set (0473)."""
+    m = re.match(r"samples/release/[^/]+/(.*)$", rel)
+    if m:
+        return PASSWORDS.get(f"samples/{m.group(1)}") or PASSWORDS.get(f"samples/theme/{m.group(1)}")
+    return PASSWORDS.get(rel)
+
+
 def saved_by(rel):
     """A note naming the release that last saved a document, when it isn't 15.4, from its build history."""
     try:
@@ -77,7 +85,9 @@ def saved_by(rel):
                 data = z.read("Metadata/BuildVersionHistory.plist")
         builds = [b for b in plistlib.loads(data) if isinstance(b, str) and re.match(r"^M\d+\.\d+-", b)]
     except Exception:
-        return ""
+        # An encrypted build history can't be read; a release set's documents are that release's.
+        m = re.match(r"samples/release/([^/]+)/", rel)
+        return f"saved by {m.group(1)}" if m and m.group(1) != "15.4" else ""
     release = builds[-1][1:].split("-")[0] if builds else ""
     return f"saved by {release}" if release and release != "15.4" else ""
 
@@ -146,7 +156,7 @@ def problem(path, rel):
     num = re.search(r"/(\d{4})/", rel).group(1)
     if num in TEMPLATES:
         return "holds Basic Black's photos" if num == "0090" else "holds the template's placeholder text, written by Apple"
-    if rel.endswith(".key") and not rel.startswith("samples/theme/"):
+    if rel.endswith(".key") and not rel.startswith(("samples/theme/", "samples/release/")):
         if num in ("0291", "0292"):
             return "a step in building or testing the test theme, which is in theme/"
         if os.path.exists(rel.replace("samples/", "samples/theme/")):
@@ -163,8 +173,8 @@ def problem(path, rel):
         return "media not made by the project: " + ", ".join(foreign[:3])
     if rel in AUTHOR_NAMED:
         return None
-    password = PASSWORDS.get(rel)
-    parts = folder_parts(path) if os.path.isdir(path) else decrypted_parts(path, password) if password else plain_parts(path)
+    pw = password(rel)
+    parts = folder_parts(path) if os.path.isdir(path) else decrypted_parts(path, pw) if pw else plain_parts(path)
     for name, data in parts:
         low = data.lower()
         for word in words:
@@ -180,6 +190,10 @@ def main(out_zip):
         if re.fullmatch(r"\d{4}", d):
             candidates += [f"samples/{d}/{f}" for f in sorted(os.listdir(f"samples/{d}"))]
     candidates += [f"samples/theme/{d}/{f}" for d in sorted(os.listdir("samples/theme")) for f in sorted(os.listdir(f"samples/theme/{d}"))]
+    # Each release's set of every scripted sample, made again with that release (experiment 0473).
+    for v in sorted(os.listdir("samples/release")) if os.path.isdir("samples/release") else []:
+        for d in sorted(os.listdir(f"samples/release/{v}")):
+            candidates += [f"samples/release/{v}/{d}/{f}" for f in sorted(os.listdir(f"samples/release/{v}/{d}"))]
     candidates = [c for c in candidates if re.search(r"\.(pages|numbers|key)$", c)]
 
     kept, left = [], []
@@ -215,7 +229,7 @@ def main(out_zip):
                 size = os.path.getsize(rel)
             num = arc.split("/")[-2]
             title = titles.get(num, ("", num))[1]
-            pw = PASSWORDS.get(rel)
+            pw = password(rel)
             notes = [f"password `{pw}`" if pw else "names its author" if rel in AUTHOR_NAMED else "a folder package" if os.path.isdir(rel) else ""]
             notes.append(saved_by(rel))
             note = "; ".join(n for n in notes if n)
@@ -231,6 +245,8 @@ def main(out_zip):
              f"{len(kept)} documents. Keynote presentations, under `keynote/`, were made with the project's test theme "
              "([0291](../experiments/0291-test-theme.md), [0292](../experiments/0292-test-theme-reruns.md)). "
              "Documents were saved by the 15.4 apps unless their note names another release, such as 14.5. "
+             "Under `release/16.0/` (and so on for later releases) is every sample a recipe can make on its own, made again with that release, "
+             "Keynote with the test theme ([0473](../experiments/0473-every-scripted-sample-in-16-0.md)). "
              "Encrypted documents list their test password. A folder package's SHA-256 is taken over each of its files in path order, as the path, a zero byte and the contents.", "",
              "| File | Experiment | Bytes | SHA-256 | Note |", "| --- | --- | --- | --- | --- |"] + rows
     kept_paths = {rel for rel, _ in kept}

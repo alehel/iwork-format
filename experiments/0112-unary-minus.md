@@ -17,7 +17,7 @@
 
 ```bash
 mkdir -p samples/0112
-osascript recipes/0103-numbers-formula.applescript "$PWD/samples/0112/unary-minus.numbers" '=-B2'
+osascript recipes/0103-numbers-formula.applescript "$PWD/samples/0112/minus.numbers" '=-B2'
 ```
 
 The recipe sets B2 to 4 and C2 to 2, and writes `=-B2` in E2.

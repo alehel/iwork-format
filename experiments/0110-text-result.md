@@ -17,7 +17,7 @@
 
 ```bash
 mkdir -p samples/0110
-osascript recipes/0103-numbers-formula.applescript "$PWD/samples/0110/text-result.numbers" '="a"&"b"'
+osascript recipes/0103-numbers-formula.applescript "$PWD/samples/0110/join.numbers" '="a"&"b"'
 ```
 
 The recipe sets B2 to 4 and C2 to 2, and writes `="a"&"b"` in E2.

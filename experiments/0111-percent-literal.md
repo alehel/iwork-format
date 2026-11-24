@@ -17,7 +17,7 @@
 
 ```bash
 mkdir -p samples/0111
-osascript recipes/0103-numbers-formula.applescript "$PWD/samples/0111/percent-literal.numbers" '=50%*B2'
+osascript recipes/0103-numbers-formula.applescript "$PWD/samples/0111/percent.numbers" '=50%*B2'
 ```
 
 The recipe sets B2 to 4 and C2 to 2, and writes `=50%*B2` in E2.

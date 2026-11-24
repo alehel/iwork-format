@@ -2,7 +2,7 @@
 
 Sample documents from the experiments, for testing readers and writers. They are published as a zip attached to the repository's GitHub release `fixtures`, not committed. Built by `python3 -I fixtures/build.py`, which leaves out anything from Apple's templates or images, and anything holding a personal name except those whose comments, highlights or tracked changes name the project owner as their author. See [LICENSE.md](LICENSE.md).
 
-1219 documents. Keynote presentations, under `keynote/`, were made with the project's test theme ([0291](../experiments/0291-test-theme.md), [0292](../experiments/0292-test-theme-reruns.md)). Documents were saved by the 15.4 apps unless their note names another release, such as 14.5. Encrypted documents list their test password. A folder package's SHA-256 is taken over each of its files in path order, as the path, a zero byte and the contents.
+1536 documents. Keynote presentations, under `keynote/`, were made with the project's test theme ([0291](../experiments/0291-test-theme.md), [0292](../experiments/0292-test-theme-reruns.md)). Documents were saved by the 15.4 apps unless their note names another release, such as 14.5. Under `release/16.0/` (and so on for later releases) is every sample a recipe can make on its own, made again with that release, Keynote with the test theme ([0473](../experiments/0473-every-scripted-sample-in-16-0.md)). Encrypted documents list their test password. A folder package's SHA-256 is taken over each of its files in path order, as the path, a zero byte and the contents.
 
 | File | Experiment | Bytes | SHA-256 | Note |
 | --- | --- | --- | --- | --- |
@@ -1131,6 +1131,7 @@ Sample documents from the experiments, for testing readers and writers. They are
 | `0469/cells.numbers` | [0469: New documents in the 16.0 apps](../experiments/0469-the-16-0-apps.md) | 137,366 | `5e920246070b99e5ab6480c222d5830ee204b3d1de9cc91b0d99e2ebf02f46f6` | saved by 16.0 |
 | `0469/empty.pages` | [0469: New documents in the 16.0 apps](../experiments/0469-the-16-0-apps.md) | 89,785 | `314ed10636c298e2fd2a237ea263526e76327940acba5f838d1159cf8aed014a` | saved by 16.0 |
 | `0469/hello.pages` | [0469: New documents in the 16.0 apps](../experiments/0469-the-16-0-apps.md) | 90,429 | `908f31d5fec8299ce16093ad55a0441927f21668521dc36b0896dacaef0b766e` | saved by 16.0 |
+| `0473/0047-two-tables-run4.numbers` | [0473: Every scripted sample in 16.0](../experiments/0473-every-scripted-sample-in-16-0.md) | 144,831 | `1dbdf3d712cab7eb46ab8c369017b3e13374df6d94bd5145d7f14fee0638e987` | saved by 16.0 |
 | `keynote/0024/empty-a.key` | [0024: Keynote and Numbers](../experiments/0024-keynote-and-numbers.md) | 882,066 | `912b4de37a6cd26f79bf830b1fe894e608e2cccfefa0cadc626d92e0f0358a85` | |
 | `keynote/0024/empty-b.key` | [0024: Keynote and Numbers](../experiments/0024-keynote-and-numbers.md) | 882,065 | `95a5a1cbe9b95a8b5fb33a29d585e0fc999983bd08a717ed3e3eaa84af118085` | |
 | `keynote/0025/empty.key` | [0025: Text on a Keynote slide](../experiments/0025-keynote-title.md) | 882,066 | `912b4de37a6cd26f79bf830b1fe894e608e2cccfefa0cadc626d92e0f0358a85` | |
@@ -1225,10 +1226,326 @@ Sample documents from the experiments, for testing readers and writers. They are
 | `keynote/0472/0197-idle.key` | [0472: Keynote 16.0 with the test theme](../experiments/0472-keynote-16-0-with-the-test-theme.md) | 2,475,361 | `8b560784f2ecf6f1459ee70a7fa3629dbde6a046b014dd5f9cb1b3cae05c56cb` | saved by 16.0 |
 | `keynote/0472/0243-body.key` | [0472: Keynote 16.0 with the test theme](../experiments/0472-keynote-16-0-with-the-test-theme.md) | 2,477,232 | `1307699c1c7c04137eb7d07a8c5d67355c5957a8f757a84d374300d12afdb2af` | saved by 16.0 |
 | `keynote/0472/0243-no-body.key` | [0472: Keynote 16.0 with the test theme](../experiments/0472-keynote-16-0-with-the-test-theme.md) | 2,477,220 | `68ea3c2b41439e97784888a9c005985725d64c32ca8389f1c50b17c4a5bc7205` | saved by 16.0 |
+| `release/16.0/0001/empty-a.pages` | [0001: An empty document](../experiments/0001-empty-document.md) | 89,786 | `9dc64b68c2555a09faa296d71b3d205ab4c182264b0385a8e815f45a6b6dfed5` | saved by 16.0 |
+| `release/16.0/0001/empty-b.pages` | [0001: An empty document](../experiments/0001-empty-document.md) | 89,783 | `72ba1e998dfe71d1ac8a90de63aa0dfed8c8c422d22db4800da3be406bd987a8` | saved by 16.0 |
+| `release/16.0/0002/hello.pages` | [0002: One word](../experiments/0002-one-word.md) | 90,425 | `bbf7e843d812bd6e6be5c1b684e50abd6c0e8eb98c457a55565445aea7be6475` | saved by 16.0 |
+| `release/16.0/0002/hullo.pages` | [0002: One word](../experiments/0002-one-word.md) | 90,432 | `b11a844fda3dc86b7840bd2e4dc7a9cdf6ca5cff8bcacec1d50c3f4cda79825e` | saved by 16.0 |
+| `release/16.0/0003/blabaer.pages` | [0003: A word that isn't ASCII](../experiments/0003-non-ascii-word.md) | 90,689 | `ebc8e57425e09ba7ea27583191b3bd39945e5978ebdef3c09bec5687277e3afc` | saved by 16.0 |
+| `release/16.0/0003/emoji.pages` | [0003: A word that isn't ASCII](../experiments/0003-non-ascii-word.md) | 90,388 | `b3dc1f713c273e1f026649db55492da240e9a76d9ad445ccbf6ac1604eaeac76` | saved by 16.0 |
+| `release/16.0/0004/emoji-large.pages` | [0004: A larger word](../experiments/0004-larger-word.md) | 91,545 | `349e0988adca4c6070557d0a1b4de66bf9a865d29537d272c1dd68ca36b04bb2` | saved by 16.0 |
+| `release/16.0/0004/emoji-plain.pages` | [0004: A larger word](../experiments/0004-larger-word.md) | 90,933 | `91f2ac30a41703d204d30a4eb9aee3ccf08ece47576e45864e47957efc43c4b4` | saved by 16.0 |
+| `release/16.0/0004/large.pages` | [0004: A larger word](../experiments/0004-larger-word.md) | 92,004 | `7581bdcdd062f3ce5230fcc1ad9c6edeb209e3f07876fcae665eb72f804ecba1` | saved by 16.0 |
+| `release/16.0/0004/plain.pages` | [0004: A larger word](../experiments/0004-larger-word.md) | 91,036 | `43fab5225dbb73945615c9f3d8df63a09f7235b9716c6ef1d65364e4554eb87f` | saved by 16.0 |
+| `release/16.0/0005/one.pages` | [0005: Paragraphs](../experiments/0005-paragraphs.md) | 90,577 | `dfea67ad4fbbf1e69c6dc1156fa3db72915ed781913c16f9627e6db0c6ad1828` | saved by 16.0 |
+| `release/16.0/0005/three-cr.pages` | [0005: Paragraphs](../experiments/0005-paragraphs.md) | 91,107 | `eaf64fe9e8293efb7292616a9a1022e620bc7c296bffd16f9f76a511ef71a268` | saved by 16.0 |
+| `release/16.0/0005/two-cr.pages` | [0005: Paragraphs](../experiments/0005-paragraphs.md) | 90,552 | `2b6e0545c34fda6d0fae01da104b1dea8fb459a690ea39848166d2bf35fbd1eb` | saved by 16.0 |
+| `release/16.0/0005/two-lf.pages` | [0005: Paragraphs](../experiments/0005-paragraphs.md) | 90,554 | `3004cda57af6db47a072616cdcf659e91a2faedf9ad77487448d5071755adc24` | saved by 16.0 |
+| `release/16.0/0013/blue.pages` | [0013: Text colour](../experiments/0013-text-colour.md) | 91,355 | `1c5e95b0b1378b143088d5d1ccd9718e963118a3639b410550b2cf5a9a8e1e09` | saved by 16.0 |
+| `release/16.0/0013/mixed.pages` | [0013: Text colour](../experiments/0013-text-colour.md) | 91,282 | `aa54b1e5b9efc82e5656fecd20e70e0ffabe15c163fb198cef55e3b6c4c1e619` | saved by 16.0 |
+| `release/16.0/0013/red.pages` | [0013: Text colour](../experiments/0013-text-colour.md) | 91,338 | `673403655f766192e6cc6a7bcf09824cf3cc808db9196c6af79ea3f5a378f28c` | saved by 16.0 |
+| `release/16.0/0020/plain.pages` | [0020: A table](../experiments/0020-a-table.md) | 90,284 | `1d6e6e5e8196fe9ec5dd1ee3e5cf0036fc8642c6c47bc403512517b6f2220396` | saved by 16.0 |
+| `release/16.0/0023/image.pages` | [0023: An image](../experiments/0023-an-image.md) | 91,226 | `27d109c5811d93f08bfe24da9f6ebda9e1a260fc8897e88ad988f1bfe4d4cfdc` | saved by 16.0 |
+| `release/16.0/0023/plain.pages` | [0023: An image](../experiments/0023-an-image.md) | 90,283 | `6c1421aeb0ed1997a3fc010f5d4ebe0d08a2e2e2cdb7694dd89b73e6b6585b0c` | saved by 16.0 |
+| `release/16.0/0024/empty-a.key` | [0024: Keynote and Numbers](../experiments/0024-keynote-and-numbers.md) | 2,475,371 | `582aead7819bbc76b0c677b4ef4e36e649179f13220822e84aea1d36cf1a75a7` | saved by 16.0 |
+| `release/16.0/0024/empty-a.numbers` | [0024: Keynote and Numbers](../experiments/0024-keynote-and-numbers.md) | 136,769 | `0f1c2a9a47f784d6c63bde835346500b91252f21537bde9e629e390bd4241317` | saved by 16.0 |
+| `release/16.0/0024/empty-b.key` | [0024: Keynote and Numbers](../experiments/0024-keynote-and-numbers.md) | 2,475,367 | `05e1c7448b32f1309b033e6075759b8264f889bfd5004f5e8bfa427982a1fae0` | saved by 16.0 |
+| `release/16.0/0024/empty-b.numbers` | [0024: Keynote and Numbers](../experiments/0024-keynote-and-numbers.md) | 136,769 | `f4ec51e7a0b7979a169218fba574e7c9cb8b36bc8600b1e7dbd05de5b1ebb516` | saved by 16.0 |
+| `release/16.0/0025/hello.key` | [0025: Text on a Keynote slide](../experiments/0025-keynote-title.md) | 2,479,058 | `03fc791f2b375b61e00bf8bf6187e53a8cadadef6b22ec9209c5a67c54eed886` | saved by 16.0 |
+| `release/16.0/0025/hullo.key` | [0025: Text on a Keynote slide](../experiments/0025-keynote-title.md) | 2,478,604 | `7ef9560866ec15a924446e83015dca80c3c0728ea015f96ccb5260dcc7a85d37` | saved by 16.0 |
+| `release/16.0/0026/cells.numbers` | [0026: Cells in Numbers](../experiments/0026-numbers-cells.md) | 137,402 | `e4c3d255c5b0dfb01f83e315f2f14b58a4c445673dfe45e6b1966268a186919e` | saved by 16.0 |
+| `release/16.0/0030/row-300.numbers` | [0030: A second tile](../experiments/0030-tiles.md) | 170,275 | `f8ad42a243241d9dcc8ee99a0fc3e0a71a1fef0a84185c4cd5e6b1349b796b00` | saved by 16.0 |
+| `release/16.0/0031/kinds.numbers` | [0031: Kinds of cell](../experiments/0031-cell-kinds.md) | 140,173 | `36c00493f9897dc75ea090c7967738a7c4b60a2b42357341625686df2c6509f5` | saved by 16.0 |
+| `release/16.0/0035/formulas.numbers` | [0035: Cell references in formulas](../experiments/0035-formula-references.md) | 138,311 | `aa44d63604798db63eed0defaa654dcb4d09859055a49c3b2eb9fc9c27ff56da` | saved by 16.0 |
+| `release/16.0/0036/formats.numbers` | [0036: More cell formats](../experiments/0036-more-cell-formats.md) | 139,890 | `08dd256a5a409366e8c924e165ee51411686c5d3e753fc90d0a30d8fecccea89` | saved by 16.0 |
+| `release/16.0/0037/two-sheets.numbers` | [0037: A second sheet](../experiments/0037-second-sheet.md) | 145,328 | `41d3d1bc14e40e9846a21bc6aacf557fc565108ed4b292d990b59b7aca15d3c4` | saved by 16.0 |
+| `release/16.0/0038/two-slides.key` | [0038: A second slide](../experiments/0038-second-slide.md) | 2,480,504 | `e5c0d2ea6df263073c2d6d4a9ddea42f5ff38e00eae7d5b9969fd700d4bf51f7` | saved by 16.0 |
+| `release/16.0/0039/notes.key` | [0039: Presenter notes](../experiments/0039-presenter-notes.md) | 2,475,373 | `8e0aa3cf729a2faa85714c93bb7f677aedc2ff91622cbafb78b0ba32150dd719` | saved by 16.0 |
+| `release/16.0/0043/styles.numbers` | [0043: Cell styles](../experiments/0043-cell-styles.md) | 139,742 | `b65f0fb44c26caec05e4b602424bb4a0c95f5d7d9e55c354960a67fcfe8e65c9` | saved by 16.0 |
+| `release/16.0/0044/merged.numbers` | [0044: Merged cells](../experiments/0044-merged-cells.md) | 137,310 | `bf39b54aa77458be8d3aa0e1fe1a3f1e069608ff7df722aa00abae7380ff5b23` | saved by 16.0 |
+| `release/16.0/0045/sizes.numbers` | [0045: Row and column sizes](../experiments/0045-row-and-column-sizes.md) | 134,928 | `02f2a617e626b2c05a29c5c2f939b2539f8cb881cf2aea746263fce4dba9d332` | saved by 16.0 |
+| `release/16.0/0046/blank-layout.key` | [0046: A slide's layout](../experiments/0046-slide-layout.md) | 2,475,047 | `77d33882f3d11a01005f16356bc803c3b32f1fd9511d04f5ce73403205ff0ee6` | saved by 16.0 |
+| `release/16.0/0047/two-tables.numbers` | [0047: A second table on a sheet](../experiments/0047-second-table.md) | 144,888 | `b3e37dedead7af11c8db2329ae0d31506f8272dc6e7d7624fbdd11bfdec1ed86` | saved by 16.0 |
+| `release/16.0/0049/text-box.pages` | [0049: A text box](../experiments/0049-text-box.md) | 91,257 | `739c7053c7031e82f886cdcf29766fbf4f7ba5994f135e5253ab01289ce833f5` | saved by 16.0 |
+| `release/16.0/0050/shape.pages` | [0050: A shape](../experiments/0050-shape.md) | 93,283 | `f83831aea6d9d538dcc50d9a6c9df3a2d50a69232932c0c1af6b083dc07c1e8d` | saved by 16.0 |
+| `release/16.0/0051/line.pages` | [0051: A line](../experiments/0051-line.md) | 93,434 | `33e7053e2df0f9d91b55ba49cb23f6cb1a368e4369f5eff4907537b8c19a4fcd` | saved by 16.0 |
+| `release/16.0/0052/table.pages` | [0052: A floating table](../experiments/0052-floating-table.md) | 104,535 | `bceebc6c09b31428475f8feaf53ae6b5b84dc34f0fadbc337475b22d7c615dd3` | saved by 16.0 |
+| `release/16.0/0053/font.pages` | [0053: A different font](../experiments/0053-font.md) | 91,219 | `dda9b90f70baa06054c3aa28f672feefb3f199077ebb7dbdc264867c018325e7` | saved by 16.0 |
+| `release/16.0/0054/sizes.pages` | [0054: Shared sizes](../experiments/0054-shared-sizes.md) | 91,861 | `4c8a5614bb8c40b3212a7b730ea9941599dfca6fe28b96ef9209814b6e2f8f46` | saved by 16.0 |
+| `release/16.0/0055/size.pages` | [0055: Resizing an image](../experiments/0055-image-size.md) | 92,714 | `af923e1ad16453badfe2844ad7e86fe4339495a3f2bb076400fc0b8355070665` | saved by 16.0 |
+| `release/16.0/0056/rotation.pages` | [0056: Rotating an image](../experiments/0056-image-rotation.md) | 91,275 | `916180ecd219a87729861a7b37431408e74ca4f89965e20472b5f2057a581fae` | saved by 16.0 |
+| `release/16.0/0057/opacity.pages` | [0057: An image's opacity](../experiments/0057-image-opacity.md) | 91,179 | `48186e0830a7618136bed3bb0e5a3452a39515c34505cc557e8516bd957bdba8` | saved by 16.0 |
+| `release/16.0/0058/tab.pages` | [0058: A tab and a non-breaking space](../experiments/0058-tab-and-nbsp.md) | 90,433 | `2c0793c14394060f7dbb1db84dd384617a2168d62fc1246d8e7e917dc000ebd7` | saved by 16.0 |
+| `release/16.0/0059/geometry.numbers` | [0059: A table's position and size](../experiments/0059-table-geometry.md) | 124,120 | `c0583cb6624c0478c954a96fbdcdcac209c4b169e6f750d47114df933900b487` | saved by 16.0 |
+| `release/16.0/0060/headers.numbers` | [0060: Header and footer rows](../experiments/0060-header-rows.md) | 136,430 | `e39d11d11603ab9a0c98308da9743c1087f269cd080847cc9495999557cccd02` | saved by 16.0 |
+| `release/16.0/0061/center.numbers` | [0061: Centring a cell](../experiments/0061-cell-alignment.md) | 137,293 | `09590d97486f2b77e49648a8fb586c1677d3a0d5a61876216978598151ea150c` | saved by 16.0 |
+| `release/16.0/0062/top-nowrap.numbers` | [0062: Text wrap in a cell](../experiments/0062-text-wrap.md) | 137,224 | `47916cbf6aeaf9e1d1418bc39fba901612247b7f6e3f36e616a94ffc5782b580` | saved by 16.0 |
+| `release/16.0/0063/sparse.numbers` | [0063: Tiles for a sparse table](../experiments/0063-sparse-tiles.md) | 203,692 | `35666a901e139f30be651536468921d50fc518c895d89017a10b9cfa6f068ec8` | saved by 16.0 |
+| `release/16.0/0064/functions.numbers` | [0064: Operators and functions](../experiments/0064-operators-and-functions.md) | 140,520 | `eaf5a547de2310ace080796b4451e8bcd2f257c412cdffd8e532d7a4d01139af` | saved by 16.0 |
+| `release/16.0/0065/cross.numbers` | [0065: A reference to another table](../experiments/0065-cross-table-reference.md) | 145,544 | `ccefa34f8fac8f652f6536a2737d89dbb52e43e1f4e0a2967a8eb286a6dfc47f` | saved by 16.0 |
+| `release/16.0/0066/if.numbers` | [0066: Comparisons and IF](../experiments/0066-comparisons-and-if.md) | 139,790 | `975b24848bf0ca05c38950608dfbe99402a2bd6430b685260cf6d25c5bedf992` | saved by 16.0 |
+| `release/16.0/0067/chart.key` | [0067: A chart](../experiments/0067-chart.md) | 2,507,195 | `d9a0d828d0d5b77cb0bdf6e86e878d66a87f490a21f821f5704436d2948d4a4c` | saved by 16.0 |
+| `release/16.0/0068/textbox.key` | [0068: A text box in Keynote](../experiments/0068-keynote-text-box.md) | 2,476,665 | `5c858bf95d33d0f8a36d3b4289d80886cacbcc2be34503e7cdc0df161620f68c` | saved by 16.0 |
+| `release/16.0/0069/image.key` | [0069: An image in Keynote](../experiments/0069-keynote-image.md) | 2,476,164 | `1e9ffe800d760905301d7e2ad1a04eb0371614e733db50e21dbfa2828d7cd92d` | saved by 16.0 |
+| `release/16.0/0070/skipped.key` | [0070: A skipped slide](../experiments/0070-skipped-slide.md) | 2,475,353 | `71f1602559cd3f095da87f655429b51c89f7cd84c11e5a463a652efe1eaccf93` | saved by 16.0 |
+| `release/16.0/0071/transition.key` | [0071: A transition](../experiments/0071-transition.md) | 2,475,354 | `d1a6c28944573e0ce603aa983597955e99096014804f993a0b94ce540a7a84ee` | saved by 16.0 |
+| `release/16.0/0072/bullets.key` | [0072: Bulleted text in Keynote](../experiments/0072-keynote-bullets.md) | 2,479,047 | `e074bb4cfc35a07746e47e6e55187abc8a1881eb3f47f78eedf1b088069d7d38` | saved by 16.0 |
+| `release/16.0/0073/table.key` | [0073: A table in Keynote](../experiments/0073-keynote-table.md) | 2,498,981 | `5f46b86687b2aa29823a99d0a2a39510747d5d260641ec427ce918f1da749306` | saved by 16.0 |
+| `release/16.0/0074/slidenumbers.key` | [0074: Slide numbers](../experiments/0074-slide-numbers.md) | 2,475,658 | `d09aa6d5a086719013e3a8aa90cca5f96e872b3a4d62567e198e4ca1a2230b06` | saved by 16.0 |
+| `release/16.0/0075/size.key` | [0075: Slide size](../experiments/0075-slide-size.md) | 2,476,626 | `7408323c81b5b7d771dd9e1ba2ddfcafe9f44c28e222c796280a5111914370f3` | saved by 16.0 |
+| `release/16.0/0078/error.numbers` | [0078: A formula error](../experiments/0078-formula-error.md) | 136,985 | `83c5f2d6598942a74b3c49186ded32080c90a9da02a1a190539e6ddce72be7e5` | saved by 16.0 |
+| `release/16.0/0079/pie_2d-row.key` | [0079: Pie chart](../experiments/0079-pie-chart.md) | 2,487,527 | `486496c2f86e636c11b61d52f97f5dddbc2d5bebc2ea26820baf0a8df74ec2cd` | saved by 16.0 |
+| `release/16.0/0080/horizontal_bar_2d-row.key` | [0080: Horizontal bar chart](../experiments/0080-horizontal-bar-chart.md) | 2,501,705 | `8030bb8a062db46131b4f643615d7155f22c4221d2589b1a14fb62db069d8ab4` | saved by 16.0 |
+| `release/16.0/0081/stacked_vertical_bar_2d-row.key` | [0081: Stacked vertical bar chart](../experiments/0081-stacked-vertical-bar-chart.md) | 2,496,650 | `8418f449720321ec18b5f42f9efab6eda8af331ed2e54e0d7826cdfa19a23034` | saved by 16.0 |
+| `release/16.0/0082/line_2d-row.key` | [0082: Line chart](../experiments/0082-line-chart.md) | 2,499,170 | `3f5ec049e432dfb01596f14a69e1af53c5de89fe6aa231befbdea36e90d76788` | saved by 16.0 |
+| `release/16.0/0083/area_2d-row.key` | [0083: Area chart](../experiments/0083-area-chart.md) | 2,494,706 | `5eeb263cc16dad4b9dd1c40e1c831ffd2508c9eaf2c0fbdf68322ebf91fc54ab` | saved by 16.0 |
+| `release/16.0/0084/scatterplot_2d-row.key` | [0084: Scatter chart](../experiments/0084-scatter-chart.md) | 2,491,385 | `ac0afbedef84059994ba50cbd9282c6573f626815eb67bbb2e1d54dd0720c93a` | saved by 16.0 |
+| `release/16.0/0085/vertical_bar_3d-row.key` | [0085: 3D vertical bar chart](../experiments/0085-3d-vertical-bar-chart.md) | 2,503,631 | `a010234d65f1b6dc02b46fd24ae84e56f8d4c1e1e4de0f27091f23d062708ee3` | saved by 16.0 |
+| `release/16.0/0086/vertical_bar_2d-column.key` | [0086: Chart grouped by column](../experiments/0086-chart-grouped-by-column.md) | 2,496,181 | `2e91a068001347fd2a0d8e0e8808f6b14dddea8c3e79ef93062210b70ad5cd72` | saved by 16.0 |
+| `release/16.0/0087/autoplay.key` | [0087: Auto play](../experiments/0087-auto-play.md) | 2,475,340 | `a57af24dba3edd368284eb72c31814008b2524579f73bb044fb34d419bd11507` | saved by 16.0 |
+| `release/16.0/0088/autoloop.key` | [0088: Auto loop](../experiments/0088-auto-loop.md) | 2,475,338 | `c03c776b70f3e216e83d3b244af8f0ae43b60f212a14481cbe6484ba178f1386` | saved by 16.0 |
+| `release/16.0/0089/autorestart.key` | [0089: Auto restart](../experiments/0089-auto-restart.md) | 2,475,362 | `51550d73da90b75524a82d9b8cf87969e32fca4975662b26f1ae170df2c159a7` | saved by 16.0 |
+| `release/16.0/0091/movein.key` | [0091: The move in transition](../experiments/0091-move-in-transition.md) | 2,475,362 | `bd2e3361a5b67b76de80561aafd36a3828fb3eb8549d405a623ec01c9f8843c0` | saved by 16.0 |
+| `release/16.0/0092/push.key` | [0092: The push transition](../experiments/0092-push-transition.md) | 2,475,354 | `204a5720bd25c77fbd7cee08c67836ee5e353f35f76f5e1aadb396a68ebee990` | saved by 16.0 |
+| `release/16.0/0093/cube.key` | [0093: The cube transition](../experiments/0093-cube-transition.md) | 2,475,360 | `e3dad1cabf2c22b6254e5e9ca32518a08200dec4f545d3c2c41553f1c7f14e12` | saved by 16.0 |
+| `release/16.0/0094/auto.key` | [0094: An automatic transition](../experiments/0094-automatic-transition.md) | 2,475,357 | `180b7159114dad67287825b8dcbc64e1893d71075aba44a20c25b485c43ddcbb` | saved by 16.0 |
+| `release/16.0/0095/magicmove.key` | [0095: Magic Move](../experiments/0095-magic-move.md) | 2,475,394 | `0a244f7f12f526d6c9b2672fff34a6508e5be42cab281946743decdda1bfc74a` | saved by 16.0 |
+| `release/16.0/0096/textstyle.key` | [0096: Formatting a whole text box](../experiments/0096-keynote-text-style.md) | 2,476,693 | `1e6b2a7f355475a6debf0ea16e23544baa22351fbd3df1b351d79d15d8e6f27e` | saved by 16.0 |
+| `release/16.0/0097/rotation.key` | [0097: Rotating a shape in Keynote](../experiments/0097-keynote-shape-rotation.md) | 2,477,580 | `96235503918755734d35fb93df7e69bf97703ed3a17bd5a295b9572d7f4bc1a2` | saved by 16.0 |
+| `release/16.0/0098/opacity.key` | [0098: A shape's opacity](../experiments/0098-keynote-shape-opacity.md) | 2,476,453 | `91f06e51b4817d40a4a88da7737cedd23448ed0fd968e2a1eb6e2bf8c980299f` | saved by 16.0 |
+| `release/16.0/0099/reflection.key` | [0099: An image reflection](../experiments/0099-image-reflection.md) | 2,476,261 | `7e3e8a2972457b55857e120f1797260b94bc8e15170b8162e3bded68a2b398ee` | saved by 16.0 |
+| `release/16.0/0100/locked.key` | [0100: A locked object](../experiments/0100-locked-object.md) | 2,476,165 | `7c77a99fe1e26a40c3dc0fc6da9680d84a33463e1dd7595eeddff8d6ba591ce9` | saved by 16.0 |
+| `release/16.0/0101/notitle.key` | [0101: A hidden title](../experiments/0101-hidden-title.md) | 2,475,376 | `ab0b8500b297a67349dfcd7032e552703df447d0f9e3fd6a975db22532b5e67b` | saved by 16.0 |
+| `release/16.0/0102/description.key` | [0102: An image's description](../experiments/0102-image-description.md) | 2,476,178 | `981db760aa6bbfe689676d6a3375a69a8a7b9e2e76b33b6682a7bd687ab13dbd` | saved by 16.0 |
+| `release/16.0/0103/round.numbers` | [0103: ROUND](../experiments/0103-round.md) | 137,615 | `772df1a5bab037ad5ac5d35c44bca4b15f0fb684ec31dd5f9b63f50286f8cfa7` | saved by 16.0 |
+| `release/16.0/0104/nested.numbers` | [0104: Nested functions](../experiments/0104-nested-functions.md) | 137,599 | `fc4b1e26b2b2ee44aaca61b25284d6733b348a177ceeec5ba66c043dec8c7983` | saved by 16.0 |
+| `release/16.0/0105/whole-column.numbers` | [0105: A whole-column reference](../experiments/0105-whole-column.md) | 138,109 | `0825c1c0c336b1c494d847d94b1ed8a13e21417e19ebf1bfe2f023fd843c8bd5` | saved by 16.0 |
+| `release/16.0/0106/mixed.numbers` | [0106: Mixed references](../experiments/0106-mixed-references.md) | 137,992 | `8a0a50832c8b5f66982a66990748c702dce5b075f4ff60981fbeb313a0244f30` | saved by 16.0 |
+| `release/16.0/0107/other-sheet.numbers` | [0107: A reference to another sheet](../experiments/0107-other-sheet.md) | 146,813 | `84ca84795363f528b74e8f36be7e213ce7637515fa7a25d65da8a4db9c56545b` | saved by 16.0 |
+| `release/16.0/0108/today.numbers` | [0108: TODAY](../experiments/0108-today.md) | 138,064 | `c3d6293a6c20e2764bf31db2d7bf6a40d4162638d6a6873679c6533c0b4af7c9` | saved by 16.0 |
+| `release/16.0/0109/len.numbers` | [0109: A text literal](../experiments/0109-string-literal.md) | 138,082 | `27833c4591138ed4c821a8e8624426645ef0555afc582c67ba7d1553099414a4` | saved by 16.0 |
+| `release/16.0/0110/join.numbers` | [0110: A text result](../experiments/0110-text-result.md) | 137,565 | `4e953d0159d6bca1e3bc2884c97b8e1be110d5eb69d407fa32636d11c8ba5a10` | saved by 16.0 |
+| `release/16.0/0111/percent.numbers` | [0111: A percentage literal](../experiments/0111-percent-literal.md) | 137,462 | `65b9ede6de3f0827f71f5981468c0c2e4cde46aa63e3147522b7ca6442fd7ed9` | saved by 16.0 |
+| `release/16.0/0112/minus.numbers` | [0112: Unary minus](../experiments/0112-unary-minus.md) | 137,639 | `21d0cb8b1bbb19b6fa8726b0679d369713f54969f7690ffd16090f4e2079bbe8` | saved by 16.0 |
+| `release/16.0/0113/samestring.numbers` | [0113: The same text twice](../experiments/0113-shared-string.md) | 137,461 | `832d9cf9b643b40aab70e5137f1a239557cff7ef6e2374e5a51b6d6fc19b0581` | saved by 16.0 |
+| `release/16.0/0114/cleared.numbers` | [0114: A cleared cell](../experiments/0114-cleared-cell.md) | 136,710 | `b84e42a4f63b4e9f0280d61d1a53eff12962c6ab12642698649a61e705586572` | saved by 16.0 |
+| `release/16.0/0115/newline.numbers` | [0115: A line break in a cell](../experiments/0115-line-break-in-cell.md) | 137,046 | `b8abc2211f6c8854f5dcbee9a492ed6aec3c14afb11e4a6934ea27eb36a8444b` | saved by 16.0 |
+| `release/16.0/0116/extremes.numbers` | [0116: Very large and very small numbers](../experiments/0116-extreme-numbers.md) | 138,743 | `7275789d625d584ac2244307ec09b0601bfed4e2e93c740a0d03f6c1e453f077` | saved by 16.0 |
+| `release/16.0/0117/dateonly.numbers` | [0117: A date without a time](../experiments/0117-date-only.md) | 137,980 | `6a6e395917cda06091baeaca6bcfcc0377c0f9c120206d50d2e50987b19e6024` | saved by 16.0 |
+| `release/16.0/0118/emoji.numbers` | [0118: An emoji in a cell](../experiments/0118-emoji-in-cell.md) | 136,695 | `f61905337aa2a3b0db3af5a3865ba7d96562ae801f9b4e67b66a1a31c406b5e3` | saved by 16.0 |
+| `release/16.0/0119/sort.numbers` | [0119: Sorting rows](../experiments/0119-sorted-rows.md) | 137,830 | `cf54d9aecfb3bf4d384388249d94cf126ca7a31b0781b7b4345acf34695e0f48` | saved by 16.0 |
+| `release/16.0/0120/fewerrows.numbers` | [0120: Fewer rows](../experiments/0120-fewer-rows.md) | 102,893 | `0a6b74a4b2eec1056f2543a0b2969231cfbd7c62a71524e3b5614672b88cba83` | saved by 16.0 |
+| `release/16.0/0121/emptyref.numbers` | [0121: A reference to an empty cell](../experiments/0121-reference-to-empty.md) | 137,028 | `f2264572d48443fc0b0fcffd2c9fe9b7bdc63b49482e7c432175044be75e432b` | saved by 16.0 |
+| `release/16.0/0122/tablename.numbers` | [0122: Renaming a table](../experiments/0122-table-name.md) | 136,578 | `7887ff2acf48c7cb7036eaa188c037ff45d4e31971db30b0bcec964971fbb6e4` | saved by 16.0 |
+| `release/16.0/0123/fewercols.numbers` | [0123: Fewer columns](../experiments/0123-fewer-columns.md) | 121,571 | `cdd11d52dd0cb7730d31273d54dee01be00dd66e7c62f6da910c35b404ef8c32` | saved by 16.0 |
+| `release/16.0/0124/sheetname.numbers` | [0124: Renaming a sheet](../experiments/0124-sheet-name.md) | 136,347 | `c0068f151e840bc357e4a7f91c3f90c44a822838edeb333f785f860cdaf16aa6` | saved by 16.0 |
+| `release/16.0/0125/unfrozen.numbers` | [0125: Header rows not frozen](../experiments/0125-unfrozen-headers.md) | 136,463 | `62417cd43ebc8255f40e65b9572237b8e88c94f6769591597391c334200fa4b5` | saved by 16.0 |
+| `release/16.0/0126/origin.numbers` | [0126: A table at the origin](../experiments/0126-table-at-origin.md) | 136,493 | `afb30a7e698e9b3cfb971da07aaa00bc17cf7d5ef8976d352b29a9f022852e76` | saved by 16.0 |
+| `release/16.0/0127/textbox.numbers` | [0127: A text box on a sheet](../experiments/0127-text-box-on-sheet.md) | 137,144 | `ddbed7dc285e30c878e70672abcc9090991735ede20c3ed13b3384ab6181b50d` | saved by 16.0 |
+| `release/16.0/0128/image.numbers` | [0128: An image on a sheet](../experiments/0128-image-on-sheet.md) | 137,188 | `805af6ed38c4a51b811e096bf800f65576b6f45206b540d266f4de215bde0912` | saved by 16.0 |
+| `release/16.0/0129/shape.numbers` | [0129: A shape on a sheet](../experiments/0129-shape-on-sheet.md) | 136,669 | `56a03f5c14f0c9aa108856d06f9068783c31c6ccaa97cbff2622d9d3229f616a` | saved by 16.0 |
+| `release/16.0/0130/longtext.numbers` | [0130: A long text in a cell](../experiments/0130-long-text.md) | 141,095 | `be72d39a30214ed34df2e58db713591e32b9faf56b31bdce973030ce1de51c42` | saved by 16.0 |
+| `release/16.0/0131/cells.pages` | [0131: Cells in a Pages table through AppleScript](../experiments/0131-pages-table-cells.md) | 108,797 | `79b48fbcd65df118b850611f9807cee0ea639cb201b63b674f3d19bfc80c9b12` | saved by 16.0 |
+| `release/16.0/0132/formula.pages` | [0132: A formula in a Pages table](../experiments/0132-pages-table-formula.md) | 108,760 | `0cfe23426f601093807afa565ea7b346cb950d681943542d346bb8e1a71dedb5` | saved by 16.0 |
+| `release/16.0/0133/merge.pages` | [0133: Merged cells in a Pages table](../experiments/0133-pages-merge.md) | 108,495 | `e708150d4ab042a0009dbfd9b06cf3bbc530def6e8c456c48106f8d9ab6e22ee` | saved by 16.0 |
+| `release/16.0/0134/cells.key` | [0134: Cells in a Keynote table](../experiments/0134-keynote-table-cells.md) | 2,520,515 | `efaf0aca4ff817964b85211fa8a295a748f1f84a420853183eabf0eb622b0d73` | saved by 16.0 |
+| `release/16.0/0135/formula.key` | [0135: A formula in a Keynote table](../experiments/0135-keynote-table-formula.md) | 2,520,657 | `4ba4bead4147dd2e8203de359aa80423860db491da2e6801ef9d3511083e7987` | saved by 16.0 |
+| `release/16.0/0136/headers.pages` | [0136: Header rows in a Pages table](../experiments/0136-pages-header-rows.md) | 107,377 | `0b6b980c83e09d90f04d4ab12f9165edc7060fb80b6cefa083747b74ebfa3347` | saved by 16.0 |
+| `release/16.0/0137/currency.key` | [0137: A currency cell in Keynote](../experiments/0137-keynote-currency.md) | 2,520,714 | `362851c92ce52b41bb5763006167a90278d0be02588e222db6dbde7da88bf179` | saved by 16.0 |
+| `release/16.0/0138/fill.pages` | [0138: A styled empty cell](../experiments/0138-empty-styled-cell.md) | 108,698 | `429d875b96a96f2b6d7ca544365132cf587660dffc9e2a43ae2317069d88eb39` | saved by 16.0 |
+| `release/16.0/0139/resaved.pages` | [0139: Saving an existing document again](../experiments/0139-resave.md) | 90,442 | `b15e1f46c348c397afb7e9d032ad91243200eee5dbfaa071fa114f6242246a64` | saved by 16.0 |
+| `release/16.0/0140/edited.pages` | [0140: Editing and saving in place](../experiments/0140-edit-and-save.md) | 90,794 | `6d3514f664a4d833cf1a10672a65ff407adc4ff60291da4b87f095cf8ec3b746` | saved by 16.0 |
+| `release/16.0/0141/big.pages` | [0141: A large body text](../experiments/0141-large-text.md) | 389,965 | `d59fba6ebb6ce584083ac58ef8af895756aa83e4b06d89000f573058265be2db` | saved by 16.0 |
+| `release/16.0/0142/twice.pages` | [0142: The same image twice](../experiments/0142-same-image-twice.md) | 91,603 | `9aae147c577ba95d0b2c5c5e12127e88bc7ebecc29db87fb94e108546a0f93f9` | saved by 16.0 |
+| `release/16.0/0143/jpeg.pages` | [0143: A JPEG image](../experiments/0143-jpeg-image.md) | 91,936 | `6207a9921639110823a6ec6b7326c88e16e5de9ae64c994ceca48b47aba01e97` | saved by 16.0 |
+| `release/16.0/0144/odd-name.pages` | [0144: A file name with spaces and ø](../experiments/0144-non-ascii-file-name.md) | 91,238 | `9f1bde3158791b89213b74acf6cd873c63c07f2ad3e67f31a761ab7ff97d6784` | saved by 16.0 |
+| `release/16.0/0145/deleted.pages` | [0145: A deleted image](../experiments/0145-deleted-image.md) | 90,307 | `40fc6df2515f2f3136f4504eeddce48162407aa815489d40853ae94c74b1a5e3` | saved by 16.0 |
+| `release/16.0/0148/large.pages` | [0148: A large image](../experiments/0148-large-image.md) | 1,822,314 | `9674eb21bd0850dd2f6029e7d1b33103b1f2bf7cfb5adb580babf55b9cc7a10d` | saved by 16.0 |
+| `release/16.0/0149/zwj.pages` | [0149: A family emoji](../experiments/0149-family-emoji.md) | 91,359 | `29ab622ae732a87081a884ef3c24b9e5acc5c911861a973cb71107620f465fab` | saved by 16.0 |
+| `release/16.0/0150/rtl.pages` | [0150: Arabic text](../experiments/0150-arabic-text.md) | 90,707 | `51bb641c72c9b780aa1ddbde750aa7e1503ebd2c90b9a0766bc2f50ed124a161` | saved by 16.0 |
+| `release/16.0/0151/paras.pages` | [0151: A thousand paragraphs](../experiments/0151-thousand-paragraphs.md) | 122,040 | `eaae9e554e59171406412bac9942a621a38ad9911ac5f032439b6dce70c923ea` | saved by 16.0 |
+| `release/16.0/0152/sizecolour.pages` | [0152: Size and colour on one word](../experiments/0152-size-and-colour.md) | 91,760 | `608e559597ab5ff12bafad2b286b6b3c83783b1ee2549d0c81e67e34176b68f7` | saved by 16.0 |
+| `release/16.0/0153/defaultsize.pages` | [0153: Setting a size a word already has](../experiments/0153-same-size-again.md) | 91,145 | `67803c03b0dc351bef0f4c95a0a1c015a17650cbc58510ddfc19c5bfe1031fc0` | saved by 16.0 |
+| `release/16.0/0154/replace.pages` | [0154: Replacing formatted text](../experiments/0154-replaced-text.md) | 90,731 | `6f9903fce0ac8dad79a45e40b45f6b120e016f996df978f1b4150051e30e9083` | saved by 16.0 |
+| `release/16.0/0155/landscape.pages` | [0155: The landscape template](../experiments/0155-landscape-template.md) | 84,723 | `adaacb68a3e6f474c9c9eae30c8700d52aa455b7c4e322346c7265ae27e05e2e` | saved by 16.0 |
+| `release/16.0/0156/layout.pages` | [0156: The page layout template](../experiments/0156-page-layout-template.md) | 89,765 | `dd788bf1dbf7fcc067a7546ec39e4cca895753ca7672473c21656eb5ed4b10bc` | saved by 16.0 |
+| `release/16.0/0157/black.pages` | [0157: The black template](../experiments/0157-black-template.md) | 82,588 | `dcc8b1f70e769a5dbab602b4065533cef4b5e7abbb147d02683cd7681c28b623` | saved by 16.0 |
+| `release/16.0/0159/dup.key` | [0159: A duplicated slide](../experiments/0159-duplicated-slide.md) | 2,478,287 | `46fa0facae3ddb905959606ffb2013e3ba472fa8ca7712dd142b0c8846662d99` | saved by 16.0 |
+| `release/16.0/0160/move.key` | [0160: A moved slide](../experiments/0160-moved-slide.md) | 2,480,245 | `3ac04146318852c8d641fc05c192fc25ebc3e0d88cca0f04a5ed96b55eab39de` | saved by 16.0 |
+| `release/16.0/0161/delete.key` | [0161: A deleted slide](../experiments/0161-deleted-slide.md) | 2,478,551 | `85b63ed38520de1ee7b2bfb53f7f832d4b24120567d5328ec8b44511dd572050` | saved by 16.0 |
+| `release/16.0/0162/ten.key` | [0162: Ten slides](../experiments/0162-ten-slides.md) | 2,492,156 | `d0867e6cd21014a4dfdfb9bb1072b6e4138b7fbb569d5d5376694234f31dd659` | saved by 16.0 |
+| `release/16.0/0163/notes.key` | [0163: Presenter notes with several paragraphs](../experiments/0163-multi-paragraph-notes.md) | 2,475,381 | `e448313cfaf6a6f97844a8fa9217e0128925e2c7987a3d917e5bbc544e5f5dae` | saved by 16.0 |
+| `release/16.0/0164/titlebreak.key` | [0164: A title on two lines](../experiments/0164-two-line-title.md) | 2,481,235 | `61649bcfeb36bcd56c7e49a6156db48c8381625af96f7d8f3a8d6db23704f1c0` | saved by 16.0 |
+| `release/16.0/0165/layouts.key` | [0165: The first six slide layouts](../experiments/0165-slide-layouts.md) | 2,485,118 | `13da345d71a3268ea294177a68dbc4e071d46f28d2e52a7df7f94b82a1624eca` | saved by 16.0 |
+| `release/16.0/0166/line.key` | [0166: A line on a slide](../experiments/0166-keynote-line.md) | 2,476,533 | `052db1f8782d68ad4fd3e002b3d9b4c2cff050d8ca902395702fbb1e6df6843b` | saved by 16.0 |
+| `release/16.0/0167/shapetext.key` | [0167: A shape with text on a slide](../experiments/0167-keynote-shape-text.md) | 2,477,276 | `f0a79d9510995b91ffb4f4a3420c53a6b86b05fbfb91be9443ca9e782b31df22` | saved by 16.0 |
+| `release/16.0/0168/untouched.key` | [0168: A title never set](../experiments/0168-untouched-title.md) | 2,475,363 | `b1a9cb9c1f76baf9f375785af57dc20db8e0b172312cef359bcaa322d48e8759` | saved by 16.0 |
+| `release/16.0/0169/checkfalse.numbers` | [0169: An unchecked checkbox](../experiments/0169-unchecked-checkbox.md) | 137,098 | `f9850eb631806af96becf0da27c5cdbd035b9926677765193a144d5496601f2e` | saved by 16.0 |
+| `release/16.0/0170/rating0.numbers` | [0170: A rating of zero](../experiments/0170-zero-rating.md) | 137,875 | `390e725bd19a318a342e2244ced5273df773489a1411fa77f23cad34f7335d59` | saved by 16.0 |
+| `release/16.0/0171/slider.numbers` | [0171: A slider](../experiments/0171-slider.md) | 137,194 | `dea9614a5306be9c4397e7ab4d48f0f99cb2416e4629b5e9ee718be48009f280` | saved by 16.0 |
+| `release/16.0/0172/stepper.numbers` | [0172: A stepper](../experiments/0172-stepper.md) | 137,086 | `021fd58489bcaf00e5d3ef3df8cb12dcaee61b38c13d3cdd3c2348909b83f6ef` | saved by 16.0 |
+| `release/16.0/0173/popup.numbers` | [0173: A pop-up menu](../experiments/0173-pop-up-menu.md) | 136,976 | `999ee8bf1e99129b154d703e29b17b4b0e561aa0dad1b6576433cff445d66d08` | saved by 16.0 |
+| `release/16.0/0174/negative.numbers` | [0174: A negative number](../experiments/0174-negative-number.md) | 137,063 | `2272a44d1873f908553660aa72ab092071db92023b61c8627929f486522abc54` | saved by 16.0 |
+| `release/16.0/0175/boolformula.numbers` | [0175: A formula with a boolean result](../experiments/0175-boolean-formula.md) | 137,432 | `da37bba0ca730a0ba87b68d605eb8a7b9a2c292f576c95dc37aa3c2dc92d1af9` | saved by 16.0 |
+| `release/16.0/0176/numtext.numbers` | [0176: A number typed as text](../experiments/0176-number-as-text.md) | 137,147 | `59da3bb1f9577e8d4fcdc86506ba13cea7ee83165c79a9ecc97efcf6798c4c9f` | saved by 16.0 |
+| `release/16.0/0177/described.pages` | [0177: An image description in Pages](../experiments/0177-pages-image-description.md) | 91,236 | `7985e49bc0c2a063c1216dec06ac59fcda190638c03f6e835867cd42997d445f` | saved by 16.0 |
+| `release/16.0/0179/locked.pages` | [0179: A password](../experiments/0179-password.md) | 74,635 | `52805e944773253e2a1615d87ca282496006b07d0e7dcc88fbe2692e07c58ead` | password `pw1234`; saved by 16.0 |
+| `release/16.0/0179/locked2.pages` | [0179: A password](../experiments/0179-password.md) | 74,635 | `7c58f5e96f06679ed0d68fef953ba805b9ef54f6dcfe160f34dcadf729a904c5` | password `pw1234`; saved by 16.0 |
+| `release/16.0/0179/plain.pages` | [0179: A password](../experiments/0179-password.md) | 90,283 | `ea4c25766d8313b398f6298e2e7bf5504e1586e8370525c3900d3b7d4a579208` | saved by 16.0 |
+| `release/16.0/0179/unlocked.pages` | [0179: A password](../experiments/0179-password.md) | 90,285 | `94779aebe79d358855516239f03483507b767ee52abdc2fb93ee786104dd159e` | saved by 16.0 |
+| `release/16.0/0180/accent.pages` | [0180: A password in Keynote and Numbers](../experiments/0180-password-in-other-apps.md) | 74,635 | `53d2add2f71381e976398364090015f7c5fa63bfbaf0ce74be30de14d7a47dbf` | password `påss`; saved by 16.0 |
+| `release/16.0/0180/image.pages` | [0180: A password in Keynote and Numbers](../experiments/0180-password-in-other-apps.md) | 75,359 | `c8230fc364a90ec21e3d6cd460f5ee01e50b66f01bea46d1fcc156554cff8c04` | password `pw1234`; saved by 16.0 |
+| `release/16.0/0180/locked.key` | [0180: A password in Keynote and Numbers](../experiments/0180-password-in-other-apps.md) | 2,465,419 | `26e59c87909e42482062c4a2b4768b300b60059570c45b822355e1eb4e532f9f` | password `pw1234`; saved by 16.0 |
+| `release/16.0/0180/locked.numbers` | [0180: A password in Keynote and Numbers](../experiments/0180-password-in-other-apps.md) | 83,325 | `41bbefa7fd76491336274ef3c105128f2037bf89e07f5bfce769b765a0975988` | password `pw1234`; saved by 16.0 |
+| `release/16.0/0181/numeral.numbers` | [0181: The numeral system format](../experiments/0181-numeral-system.md) | 137,063 | `8ecfefac26e488f2e7c545b5bd964d1c9dd68fc5a1cef234afe940b456c8e326` | saved by 16.0 |
+| `release/16.0/0181/plain.numbers` | [0181: The numeral system format](../experiments/0181-numeral-system.md) | 136,769 | `ca1d92182d1198e548bf3a936ad3054d4e31a8324791454ec3db9f64739d9afb` | saved by 16.0 |
+| `release/16.0/0182/transpose.numbers` | [0182: A transposed table](../experiments/0182-transposed-table.md) | 105,140 | `9cc014c040b7e39fd0cddb45f09a25e546bac3e7d1ddc5610e8ec08fa3b14dc8` | saved by 16.0 |
+| `release/16.0/0183/frozencols.numbers` | [0183: Unfrozen header columns](../experiments/0183-unfrozen-header-columns.md) | 136,526 | `bcf3d80bff819c95fae892d6381b1146eb58396a936904223ebee92c1d233a84` | saved by 16.0 |
+| `release/16.0/0184/footer.numbers` | [0184: A footer row](../experiments/0184-footer-row.md) | 137,288 | `cec10b7a59613a8d4d12c5d5f297c6ea0321405169d2e78c0c5d26a3596c8128` | saved by 16.0 |
+| `release/16.0/0185/audio.key` | [0185: A sound in Keynote](../experiments/0185-keynote-audio.md) | 2,481,784 | `c2f96aead571fcc0a19ee7516ed03cc5beb2f5915f72abac97035f44c968e301` | saved by 16.0 |
+| `release/16.0/0185/loop.key` | [0185: A sound in Keynote](../experiments/0185-keynote-audio.md) | 2,481,797 | `8408004a06499b5367d5bf6a3ee8c812986e624a6ca2509ef4abc5b2fefdfb2b` | saved by 16.0 |
+| `release/16.0/0185/movie.key` | [0185: A sound in Keynote](../experiments/0185-keynote-audio.md) | 2,479,990 | `e567a37e9a0511f3b837bfe10b9aff4e56d7f79b630c7e0687b397d8c1c9a10a` | saved by 16.0 |
+| `release/16.0/0188/movie.pages` | [0188: Media in Pages and Numbers](../experiments/0188-media-in-pages-and-numbers.md) | 95,681 | `53b9b23a4b71f872b649b4f89a540c04407bd32cb1cb0911dc93f12d69be362f` | saved by 16.0 |
+| `release/16.0/0188/sound.numbers` | [0188: Media in Pages and Numbers](../experiments/0188-media-in-pages-and-numbers.md) | 142,634 | `05a2026c5811371ff0a3279a202996b207558c4b74a21893c3d729fa14988d09` | saved by 16.0 |
+| `release/16.0/0195/area_3d-row.key` | [0195: The remaining chart types](../experiments/0195-remaining-chart-types.md) | 2,502,092 | `37501014df9049ffacabef7c2d11f2cb810d75c250d8fab980fe15c1a3062634` | saved by 16.0 |
+| `release/16.0/0195/horizontal_bar_3d-row.key` | [0195: The remaining chart types](../experiments/0195-remaining-chart-types.md) | 2,524,474 | `cdd1d3e6a472e53111d270418e6f99768cc04779eea78839e77eef81712a6547` | saved by 16.0 |
+| `release/16.0/0195/line_3d-row.key` | [0195: The remaining chart types](../experiments/0195-remaining-chart-types.md) | 2,505,814 | `4ea1da681d9a7cbcf64999e02879a7e935563d721b8c035e89cf2301b9b47a77` | saved by 16.0 |
+| `release/16.0/0195/pie_3d-row.key` | [0195: The remaining chart types](../experiments/0195-remaining-chart-types.md) | 2,489,258 | `bd216ddb046183f4730a0f0ef34039d08017a2d70c829c8a4131c986b34b56da` | saved by 16.0 |
+| `release/16.0/0195/stacked_area_2d-row.key` | [0195: The remaining chart types](../experiments/0195-remaining-chart-types.md) | 2,495,211 | `d5f0480fc01e91349e7dbe62afe826caaa6c62b9b7388d747b2e8605e3e89d00` | saved by 16.0 |
+| `release/16.0/0195/stacked_area_3d-row.key` | [0195: The remaining chart types](../experiments/0195-remaining-chart-types.md) | 2,498,869 | `036482b9165f214c4b7fd48d4648e250659350a19cfe3de00a186e0cfb2efea4` | saved by 16.0 |
+| `release/16.0/0195/stacked_horizontal_bar_2d-row.key` | [0195: The remaining chart types](../experiments/0195-remaining-chart-types.md) | 2,508,413 | `a1d141fc89db8f75382ac0e934222c74efa77357d6d3b8aa08439bb55afae1ee` | saved by 16.0 |
+| `release/16.0/0195/stacked_horizontal_bar_3d-row.key` | [0195: The remaining chart types](../experiments/0195-remaining-chart-types.md) | 2,519,063 | `97a5d932d75196994df424dd58abed56720746fdf1c055d6c872e518eee20cf6` | saved by 16.0 |
+| `release/16.0/0195/stacked_vertical_bar_3d-row.key` | [0195: The remaining chart types](../experiments/0195-remaining-chart-types.md) | 2,502,786 | `622ffee7cbfc7ca63c7eab7c0b7ac64e2b492dbb2fb758e542f8660bcbf566c2` | saved by 16.0 |
+| `release/16.0/0196/all.key` | [0196: Every transition effect](../experiments/0196-every-transition.md) | 2,549,843 | `68a4efbb7c3f0231fb93e93852570620ca7abad99200474c0906dc094e9ebca6` | saved by 16.0 |
+| `release/16.0/0197/default.key` | [0197: The idle time without auto restart](../experiments/0197-idle-time.md) | 2,475,356 | `3311fe9f48bff9e4805f09162b0f4e3b13c72021a0e000fa658af847c386c4cd` | saved by 16.0 |
+| `release/16.0/0197/idle.key` | [0197: The idle time without auto restart](../experiments/0197-idle-time.md) | 2,475,341 | `65b7f7bdc0a30d067b25e6cc46e2b80a2884ceeaa36b34b1c8979397ed022809` | saved by 16.0 |
+| `release/16.0/0198/book.pages` | [0198: The blank book template](../experiments/0198-book-template.md) | 84,836 | `5fc19f01d2540ed4848448c994edee9054eee79e83f9b39da092437a71dc5879` | saved by 16.0 |
+| `release/16.0/0223/ABS.numbers` | [0223: Forty-four functions](../experiments/0223-functions.md) | 137,435 | `afffb67ae51790859fbff50c53b07a4d8ee65a31237a63518a7829705973165b` | saved by 16.0 |
+| `release/16.0/0223/AND.numbers` | [0223: Forty-four functions](../experiments/0223-functions.md) | 137,821 | `d83d6049173d06e345150b8d9cb3d7a96125a0056a4a65aa1c8c18a3f33937a1` | saved by 16.0 |
+| `release/16.0/0223/AVERAGEIF.numbers` | [0223: Forty-four functions](../experiments/0223-functions.md) | 138,572 | `64fb79449d087c991af583afa9258cb7b08dce11a853219d2bf41e51e3d963b5` | saved by 16.0 |
+| `release/16.0/0223/CHOOSE.numbers` | [0223: Forty-four functions](../experiments/0223-functions.md) | 138,334 | `7313ef82b856f758313986236bcfae9cfa0dc5fea6998e5bbd9b6b7c99393ec5` | saved by 16.0 |
+| `release/16.0/0223/CONCATENATE.numbers` | [0223: Forty-four functions](../experiments/0223-functions.md) | 137,579 | `93021ca186fc70b2e9799f1d7fa1e71748d56ae5c7e954761c7e52874fe5e7fe` | saved by 16.0 |
+| `release/16.0/0223/COUNTA.numbers` | [0223: Forty-four functions](../experiments/0223-functions.md) | 137,526 | `720eeecef2ca6fdcd5d7dc5b2562643dc33a7bbbfb0ffb5330abcac4760fc1a1` | saved by 16.0 |
+| `release/16.0/0223/COUNTIF.numbers` | [0223: Forty-four functions](../experiments/0223-functions.md) | 138,498 | `04b136b6e6126766acb8d1766e411f560761686dccc227447b35ea85249ad867` | saved by 16.0 |
+| `release/16.0/0223/DATE.numbers` | [0223: Forty-four functions](../experiments/0223-functions.md) | 138,103 | `e09c74e36f560f0a54fa2e6b84f0c16df866ab13309a4c1f28db56d9e0db6fcd` | saved by 16.0 |
+| `release/16.0/0223/DAY.numbers` | [0223: Forty-four functions](../experiments/0223-functions.md) | 137,574 | `3989c10bc1f74c8121d8604f762984aec1c0d4e4b0e60bad1c40a74b4e5e9a40` | saved by 16.0 |
+| `release/16.0/0223/EXP.numbers` | [0223: Forty-four functions](../experiments/0223-functions.md) | 138,552 | `9dad2dff38cb7bc1a3aa4aa1ff4d169681b3514aa66abac4e7c4fbd291e1122a` | saved by 16.0 |
+| `release/16.0/0223/FALSE.numbers` | [0223: Forty-four functions](../experiments/0223-functions.md) | 137,851 | `9e57891dac6ab2fd700dc123d77abd56177c732b8d5c3065de64d058f24f6e82` | saved by 16.0 |
+| `release/16.0/0223/IFERROR.numbers` | [0223: Forty-four functions](../experiments/0223-functions.md) | 137,482 | `e5cb313cb4cf2d2f7ea16dfd720ee13e08cfc64acf96913b2bb0f5274eaad403` | saved by 16.0 |
+| `release/16.0/0223/INDEX.numbers` | [0223: Forty-four functions](../experiments/0223-functions.md) | 137,555 | `d6fab8c0e6cb847639adc0de241bc0e34dbe166be45134b4aaf4ac65d70ec6bb` | saved by 16.0 |
+| `release/16.0/0223/INT.numbers` | [0223: Forty-four functions](../experiments/0223-functions.md) | 137,447 | `09cfcaa77189255b178a674a0bbd245f88d99a3c562d6dbf898f16d567ece112` | saved by 16.0 |
+| `release/16.0/0223/LEFT.numbers` | [0223: Forty-four functions](../experiments/0223-functions.md) | 137,480 | `031fe2da9e39bd260f4ae14d86ed670d5972c9be4048f199e73b96692bd9997c` | saved by 16.0 |
+| `release/16.0/0223/LN.numbers` | [0223: Forty-four functions](../experiments/0223-functions.md) | 138,476 | `a9dc2c6e33aef4b370681675aa132943b622407bb3f59870832658b6e8546edb` | saved by 16.0 |
+| `release/16.0/0223/LOG10.numbers` | [0223: Forty-four functions](../experiments/0223-functions.md) | 138,628 | `eb3d8d33c98efc11b95ebfa30b4c8b720a9f466f3cf484bc76cfb912a63505d9` | saved by 16.0 |
+| `release/16.0/0223/LOWER.numbers` | [0223: Forty-four functions](../experiments/0223-functions.md) | 137,680 | `1d2d9485a8f9846cc81e556c236895bd045d51c94c76eeb9d837685f4d674377` | saved by 16.0 |
+| `release/16.0/0223/MATCH.numbers` | [0223: Forty-four functions](../experiments/0223-functions.md) | 137,559 | `941825a952488043a4107ebb2c6cbb01219920d046662fd12de49349f7142dc2` | saved by 16.0 |
+| `release/16.0/0223/MEDIAN.numbers` | [0223: Forty-four functions](../experiments/0223-functions.md) | 137,456 | `3c595ac93e92fd922234988da655f17d0eb96a9d8ee8196c3ed1e7f1c1d53893` | saved by 16.0 |
+| `release/16.0/0223/MID.numbers` | [0223: Forty-four functions](../experiments/0223-functions.md) | 137,513 | `4e0e3df48dbf78d0fb1082ebbd8615ce871965e12f6e2b3587b23034a274f0bb` | saved by 16.0 |
+| `release/16.0/0223/MOD.numbers` | [0223: Forty-four functions](../experiments/0223-functions.md) | 137,457 | `80f44fccaf2ab1fed1b45738dbc0aec56797a3aa13ad1081da25629bfc3cdb33` | saved by 16.0 |
+| `release/16.0/0223/MONTH.numbers` | [0223: Forty-four functions](../experiments/0223-functions.md) | 137,477 | `0a40d2f9ee4f6ac91423d1b9cbf162979a986830d5e8d629e8a75248d76cd139` | saved by 16.0 |
+| `release/16.0/0223/NOT.numbers` | [0223: Forty-four functions](../experiments/0223-functions.md) | 137,897 | `2a5c75bf137471fd02a0b7c6c390a5dc66c1ee61cef8213876391d52b1d35083` | saved by 16.0 |
+| `release/16.0/0223/NOW.numbers` | [0223: Forty-four functions](../experiments/0223-functions.md) | 138,457 | `8d0f957d047dd75479354568f93edc4bc1089aad96c9776578f65d8379dfd789` | saved by 16.0 |
+| `release/16.0/0223/OR.numbers` | [0223: Forty-four functions](../experiments/0223-functions.md) | 137,807 | `129f2a8f29ceacd5fc15adc78c79b7e0fdea8fd0ce190ca6ef6f3f873b0d40dd` | saved by 16.0 |
+| `release/16.0/0223/PI.numbers` | [0223: Forty-four functions](../experiments/0223-functions.md) | 138,532 | `c7b4dd489006fc655d7ddf65280ef27929db47f417709e8a84cae4af96e3a854` | saved by 16.0 |
+| `release/16.0/0223/POWER.numbers` | [0223: Forty-four functions](../experiments/0223-functions.md) | 137,506 | `647527997654306922989681caababcd0009a95f547ea393e3bbb70bb2051842` | saved by 16.0 |
+| `release/16.0/0223/PRODUCT.numbers` | [0223: Forty-four functions](../experiments/0223-functions.md) | 137,481 | `3e2f308eb0a9d0a495378f0b0fa28e6f96ec0dda633ca3cb8d497e1a3fae3ebc` | saved by 16.0 |
+| `release/16.0/0223/RAND.numbers` | [0223: Forty-four functions](../experiments/0223-functions.md) | 138,645 | `48f52ad212cf91c5912efc208c29939660b2b4500fcd898cb79dcbeafc73bfe9` | saved by 16.0 |
+| `release/16.0/0223/RIGHT.numbers` | [0223: Forty-four functions](../experiments/0223-functions.md) | 137,468 | `a538f0e0e6f7f2ef11329d382b83d9d726cf052e6c55c06bfba2781f09ae769f` | saved by 16.0 |
+| `release/16.0/0223/ROUNDDOWN.numbers` | [0223: Forty-four functions](../experiments/0223-functions.md) | 137,615 | `bc5fae60e8b9ff3f017654278ddebbd3d7f17bec20c3fc5fa1ec19c81024d159` | saved by 16.0 |
+| `release/16.0/0223/ROUNDUP.numbers` | [0223: Forty-four functions](../experiments/0223-functions.md) | 137,617 | `5fc949c259733b38300027821aab42f486bee1f4950e40bcff622406c15d182b` | saved by 16.0 |
+| `release/16.0/0223/SIGN.numbers` | [0223: Forty-four functions](../experiments/0223-functions.md) | 137,430 | `3409cb3e205211996ea79b758536b907357626e8351d15723e55580f801a836a` | saved by 16.0 |
+| `release/16.0/0223/SQRT.numbers` | [0223: Forty-four functions](../experiments/0223-functions.md) | 137,398 | `d844cbdadaa1d9d52e1a69af3732b3eb72afa6eba8e13fc2d3abf203d2d4a0ac` | saved by 16.0 |
+| `release/16.0/0223/STDEV.numbers` | [0223: Forty-four functions](../experiments/0223-functions.md) | 138,436 | `0bfa4cb79aa2f4796e1f8f1263d720386f754b20e2d8de9130e119de903c3f09` | saved by 16.0 |
+| `release/16.0/0223/SUMIF.numbers` | [0223: Forty-four functions](../experiments/0223-functions.md) | 137,585 | `ff3d143bc9284ea4ad38d102b1419c6a85f529fdf9e97a4b21ecb35921f92ba0` | saved by 16.0 |
+| `release/16.0/0223/TEXTJOIN.numbers` | [0223: Forty-four functions](../experiments/0223-functions.md) | 138,655 | `114a8a79feec1495722cc4e11f194f3a79f5a0d219860298e82c9f9a7e6abd27` | saved by 16.0 |
+| `release/16.0/0223/TRIM.numbers` | [0223: Forty-four functions](../experiments/0223-functions.md) | 137,458 | `4eb63beebf984fabfc79bef22c66ca56dac579c2748b52510567a8f7b4d21c13` | saved by 16.0 |
+| `release/16.0/0223/TRUE.numbers` | [0223: Forty-four functions](../experiments/0223-functions.md) | 137,761 | `fc478aca47a0ed5a7dc71ed40b0b48577600c694122ff15596f4c13aad010783` | saved by 16.0 |
+| `release/16.0/0223/UPPER.numbers` | [0223: Forty-four functions](../experiments/0223-functions.md) | 137,678 | `a043b3324bbd3178182e2d22b716371051489dec79a84579c0ee13f390a9919b` | saved by 16.0 |
+| `release/16.0/0223/VLOOKUP.numbers` | [0223: Forty-four functions](../experiments/0223-functions.md) | 138,925 | `21ac437f0361f068ab00da08ee664c2b4853f0bdf3babb7d5fa1e5542e0a19d0` | saved by 16.0 |
+| `release/16.0/0223/XLOOKUP.numbers` | [0223: Forty-four functions](../experiments/0223-functions.md) | 137,592 | `1f18b90b87a4e547bce06f10105608a3049246a1c1b6cc34b44d0888db6fab0d` | saved by 16.0 |
+| `release/16.0/0223/YEAR.numbers` | [0223: Forty-four functions](../experiments/0223-functions.md) | 137,711 | `ed64f5f565a67fceae2d31bdc220eab97e3142de12aa1dc89427e0e5ffd28785` | saved by 16.0 |
+| `release/16.0/0243/body.key` | [0243: A hidden body placeholder](../experiments/0243-hidden-body.md) | 2,477,260 | `f5d453b7f624b3a24b627ef00b6ee9f022a7a60fff534c9cb49324f2802c5976` | saved by 16.0 |
+| `release/16.0/0243/no-body.key` | [0243: A hidden body placeholder](../experiments/0243-hidden-body.md) | 2,477,233 | `d490389a8845b32c829c9ebcbbd3967f0ea676ec3decd786a15e5b774bccee21` | saved by 16.0 |
+| `release/16.0/0248/ACOS.numbers` | [0248: Seventy more functions](../experiments/0248-more-functions.md) | 138,478 | `9d0587d7f831e7938b26b068ee37be05cecaed83dd33cd16a89274ef7132c445` | saved by 16.0 |
+| `release/16.0/0248/ASIN.numbers` | [0248: Seventy more functions](../experiments/0248-more-functions.md) | 137,445 | `404a4f677113552d7534e388a62e39e006f6a55e8063cde8063b8deea63af6b6` | saved by 16.0 |
+| `release/16.0/0248/ATAN.numbers` | [0248: Seventy more functions](../experiments/0248-more-functions.md) | 138,651 | `9cf33e2be7eae5feedfc7f8c0350654cec390d652f3740712e9f46a9538a8245` | saved by 16.0 |
+| `release/16.0/0248/AVERAGEIFS.numbers` | [0248: Seventy more functions](../experiments/0248-more-functions.md) | 137,566 | `b46a4046b5576e07dbc1309ed1ea8f87104f59e136d0b3e774ad61e49ce77421` | saved by 16.0 |
+| `release/16.0/0248/CEILING.numbers` | [0248: Seventy more functions](../experiments/0248-more-functions.md) | 137,473 | `97b414d60316b1e7826e60342151a23a8070bf998cf62a352de68ae8b6b100fa` | saved by 16.0 |
+| `release/16.0/0248/CHAR.numbers` | [0248: Seventy more functions](../experiments/0248-more-functions.md) | 137,529 | `3f0be481389a36c0f1b77a99ff0c34ea5417c0e59ded1b78f0562e6c5efa06e8` | saved by 16.0 |
+| `release/16.0/0248/CODE.numbers` | [0248: Seventy more functions](../experiments/0248-more-functions.md) | 137,564 | `1e78fefc58c3bfa0a56a4237a68f1c329abe530e668d768168ad7b54f5693c4e` | saved by 16.0 |
+| `release/16.0/0248/COLUMN.numbers` | [0248: Seventy more functions](../experiments/0248-more-functions.md) | 137,439 | `e41b8d08e00890d055c0c08a1d10ab068abb285505ce1f26427e82b5aee211a4` | saved by 16.0 |
+| `release/16.0/0248/COLUMNS.numbers` | [0248: Seventy more functions](../experiments/0248-more-functions.md) | 137,527 | `10ccec6fecfc8762a6eeb0f9d792279d70a36d8f20d51c4039f7ffb2fcaed8b5` | saved by 16.0 |
+| `release/16.0/0248/COS.numbers` | [0248: Seventy more functions](../experiments/0248-more-functions.md) | 137,437 | `bd6e07ec560004cd86166a83394462c47ba566999fc18447a237c0ad1206c799` | saved by 16.0 |
+| `release/16.0/0248/COUNTBLANK.numbers` | [0248: Seventy more functions](../experiments/0248-more-functions.md) | 137,539 | `9ac68b21628bcd056dad13219b46bd0ea891fc1a3bd198dab27a187643f90e3f` | saved by 16.0 |
+| `release/16.0/0248/COUNTIFS.numbers` | [0248: Seventy more functions](../experiments/0248-more-functions.md) | 138,534 | `0baf9fcc293cf3b6caf538850ae6a3f56c375be4536e491e61df448722a2e82f` | saved by 16.0 |
+| `release/16.0/0248/DATEDIF.numbers` | [0248: Seventy more functions](../experiments/0248-more-functions.md) | 140,027 | `41182394790d566a930146ba031891e441f000a1a51beac45a73e5bdd43f7ac1` | saved by 16.0 |
+| `release/16.0/0248/DAYS360.numbers` | [0248: Seventy more functions](../experiments/0248-more-functions.md) | 138,929 | `990784485b6f9c6a5771efc13d7b2a36b8a6efeb647accebd0cbc9247e9b942a` | saved by 16.0 |
+| `release/16.0/0248/DEGREES.numbers` | [0248: Seventy more functions](../experiments/0248-more-functions.md) | 138,231 | `2eb6ef5ff44a126255665501f582e3d8989e6b8cf31d9981f9c4441dd3bfd6a8` | saved by 16.0 |
+| `release/16.0/0248/EDATE.numbers` | [0248: Seventy more functions](../experiments/0248-more-functions.md) | 138,103 | `0145920735f5965e8f636b282fcd40c8a8bc4f5b66851f193848757eb8901701` | saved by 16.0 |
+| `release/16.0/0248/EOMONTH.numbers` | [0248: Seventy more functions](../experiments/0248-more-functions.md) | 138,490 | `d7c61cf6326d1482797c7092079c813b86b2df2c2ef81c8ad481fa4ffa5f5402` | saved by 16.0 |
+| `release/16.0/0248/EVEN.numbers` | [0248: Seventy more functions](../experiments/0248-more-functions.md) | 137,449 | `1e620bfa308f3c38ef512426cb8f6da2b7de37933aeca97ace03805aeffdf26d` | saved by 16.0 |
+| `release/16.0/0248/EXACT.numbers` | [0248: Seventy more functions](../experiments/0248-more-functions.md) | 137,760 | `ba1e449d574b9be7d17bcf54ca5fe2e873122b4ff284a2a95ed7656b3ff0c0c2` | saved by 16.0 |
+| `release/16.0/0248/FACT.numbers` | [0248: Seventy more functions](../experiments/0248-more-functions.md) | 137,580 | `412633096daa84490a1f95459040374f039bc1190ec5635be90a8208624852c0` | saved by 16.0 |
+| `release/16.0/0248/FIND.numbers` | [0248: Seventy more functions](../experiments/0248-more-functions.md) | 137,432 | `62faf7ad4947c79f08604c721a1a8e42dfa823c210b02d9ba829884afdcaad75` | saved by 16.0 |
+| `release/16.0/0248/FLOOR.numbers` | [0248: Seventy more functions](../experiments/0248-more-functions.md) | 137,458 | `4c872a58518dced598c128a188cad9118b6ce30bed5803c202566e1de11b5c40` | saved by 16.0 |
+| `release/16.0/0248/FV.numbers` | [0248: Seventy more functions](../experiments/0248-more-functions.md) | 138,106 | `90dc3b7123fe2ce7e54747e049eaf5b183ae917536fff4da4f761b3f93402b73` | saved by 16.0 |
+| `release/16.0/0248/GCD.numbers` | [0248: Seventy more functions](../experiments/0248-more-functions.md) | 137,457 | `7f6c7b473645fbcafe3219e874b520a956c88727492c47f2689a033444bfa91b` | saved by 16.0 |
+| `release/16.0/0248/HLOOKUP.numbers` | [0248: Seventy more functions](../experiments/0248-more-functions.md) | 138,901 | `5049678123bf20e5b8e20cfdaf3b95483062a91f68e4fd47db7214a5d421a60a` | saved by 16.0 |
+| `release/16.0/0248/HOUR.numbers` | [0248: Seventy more functions](../experiments/0248-more-functions.md) | 137,491 | `20bebb820cdb7ddd204d787fe17da954c85406aa39199cb8d8de306a37f107de` | saved by 16.0 |
+| `release/16.0/0248/IFS.numbers` | [0248: Seventy more functions](../experiments/0248-more-functions.md) | 138,450 | `2dcd5a23c39aae46d38d5e64172fea5a42b948e9e9fe1cbdd4da9a6b82c1f4ac` | saved by 16.0 |
+| `release/16.0/0248/ISBLANK.numbers` | [0248: Seventy more functions](../experiments/0248-more-functions.md) | 137,761 | `3ae2cf407e1215d0c9e590f9db128578f974d4b103d0bb5aa639b36514dc97da` | saved by 16.0 |
+| `release/16.0/0248/ISERROR.numbers` | [0248: Seventy more functions](../experiments/0248-more-functions.md) | 137,786 | `f58e34f38099dd2fbe6ac07c852664e1ad12bdb3d333d381287024ca2f661977` | saved by 16.0 |
+| `release/16.0/0248/ISEVEN.numbers` | [0248: Seventy more functions](../experiments/0248-more-functions.md) | 137,760 | `a78f9c83635fd865bd49c9fbfd008f3354ea85d1d460ff71e0668c7fb42f857a` | saved by 16.0 |
+| `release/16.0/0248/ISNUMBER.numbers` | [0248: Seventy more functions](../experiments/0248-more-functions.md) | 138,406 | `cfe442b11b5a6d6084d77ac27af0f2d66597e1d712dad00cc0300a8cab33a745` | saved by 16.0 |
+| `release/16.0/0248/ISODD.numbers` | [0248: Seventy more functions](../experiments/0248-more-functions.md) | 137,865 | `bf819c4a3e20790ab98bf0faa062469ef997610b222cf4f178fa7ec6be8c7ed1` | saved by 16.0 |
+| `release/16.0/0248/ISTEXT.numbers` | [0248: Seventy more functions](../experiments/0248-more-functions.md) | 137,887 | `1da095b21642db00a7270369e44d92e165b37a76e349692d3338fec7fcf6ac5f` | saved by 16.0 |
+| `release/16.0/0248/LARGE.numbers` | [0248: Seventy more functions](../experiments/0248-more-functions.md) | 137,553 | `17f889116e747adde178cad16bf37863c83990d378a8947ec25243781e05cd46` | saved by 16.0 |
+| `release/16.0/0248/LCM.numbers` | [0248: Seventy more functions](../experiments/0248-more-functions.md) | 138,207 | `fa674dbf6779cb03a19e42aee4c4ba7c734e60f73f645eb058f5fb656ca9ed1f` | saved by 16.0 |
+| `release/16.0/0248/LOOKUP.numbers` | [0248: Seventy more functions](../experiments/0248-more-functions.md) | 138,485 | `da319c79fd17c61052353a8dff69bdc640c7bb0ab67232d6adb20ffd31563b5f` | saved by 16.0 |
+| `release/16.0/0248/MINUTE.numbers` | [0248: Seventy more functions](../experiments/0248-more-functions.md) | 137,524 | `9b213b3f35e9048f49db68f5221a3d4eeefc40f6f8b3c20af16210ba62595c29` | saved by 16.0 |
+| `release/16.0/0248/MODE.numbers` | [0248: Seventy more functions](../experiments/0248-more-functions.md) | 138,547 | `31f849321e236642f86c49bab836ac99634c901e4613b7b1c4fda13beb83d41e` | saved by 16.0 |
+| `release/16.0/0248/NETWORKDAYS.numbers` | [0248: Seventy more functions](../experiments/0248-more-functions.md) | 137,777 | `6ea2b1a000ea878d28d5696b605a6b443e67c2841b40d678d56156cd42c57c79` | saved by 16.0 |
+| `release/16.0/0248/NPV.numbers` | [0248: Seventy more functions](../experiments/0248-more-functions.md) | 137,879 | `d01f087bd9a3d088df09dedcebef13d2b71619823b30c89cc5a7117c20e5737e` | saved by 16.0 |
+| `release/16.0/0248/ODD.numbers` | [0248: Seventy more functions](../experiments/0248-more-functions.md) | 137,452 | `d5234141a2d143f3873e6c8fe390131ed92036e31062e5d1e61abb1be521008b` | saved by 16.0 |
+| `release/16.0/0248/PMT.numbers` | [0248: Seventy more functions](../experiments/0248-more-functions.md) | 138,360 | `639029272a56d85013138c9d969182e13ea97b77ef9d8b608cff2aa52c3b5f70` | saved by 16.0 |
+| `release/16.0/0248/PROPER.numbers` | [0248: Seventy more functions](../experiments/0248-more-functions.md) | 137,809 | `c274951bf982022e9ba64e71fa30dca23501cf4d55c828e8f8ef33d8543702f2` | saved by 16.0 |
+| `release/16.0/0248/PV.numbers` | [0248: Seventy more functions](../experiments/0248-more-functions.md) | 137,979 | `b50e9835c224d5eb2816baa8e32ff4f6492985d24f17d7d0661463dd48369e57` | saved by 16.0 |
+| `release/16.0/0248/QUOTIENT.numbers` | [0248: Seventy more functions](../experiments/0248-more-functions.md) | 137,457 | `39b0ba95ddccc48ffaf4fce49a0c7282913f5763f1f7bcaee15750326ce22f82` | saved by 16.0 |
+| `release/16.0/0248/RADIANS.numbers` | [0248: Seventy more functions](../experiments/0248-more-functions.md) | 138,484 | `2910dd09597b2a5289b76741b92fa7e32526d15c6ae57a49dd8adb9f8a17cfb8` | saved by 16.0 |
+| `release/16.0/0248/RANDBETWEEN.numbers` | [0248: Seventy more functions](../experiments/0248-more-functions.md) | 138,412 | `dd01f689af01d6577cea9de3f05658e4390fba943dc3da8153098e6be1ba0dbe` | saved by 16.0 |
+| `release/16.0/0248/RANK.numbers` | [0248: Seventy more functions](../experiments/0248-more-functions.md) | 137,546 | `317a140a3b5fd3dedf8869e96050cba899772c60b68bdd39d7863af24ff2b4d6` | saved by 16.0 |
+| `release/16.0/0248/REPLACE.numbers` | [0248: Seventy more functions](../experiments/0248-more-functions.md) | 138,523 | `4811153c6b90c04866ed6264d69bb3b0b488a7fa55625d90eb50af6cb8855263` | saved by 16.0 |
+| `release/16.0/0248/REPT.numbers` | [0248: Seventy more functions](../experiments/0248-more-functions.md) | 138,221 | `32051ee08cf9a985881b23289f7e0eb18f3846f90a81bbf11ea47227a37179cb` | saved by 16.0 |
+| `release/16.0/0248/ROW.numbers` | [0248: Seventy more functions](../experiments/0248-more-functions.md) | 137,417 | `3433eea987865ac1fa9d3b21b15cc4d67898637da2402f88f4c6d3bfe9104386` | saved by 16.0 |
+| `release/16.0/0248/ROWS.numbers` | [0248: Seventy more functions](../experiments/0248-more-functions.md) | 137,528 | `4328fd5b9b6e7f64239ccfecaece23bab89c469dcb9813086bc12c602cc94b51` | saved by 16.0 |
+| `release/16.0/0248/SEARCH.numbers` | [0248: Seventy more functions](../experiments/0248-more-functions.md) | 138,303 | `ff18f82c0f640a5af79cf7876ec6cf3916305a80ad36d06379f603366ff8ac21` | saved by 16.0 |
+| `release/16.0/0248/SECOND.numbers` | [0248: Seventy more functions](../experiments/0248-more-functions.md) | 138,509 | `7b362693905097b485792571d9618197268c477a47fb4360bc2ffc3e77e258b8` | saved by 16.0 |
+| `release/16.0/0248/SIN.numbers` | [0248: Seventy more functions](../experiments/0248-more-functions.md) | 137,446 | `b2fcfe78b3406cc74137a24d0235bdd78881ec989f41d0c9f1baa24201816ea1` | saved by 16.0 |
+| `release/16.0/0248/SMALL.numbers` | [0248: Seventy more functions](../experiments/0248-more-functions.md) | 137,563 | `e397fdd9b5e8123f9c01193859918b1fb2b97c8a3b2cad0a53d2e22f2d863901` | saved by 16.0 |
+| `release/16.0/0248/SUBSTITUTE.numbers` | [0248: Seventy more functions](../experiments/0248-more-functions.md) | 138,631 | `fb703e816df15e732c035eef252171f8f12b937d13b94122af6bad3d1c9fe33c` | saved by 16.0 |
+| `release/16.0/0248/SUMIFS.numbers` | [0248: Seventy more functions](../experiments/0248-more-functions.md) | 138,684 | `830bc7fab15ffd0afafcc1f3742b1d5693cedacee2adda5f92d1e8b036e3667b` | saved by 16.0 |
+| `release/16.0/0248/SUMPRODUCT.numbers` | [0248: Seventy more functions](../experiments/0248-more-functions.md) | 137,677 | `106a6df60849b7e785bff512011e4b540ae7e8a0a0a009d73fddd2af09c220eb` | saved by 16.0 |
+| `release/16.0/0248/SWITCH.numbers` | [0248: Seventy more functions](../experiments/0248-more-functions.md) | 138,434 | `8a366a895b1c5f8e93bdb3005869ef2334fd67a2c56226a368eb89da3849b666` | saved by 16.0 |
+| `release/16.0/0248/TAN.numbers` | [0248: Seventy more functions](../experiments/0248-more-functions.md) | 137,460 | `827eeb75216269ac917c5f66fdab7e3a1c505987e5c70f75143a888bbe45536b` | saved by 16.0 |
+| `release/16.0/0248/TEXTBEFORE.numbers` | [0248: Seventy more functions](../experiments/0248-more-functions.md) | 138,467 | `abf239ea4990c49e95d6f6a9c9b8aa09c2a2f098ed39f4830aeca2bd134a5c83` | saved by 16.0 |
+| `release/16.0/0248/TIME.numbers` | [0248: Seventy more functions](../experiments/0248-more-functions.md) | 137,414 | `a264981ca6e24619597e33e6f3e72aa488247cf53a1c2044a4feb53e1aef38bd` | saved by 16.0 |
+| `release/16.0/0248/TRUNC.numbers` | [0248: Seventy more functions](../experiments/0248-more-functions.md) | 137,462 | `7f2c744c91ea5bb171eb1a742e3bf317e55392dcba1161dd6a5f7a80ea5d6b1b` | saved by 16.0 |
+| `release/16.0/0248/VALUE.numbers` | [0248: Seventy more functions](../experiments/0248-more-functions.md) | 137,437 | `1bf3c3e3b6d5b9c5eb5d7117a358af6e0e53133df83076046e8c0f74c6343dba` | saved by 16.0 |
+| `release/16.0/0248/VAR.numbers` | [0248: Seventy more functions](../experiments/0248-more-functions.md) | 137,444 | `b37d3cadee503ce649ca21a89321b81cd5d0f277eda00c69939622bc130e9aac` | saved by 16.0 |
+| `release/16.0/0248/WEEKDAY.numbers` | [0248: Seventy more functions](../experiments/0248-more-functions.md) | 138,378 | `6671a069378cfab356e4922d238efa9d571e44096be8e3408ff57593754c7c27` | saved by 16.0 |
+| `release/16.0/0248/WEEKNUM.numbers` | [0248: Seventy more functions](../experiments/0248-more-functions.md) | 137,565 | `118b3217c5c1f1756bd28f62dd4b4b0fd77305ad35b860708941f29efe948635` | saved by 16.0 |
+| `release/16.0/0248/WORKDAY.numbers` | [0248: Seventy more functions](../experiments/0248-more-functions.md) | 138,492 | `eabb812d3031131906d07798ae325a7c689532b8701559dcb41f8c92974a0758` | saved by 16.0 |
+| `release/16.0/0248/XOR.numbers` | [0248: Seventy more functions](../experiments/0248-more-functions.md) | 137,925 | `bfc5683176f1adecaf64c2adfb3a134b7d82aff285788c51757a49536e754280` | saved by 16.0 |
+| `release/16.0/0265/MINUTT.numbers` | [0265: Localised function names](../experiments/0265-localised-function-names.md) | 137,546 | `03bfbdb2bb20b6988542f0f81413f0c8567d5a6b55354c64947151d9365f542f` | saved by 16.0 |
+| `release/16.0/0265/SUMMER.numbers` | [0265: Localised function names](../experiments/0265-localised-function-names.md) | 137,466 | `f813079205f3a6da1cd0a7377cbe70b45b0e390d048a48923225f31c7f1a513a` | saved by 16.0 |
+| `release/16.0/0265/TID.numbers` | [0265: Localised function names](../experiments/0265-localised-function-names.md) | 137,749 | `0d2c60fa3ca06554b3a5825fb0df3c7887c17a390767863c2f7401df548f0836` | saved by 16.0 |
+| `release/16.0/0265/TIMEVALUE.numbers` | [0265: Localised function names](../experiments/0265-localised-function-names.md) | 138,293 | `5362f2a259e15b9150bc29dd366e98ef1b4a099597fd20ffc1b0606f2bec430e` | saved by 16.0 |
+| `release/16.0/0295/baseline.key` | [0295: A chart's title, legend, border and caption](../experiments/0295-chart-options.md) | 2,497,470 | `dc3772386be096b75e0b092735bb4865a5c79a6b9a8924329ad334b578511225` | saved by 16.0 |
+| `release/16.0/0296/baseline.key` | [0296: A chart's value axis](../experiments/0296-chart-axis.md) | 2,497,487 | `d2a8bdae29d109436c6c6a6adbd447577f0eaa542db8cd2579447faa6272a7cf` | saved by 16.0 |
+| `release/16.0/0297/baseline.key` | [0297: A chart's category axis, series and text styles](../experiments/0297-chart-category-axis.md) | 2,497,474 | `cdf9e608e7876788db1734b2b21597ccedce42ad415e0ce0fedf0dc979f407af` | saved by 16.0 |
 
 ## Left out
 
-67 documents, besides 78 Keynote presentations in Basic White that are included as their test-theme versions under `keynote/`.
+70 documents, besides 78 Keynote presentations in Basic White that are included as their test-theme versions under `keynote/`.
 
 | File | Why |
 | --- | --- |
@@ -1299,3 +1616,6 @@ Sample documents from the experiments, for testing readers and writers. They are
 | `0469/0196-all.key` | media not made by the project: 910457886_1434x1669-small-5644.jpeg, 660384004_1290x1720-small-5876.jpeg, 660384004_rotate_1964x1473-small-8049.jpeg |
 | `theme/0090/theme.key` | holds Basic Black's photos |
 | `theme/0271/dynamic.key` | media not made by the project: motionBackground-9094.jpeg |
+| `release/16.0/0090/theme.key` | holds Basic Black's photos |
+| `release/16.0/0158/essay.pages` | holds the template's placeholder text, written by Apple |
+| `release/16.0/0199/letter.pages` | holds the template's placeholder text, written by Apple |
