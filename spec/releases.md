@@ -7,12 +7,11 @@ The specification describes the file format as the 15.4 apps write it. Other rel
 | Release | Apps | macOS | `fileFormatVersion` | Build |
 | --- | --- | --- | --- | --- |
 | 15.4 | Pages, Keynote, Numbers | 26.5.2 | `26.4.0` | `M15.4-7051.0.79-2` |
-| 14.5 | Pages, Numbers | 26.5.2 | `14.4.1` | `M14.5-7045.0.17-4` |
+| 14.5 | Pages, Keynote, Numbers | 26.5.2 | `14.4.1` | `M14.5-7045.0.17-4` |
 
 - **15.4** is the release the spec describes, from [0001](../experiments/0001-empty-document.md) on. Its apps are named "Pages Creator Studio" and so on.
 - **14.5** writes the same format ([0461](../experiments/0461-new-documents-in-14-5.md), [0464](../experiments/0464-recipes-rerun-in-14-5.md)), opens and reads the 15.4 samples ([0462](../experiments/0462-opening-15-4-documents-in-14-5.md)) and draws them the same ([0463](../experiments/0463-drawing-15-4-documents-in-14-5.md)).
-
-Keynote 14.5 hasn't been checked yet.
+- **Keynote 14.5** writes the same format too ([0466](../experiments/0466-keynote-14-5.md)), apart from a slide-node field, a resource and its Basic White template; its AppleScript has no radial wipe transition.
 
 ## Telling which release saved a document
 

@@ -15,4 +15,4 @@ Chapter 1 is confirmed for Keynote and Numbers 15.4 too ([0024](../experiments/0
 
 ## App releases
 
-The spec describes the format as the 15.4 apps write it. Pages and Numbers 14.5 write the same format, with a few differences; [releases.md](releases.md) lists the releases checked, how to tell which one saved a document, and every difference.
+The spec describes the format as the 15.4 apps write it. Pages, Numbers and Keynote 14.5 write the same format, with a few differences; [releases.md](releases.md) lists the releases checked, how to tell which one saved a document, and every difference.
