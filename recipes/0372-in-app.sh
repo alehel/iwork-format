@@ -10,12 +10,14 @@
 # copies. Waits up to 30 seconds for the document to open.
 #
 # The app is "APP Creator Studio" (15.4, and 16.0 from experiment 0469 on) when that is installed, and otherwise plain "APP" (such as
-# Pages 14.5, from experiment 0461 on). Set IWORK_APP to the full name to choose another.
+# Pages 14.5, from experiment 0461 on). Set IWORK_APP to the full name to choose another, or
+# IWORK_APP_DIR (from experiment 0478 on) to use IWORK_APP_DIR/APP.app, such as on a disk image.
 #
 # From experiment 0465 on, it prints to stderr which app it used, its version and build, and a
 # warning when Spotlight knows more than one copy of that app, since the system then picks one.
 set -eu
 if [ -n "${IWORK_APP:-}" ]; then app="$IWORK_APP"
+elif [ -n "${IWORK_APP_DIR:-}" ]; then app="${IWORK_APP_DIR%/}/$1.app"
 elif [ -d "/Applications/$1 Creator Studio.app" ]; then app="$1 Creator Studio"
 else app="$1"; fi
 path=$(osascript -e "POSIX path of (path to application \"$app\")" 2>/dev/null || true)

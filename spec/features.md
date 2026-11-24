@@ -59,12 +59,12 @@ The builder stops when a feature cites an experiment that ran in an app its Apps
 
 ## Releases and producers
 
-The specification describes the format as Pages, Numbers and Keynote 15.4 for macOS write it, on macOS 26.5.2. Pages and Numbers 14.5, Keynote 14.5 and all three 16.0 apps have been checked against it and write the same format, with the differences listed on the [releases](releases.md) page. The releases each feature's evidence ran with are shown with its states.
+The specification describes the format as Pages, Numbers and Keynote 15.4 for macOS write it, on macOS 26.5.2. All three 13.1, 14.5 and 16.0 apps have been checked against it and write the same format, with the differences listed on the [releases](releases.md) page. The releases each feature's evidence ran with are shown with its states.
 
 | Producer or release | Scope | Why |
 | --- | --- | --- |
 | Pages, Numbers and Keynote 15.4 for macOS | Baseline | The release the specification describes, from [0001](../experiments/0001-empty-document.md) on |
-| The 14.5 and 16.0 apps for macOS | Checked | Write the same format ([0461](../experiments/0461-new-documents-in-14-5.md), [0466](../experiments/0466-keynote-14-5.md), [0469](../experiments/0469-the-16-0-apps.md)); every scripted sample was made again with them ([0473](../experiments/0473-every-scripted-sample-in-16-0.md), [0475](../experiments/0475-every-scripted-sample-in-14-5.md)) |
+| The 13.1, 14.5 and 16.0 apps for macOS | Checked | Write the same format ([0461](../experiments/0461-new-documents-in-14-5.md), [0466](../experiments/0466-keynote-14-5.md), [0469](../experiments/0469-the-16-0-apps.md)); every scripted sample was made again with them ([0473](../experiments/0473-every-scripted-sample-in-16-0.md), [0475](../experiments/0475-every-scripted-sample-in-14-5.md), [0477](../experiments/0477-every-scripted-sample-in-13-1.md)) |
 | Other releases of the macOS apps | Not tested | No copy has been run yet; [#23](https://github.com/alehel/iwork-format/issues/23) |
 | The iPhone and iPad apps, and iWork for iCloud in a browser | Not tested | They save documents in the same packages, which no experiment has checked yet; [#23](https://github.com/alehel/iwork-format/issues/23) |
 | Other applications that save iWork documents | Not tested | Their output may differ from the apps'; [#23](https://github.com/alehel/iwork-format/issues/23) |

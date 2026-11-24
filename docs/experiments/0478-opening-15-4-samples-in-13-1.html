@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0478: Opening the 15.4 samples in 13.1 · iWork file format specification</title>
+<meta name="description" content="iWork file format specification">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<a class="skip" href="#page-content">Skip to content</a>
+<header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><form class="search" action="../search.html" role="search"><input type="search" name="q" aria-label="Search the specification" placeholder="Search, e.g. 6001"></form><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
+<p class="wip"><strong>Work in progress.</strong> This specification is incomplete and changes as new experiments run. Each finding says how sure it is: <em>confirmed</em>, <em>likely</em> or <em>unknown</em>. See <a href="../spec/index.html">what each chapter covers so far</a>.</p>
+<div class="layout no-toc">
+<nav class="side" aria-label="Contents"><details open><summary>Contents</summary><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="../guides/anatomy.html">Reading a Pages document</a></li><li><a href="../guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="../guides/writing.html">Writing a document</a></li><li><a href="../guides/samples.html">Sample files</a></li><li class="group">Specification</li><li class="releases-line"><a href="../spec/releases.html">Describes 15.4 · also checked: 16.0, 14.5, 13.1</a></li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2. Text</a></li><li><a href="../spec/styles.html">3. Styles</a></li><li><a href="../spec/tables.html">4. Tables</a></li><li><a href="../spec/drawables.html">5. Drawables, media and charts</a></li><li class="group">Apps</li><li><a href="../spec/pages.html">Pages</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li class="group">Reference</li><li><a href="../search.html">Search</a></li><li><a href="../spec/types.html">Record types</a></li><li><a href="../spec/features.html">Features and scope</a></li><li><a href="../spec/releases.html">Releases</a></li><li class="group">Evidence</li><li><a href="index.html">All experiments</a></li><li><a href="topics.html">By topic</a></li></ul></details></nav>
+
+<main id="page-content" tabindex="-1">
+<h1 id="0478-opening-the-154-samples-in-131">0478: Opening the 15.4 samples in 13.1<a class="anchor" href="#0478-opening-the-154-samples-in-131" aria-label="Link to this section: 0478: Opening the 15.4 samples in 13.1">#</a></h1><p class="ran">App release: <span class="release">13.1</span></p>
+<p><strong>Status:</strong> run</p>
+<p>The 13.1 apps write nearly the same format as 15.4 (<a href="0477-every-scripted-sample-in-13-1.html">0477</a>). This experiment opens the 15.4 samples in 13.1, as <a href="0470-opening-15-4-samples-in-16-0.html">0470</a> did in 16.0 and <a href="0462-opening-15-4-documents-in-14-5.html">0462</a> and <a href="0467-opening-15-4-presentations-in-keynote-14-5.html">0467</a> in 14.5.</p>
+<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section: Setup">#</a></h2>
+<div class="table"><table><tbody><tr><th scope="row">Apps</th><td>Pages, Numbers and Keynote 13.1 (build <code>M13.1-7037.0.101-2</code>), in Norwegian, run from a read-only disk image</td></tr><tr><th scope="row">macOS</th><td>26.5.2 (25F84)</td></tr><tr><th scope="row">Date</th><td>2026-11-24</td></tr><tr><th scope="row">Input</th><td>The same 1,211 documents as 0470: every <code>.pages</code> and <code>.numbers</code> under <code>samples/0001</code> to <code>samples/0460</code> and every <code>.key</code> under <code>samples/NNNN/</code> and <code>samples/theme/NNNN/</code> but those 0470 left out, the password-protected ones among them</td></tr><tr><th scope="row">Scripts</th><td>[<code>recipes/0462-open-in-app.py</code>](../recipes/0462-open-in-app.py) and [<code>recipes/0467-open-keynote.py</code>](../recipes/0467-open-keynote.py), unchanged. [<code>recipes/0372-in-app.sh</code>](../recipes/0372-in-app.sh), which they use, now takes the folder of the apps from <code>IWORK_APP_DIR</code>, since it would otherwise choose the installed 16.0 apps</td></tr></tbody></table></div>
+<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section: Recipe">#</a></h2>
+<pre class="lang-bash"><code>export IWORK_APP_DIR=/Volumes/iwork-13-1
+for r in &quot;1 178&quot; &quot;181 393&quot; &quot;395 395&quot; &quot;397 423&quot; &quot;425 433&quot; &quot;435 450&quot; &quot;452 460&quot;; do
+  python3 -I recipes/0462-open-in-app.py samples $r
+done
+python3 -I recipes/0467-open-keynote.py samples 0379,0180,0466,0467,0468,0469,theme,release,resave,resaved
+python3 -I recipes/0467-open-keynote.py samples/theme 0379,0180,0472,0474</code></pre>
+<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section: Observation">#</a></h2>
+<div class="table"><table><thead><tr><th scope="col">Result</th><th scope="col">Documents</th></tr></thead><tbody><tr><td>Pages and Numbers: opened, and the body text agrees with the file (Pages) or the sheets and table were read (Numbers)</td><td>887</td></tr><tr><td>Pages: opened, and the body text differs from the file</td><td>1 (<code>0419/no-body.pages</code>)</td></tr><tr><td>Keynote: opened; slide count, titles and notes agree with the file</td><td>323 (244 under <code>samples/NNNN/</code>, 79 under <code>samples/theme/</code>)</td></tr><tr><td>Not opened</td><td>0</td></tr></tbody></table></div>
+<p>13.1 reports no body text for <code>0419/no-body.pages</code>, as every other release did (<a href="0470-opening-15-4-samples-in-16-0.html">0470</a>).</p>
+<p>Afterwards the samples were compared with checksums taken before: opening and closing unsaved left every file as it was.</p>
+<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section: Conclusion">#</a></h2>
+<p>The 13.1 apps open every document the 15.4 apps saved in these experiments, and every one written from this spec, and read the same text, tables, slides, titles and notes from them. The password-protected samples weren't tried in 13.1, since each needs its password typed by hand.</p>
+<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section: Confidence">#</a></h2>
+<p><em>Confirmed</em>: the 13.1 apps open 1,211 documents from 15.4 and from the spec's writer, and read what 15.4 read.</p>
+<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Source: <a href="https://github.com/alehel/iwork-format/blob/main/experiments/0478-opening-15-4-samples-in-13-1.md"><code>experiments/0478-opening-15-4-samples-in-13-1.md</code></a>.</p></footer>
+</main>
+</div>
+<script>
+// On narrow screens the contents and on-this-page lists start folded; on wide ones they stay open.
+(function () {
+  // From 48rem to 72rem the on-this-page list sits folded above the page instead of beside it.
+  var narrow = window.matchMedia("(max-width: 48rem)");
+  var middle = window.matchMedia("(max-width: 72rem)");
+  var side = document.querySelector(".side > details"), toc = document.querySelector(".toc > details");
+  var tocSummary = document.querySelector(".toc summary");
+  function fit() {
+    if (side) side.open = !narrow.matches;
+    if (toc) toc.open = !middle.matches;
+    // On wide screens the list can't fold, so its heading isn't a control.
+    if (tocSummary) { if (middle.matches) tocSummary.removeAttribute("tabindex"); else tocSummary.tabIndex = -1; }
+    scrollers();
+  }
+  // A table or code block wider than the page scrolls sideways; make it reachable by keyboard, with a name.
+  function scrollers() {
+    var boxes = document.querySelectorAll("main .table, main pre");
+    for (var i = 0; i < boxes.length; i++) {
+      var b = boxes[i];
+      if (b.scrollWidth > b.clientWidth + 1) {
+        b.tabIndex = 0; b.setAttribute("role", "region");
+        b.setAttribute("aria-label", (b.tagName === "PRE" ? "Code" : "Table") + ", scrolls sideways");
+      } else if (b.hasAttribute("role")) {
+        b.removeAttribute("tabindex"); b.removeAttribute("role"); b.removeAttribute("aria-label");
+      }
+    }
+  }
+  window.addEventListener("resize", scrollers);
+  fit();
+  if (narrow.addEventListener) { narrow.addEventListener("change", fit); middle.addEventListener("change", fit); }
+  // The release dropdown closes when you click anywhere else.
+  document.addEventListener("click", function (e) {
+    var release = document.querySelector(".side .release[open]");
+    if (release && !release.contains(e.target)) release.open = false;
+  });
+  document.addEventListener("keydown", function (e) {
+    var release = document.querySelector(".side .release[open]");
+    if (release && e.key === "Escape") { release.open = false; release.querySelector("summary").focus(); }
+  });
+  document.addEventListener("click", function (e) {
+    if (middle.matches && e.target.closest && e.target.closest(".toc a")) fit();
+  });
+})();
+</script>
+</body>
+</html>

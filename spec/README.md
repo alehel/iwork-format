@@ -15,7 +15,7 @@ Chapter 1 is confirmed for Keynote and Numbers 15.4 too ([0024](../experiments/0
 
 ## App releases
 
-The spec describes the format as the 15.4 apps write it. Pages, Numbers and Keynote 14.5 and 16.0 write the same format, with a few differences; [releases.md](releases.md) lists the releases checked, how to tell which one saved a document, and every difference.
+The spec describes the format as the 15.4 apps write it. Pages, Numbers and Keynote 13.1, 14.5 and 16.0 write the same format, with a few differences; [releases.md](releases.md) lists the releases checked, how to tell which one saved a document, and every difference.
 
 ## Features and scope
 
@@ -34,4 +34,4 @@ Some earlier statements in the spec and guides said more than their experiments 
 | A paragraph's base direction doesn't come from its text; left-to-right shown for one style only, and how an app-set right-to-left paragraph is stored is unknown ([text.md](text.md#positions-in-the-text)) | Shown for the left-aligned Body style ([0441](../experiments/0441-writing-right-to-left-text.md)) | Not tested | Not tested |
 | Every write so far changes a document an app saved; making one without a saved document to start from is not yet shown ([writing guide](../site/guides/writing.md)) | Not shown | Not shown | Not shown |
 | Cells and formulas are stored the same way in all three apps; merges and header counts only shown for Pages and Numbers ([tables.md](tables.md)) | Shown ([0131](../experiments/0131-pages-table-cells.md), [0133](../experiments/0133-pages-merge.md), [0136](../experiments/0136-pages-header-rows.md)) | Shown ([0021](../experiments/0021-table-cells.md), [0026](../experiments/0026-numbers-cells.md)) | Cells and formulas shown ([0134](../experiments/0134-keynote-table-cells.md), [0135](../experiments/0135-keynote-table-formula.md)); merges and header counts not tested |
-| Slide nodes get field 20 on some presentations when saved again, not on all ([keynote.md](keynote.md)) | Doesn't apply | Doesn't apply | Shown in 14.5 and 16.0 ([0476](../experiments/0476-resaving-every-sample.md)) |
+| Slide nodes get field 20 on some presentations when saved again, not on all ([keynote.md](keynote.md)) | Doesn't apply | Doesn't apply | Shown in 13.1, 14.5 and 16.0 ([0476](../experiments/0476-resaving-every-sample.md), [0480](../experiments/0480-resaving-every-sample-in-13-1.md)) |

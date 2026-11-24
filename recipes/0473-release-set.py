@@ -124,6 +124,11 @@ BY_RELEASE = {
              "props": {"hasExternalReferenceOrMissingData", "hasUnmaterializedRemoteData",
                        "hasExternalReferenceOrMissingOrUnmaterializedRemoteData"},
              "types": {("Index/CalculationEngine", 4011)}},
+    # 0477: neither flag, no type-4011 record, no fields 4008.16, 6001.93 and 4.32, the language of
+    # scripted text kept (2001.19), and Pages' view state using field 29 where 15.4 uses 47.
+    "13.1": {"fields": {(4000, 15), (4008, 16), (6001, 93), (4, 32), (2001, 19), (10133, 29), (10133, 47)},
+             "props": {"hasExternalReferenceOrMissingData", "hasUnmaterializedRemoteData"},
+             "types": {("Index/CalculationEngine", 4011)}},
 }
 THUMB = re.compile(r"^Data/(mt|st)-[0-9A-F-]{36}-\d+\.\w+$")
 

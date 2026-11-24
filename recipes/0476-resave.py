@@ -1,6 +1,6 @@
 """Experiment 0476: open every sample in the installed apps and save a copy, then compare the copies.
 
-Usage: python3 -I recipes/0476-resave.py RELEASE [--compare | --pair OTHER] [--only NNNN,NNNN] [--skip NNNN,NNNN] [--limit N]
+Usage: python3 -I recipes/0476-resave.py RELEASE [--compare | --pair OTHER] [--only NNNN,NNNN] [--skip NNNN,NNNN] [--apps APP,APP] [--limit N]
 
 Opens each .pages, .numbers and .key directly under samples/NNNN/ (experiments 0001 to 0460) and
 samples/theme/NNNN/, one at a time, with recipes/0372-in-app.sh, saves it with AppleScript's
@@ -9,7 +9,7 @@ whole document out again from what it read, so the copy shows how the installed 
 every feature in the sample, including those made by hand in the app. Left out: experiments 0179
 and 0180, whose password prompt would hold the run up, and those whose files were written to make
 an app fail (0379, 0394, 0396, 0424, 0434, 0451). A sample already copied is skipped, so a run can
-be resumed. Prints OK or FAILED per document and a total. RELEASE only names the folder.
+be resumed. --apps (from experiment 0480 on) keeps to some of Pages, Numbers and Keynote. Prints OK or FAILED per document and a total. RELEASE only names the folder.
 
 With --compare, compares each copy with its original using --compare of
 recipes/0473-release-set.py, which knows what every document of RELEASE differs in. With --pair
@@ -118,9 +118,10 @@ def main(argv):
     only = set(rest[rest.index("--only") + 1].split(",")) if "--only" in rest else None
     limit = int(rest[rest.index("--limit") + 1]) if "--limit" in rest else None
     skip = set(rest[rest.index("--skip") + 1].split(",")) if "--skip" in rest else set()
+    apps = set(rest[rest.index("--apps") + 1].split(",")) if "--apps" in rest else set(APPS.values())
     counts = {"OK": 0, "FAILED": 0, "SKIPPED": 0}
     failed_in_a_row = 0
-    for rel in samples(only, skip)[:limit]:
+    for rel in [r for r in samples(only, skip) if APPS[os.path.splitext(r)[1]] in apps][:limit]:
         src, out = os.path.join(ROOT, "samples", rel), os.path.join(base, rel)
         if os.path.exists(out):
             counts["SKIPPED"] += 1

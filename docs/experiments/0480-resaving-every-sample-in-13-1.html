@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0480: Resaving every sample in 13.1 · iWork file format specification</title>
+<meta name="description" content="iWork file format specification">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<a class="skip" href="#page-content">Skip to content</a>
+<header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><form class="search" action="../search.html" role="search"><input type="search" name="q" aria-label="Search the specification" placeholder="Search, e.g. 6001"></form><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
+<p class="wip"><strong>Work in progress.</strong> This specification is incomplete and changes as new experiments run. Each finding says how sure it is: <em>confirmed</em>, <em>likely</em> or <em>unknown</em>. See <a href="../spec/index.html">what each chapter covers so far</a>.</p>
+<div class="layout no-toc">
+<nav class="side" aria-label="Contents"><details open><summary>Contents</summary><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="../guides/anatomy.html">Reading a Pages document</a></li><li><a href="../guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="../guides/writing.html">Writing a document</a></li><li><a href="../guides/samples.html">Sample files</a></li><li class="group">Specification</li><li class="releases-line"><a href="../spec/releases.html">Describes 15.4 · also checked: 16.0, 14.5, 13.1</a></li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2. Text</a></li><li><a href="../spec/styles.html">3. Styles</a></li><li><a href="../spec/tables.html">4. Tables</a></li><li><a href="../spec/drawables.html">5. Drawables, media and charts</a></li><li class="group">Apps</li><li><a href="../spec/pages.html">Pages</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li class="group">Reference</li><li><a href="../search.html">Search</a></li><li><a href="../spec/types.html">Record types</a></li><li><a href="../spec/features.html">Features and scope</a></li><li><a href="../spec/releases.html">Releases</a></li><li class="group">Evidence</li><li><a href="index.html">All experiments</a></li><li><a href="topics.html">By topic</a></li></ul></details></nav>
+
+<main id="page-content" tabindex="-1">
+<h1 id="0480-resaving-every-sample-in-131">0480: Resaving every sample in 13.1<a class="anchor" href="#0480-resaving-every-sample-in-131" aria-label="Link to this section: 0480: Resaving every sample in 13.1">#</a></h1><p class="ran">App release: <span class="release">13.1</span></p>
+<p><strong>Status:</strong> run</p>
+<p><a href="0476-resaving-every-sample.html">0476</a> opened every 15.4 sample in 16.0 and 14.5 and saved a copy, to see how each release writes every feature in the samples, those made by hand included. This experiment does the same in 13.1.</p>
+<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section: Setup">#</a></h2>
+<div class="table"><table><tbody><tr><th scope="row">Apps</th><td>Pages, Numbers and Keynote 13.1 (build <code>M13.1-7037.0.101-2</code>), in Norwegian, run from a read-only disk image</td></tr><tr><th scope="row">macOS</th><td>26.5.2 (25F84)</td></tr><tr><th scope="row">Date</th><td>2026-11-24</td></tr><tr><th scope="row">Input</th><td>The same 1,211 documents as 0476</td></tr><tr><th scope="row">Script</th><td>[<code>recipes/0476-resave.py</code>](../recipes/0476-resave.py), which now also takes <code>--apps</code> to keep to some of the apps</td></tr></tbody></table></div>
+<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section: Recipe">#</a></h2>
+<pre class="lang-bash"><code>export IWORK_APP_DIR=/Volumes/iwork-13-1
+python3 -I recipes/0476-resave.py 13.1
+python3 -I recipes/0476-resave.py 13.1 --apps Numbers,Keynote
+python3 -I recipes/0476-resave.py 13.1 --apps Pages --skip 0262,0273,0274,0336
+python3 -I recipes/0476-resave.py 13.1 --compare
+python3 -I recipes/0476-resave.py 13.1 --pair 16.0</code></pre>
+<p>The run wasn't done in one go. Pages stopped at 0262's document, with 13.1's warning that the document was made in a newer version (<a href="0479-drawing-15-4-samples-in-13-1.html">0479</a>), and the next nine documents couldn't be opened until the window was dismissed. The Numbers and Keynote documents were saved meanwhile, then the rest of Pages' without 0262, 0273, 0274 and 0336, and the nine documents of those four experiments by hand, <code>save d in</code> each, after the warning was clicked through. Checksums of every sample taken before the runs still matched.</p>
+<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section: Observation">#</a></h2>
+<p>All 1,211 samples were saved by 13.1.</p>
+<p><strong>13.1 against 16.0.</strong> With what is already known to differ between the two set aside, 994 of the 1,211 pairs are the same, and 217 differ. 172 of the 217 differ only in the view state (<code>ViewState.iwa</code>: fewer records of types 2002, 3061, 3062 and 6030, and no field 7 on type 10132, which show what was selected), which a reader can ignore. The other 45:</p>
+<div class="table"><table><thead><tr><th scope="col">What differs in 13.1's copy</th><th scope="col">Documents</th></tr></thead><tbody><tr><td>A type-4010 record in the calculation engine, one more than 16.0's</td><td>13 spreadsheets from 0226, 0227, 0279, 0410 and 0411, with categories and pivot tables</td></tr><tr><td>No field 10 on date fields (type 2034), which 15.4's copies, 14.5's and 16.0's keep as 0</td><td>12 Pages documents</td></tr><tr><td>Fields 7 and 13 of the engine's root (type 4000) and 4, 5 and 9 of formula owners (type 4008), which 16.0's copies lack</td><td>11 spreadsheets, eight from <a href="0409-writing-a-numbers-chart-link.html">0409</a>, and 0030, 0063 and 0225</td></tr><tr><td>A record or two more: type 3047 in <code>Document.iwa</code>, or types 8 and 153 (a build and its stage) on a slide whose build list the writer took out</td><td>2 Pages documents, 2 presentations</td></tr><tr><td>Field 5 of the engine's root, where 16.0's copy has field 15 instead: the two copies 16.0 made differently from 14.5's in 0476, and like it when saved once more</td><td>1 spreadsheet (<code>0248/SMALL.numbers</code>), 1 presentation (<code>theme/0195/line_3d-row.key</code>)</td></tr><tr><td>No field 14 on drawables (type 6000)</td><td>2 Pages documents</td></tr><tr><td>Field 1 of the comment author storage (type 213), which the original has too and 16.0 and 14.5 drop</td><td>1 Pages document (<code>0193/empty-comment.pages</code>)</td></tr></tbody></table></div>
+<p>Field 10 of date fields, <em>unknown</em> in <a href="0475-every-scripted-sample-in-14-5.html">0475</a>, is therefore not just from a template: 13.1 drops it from documents that have it, and 14.5 and 16.0 keep it.</p>
+<p><strong>13.1 against the 15.4 originals.</strong> 877 copies are the same as their originals but for 13.1's known differences, 329 differ, and 5 folder packages weren't compared. In the calculation engine and slide nodes they are the changes 0476 found saving makes in every release, the slide nodes' field 20 (92 presentations) among them.</p>
+<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section: Conclusion">#</a></h2>
+<p>13.1 writes the features in all 1,211 samples as 16.0 does, hand-made ones included, apart from its view state and 45 documents' few fields and records above. What it leaves out is what 13.1 doesn't know, and those are fields a reader doesn't need.</p>
+<p>Saving through an older release loses what that release doesn't know: the date fields' field 10 and the drawables' field 14 are gone from 13.1's copies.</p>
+<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section: Confidence">#</a></h2>
+<p><em>Confirmed</em>: 13.1 saves all 1,211 samples, and 994 of its copies have the same structure as 16.0's but for what is known to differ. <em>Likely</em>: fields absent from its copies and present in the others' are ones 13.1 doesn't know.</p>
+<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Source: <a href="https://github.com/alehel/iwork-format/blob/main/experiments/0480-resaving-every-sample-in-13-1.md"><code>experiments/0480-resaving-every-sample-in-13-1.md</code></a>.</p></footer>
+</main>
+</div>
+<script>
+// On narrow screens the contents and on-this-page lists start folded; on wide ones they stay open.
+(function () {
+  // From 48rem to 72rem the on-this-page list sits folded above the page instead of beside it.
+  var narrow = window.matchMedia("(max-width: 48rem)");
+  var middle = window.matchMedia("(max-width: 72rem)");
+  var side = document.querySelector(".side > details"), toc = document.querySelector(".toc > details");
+  var tocSummary = document.querySelector(".toc summary");
+  function fit() {
+    if (side) side.open = !narrow.matches;
+    if (toc) toc.open = !middle.matches;
+    // On wide screens the list can't fold, so its heading isn't a control.
+    if (tocSummary) { if (middle.matches) tocSummary.removeAttribute("tabindex"); else tocSummary.tabIndex = -1; }
+    scrollers();
+  }
+  // A table or code block wider than the page scrolls sideways; make it reachable by keyboard, with a name.
+  function scrollers() {
+    var boxes = document.querySelectorAll("main .table, main pre");
+    for (var i = 0; i < boxes.length; i++) {
+      var b = boxes[i];
+      if (b.scrollWidth > b.clientWidth + 1) {
+        b.tabIndex = 0; b.setAttribute("role", "region");
+        b.setAttribute("aria-label", (b.tagName === "PRE" ? "Code" : "Table") + ", scrolls sideways");
+      } else if (b.hasAttribute("role")) {
+        b.removeAttribute("tabindex"); b.removeAttribute("role"); b.removeAttribute("aria-label");
+      }
+    }
+  }
+  window.addEventListener("resize", scrollers);
+  fit();
+  if (narrow.addEventListener) { narrow.addEventListener("change", fit); middle.addEventListener("change", fit); }
+  // The release dropdown closes when you click anywhere else.
+  document.addEventListener("click", function (e) {
+    var release = document.querySelector(".side .release[open]");
+    if (release && !release.contains(e.target)) release.open = false;
+  });
+  document.addEventListener("keydown", function (e) {
+    var release = document.querySelector(".side .release[open]");
+    if (release && e.key === "Escape") { release.open = false; release.querySelector("summary").focus(); }
+  });
+  document.addEventListener("click", function (e) {
+    if (middle.matches && e.target.closest && e.target.closest(".toc a")) fit();
+  });
+})();
+</script>
+</body>
+</html>
