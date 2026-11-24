@@ -46,12 +46,33 @@ No alert was shown. Every reading went through "Keynote Creator Studio" and so o
 
 Afterwards, every sample's build history still names the release its experiment names, apart from `0467/resaved.key`, which 14.5 saved over 15.4 on purpose in 0467. Opening and closing unsaved left the files as they were.
 
+### The password-protected samples
+
+A second, attended run opened the nine documents of experiments 0179 and 0180 left out above. The two without a password were read with [`recipes/0372-in-app.sh`](../recipes/0372-in-app.sh) as above. The seven with one were opened with `open -a`, their test passwords (`pw1234`, and `påss` for `accent.pages`) were typed into 16.0's prompts by hand, not saved in the keychain, and the same script then read the open documents:
+
+```bash
+for f in 0179/locked.pages 0179/locked2.pages 0180/accent.pages 0180/image.pages; do
+  open -a "Pages Creator Studio" "$PWD/samples/$f"
+done
+open -a "Numbers Creator Studio" "$PWD/samples/0180/locked.numbers"
+open -a "Keynote Creator Studio" "$PWD/samples/0180/locked.key" "$PWD/samples/theme/0180/locked.key"
+```
+
+| Document | 16.0 reads | The file holds (`iwork-probe --password`) |
+| --- | --- | --- |
+| `0179/plain.pages`, `0179/unlocked.pages` (no password) | body `one` | `one` |
+| `0179/locked.pages`, `0179/locked2.pages`, `0180/accent.pages`, `0180/image.pages` | body `one` | `one` |
+| `0180/locked.numbers` | 1 sheet, first table `Tabell 1` | one sheet, and the name `Tabell 1` |
+| `0180/locked.key`, `theme/0180/locked.key` | 1 slide, no title text | one slide part |
+
+Every prompt took its password, and the documents were closed unsaved; their files' modification dates are unchanged.
+
 [0467](0467-opening-15-4-presentations-in-keynote-14-5.md) gave 486 slides for the same 323 presentations, but each presentation's count agreed with the slide nodes its file lists, in that run and in this one, so the totals should be the same. 347 and 137 slides in the two folders add up to 484. The earlier figure can't be checked again, since 14.5 isn't installed.
 
 ## Conclusion
 
-The 16.0 apps open every document the 15.4 apps saved in these experiments, and every one written from this spec, and read the same text, tables, slides, titles and notes from them as 15.4 did. Unlike 14.5, Keynote 16.0 knows the radial wipe. Whether 16.0 also draws the samples the same is the next experiment's question.
+The 16.0 apps open every document the 15.4 apps saved in these experiments, the password-protected ones included, and every one written from this spec, and read the same text, tables, slides, titles and notes from them as 15.4 did. Unlike 14.5, Keynote 16.0 knows the radial wipe. Whether 16.0 also draws the samples the same is the next experiment's question.
 
 ## Confidence
 
-*Confirmed*: the 16.0 apps open 1,211 documents from 15.4 and from the spec's writer, and read what 15.4 read. *Unknown*: whether they open the password-protected samples, which this run left out.
+*Confirmed*: the 16.0 apps open 1,211 documents from 15.4 and from the spec's writer, and read what 15.4 read; and, with the passwords typed by hand, the nine documents of 0179 and 0180, protected or not.

@@ -34,6 +34,8 @@ Every recipe ran, 0196 with its radial wipe. In all 16 pairs: the same parts, th
 | `ViewState.iwa`, types 3 and 23 | | type 3 field 43 and type 23 field 13, as in 0469 |
 | Master thumbnails `Data/mt-UUID-N.jpg` | 16 | 16, with other UUIDs and data IDs; in 0024's pair, 4 of the 16 images are byte for byte the same as one of 15.4's, and the other 12 differ |
 
+The build history differs from 0469's too: a presentation made from the test theme keeps the theme's own history, `Template: 21_BasicWhite (dev/15.4)` and `M15.4-7051.0.79-2`, since 15.4 saved the theme, and 16.0 adds its build after them. Its last build, `M16.0-7052.0.68-2`, is the release that saved it; [`recipes/0465-saved-by.py`](../recipes/0465-saved-by.py) reports these presentations as saved by more than one release.
+
 So the test theme gives the same structure in 16.0 as Basic White does ([0469](0469-the-16-0-apps.md)), and the same as it gave in 15.4.
 
 The fixtures builder keeps all 16: their `Data/` holds only the test cards and Keynote's thumbnails of them, and no part holds a personal name.
