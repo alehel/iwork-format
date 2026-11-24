@@ -12,3 +12,5 @@ osascript recipes/0291-test-theme.applescript "$PWD/theme/cards" "$PWD/samples/0
 ```
 
 Then use every master on a slide, save, and choose File → Save Theme in Keynote.
+
+On the Mac the experiments run on, Keynote lists it as `iwork-format test v2`, and the recipes use that name. It also lists a first version, with cards at full size, as `iwork-format test`; a presentation from that one is about 2.5 MB instead of 0.9 MB ([0473](../experiments/0473-every-scripted-sample-in-16-0.md)).

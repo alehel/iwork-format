@@ -6,11 +6,11 @@
 # Usage: bash recipes/0472-keynote-test-theme-rerun.sh [OUT]
 #
 # OUT defaults to samples/theme/0472. Run from the repository root. The theme must be installed in
-# Keynote as "iwork-format test" (theme/README.md). Each pair is compared with
+# Keynote as "iwork-format test v2" (theme/README.md). Each pair is compared with
 # recipes/0461-compare-structure.py; UUIDs, the build history, the format version and record counts
 # that agree are left out of what it prints.
 set -u
-export IWORK_KEYNOTE_THEME='iwork-format test'
+export IWORK_KEYNOTE_THEME='iwork-format test v2'  # the theme in theme/; see recipes/0473-release-set.py
 out=${1:-samples/theme/0472}
 # 0197 and 0243 save into a folder; their files are moved up as 0197-default.key and so on
 # afterwards, since fixtures/build.py reads only files directly under samples/theme/NNNN/.

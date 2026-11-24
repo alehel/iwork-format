@@ -11,7 +11,7 @@ The release experiments so far reran a few dozen recipes in each new release ([0
 | Apps | Pages, Numbers and Keynote 16.0 (build `M16.0-7052.0.68-2`), in Norwegian |
 | macOS | 26.5.2 (25F84) |
 | Date | 2026-11-24 |
-| Theme | Keynote: `iwork-format test` ([0291](0291-test-theme.md)), so the presentations can be published |
+| Theme | Keynote: `iwork-format test v2` ([0291](0291-test-theme.md)), the theme as it is in `theme/`, so the presentations can be published |
 | Script | The new [`recipes/0473-release-set.py`](../recipes/0473-release-set.py) |
 | Compared with | Each document's namesake from 15.4 under `samples/`, or for Keynote the test-theme one under `samples/theme/` when there is one |
 
@@ -40,6 +40,10 @@ Two fixes came out of the first run. A path with a space in it, 0144's `rød bil
 The Recipe sections of 0104, 0106 and 0109 to 0112 named their documents differently from the files the experiments kept, such as `nested-functions.numbers` for `nested.numbers`. They now name the files as kept.
 
 ## Observation
+
+**Correction, the same day:** the Keynote presentations were first made with the theme Keynote lists as `iwork-format test`, which turned out to be [0291](0291-test-theme.md)'s first version, with full-size cards (2.5 MB per presentation). The 74 presentations, those of the 62 experiments that make one, were made again with `iwork-format test v2`, the theme as it is in `theme/`, whose cards match the 15.4 samples' byte for byte (0.9 MB). What follows is from the second run.
+
+The script now uses `iwork-format test v2` unless `IWORK_KEYNOTE_THEME` says otherwise, also where a recipe line names the theme itself (0295 to 0297).
 
 190 commands from 172 experiments, all run without an error, made 319 documents in 16.0 (323, before the four hand-changed ones were removed).
 

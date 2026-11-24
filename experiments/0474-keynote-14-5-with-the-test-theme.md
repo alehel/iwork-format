@@ -11,7 +11,7 @@ Keynote 14.5's presentations in [0466](0466-keynote-14-5.md) were made with Basi
 | Keynote | 14.5 (build `M14.5-7045.0.17-4`), in Norwegian, run from a read-only disk image (`/Volumes/iwork-14-5/Keynote.app`) while Keynote 16.0 stayed installed but wasn't running |
 | macOS | 26.5.2 (25F84) |
 | Date | 2026-11-24 |
-| Theme | `iwork-format test` ([0291](0291-test-theme.md)), which 14.5 lists among its themes |
+| Theme | `iwork-format test v2` ([0291](0291-test-theme.md)), the theme as it is in `theme/`, which 14.5 lists among its themes |
 | Recipes | The 14 Keynote recipes of 0466, through [`recipes/0472-keynote-test-theme-rerun.sh`](../recipes/0472-keynote-test-theme-rerun.sh); 0196 without radial wipe, as in 0466 |
 | Compared with | Each recipe's test-theme presentation from 15.4, under `samples/theme/` ([0292](0292-test-theme-reruns.md)) |
 
@@ -24,13 +24,15 @@ open -a /Volumes/iwork-14-5/Keynote.app
 osascript -e 'tell application "Keynote" to get version'     # 14.5
 bash recipes/0472-keynote-test-theme-rerun.sh samples/theme/0474
 sed -e 's/, radial wipe}/}/' -e 's/, "radial wipe"}/}/' recipes/0196-keynote-all-transitions.applescript > /tmp/0196.applescript
-IWORK_KEYNOTE_THEME='iwork-format test' osascript /tmp/0196.applescript "$PWD/samples/theme/0474/0196-all.key"
+IWORK_KEYNOTE_THEME='iwork-format test v2' osascript /tmp/0196.applescript "$PWD/samples/theme/0474/0196-all.key"
 python3 -I recipes/0461-compare-structure.py samples/theme/0196/all.key samples/theme/0474/0196-all.key
 ```
 
 With 14.5 running, AppleScript's `tell application "Keynote"`, as the recipes say it, reached 14.5, not the installed 16.0 ("Keynote Creator Studio", the same bundle ID). Every presentation's build history ends with `M14.5-7045.0.17-4`, after the theme's own `M15.4-7051.0.79-2`, as in 0472.
 
 ## Observation
+
+**Correction, the same day:** the presentations were first made with the theme Keynote lists as `iwork-format test`, which turned out to be [0291](0291-test-theme.md)'s first version, with full-size cards (2.5 MB per presentation). They were all made again with `iwork-format test v2`, the theme as it is in `theme/`, whose cards match the 15.4 samples' byte for byte (0.9 MB). What follows is from the second run.
 
 Every recipe ran but 0196, whose script doesn't compile in 14.5 because of `radial wipe`; without that effect it made 37 slides instead of 38.
 
@@ -41,8 +43,9 @@ In all 16 pairs, the differences from 15.4 are those 0466 found between 14.5 and
 | `Properties.plist` | the two flags | the one combined flag |
 | `CalculationEngine.iwa` | the empty type-4011 record, named by type 4000's field 15 | neither |
 | Slide nodes (type 4) | field 32 | no field 32 |
-| Master thumbnails | 16 | 16, with other UUIDs |
 | `0196-all.key` | 38 slides | 37: no radial wipe slide |
+
+The master thumbnails are the same files as 15.4's, names and bytes, since they come with the theme.
 
 Two of 0466's differences don't appear: 14.5 has the same paragraph styles as 15.4 here, without the unnamed 56-point *Liten infotekst* variation, and it doesn't store `blankMoviePosterImage` in the package. Both come with 14.5's own Basic White template; the test theme, made from 15.4's Basic White, brings 15.4's styles and resources with it.
 

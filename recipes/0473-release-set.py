@@ -7,7 +7,8 @@ Collects, from the Recipe section of every experiment before 0461 (the release e
 of a document that a recipe then opens (taking the release's own copy of it), and runs
 them in experiment order with every document or folder path under `samples/NNNN/` moved to
 `samples/release/RELEASE/NNNN/`. Input media (images, sound, movies) are still read from samples/.
-Keynote presentations are made with the project's test theme (IWORK_KEYNOTE_THEME), so they can be
+Keynote presentations are made with the project's test theme (IWORK_KEYNOTE_THEME, by default THEME),
+also where a recipe line names one itself, so they can be
 published. Commands that don't save into samples/ (those that act on a document already open in the
 app), and the experiment that builds the test theme (0291), are left out, and so are documents that
 were changed by hand after their recipe (HAND_EDITED).
@@ -32,6 +33,9 @@ import sys
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 FIRST_RELEASE_EXPERIMENT = 461
 SKIP = {"0291": "builds the test theme itself"}
+# The test theme as it is in theme/, with cards at most 1024 pixels (0291). Keynote may also list the
+# first, full-size version as "iwork-format test", which makes presentations 2.5 MB rather than 0.9 MB.
+THEME = "iwork-format test v2"
 # Documents a recipe makes that were then changed by hand in the app and saved under the same name:
 # a rerun can only make the unchanged document, so it is removed again.
 HAND_EDITED = {"0146/package.key", "0147/package.numbers",  # changed to a folder package in the app
@@ -207,12 +211,14 @@ def main(argv):
             print(f"# {exp}\n{cmd}")
         print(f"# {len(cmds)} commands from {len({e for e, _ in cmds})} experiments")
         return
-    env = dict(os.environ, IWORK_KEYNOTE_THEME=os.environ.get("IWORK_KEYNOTE_THEME", "iwork-format test"))
+    theme = os.environ.get("IWORK_KEYNOTE_THEME", THEME)
+    env = dict(os.environ, IWORK_KEYNOTE_THEME=theme)
     made, counts = set(), {"OK": 0, "FAILED": 0}
     for exp, cmd in cmds:
         if exp not in made:
             os.makedirs(os.path.join(ROOT, "samples", "release", release, exp), exist_ok=True)
             made.add(exp)
+        cmd = re.sub(r"IWORK_KEYNOTE_THEME='[^']*'", f"IWORK_KEYNOTE_THEME='{theme}'", cmd)  # 0295-0297 set it inline
         try:
             r = subprocess.run(["bash", "-c", cmd], cwd=ROOT, env=env, capture_output=True, text=True, timeout=300)
             ok, why = r.returncode == 0, (r.stderr.strip() or r.stdout.strip())
