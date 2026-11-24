@@ -1,0 +1,7516 @@
+{
+ "producer": "Apple Pages, Numbers and Keynote for macOS",
+ "states": [
+  "shown",
+  "not tested",
+  "not applicable",
+  "not checked"
+ ],
+ "capabilities": [
+  "read",
+  "edit",
+  "create",
+  "render",
+  "calculate",
+  "play"
+ ],
+ "features": [
+  {
+   "id": "container.package",
+   "feature": "Packages: ZIP and folder forms, their parts and file names",
+   "owner": 3,
+   "owner_url": "https://github.com/alehel/iwork-format/issues/3",
+   "spec": "spec/container.html#the-package",
+   "page": "spec/features.html#feature-container-package",
+   "formats": {
+    "Pages": {
+     "applies": "yes",
+     "releases": [
+      "15.4"
+     ],
+     "capabilities": {
+      "read": {
+       "state": "shown",
+       "evidence": [
+        "0076",
+        "0144"
+       ]
+      },
+      "edit": {
+       "state": "shown",
+       "evidence": [
+        "0394",
+        "0431",
+        "0432",
+        "0434",
+        "0438"
+       ]
+      },
+      "create": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "render": {
+       "state": "not tested",
+       "evidence": []
+      }
+     }
+    },
+    "Numbers": {
+     "applies": "yes",
+     "releases": [
+      "15.4"
+     ],
+     "capabilities": {
+      "read": {
+       "state": "shown",
+       "evidence": [
+        "0147"
+       ]
+      },
+      "edit": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "create": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "render": {
+       "state": "not tested",
+       "evidence": []
+      }
+     }
+    },
+    "Keynote": {
+     "applies": "yes",
+     "releases": [
+      "15.4"
+     ],
+     "capabilities": {
+      "read": {
+       "state": "shown",
+       "evidence": [
+        "0146"
+       ]
+      },
+      "edit": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "create": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "render": {
+       "state": "not tested",
+       "evidence": []
+      }
+     }
+    }
+   },
+   "experiments": [
+    "0076",
+    "0144",
+    "0146",
+    "0147",
+    "0394",
+    "0431",
+    "0432",
+    "0434",
+    "0438"
+   ]
+  },
+  {
+   "id": "container.chunks",
+   "feature": "Chunks, records and their payloads",
+   "owner": 3,
+   "owner_url": "https://github.com/alehel/iwork-format/issues/3",
+   "spec": "spec/container.html#chunks",
+   "page": "spec/features.html#feature-container-chunks",
+   "formats": {
+    "Pages": {
+     "applies": "yes",
+     "releases": [
+      "15.4"
+     ],
+     "capabilities": {
+      "read": {
+       "state": "shown",
+       "evidence": [
+        "0141"
+       ]
+      },
+      "edit": {
+       "state": "shown",
+       "evidence": [
+        "0396",
+        "0398",
+        "0433"
+       ]
+      },
+      "create": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "render": {
+       "state": "not tested",
+       "evidence": []
+      }
+     }
+    },
+    "Numbers": {
+     "applies": "yes",
+     "releases": [
+      "15.4"
+     ],
+     "capabilities": {
+      "read": {
+       "state": "shown",
+       "evidence": [
+        "0024"
+       ]
+      },
+      "edit": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "create": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "render": {
+       "state": "not tested",
+       "evidence": []
+      }
+     }
+    },
+    "Keynote": {
+     "applies": "yes",
+     "releases": [
+      "15.4"
+     ],
+     "capabilities": {
+      "read": {
+       "state": "shown",
+       "evidence": [
+        "0024"
+       ]
+      },
+      "edit": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "create": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "render": {
+       "state": "not tested",
+       "evidence": []
+      }
+     }
+    }
+   },
+   "experiments": [
+    "0024",
+    "0141",
+    "0396",
+    "0398",
+    "0433"
+   ]
+  },
+  {
+   "id": "container.references",
+   "feature": "Object references and the roots of each kind of document",
+   "owner": 3,
+   "owner_url": "https://github.com/alehel/iwork-format/issues/3",
+   "spec": "spec/container.html#following-references",
+   "page": "spec/features.html#feature-container-references",
+   "formats": {
+    "Pages": {
+     "applies": "yes",
+     "releases": [
+      "15.4"
+     ],
+     "capabilities": {
+      "read": {
+       "state": "shown",
+       "evidence": [
+        "0022",
+        "0027",
+        "0029"
+       ]
+      },
+      "edit": {
+       "state": "shown",
+       "evidence": [
+        "0397"
+       ]
+      },
+      "create": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "render": {
+       "state": "not tested",
+       "evidence": []
+      }
+     }
+    },
+    "Numbers": {
+     "applies": "yes",
+     "releases": [
+      "15.4"
+     ],
+     "capabilities": {
+      "read": {
+       "state": "shown",
+       "evidence": [
+        "0027",
+        "0029"
+       ]
+      },
+      "edit": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "create": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "render": {
+       "state": "not tested",
+       "evidence": []
+      }
+     }
+    },
+    "Keynote": {
+     "applies": "yes",
+     "releases": [
+      "15.4"
+     ],
+     "capabilities": {
+      "read": {
+       "state": "shown",
+       "evidence": [
+        "0027"
+       ]
+      },
+      "edit": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "create": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "render": {
+       "state": "not tested",
+       "evidence": []
+      }
+     }
+    }
+   },
+   "experiments": [
+    "0022",
+    "0027",
+    "0029",
+    "0397"
+   ]
+  },
+  {
+   "id": "container.data-files",
+   "feature": "Data files for images, sounds and movies",
+   "owner": 3,
+   "owner_url": "https://github.com/alehel/iwork-format/issues/3",
+   "spec": "spec/container.html#data-files",
+   "page": "spec/features.html#feature-container-data-files",
+   "formats": {
+    "Pages": {
+     "applies": "yes",
+     "releases": [
+      "15.4"
+     ],
+     "capabilities": {
+      "read": {
+       "state": "shown",
+       "evidence": [
+        "0142",
+        "0143",
+        "0145",
+        "0148"
+       ]
+      },
+      "edit": {
+       "state": "shown",
+       "evidence": [
+        "0395",
+        "0435"
+       ]
+      },
+      "create": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "render": {
+       "state": "not tested",
+       "evidence": []
+      }
+     }
+    },
+    "Numbers": {
+     "applies": "yes",
+     "releases": [],
+     "capabilities": {
+      "read": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "edit": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "create": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "render": {
+       "state": "not tested",
+       "evidence": []
+      }
+     }
+    },
+    "Keynote": {
+     "applies": "yes",
+     "releases": [],
+     "capabilities": {
+      "read": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "edit": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "create": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "render": {
+       "state": "not tested",
+       "evidence": []
+      }
+     }
+    }
+   },
+   "experiments": [
+    "0142",
+    "0143",
+    "0145",
+    "0148",
+    "0395",
+    "0435"
+   ]
+  },
+  {
+   "id": "container.password",
+   "feature": "Password protection",
+   "owner": 20,
+   "owner_url": "https://github.com/alehel/iwork-format/issues/20",
+   "spec": "spec/container.html#password-protection",
+   "page": "spec/features.html#feature-container-password",
+   "formats": {
+    "Pages": {
+     "applies": "yes",
+     "releases": [
+      "15.4"
+     ],
+     "capabilities": {
+      "read": {
+       "state": "shown",
+       "evidence": [
+        "0179",
+        "0180"
+       ]
+      },
+      "edit": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "create": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "render": {
+       "state": "not tested",
+       "evidence": []
+      }
+     }
+    },
+    "Numbers": {
+     "applies": "yes",
+     "releases": [
+      "15.4"
+     ],
+     "capabilities": {
+      "read": {
+       "state": "shown",
+       "evidence": [
+        "0180"
+       ]
+      },
+      "edit": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "create": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "render": {
+       "state": "not tested",
+       "evidence": []
+      }
+     }
+    },
+    "Keynote": {
+     "applies": "yes",
+     "releases": [
+      "15.4"
+     ],
+     "capabilities": {
+      "read": {
+       "state": "shown",
+       "evidence": [
+        "0180"
+       ]
+      },
+      "edit": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "create": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "render": {
+       "state": "not tested",
+       "evidence": []
+      }
+     }
+    }
+   },
+   "experiments": [
+    "0179",
+    "0180",
+    "0266"
+   ]
+  },
+  {
+   "id": "container.versions",
+   "feature": "The saving release, payload versions and malformed input",
+   "owner": 21,
+   "owner_url": "https://github.com/alehel/iwork-format/issues/21",
+   "spec": "spec/releases.html#telling-which-release-saved-a-document",
+   "page": "spec/features.html#feature-container-versions",
+   "formats": {
+    "Pages": {
+     "applies": "yes",
+     "releases": [
+      "14.5",
+      "16.0"
+     ],
+     "capabilities": {
+      "read": {
+       "state": "shown",
+       "evidence": [
+        "0461",
+        "0469"
+       ]
+      },
+      "edit": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "create": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "render": {
+       "state": "not tested",
+       "evidence": []
+      }
+     }
+    },
+    "Numbers": {
+     "applies": "yes",
+     "releases": [
+      "14.5",
+      "16.0"
+     ],
+     "capabilities": {
+      "read": {
+       "state": "shown",
+       "evidence": [
+        "0461",
+        "0469"
+       ]
+      },
+      "edit": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "create": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "render": {
+       "state": "not tested",
+       "evidence": []
+      }
+     }
+    },
+    "Keynote": {
+     "applies": "yes",
+     "releases": [
+      "14.5",
+      "16.0"
+     ],
+     "capabilities": {
+      "read": {
+       "state": "shown",
+       "evidence": [
+        "0466",
+        "0469"
+       ]
+      },
+      "edit": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "create": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "render": {
+       "state": "not tested",
+       "evidence": []
+      }
+     }
+    }
+   },
+   "experiments": [
+    "0461",
+    "0466",
+    "0469"
+   ]
+  },
+  {
+   "id": "container.save-back",
+   "feature": "What changes from save to save, and what an editor must keep",
+   "owner": 6,
+   "owner_url": "https://github.com/alehel/iwork-format/issues/6",
+   "spec": "spec/container.html#ids-and-save-to-save-changes",
+   "page": "spec/features.html#feature-container-save-back",
+   "formats": {
+    "Pages": {
+     "applies": "yes",
+     "releases": [
+      "15.4"
+     ],
+     "capabilities": {
+      "read": {
+       "state": "shown",
+       "evidence": [
+        "0139",
+        "0140"
+       ]
+      },
+      "edit": {
+       "state": "shown",
+       "evidence": [
+        "0287"
+       ]
+      },
+      "create": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "render": {
+       "state": "not tested",
+       "evidence": []
+      }
+     }
+    },
+    "Numbers": {
+     "applies": "yes",
+     "releases": [],
+     "capabilities": {
+      "read": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "edit": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "create": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "render": {
+       "state": "not tested",
+       "evidence": []
+      }
+     }
+    },
+    "Keynote": {
+     "applies": "yes",
+     "releases": [],
+     "capabilities": {
+      "read": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "edit": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "create": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "render": {
+       "state": "not tested",
+       "evidence": []
+      }
+     }
+    }
+   },
+   "experiments": [
+    "0139",
+    "0140",
+    "0287"
+   ]
+  },
+  {
+   "id": "container.view-state",
+   "feature": "View state: zoom, page view and what was last selected",
+   "owner": 47,
+   "owner_url": "https://github.com/alehel/iwork-format/issues/47",
+   "spec": "spec/container.html#view-state",
+   "page": "spec/features.html#feature-container-view-state",
+   "formats": {
+    "Pages": {
+     "applies": "yes",
+     "releases": [
+      "15.4"
+     ],
+     "capabilities": {
+      "read": {
+       "state": "shown",
+       "evidence": [
+        "0241",
+        "0242"
+       ]
+      },
+      "edit": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "create": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "render": {
+       "state": "not tested",
+       "evidence": []
+      }
+     }
+    },
+    "Numbers": {
+     "applies": "unverified",
+     "releases": [],
+     "capabilities": {
+      "read": {
+       "state": "not checked",
+       "evidence": []
+      },
+      "edit": {
+       "state": "not checked",
+       "evidence": []
+      },
+      "create": {
+       "state": "not checked",
+       "evidence": []
+      },
+      "render": {
+       "state": "not checked",
+       "evidence": []
+      }
+     }
+    },
+    "Keynote": {
+     "applies": "unverified",
+     "releases": [],
+     "capabilities": {
+      "read": {
+       "state": "not checked",
+       "evidence": []
+      },
+      "edit": {
+       "state": "not checked",
+       "evidence": []
+      },
+      "create": {
+       "state": "not checked",
+       "evidence": []
+      },
+      "render": {
+       "state": "not checked",
+       "evidence": []
+      }
+     }
+    }
+   },
+   "experiments": [
+    "0241",
+    "0242"
+   ]
+  },
+  {
+   "id": "container.metadata",
+   "feature": "Document metadata and collaboration state",
+   "owner": 47,
+   "owner_url": "https://github.com/alehel/iwork-format/issues/47",
+   "spec": "spec/releases.html#telling-which-release-saved-a-document",
+   "page": "spec/features.html#feature-container-metadata",
+   "formats": {
+    "Pages": {
+     "applies": "yes",
+     "releases": [
+      "14.5"
+     ],
+     "capabilities": {
+      "read": {
+       "state": "shown",
+       "evidence": [
+        "0465"
+       ]
+      },
+      "edit": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "create": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "render": {
+       "state": "not tested",
+       "evidence": []
+      }
+     }
+    },
+    "Numbers": {
+     "applies": "yes",
+     "releases": [
+      "14.5"
+     ],
+     "capabilities": {
+      "read": {
+       "state": "shown",
+       "evidence": [
+        "0465"
+       ]
+      },
+      "edit": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "create": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "render": {
+       "state": "not tested",
+       "evidence": []
+      }
+     }
+    },
+    "Keynote": {
+     "applies": "yes",
+     "releases": [],
+     "capabilities": {
+      "read": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "edit": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "create": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "render": {
+       "state": "not tested",
+       "evidence": []
+      }
+     }
+    }
+   },
+   "experiments": [
+    "0465"
+   ]
+  },
+  {
+   "id": "container.templates",
+   "feature": "Templates, themes and the resources they bring",
+   "owner": 48,
+   "owner_url": "https://github.com/alehel/iwork-format/issues/48",
+   "spec": "spec/container.html#the-package",
+   "page": "spec/features.html#feature-container-templates",
+   "formats": {
+    "Pages": {
+     "applies": "yes",
+     "releases": [
+      "15.4"
+     ],
+     "capabilities": {
+      "read": {
+       "state": "shown",
+       "evidence": [
+        "0155",
+        "0156",
+        "0157",
+        "0158",
+        "0198",
+        "0294"
+       ]
+      },
+      "edit": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "create": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "render": {
+       "state": "not tested",
+       "evidence": []
+      }
+     }
+    },
+    "Numbers": {
+     "applies": "yes",
+     "releases": [
+      "15.4"
+     ],
+     "capabilities": {
+      "read": {
+       "state": "shown",
+       "evidence": [
+        "0294"
+       ]
+      },
+      "edit": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "create": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "render": {
+       "state": "not tested",
+       "evidence": []
+      }
+     }
+    },
+    "Keynote": {
+     "applies": "yes",
+     "releases": [
+      "15.4"
+     ],
+     "capabilities": {
+      "read": {
+       "state": "shown",
+       "evidence": [
+        "0090",
+        "0291",
+        "0294"
+       ]
+      },
+      "edit": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "create": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "render": {
+       "state": "not tested",
+       "evidence": []
+      }
+     }
+    }
+   },
+   "experiments": [
+    "0090",
+    "0155",
+    "0156",
+    "0157",
+    "0158",
+    "0198",
+    "0291",
+    "0294"
+   ]
+  },
+  {
+   "id": "document.minimal",
+   "feature": "The smallest document each app opens",
+   "owner": 4,
+   "owner_url": "https://github.com/alehel/iwork-format/issues/4",
+   "spec": "spec/container.html#the-package",
+   "page": "spec/features.html#feature-document-minimal",
+   "formats": {
+    "Pages": {
+     "applies": "yes",
+     "releases": [
+      "15.4"
+     ],
+     "capabilities": {
+      "read": {
+       "state": "shown",
+       "evidence": [
+        "0001"
+       ]
+      },
+      "edit": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "create": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "render": {
+       "state": "not tested",
+       "evidence": []
+      }
+     }
+    },
+    "Numbers": {
+     "applies": "yes",
+     "releases": [
+      "15.4"
+     ],
+     "capabilities": {
+      "read": {
+       "state": "shown",
+       "evidence": [
+        "0024"
+       ]
+      },
+      "edit": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "create": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "render": {
+       "state": "not tested",
+       "evidence": []
+      }
+     }
+    },
+    "Keynote": {
+     "applies": "yes",
+     "releases": [
+      "15.4"
+     ],
+     "capabilities": {
+      "read": {
+       "state": "shown",
+       "evidence": [
+        "0024",
+        "0025"
+       ]
+      },
+      "edit": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "create": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "render": {
+       "state": "not tested",
+       "evidence": []
+      }
+     }
+    }
+   },
+   "experiments": [
+    "0001",
+    "0024",
+    "0025"
+   ]
+  },
+  {
+   "id": "text.body",
+   "feature": "Body text, its encoding and paragraphs",
+   "owner": 7,
+   "owner_url": "https://github.com/alehel/iwork-format/issues/7",
+   "spec": "spec/text.html#the-body-text",
+   "page": "spec/features.html#feature-text-body",
+   "formats": {
+    "Pages": {
+     "applies": "yes",
+     "releases": [
+      "15.4"
+     ],
+     "capabilities": {
+      "read": {
+       "state": "shown",
+       "evidence": [
+        "0002",
+        "0003",
+        "0005",
+        "0032",
+        "0149",
+        "0151",
+        "0154"
+       ]
+      },
+      "edit": {
+       "state": "shown",
+       "evidence": [
+        "0288",
+        "0289",
+        "0451"
+       ]
+      },
+      "create": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "render": {
+       "state": "not tested",
+       "evidence": []
+      }
+     }
+    },
+    "Numbers": {
+     "applies": "yes",
+     "releases": [
+      "15.4"
+     ],
+     "capabilities": {
+      "read": {
+       "state": "shown",
+       "evidence": [
+        "0032",
+        "0130"
+       ]
+      },
+      "edit": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "create": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "render": {
+       "state": "not tested",
+       "evidence": []
+      }
+     }
+    },
+    "Keynote": {
+     "applies": "yes",
+     "releases": [
+      "15.4"
+     ],
+     "capabilities": {
+      "read": {
+       "state": "shown",
+       "evidence": [
+        "0025",
+        "0032",
+        "0164"
+       ]
+      },
+      "edit": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "create": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "render": {
+       "state": "not tested",
+       "evidence": []
+      }
+     }
+    }
+   },
+   "experiments": [
+    "0002",
+    "0003",
+    "0005",
+    "0025",
+    "0032",
+    "0130",
+    "0149",
+    "0151",
+    "0154",
+    "0164",
+    "0288",
+    "0289",
+    "0451"
+   ]
+  },
+  {
+   "id": "text.breaks",
+   "feature": "Tabs, non-breaking spaces, soft hyphens, and line, column and page breaks",
+   "owner": 7,
+   "owner_url": "https://github.com/alehel/iwork-format/issues/7",
+   "spec": "spec/text.html#the-body-text",
+   "page": "spec/features.html#feature-text-breaks",
+   "formats": {
+    "Pages": {
+     "applies": "yes",
+     "releases": [
+      "15.4"
+     ],
+     "capabilities": {
+      "read": {
+       "state": "shown",
+       "evidence": [
+        "0018",
+        "0058",
+        "0210"
+       ]
+      },
+      "edit": {
+       "state": "shown",
+       "evidence": [
+        "0360",
+        "0369",
+        "0436"
+       ]
+      },
+      "create": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "render": {
+       "state": "not tested",
+       "evidence": []
+      }
+     }
+    },
+    "Numbers": {
+     "applies": "unverified",
+     "releases": [],
+     "capabilities": {
+      "read": {
+       "state": "not checked",
+       "evidence": []
+      },
+      "edit": {
+       "state": "not checked",
+       "evidence": []
+      },
+      "create": {
+       "state": "not checked",
+       "evidence": []
+      },
+      "render": {
+       "state": "not checked",
+       "evidence": []
+      }
+     }
+    },
+    "Keynote": {
+     "applies": "yes",
+     "releases": [
+      "15.4"
+     ],
+     "capabilities": {
+      "read": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "edit": {
+       "state": "shown",
+       "evidence": [
+        "0429"
+       ]
+      },
+      "create": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "render": {
+       "state": "not tested",
+       "evidence": []
+      }
+     }
+    }
+   },
+   "experiments": [
+    "0018",
+    "0058",
+    "0210",
+    "0360",
+    "0369",
+    "0429",
+    "0436"
+   ]
+  },
+  {
+   "id": "text.character-properties",
+   "feature": "Character properties: bold, italic, underline, strikethrough, font, size, colour, highlight, baseline, capitals, spacing and ligatures",
+   "owner": 7,
+   "owner_url": "https://github.com/alehel/iwork-format/issues/7",
+   "spec": "spec/styles.html#character-properties",
+   "page": "spec/features.html#feature-text-character-properties",
+   "formats": {
+    "Pages": {
+     "applies": "yes",
+     "releases": [
+      "15.4"
+     ],
+     "capabilities": {
+      "read": {
+       "state": "shown",
+       "evidence": [
+        "0007",
+        "0012",
+        "0013",
+        "0053",
+        "0152",
+        "0200",
+        "0203",
+        "0204",
+        "0205",
+        "0206",
+        "0207",
+        "0208",
+        "0209"
+       ]
+      },
+      "edit": {
+       "state": "shown",
+       "evidence": [
+        "0322",
+        "0351",
+        "0428"
+       ]
+      },
+      "create": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "render": {
+       "state": "not tested",
+       "evidence": []
+      }
+     }
+    },
+    "Numbers": {
+     "applies": "yes",
+     "releases": [
+      "15.4"
+     ],
+     "capabilities": {
+      "read": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "edit": {
+       "state": "shown",
+       "evidence": [
+        "0310"
+       ]
+      },
+      "create": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "render": {
+       "state": "not tested",
+       "evidence": []
+      }
+     }
+    },
+    "Keynote": {
+     "applies": "yes",
+     "releases": [
+      "15.4"
+     ],
+     "capabilities": {
+      "read": {
+       "state": "shown",
+       "evidence": [
+        "0096"
+       ]
+      },
+      "edit": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "create": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "render": {
+       "state": "not tested",
+       "evidence": []
+      }
+     }
+    }
+   },
+   "experiments": [
+    "0007",
+    "0012",
+    "0013",
+    "0053",
+    "0096",
+    "0152",
+    "0200",
+    "0203",
+    "0204",
+    "0205",
+    "0206",
+    "0207",
+    "0208",
+    "0209",
+    "0310",
+    "0322",
+    "0351",
+    "0428"
+   ]
+  },
+  {
+   "id": "text.paragraph-properties",
+   "feature": "Paragraph properties: alignment, indents, spacing, line spacing, tab stops and borders",
+   "owner": 7,
+   "owner_url": "https://github.com/alehel/iwork-format/issues/7",
+   "spec": "spec/styles.html#paragraph-properties",
+   "page": "spec/features.html#feature-text-paragraph-properties",
+   "formats": {
+    "Pages": {
+     "applies": "yes",
+     "releases": [
+      "15.4"
+     ],
+     "capabilities": {
+      "read": {
+       "state": "shown",
+       "evidence": [
+        "0010",
+        "0011",
+        "0252",
+        "0253",
+        "0255",
+        "0256",
+        "0262",
+        "0276",
+        "0277",
+        "0281",
+        "0282"
+       ]
+      },
+      "edit": {
+       "state": "shown",
+       "evidence": [
+        "0319",
+        "0320",
+        "0321",
+        "0325",
+        "0336"
+       ]
+      },
+      "create": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "render": {
+       "state": "not tested",
+       "evidence": []
+      }
+     }
+    },
+    "Numbers": {
+     "applies": "yes",
+     "releases": [],
+     "capabilities": {
+      "read": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "edit": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "create": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "render": {
+       "state": "not tested",
+       "evidence": []
+      }
+     }
+    },
+    "Keynote": {
+     "applies": "yes",
+     "releases": [],
+     "capabilities": {
+      "read": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "edit": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "create": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "render": {
+       "state": "not tested",
+       "evidence": []
+      }
+     }
+    }
+   },
+   "experiments": [
+    "0010",
+    "0011",
+    "0252",
+    "0253",
+    "0255",
+    "0256",
+    "0262",
+    "0276",
+    "0277",
+    "0281",
+    "0282",
+    "0319",
+    "0320",
+    "0321",
+    "0325",
+    "0336"
+   ]
+  },
+  {
+   "id": "text.styles",
+   "feature": "Named and unnamed styles, and how they inherit",
+   "owner": 7,
+   "owner_url": "https://github.com/alehel/iwork-format/issues/7",
+   "spec": "spec/styles.html#named-and-unnamed-styles",
+   "page": "spec/features.html#feature-text-styles",
+   "formats": {
+    "Pages": {
+     "applies": "yes",
+     "releases": [
+      "15.4"
+     ],
+     "capabilities": {
+      "read": {
+       "state": "shown",
+       "evidence": [
+        "0004",
+        "0008",
+        "0033",
+        "0034",
+        "0042",
+        "0054",
+        "0153"
+       ]
+      },
+      "edit": {
+       "state": "shown",
+       "evidence": [
+        "0311",
+        "0352",
+        "0392",
+        "0393",
+        "0427"
+       ]
+      },
+      "create": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "render": {
+       "state": "not tested",
+       "evidence": []
+      }
+     }
+    },
+    "Numbers": {
+     "applies": "yes",
+     "releases": [],
+     "capabilities": {
+      "read": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "edit": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "create": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "render": {
+       "state": "not tested",
+       "evidence": []
+      }
+     }
+    },
+    "Keynote": {
+     "applies": "yes",
+     "releases": [],
+     "capabilities": {
+      "read": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "edit": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "create": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "render": {
+       "state": "not tested",
+       "evidence": []
+      }
+     }
+    }
+   },
+   "experiments": [
+    "0004",
+    "0008",
+    "0033",
+    "0034",
+    "0042",
+    "0054",
+    "0153",
+    "0311",
+    "0352",
+    "0392",
+    "0393",
+    "0427"
+   ]
+  },
+  {
+   "id": "text.drop-cap",
+   "feature": "Drop caps",
+   "owner": 7,
+   "owner_url": "https://github.com/alehel/iwork-format/issues/7",
+   "spec": "spec/text.html#runs",
+   "page": "spec/features.html#feature-text-drop-cap",
+   "formats": {
+    "Pages": {
+     "applies": "yes",
+     "releases": [
+      "15.4"
+     ],
+     "capabilities": {
+      "read": {
+       "state": "shown",
+       "evidence": [
+        "0261"
+       ]
+      },
+      "edit": {
+       "state": "shown",
+       "evidence": [
+        "0335"
+       ]
+      },
+      "create": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "render": {
+       "state": "not tested",
+       "evidence": []
+      }
+     }
+    },
+    "Numbers": {
+     "applies": "unverified",
+     "releases": [],
+     "capabilities": {
+      "read": {
+       "state": "not checked",
+       "evidence": []
+      },
+      "edit": {
+       "state": "not checked",
+       "evidence": []
+      },
+      "create": {
+       "state": "not checked",
+       "evidence": []
+      },
+      "render": {
+       "state": "not checked",
+       "evidence": []
+      }
+     }
+    },
+    "Keynote": {
+     "applies": "unverified",
+     "releases": [],
+     "capabilities": {
+      "read": {
+       "state": "not checked",
+       "evidence": []
+      },
+      "edit": {
+       "state": "not checked",
+       "evidence": []
+      },
+      "create": {
+       "state": "not checked",
+       "evidence": []
+      },
+      "render": {
+       "state": "not checked",
+       "evidence": []
+      }
+     }
+    }
+   },
+   "experiments": [
+    "0261",
+    "0335"
+   ]
+  },
+  {
+   "id": "text.document-settings",
+   "feature": "Hyphenation and ligatures for the whole document",
+   "owner": 7,
+   "owner_url": "https://github.com/alehel/iwork-format/issues/7",
+   "spec": "spec/pages.html#page-setup",
+   "page": "spec/features.html#feature-text-document-settings",
+   "formats": {
+    "Pages": {
+     "applies": "yes",
+     "releases": [
+      "15.4"
+     ],
+     "capabilities": {
+      "read": {
+       "state": "shown",
+       "evidence": [
+        "0236",
+        "0237"
+       ]
+      },
+      "edit": {
+       "state": "shown",
+       "evidence": [
+        "0420",
+        "0421"
+       ]
+      },
+      "create": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "render": {
+       "state": "not tested",
+       "evidence": []
+      }
+     }
+    },
+    "Numbers": {
+     "applies": "no",
+     "releases": [],
+     "capabilities": {
+      "read": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "edit": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "create": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "render": {
+       "state": "not applicable",
+       "evidence": []
+      }
+     }
+    },
+    "Keynote": {
+     "applies": "unverified",
+     "releases": [],
+     "capabilities": {
+      "read": {
+       "state": "not checked",
+       "evidence": []
+      },
+      "edit": {
+       "state": "not checked",
+       "evidence": []
+      },
+      "create": {
+       "state": "not checked",
+       "evidence": []
+      },
+      "render": {
+       "state": "not checked",
+       "evidence": []
+      }
+     }
+    }
+   },
+   "experiments": [
+    "0236",
+    "0237",
+    "0420",
+    "0421"
+   ]
+  },
+  {
+   "id": "text.lists",
+   "feature": "Lists: bullets, numbering, levels and restarts",
+   "owner": 9,
+   "owner_url": "https://github.com/alehel/iwork-format/issues/9",
+   "spec": "spec/styles.html#list-styles",
+   "page": "spec/features.html#feature-text-lists",
+   "formats": {
+    "Pages": {
+     "applies": "yes",
+     "releases": [
+      "15.4"
+     ],
+     "capabilities": {
+      "read": {
+       "state": "shown",
+       "evidence": [
+        "0014",
+        "0015"
+       ]
+      },
+      "edit": {
+       "state": "shown",
+       "evidence": [
+        "0334",
+        "0353",
+        "0388"
+       ]
+      },
+      "create": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "render": {
+       "state": "not tested",
+       "evidence": []
+      }
+     }
+    },
+    "Numbers": {
+     "applies": "yes",
+     "releases": [],
+     "capabilities": {
+      "read": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "edit": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "create": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "render": {
+       "state": "not tested",
+       "evidence": []
+      }
+     }
+    },
+    "Keynote": {
+     "applies": "yes",
+     "releases": [
+      "15.4"
+     ],
+     "capabilities": {
+      "read": {
+       "state": "shown",
+       "evidence": [
+        "0072"
+       ]
+      },
+      "edit": {
+       "state": "shown",
+       "evidence": [
+        "0414"
+       ]
+      },
+      "create": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "render": {
+       "state": "not tested",
+       "evidence": []
+      }
+     }
+    }
+   },
+   "experiments": [
+    "0014",
+    "0015",
+    "0072",
+    "0334",
+    "0353",
+    "0388",
+    "0414"
+   ]
+  },
+  {
+   "id": "text.right-to-left",
+   "feature": "Right-to-left paragraphs and international text",
+   "owner": 15,
+   "owner_url": "https://github.com/alehel/iwork-format/issues/15",
+   "spec": "spec/text.html#positions-in-the-text",
+   "page": "spec/features.html#feature-text-right-to-left",
+   "formats": {
+    "Pages": {
+     "applies": "yes",
+     "releases": [
+      "15.4"
+     ],
+     "capabilities": {
+      "read": {
+       "state": "shown",
+       "evidence": [
+        "0150"
+       ]
+      },
+      "edit": {
+       "state": "shown",
+       "evidence": [
+        "0441"
+       ]
+      },
+      "create": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "render": {
+       "state": "not tested",
+       "evidence": []
+      }
+     }
+    },
+    "Numbers": {
+     "applies": "yes",
+     "releases": [],
+     "capabilities": {
+      "read": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "edit": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "create": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "render": {
+       "state": "not tested",
+       "evidence": []
+      }
+     }
+    },
+    "Keynote": {
+     "applies": "yes",
+     "releases": [],
+     "capabilities": {
+      "read": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "edit": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "create": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "render": {
+       "state": "not tested",
+       "evidence": []
+      }
+     }
+    }
+   },
+   "experiments": [
+    "0150",
+    "0441"
+   ]
+  },
+  {
+   "id": "text.footnotes",
+   "feature": "Footnotes and endnotes",
+   "owner": 13,
+   "owner_url": "https://github.com/alehel/iwork-format/issues/13",
+   "spec": "spec/text.html#objects-in-the-text",
+   "page": "spec/features.html#feature-text-footnotes",
+   "formats": {
+    "Pages": {
+     "applies": "yes",
+     "releases": [
+      "15.4"
+     ],
+     "capabilities": {
+      "read": {
+       "state": "shown",
+       "evidence": [
+        "0041"
+       ]
+      },
+      "edit": {
+       "state": "shown",
+       "evidence": [
+        "0356"
+       ]
+      },
+      "create": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "render": {
+       "state": "not tested",
+       "evidence": []
+      }
+     }
+    },
+    "Numbers": {
+     "applies": "no",
+     "releases": [],
+     "capabilities": {
+      "read": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "edit": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "create": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "render": {
+       "state": "not applicable",
+       "evidence": []
+      }
+     }
+    },
+    "Keynote": {
+     "applies": "no",
+     "releases": [],
+     "capabilities": {
+      "read": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "edit": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "create": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "render": {
+       "state": "not applicable",
+       "evidence": []
+      }
+     }
+    }
+   },
+   "experiments": [
+    "0041",
+    "0356"
+   ]
+  },
+  {
+   "id": "text.fields",
+   "feature": "Page number, page count and date fields",
+   "owner": 13,
+   "owner_url": "https://github.com/alehel/iwork-format/issues/13",
+   "spec": "spec/text.html#objects-in-the-text",
+   "page": "spec/features.html#feature-text-fields",
+   "formats": {
+    "Pages": {
+     "applies": "yes",
+     "releases": [
+      "15.4"
+     ],
+     "capabilities": {
+      "read": {
+       "state": "shown",
+       "evidence": [
+        "0048",
+        "0201",
+        "0211"
+       ]
+      },
+      "edit": {
+       "state": "shown",
+       "evidence": [
+        "0357",
+        "0358",
+        "0359"
+       ]
+      },
+      "create": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "render": {
+       "state": "not tested",
+       "evidence": []
+      }
+     }
+    },
+    "Numbers": {
+     "applies": "no",
+     "releases": [],
+     "capabilities": {
+      "read": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "edit": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "create": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "render": {
+       "state": "not applicable",
+       "evidence": []
+      }
+     }
+    },
+    "Keynote": {
+     "applies": "unverified",
+     "releases": [],
+     "capabilities": {
+      "read": {
+       "state": "not checked",
+       "evidence": []
+      },
+      "edit": {
+       "state": "not checked",
+       "evidence": []
+      },
+      "create": {
+       "state": "not checked",
+       "evidence": []
+      },
+      "render": {
+       "state": "not checked",
+       "evidence": []
+      }
+     }
+    }
+   },
+   "experiments": [
+    "0048",
+    "0201",
+    "0211",
+    "0357",
+    "0358",
+    "0359"
+   ]
+  },
+  {
+   "id": "text.table-of-contents",
+   "feature": "Tables of contents",
+   "owner": 13,
+   "owner_url": "https://github.com/alehel/iwork-format/issues/13",
+   "spec": "spec/text.html#objects-in-the-text",
+   "page": "spec/features.html#feature-text-table-of-contents",
+   "formats": {
+    "Pages": {
+     "applies": "yes",
+     "releases": [
+      "15.4"
+     ],
+     "capabilities": {
+      "read": {
+       "state": "shown",
+       "evidence": [
+        "0202"
+       ]
+      },
+      "edit": {
+       "state": "shown",
+       "evidence": [
+        "0407"
+       ]
+      },
+      "create": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "render": {
+       "state": "not tested",
+       "evidence": []
+      }
+     }
+    },
+    "Numbers": {
+     "applies": "no",
+     "releases": [],
+     "capabilities": {
+      "read": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "edit": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "create": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "render": {
+       "state": "not applicable",
+       "evidence": []
+      }
+     }
+    },
+    "Keynote": {
+     "applies": "no",
+     "releases": [],
+     "capabilities": {
+      "read": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "edit": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "create": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "render": {
+       "state": "not applicable",
+       "evidence": []
+      }
+     }
+    }
+   },
+   "experiments": [
+    "0202",
+    "0407"
+   ]
+  },
+  {
+   "id": "text.merge-fields",
+   "feature": "Merge fields",
+   "owner": 13,
+   "owner_url": "https://github.com/alehel/iwork-format/issues/13",
+   "spec": "spec/text.html#objects-in-the-text",
+   "page": "spec/features.html#feature-text-merge-fields",
+   "formats": {
+    "Pages": {
+     "applies": "yes",
+     "releases": [
+      "15.4"
+     ],
+     "capabilities": {
+      "read": {
+       "state": "shown",
+       "evidence": [
+        "0199"
+       ]
+      },
+      "edit": {
+       "state": "shown",
+       "evidence": [
+        "0408"
+       ]
+      },
+      "create": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "render": {
+       "state": "not tested",
+       "evidence": []
+      }
+     }
+    },
+    "Numbers": {
+     "applies": "no",
+     "releases": [],
+     "capabilities": {
+      "read": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "edit": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "create": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "render": {
+       "state": "not applicable",
+       "evidence": []
+      }
+     }
+    },
+    "Keynote": {
+     "applies": "no",
+     "releases": [],
+     "capabilities": {
+      "read": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "edit": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "create": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "render": {
+       "state": "not applicable",
+       "evidence": []
+      }
+     }
+    }
+   },
+   "experiments": [
+    "0199",
+    "0408"
+   ]
+  },
+  {
+   "id": "text.placeholders",
+   "feature": "Placeholder text and media placeholders",
+   "owner": 48,
+   "owner_url": "https://github.com/alehel/iwork-format/issues/48",
+   "spec": "spec/text.html#objects-in-the-text",
+   "page": "spec/features.html#feature-text-placeholders",
+   "formats": {
+    "Pages": {
+     "applies": "yes",
+     "releases": [
+      "15.4"
+     ],
+     "capabilities": {
+      "read": {
+       "state": "shown",
+       "evidence": [
+        "0212",
+        "0244"
+       ]
+      },
+      "edit": {
+       "state": "shown",
+       "evidence": [
+        "0406"
+       ]
+      },
+      "create": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "render": {
+       "state": "not tested",
+       "evidence": []
+      }
+     }
+    },
+    "Numbers": {
+     "applies": "no",
+     "releases": [],
+     "capabilities": {
+      "read": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "edit": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "create": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "render": {
+       "state": "not applicable",
+       "evidence": []
+      }
+     }
+    },
+    "Keynote": {
+     "applies": "unverified",
+     "releases": [],
+     "capabilities": {
+      "read": {
+       "state": "not checked",
+       "evidence": []
+      },
+      "edit": {
+       "state": "not checked",
+       "evidence": []
+      },
+      "create": {
+       "state": "not checked",
+       "evidence": []
+      },
+      "render": {
+       "state": "not checked",
+       "evidence": []
+      }
+     }
+    }
+   },
+   "experiments": [
+    "0212",
+    "0244",
+    "0406"
+   ]
+  },
+  {
+   "id": "text.links",
+   "feature": "Links to web pages, email addresses and phone numbers",
+   "owner": 45,
+   "owner_url": "https://github.com/alehel/iwork-format/issues/45",
+   "spec": "spec/text.html#runs",
+   "page": "spec/features.html#feature-text-links",
+   "formats": {
+    "Pages": {
+     "applies": "yes",
+     "releases": [
+      "15.4"
+     ],
+     "capabilities": {
+      "read": {
+       "state": "shown",
+       "evidence": [
+        "0189",
+        "0190"
+       ]
+      },
+      "edit": {
+       "state": "shown",
+       "evidence": [
+        "0354",
+        "0355"
+       ]
+      },
+      "create": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "render": {
+       "state": "not tested",
+       "evidence": []
+      }
+     }
+    },
+    "Numbers": {
+     "applies": "unverified",
+     "releases": [],
+     "capabilities": {
+      "read": {
+       "state": "not checked",
+       "evidence": []
+      },
+      "edit": {
+       "state": "not checked",
+       "evidence": []
+      },
+      "create": {
+       "state": "not checked",
+       "evidence": []
+      },
+      "render": {
+       "state": "not checked",
+       "evidence": []
+      }
+     }
+    },
+    "Keynote": {
+     "applies": "unverified",
+     "releases": [],
+     "capabilities": {
+      "read": {
+       "state": "not checked",
+       "evidence": []
+      },
+      "edit": {
+       "state": "not checked",
+       "evidence": []
+      },
+      "create": {
+       "state": "not checked",
+       "evidence": []
+      },
+      "render": {
+       "state": "not checked",
+       "evidence": []
+      }
+     }
+    }
+   },
+   "experiments": [
+    "0189",
+    "0190",
+    "0354",
+    "0355"
+   ]
+  },
+  {
+   "id": "text.bookmarks",
+   "feature": "Bookmarks and links to them",
+   "owner": 45,
+   "owner_url": "https://github.com/alehel/iwork-format/issues/45",
+   "spec": "spec/text.html#runs",
+   "page": "spec/features.html#feature-text-bookmarks",
+   "formats": {
+    "Pages": {
+     "applies": "yes",
+     "releases": [
+      "15.4"
+     ],
+     "capabilities": {
+      "read": {
+       "state": "shown",
+       "evidence": [
+        "0191",
+        "0192"
+       ]
+      },
+      "edit": {
+       "state": "shown",
+       "evidence": [
+        "0389"
+       ]
+      },
+      "create": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "render": {
+       "state": "not tested",
+       "evidence": []
+      }
+     }
+    },
+    "Numbers": {
+     "applies": "no",
+     "releases": [],
+     "capabilities": {
+      "read": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "edit": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "create": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "render": {
+       "state": "not applicable",
+       "evidence": []
+      }
+     }
+    },
+    "Keynote": {
+     "applies": "no",
+     "releases": [],
+     "capabilities": {
+      "read": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "edit": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "create": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "render": {
+       "state": "not applicable",
+       "evidence": []
+      }
+     }
+    }
+   },
+   "experiments": [
+    "0191",
+    "0192",
+    "0389"
+   ]
+  },
+  {
+   "id": "text.comments",
+   "feature": "Comments and replies",
+   "owner": 14,
+   "owner_url": "https://github.com/alehel/iwork-format/issues/14",
+   "spec": "spec/text.html#runs",
+   "page": "spec/features.html#feature-text-comments",
+   "formats": {
+    "Pages": {
+     "applies": "yes",
+     "releases": [
+      "15.4"
+     ],
+     "capabilities": {
+      "read": {
+       "state": "shown",
+       "evidence": [
+        "0249"
+       ]
+      },
+      "edit": {
+       "state": "shown",
+       "evidence": [
+        "0375",
+        "0376",
+        "0443"
+       ]
+      },
+      "create": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "render": {
+       "state": "not tested",
+       "evidence": []
+      }
+     }
+    },
+    "Numbers": {
+     "applies": "unverified",
+     "releases": [],
+     "capabilities": {
+      "read": {
+       "state": "not checked",
+       "evidence": []
+      },
+      "edit": {
+       "state": "not checked",
+       "evidence": []
+      },
+      "create": {
+       "state": "not checked",
+       "evidence": []
+      },
+      "render": {
+       "state": "not checked",
+       "evidence": []
+      }
+     }
+    },
+    "Keynote": {
+     "applies": "unverified",
+     "releases": [],
+     "capabilities": {
+      "read": {
+       "state": "not checked",
+       "evidence": []
+      },
+      "edit": {
+       "state": "not checked",
+       "evidence": []
+      },
+      "create": {
+       "state": "not checked",
+       "evidence": []
+      },
+      "render": {
+       "state": "not checked",
+       "evidence": []
+      }
+     }
+    }
+   },
+   "experiments": [
+    "0249",
+    "0375",
+    "0376",
+    "0443"
+   ]
+  },
+  {
+   "id": "text.tracked-changes",
+   "feature": "Tracked changes: insertions, deletions, accepting, rejecting and pausing",
+   "owner": 14,
+   "owner_url": "https://github.com/alehel/iwork-format/issues/14",
+   "spec": "spec/text.html#runs",
+   "page": "spec/features.html#feature-text-tracked-changes",
+   "formats": {
+    "Pages": {
+     "applies": "yes",
+     "releases": [
+      "15.4"
+     ],
+     "capabilities": {
+      "read": {
+       "state": "shown",
+       "evidence": [
+        "0193",
+        "0194",
+        "0268",
+        "0269",
+        "0270"
+       ]
+      },
+      "edit": {
+       "state": "shown",
+       "evidence": [
+        "0377"
+       ]
+      },
+      "create": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "render": {
+       "state": "not tested",
+       "evidence": []
+      }
+     }
+    },
+    "Numbers": {
+     "applies": "no",
+     "releases": [],
+     "capabilities": {
+      "read": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "edit": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "create": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "render": {
+       "state": "not applicable",
+       "evidence": []
+      }
+     }
+    },
+    "Keynote": {
+     "applies": "no",
+     "releases": [],
+     "capabilities": {
+      "read": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "edit": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "create": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "render": {
+       "state": "not applicable",
+       "evidence": []
+      }
+     }
+    }
+   },
+   "experiments": [
+    "0193",
+    "0194",
+    "0268",
+    "0269",
+    "0270",
+    "0377"
+   ]
+  },
+  {
+   "id": "text.equations",
+   "feature": "Equations",
+   "owner": 22,
+   "owner_url": "https://github.com/alehel/iwork-format/issues/22",
+   "spec": null,
+   "page": "spec/features.html#feature-text-equations",
+   "formats": {
+    "Pages": {
+     "applies": "unverified",
+     "releases": [],
+     "capabilities": {
+      "read": {
+       "state": "not checked",
+       "evidence": []
+      },
+      "edit": {
+       "state": "not checked",
+       "evidence": []
+      },
+      "create": {
+       "state": "not checked",
+       "evidence": []
+      },
+      "render": {
+       "state": "not checked",
+       "evidence": []
+      }
+     }
+    },
+    "Numbers": {
+     "applies": "unverified",
+     "releases": [],
+     "capabilities": {
+      "read": {
+       "state": "not checked",
+       "evidence": []
+      },
+      "edit": {
+       "state": "not checked",
+       "evidence": []
+      },
+      "create": {
+       "state": "not checked",
+       "evidence": []
+      },
+      "render": {
+       "state": "not checked",
+       "evidence": []
+      }
+     }
+    },
+    "Keynote": {
+     "applies": "unverified",
+     "releases": [],
+     "capabilities": {
+      "read": {
+       "state": "not checked",
+       "evidence": []
+      },
+      "edit": {
+       "state": "not checked",
+       "evidence": []
+      },
+      "create": {
+       "state": "not checked",
+       "evidence": []
+      },
+      "render": {
+       "state": "not checked",
+       "evidence": []
+      }
+     }
+    }
+   },
+   "experiments": []
+  },
+  {
+   "id": "text.citations",
+   "feature": "Citations and bibliographies",
+   "owner": 22,
+   "owner_url": "https://github.com/alehel/iwork-format/issues/22",
+   "spec": null,
+   "page": "spec/features.html#feature-text-citations",
+   "formats": {
+    "Pages": {
+     "applies": "unverified",
+     "releases": [],
+     "capabilities": {
+      "read": {
+       "state": "not checked",
+       "evidence": []
+      },
+      "edit": {
+       "state": "not checked",
+       "evidence": []
+      },
+      "create": {
+       "state": "not checked",
+       "evidence": []
+      },
+      "render": {
+       "state": "not checked",
+       "evidence": []
+      }
+     }
+    },
+    "Numbers": {
+     "applies": "no",
+     "releases": [],
+     "capabilities": {
+      "read": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "edit": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "create": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "render": {
+       "state": "not applicable",
+       "evidence": []
+      }
+     }
+    },
+    "Keynote": {
+     "applies": "no",
+     "releases": [],
+     "capabilities": {
+      "read": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "edit": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "create": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "render": {
+       "state": "not applicable",
+       "evidence": []
+      }
+     }
+    }
+   },
+   "experiments": []
+  },
+  {
+   "id": "pages.page-setup",
+   "feature": "Paper size, orientation and margins",
+   "owner": 8,
+   "owner_url": "https://github.com/alehel/iwork-format/issues/8",
+   "spec": "spec/pages.html#page-setup",
+   "page": "spec/features.html#feature-pages-page-setup",
+   "formats": {
+    "Pages": {
+     "applies": "yes",
+     "releases": [
+      "15.4"
+     ],
+     "capabilities": {
+      "read": {
+       "state": "shown",
+       "evidence": [
+        "0028"
+       ]
+      },
+      "edit": {
+       "state": "shown",
+       "evidence": [
+        "0318",
+        "0326",
+        "0366",
+        "0367"
+       ]
+      },
+      "create": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "render": {
+       "state": "not tested",
+       "evidence": []
+      }
+     }
+    },
+    "Numbers": {
+     "applies": "no",
+     "releases": [],
+     "capabilities": {
+      "read": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "edit": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "create": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "render": {
+       "state": "not applicable",
+       "evidence": []
+      }
+     }
+    },
+    "Keynote": {
+     "applies": "no",
+     "releases": [],
+     "capabilities": {
+      "read": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "edit": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "create": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "render": {
+       "state": "not applicable",
+       "evidence": []
+      }
+     }
+    }
+   },
+   "experiments": [
+    "0028",
+    "0318",
+    "0326",
+    "0366",
+    "0367"
+   ]
+  },
+  {
+   "id": "pages.sections",
+   "feature": "Sections, their breaks and backgrounds",
+   "owner": 8,
+   "owner_url": "https://github.com/alehel/iwork-format/issues/8",
+   "spec": "spec/pages.html#page-setup",
+   "page": "spec/features.html#feature-pages-sections",
+   "formats": {
+    "Pages": {
+     "applies": "yes",
+     "releases": [
+      "15.4"
+     ],
+     "capabilities": {
+      "read": {
+       "state": "shown",
+       "evidence": [
+        "0017",
+        "0040",
+        "0286"
+       ]
+      },
+      "edit": {
+       "state": "shown",
+       "evidence": [
+        "0328",
+        "0361",
+        "0387"
+       ]
+      },
+      "create": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "render": {
+       "state": "not tested",
+       "evidence": []
+      }
+     }
+    },
+    "Numbers": {
+     "applies": "no",
+     "releases": [],
+     "capabilities": {
+      "read": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "edit": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "create": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "render": {
+       "state": "not applicable",
+       "evidence": []
+      }
+     }
+    },
+    "Keynote": {
+     "applies": "no",
+     "releases": [],
+     "capabilities": {
+      "read": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "edit": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "create": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "render": {
+       "state": "not applicable",
+       "evidence": []
+      }
+     }
+    }
+   },
+   "experiments": [
+    "0017",
+    "0040",
+    "0286",
+    "0328",
+    "0361",
+    "0387"
+   ]
+  },
+  {
+   "id": "pages.headers-footers",
+   "feature": "Headers and footers, first and facing pages",
+   "owner": 8,
+   "owner_url": "https://github.com/alehel/iwork-format/issues/8",
+   "spec": "spec/pages.html#headers-and-footers",
+   "page": "spec/features.html#feature-pages-headers-footers",
+   "formats": {
+    "Pages": {
+     "applies": "yes",
+     "releases": [
+      "15.4"
+     ],
+     "capabilities": {
+      "read": {
+       "state": "shown",
+       "evidence": [
+        "0016",
+        "0019",
+        "0238",
+        "0239"
+       ]
+      },
+      "edit": {
+       "state": "shown",
+       "evidence": [
+        "0327",
+        "0362",
+        "0386",
+        "0422"
+       ]
+      },
+      "create": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "render": {
+       "state": "not tested",
+       "evidence": []
+      }
+     }
+    },
+    "Numbers": {
+     "applies": "no",
+     "releases": [],
+     "capabilities": {
+      "read": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "edit": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "create": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "render": {
+       "state": "not applicable",
+       "evidence": []
+      }
+     }
+    },
+    "Keynote": {
+     "applies": "no",
+     "releases": [],
+     "capabilities": {
+      "read": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "edit": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "create": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "render": {
+       "state": "not applicable",
+       "evidence": []
+      }
+     }
+    }
+   },
+   "experiments": [
+    "0016",
+    "0019",
+    "0238",
+    "0239",
+    "0327",
+    "0362",
+    "0386",
+    "0422"
+   ]
+  },
+  {
+   "id": "pages.columns",
+   "feature": "Text columns",
+   "owner": 8,
+   "owner_url": "https://github.com/alehel/iwork-format/issues/8",
+   "spec": "spec/pages.html#page-setup",
+   "page": "spec/features.html#feature-pages-columns",
+   "formats": {
+    "Pages": {
+     "applies": "yes",
+     "releases": [
+      "15.4"
+     ],
+     "capabilities": {
+      "read": {
+       "state": "shown",
+       "evidence": [
+        "0254"
+       ]
+      },
+      "edit": {
+       "state": "shown",
+       "evidence": [
+        "0324"
+       ]
+      },
+      "create": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "render": {
+       "state": "not tested",
+       "evidence": []
+      }
+     }
+    },
+    "Numbers": {
+     "applies": "no",
+     "releases": [],
+     "capabilities": {
+      "read": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "edit": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "create": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "render": {
+       "state": "not applicable",
+       "evidence": []
+      }
+     }
+    },
+    "Keynote": {
+     "applies": "no",
+     "releases": [],
+     "capabilities": {
+      "read": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "edit": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "create": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "render": {
+       "state": "not applicable",
+       "evidence": []
+      }
+     }
+    }
+   },
+   "experiments": [
+    "0254",
+    "0324"
+   ]
+  },
+  {
+   "id": "pages.page-layout",
+   "feature": "Page layout documents, without body text, and page templates",
+   "owner": 16,
+   "owner_url": "https://github.com/alehel/iwork-format/issues/16",
+   "spec": "spec/pages.html#page-setup",
+   "page": "spec/features.html#feature-pages-page-layout",
+   "formats": {
+    "Pages": {
+     "applies": "yes",
+     "releases": [
+      "15.4"
+     ],
+     "capabilities": {
+      "read": {
+       "state": "shown",
+       "evidence": [
+        "0156",
+        "0240"
+       ]
+      },
+      "edit": {
+       "state": "shown",
+       "evidence": [
+        "0419"
+       ]
+      },
+      "create": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "render": {
+       "state": "not tested",
+       "evidence": []
+      }
+     }
+    },
+    "Numbers": {
+     "applies": "no",
+     "releases": [],
+     "capabilities": {
+      "read": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "edit": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "create": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "render": {
+       "state": "not applicable",
+       "evidence": []
+      }
+     }
+    },
+    "Keynote": {
+     "applies": "no",
+     "releases": [],
+     "capabilities": {
+      "read": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "edit": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "create": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "render": {
+       "state": "not applicable",
+       "evidence": []
+      }
+     }
+    }
+   },
+   "experiments": [
+    "0156",
+    "0240",
+    "0419"
+   ]
+  },
+  {
+   "id": "pages.floating-objects",
+   "feature": "Objects on the page or in the text, text wrap and stacking order",
+   "owner": 12,
+   "owner_url": "https://github.com/alehel/iwork-format/issues/12",
+   "spec": "spec/drawables.html#on-the-page-or-in-the-text",
+   "page": "spec/features.html#feature-pages-floating-objects",
+   "formats": {
+    "Pages": {
+     "applies": "yes",
+     "releases": [
+      "15.4"
+     ],
+     "capabilities": {
+      "read": {
+       "state": "shown",
+       "evidence": [
+        "0052"
+       ]
+      },
+      "edit": {
+       "state": "shown",
+       "evidence": [
+        "0423",
+        "0424",
+        "0425"
+       ]
+      },
+      "create": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "render": {
+       "state": "not tested",
+       "evidence": []
+      }
+     }
+    },
+    "Numbers": {
+     "applies": "no",
+     "releases": [],
+     "capabilities": {
+      "read": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "edit": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "create": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "render": {
+       "state": "not applicable",
+       "evidence": []
+      }
+     }
+    },
+    "Keynote": {
+     "applies": "no",
+     "releases": [],
+     "capabilities": {
+      "read": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "edit": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "create": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "render": {
+       "state": "not applicable",
+       "evidence": []
+      }
+     }
+    }
+   },
+   "experiments": [
+    "0052",
+    "0423",
+    "0424",
+    "0425"
+   ]
+  },
+  {
+   "id": "tables.cells",
+   "feature": "Cell storage: tiles, rows and the kinds of value",
+   "owner": 10,
+   "owner_url": "https://github.com/alehel/iwork-format/issues/10",
+   "spec": "spec/tables.html#cells",
+   "page": "spec/features.html#feature-tables-cells",
+   "formats": {
+    "Pages": {
+     "applies": "yes",
+     "releases": [
+      "15.4"
+     ],
+     "capabilities": {
+      "read": {
+       "state": "shown",
+       "evidence": [
+        "0020",
+        "0021",
+        "0131",
+        "0138"
+       ]
+      },
+      "edit": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "create": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "render": {
+       "state": "not tested",
+       "evidence": []
+      }
+     }
+    },
+    "Numbers": {
+     "applies": "yes",
+     "releases": [
+      "15.4"
+     ],
+     "capabilities": {
+      "read": {
+       "state": "shown",
+       "evidence": [
+        "0026",
+        "0030",
+        "0031",
+        "0063",
+        "0113",
+        "0114",
+        "0115",
+        "0116",
+        "0117",
+        "0118",
+        "0174",
+        "0176"
+       ]
+      },
+      "edit": {
+       "state": "shown",
+       "evidence": [
+        "0290",
+        "0306",
+        "0337",
+        "0437"
+       ]
+      },
+      "create": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "render": {
+       "state": "not tested",
+       "evidence": []
+      }
+     }
+    },
+    "Keynote": {
+     "applies": "yes",
+     "releases": [
+      "15.4"
+     ],
+     "capabilities": {
+      "read": {
+       "state": "shown",
+       "evidence": [
+        "0134"
+       ]
+      },
+      "edit": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "create": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "render": {
+       "state": "not tested",
+       "evidence": []
+      }
+     }
+    }
+   },
+   "experiments": [
+    "0020",
+    "0021",
+    "0026",
+    "0030",
+    "0031",
+    "0063",
+    "0113",
+    "0114",
+    "0115",
+    "0116",
+    "0117",
+    "0118",
+    "0131",
+    "0134",
+    "0138",
+    "0174",
+    "0176",
+    "0290",
+    "0306",
+    "0337",
+    "0437"
+   ]
+  },
+  {
+   "id": "tables.size",
+   "feature": "Rows and columns: their number, sizes and identity",
+   "owner": 10,
+   "owner_url": "https://github.com/alehel/iwork-format/issues/10",
+   "spec": "spec/tables.html#the-table-models-storage",
+   "page": "spec/features.html#feature-tables-size",
+   "formats": {
+    "Pages": {
+     "applies": "yes",
+     "releases": [],
+     "capabilities": {
+      "read": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "edit": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "create": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "render": {
+       "state": "not tested",
+       "evidence": []
+      }
+     }
+    },
+    "Numbers": {
+     "applies": "yes",
+     "releases": [
+      "15.4"
+     ],
+     "capabilities": {
+      "read": {
+       "state": "shown",
+       "evidence": [
+        "0045",
+        "0059",
+        "0120",
+        "0123",
+        "0182"
+       ]
+      },
+      "edit": {
+       "state": "shown",
+       "evidence": [
+        "0308",
+        "0364",
+        "0365"
+       ]
+      },
+      "create": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "render": {
+       "state": "not tested",
+       "evidence": []
+      }
+     }
+    },
+    "Keynote": {
+     "applies": "yes",
+     "releases": [],
+     "capabilities": {
+      "read": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "edit": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "create": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "render": {
+       "state": "not tested",
+       "evidence": []
+      }
+     }
+    }
+   },
+   "experiments": [
+    "0045",
+    "0059",
+    "0120",
+    "0123",
+    "0182",
+    "0308",
+    "0364",
+    "0365"
+   ]
+  },
+  {
+   "id": "tables.merges",
+   "feature": "Merged cells",
+   "owner": 10,
+   "owner_url": "https://github.com/alehel/iwork-format/issues/10",
+   "spec": "spec/tables.html#merged-cells",
+   "page": "spec/features.html#feature-tables-merges",
+   "formats": {
+    "Pages": {
+     "applies": "yes",
+     "releases": [
+      "15.4"
+     ],
+     "capabilities": {
+      "read": {
+       "state": "shown",
+       "evidence": [
+        "0133"
+       ]
+      },
+      "edit": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "create": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "render": {
+       "state": "not tested",
+       "evidence": []
+      }
+     }
+    },
+    "Numbers": {
+     "applies": "yes",
+     "releases": [
+      "15.4"
+     ],
+     "capabilities": {
+      "read": {
+       "state": "shown",
+       "evidence": [
+        "0044"
+       ]
+      },
+      "edit": {
+       "state": "shown",
+       "evidence": [
+        "0382",
+        "0426"
+       ]
+      },
+      "create": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "render": {
+       "state": "not tested",
+       "evidence": []
+      }
+     }
+    },
+    "Keynote": {
+     "applies": "unverified",
+     "releases": [],
+     "capabilities": {
+      "read": {
+       "state": "not checked",
+       "evidence": []
+      },
+      "edit": {
+       "state": "not checked",
+       "evidence": []
+      },
+      "create": {
+       "state": "not checked",
+       "evidence": []
+      },
+      "render": {
+       "state": "not checked",
+       "evidence": []
+      }
+     }
+    }
+   },
+   "experiments": [
+    "0044",
+    "0133",
+    "0382",
+    "0426"
+   ]
+  },
+  {
+   "id": "tables.headers",
+   "feature": "Header rows and columns, footer rows, freezing and repeating them",
+   "owner": 10,
+   "owner_url": "https://github.com/alehel/iwork-format/issues/10",
+   "spec": "spec/tables.html#cells",
+   "page": "spec/features.html#feature-tables-headers",
+   "formats": {
+    "Pages": {
+     "applies": "yes",
+     "releases": [
+      "15.4"
+     ],
+     "capabilities": {
+      "read": {
+       "state": "shown",
+       "evidence": [
+        "0136",
+        "0246"
+       ]
+      },
+      "edit": {
+       "state": "shown",
+       "evidence": [
+        "0402"
+       ]
+      },
+      "create": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "render": {
+       "state": "not tested",
+       "evidence": []
+      }
+     }
+    },
+    "Numbers": {
+     "applies": "yes",
+     "releases": [
+      "15.4"
+     ],
+     "capabilities": {
+      "read": {
+       "state": "shown",
+       "evidence": [
+        "0060",
+        "0125",
+        "0183",
+        "0184"
+       ]
+      },
+      "edit": {
+       "state": "shown",
+       "evidence": [
+        "0301",
+        "0401"
+       ]
+      },
+      "create": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "render": {
+       "state": "not tested",
+       "evidence": []
+      }
+     }
+    },
+    "Keynote": {
+     "applies": "yes",
+     "releases": [],
+     "capabilities": {
+      "read": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "edit": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "create": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "render": {
+       "state": "not tested",
+       "evidence": []
+      }
+     }
+    }
+   },
+   "experiments": [
+    "0060",
+    "0125",
+    "0136",
+    "0183",
+    "0184",
+    "0246",
+    "0301",
+    "0401",
+    "0402"
+   ]
+  },
+  {
+   "id": "tables.formats",
+   "feature": "Value formats: number, currency, percentage, date, duration, fraction and others",
+   "owner": 18,
+   "owner_url": "https://github.com/alehel/iwork-format/issues/18",
+   "spec": "spec/tables.html#formats",
+   "page": "spec/features.html#feature-tables-formats",
+   "formats": {
+    "Pages": {
+     "applies": "yes",
+     "releases": [],
+     "capabilities": {
+      "read": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "edit": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "create": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "render": {
+       "state": "not tested",
+       "evidence": []
+      }
+     }
+    },
+    "Numbers": {
+     "applies": "yes",
+     "releases": [
+      "15.4"
+     ],
+     "capabilities": {
+      "read": {
+       "state": "shown",
+       "evidence": [
+        "0036",
+        "0181",
+        "0323"
+       ]
+      },
+      "edit": {
+       "state": "shown",
+       "evidence": [
+        "0307",
+        "0339",
+        "0340",
+        "0341",
+        "0342",
+        "0343"
+       ]
+      },
+      "create": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "render": {
+       "state": "not tested",
+       "evidence": []
+      }
+     }
+    },
+    "Keynote": {
+     "applies": "yes",
+     "releases": [
+      "15.4"
+     ],
+     "capabilities": {
+      "read": {
+       "state": "shown",
+       "evidence": [
+        "0137"
+       ]
+      },
+      "edit": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "create": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "render": {
+       "state": "not tested",
+       "evidence": []
+      }
+     }
+    }
+   },
+   "experiments": [
+    "0036",
+    "0137",
+    "0181",
+    "0307",
+    "0323",
+    "0339",
+    "0340",
+    "0341",
+    "0342",
+    "0343"
+   ]
+  },
+  {
+   "id": "tables.formulas",
+   "feature": "Formulas: references, operators and functions",
+   "owner": 18,
+   "owner_url": "https://github.com/alehel/iwork-format/issues/18",
+   "spec": "spec/tables.html#formulas",
+   "page": "spec/features.html#feature-tables-formulas",
+   "formats": {
+    "Pages": {
+     "applies": "yes",
+     "releases": [
+      "15.4"
+     ],
+     "capabilities": {
+      "read": {
+       "state": "shown",
+       "evidence": [
+        "0132"
+       ]
+      },
+      "edit": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "create": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "render": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "calculate": {
+       "state": "not tested",
+       "evidence": []
+      }
+     }
+    },
+    "Numbers": {
+     "applies": "yes",
+     "releases": [
+      "15.4"
+     ],
+     "capabilities": {
+      "read": {
+       "state": "shown",
+       "evidence": [
+        "0035",
+        "0064",
+        "0065",
+        "0066",
+        "0078",
+        "0103",
+        "0104",
+        "0105",
+        "0106",
+        "0107",
+        "0108",
+        "0109",
+        "0110",
+        "0111",
+        "0112",
+        "0121",
+        "0175",
+        "0223",
+        "0248",
+        "0265",
+        "0316"
+       ]
+      },
+      "edit": {
+       "state": "shown",
+       "evidence": [
+        "0315",
+        "0370",
+        "0371"
+       ]
+      },
+      "create": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "render": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "calculate": {
+       "state": "not tested",
+       "evidence": []
+      }
+     }
+    },
+    "Keynote": {
+     "applies": "yes",
+     "releases": [
+      "15.4"
+     ],
+     "capabilities": {
+      "read": {
+       "state": "shown",
+       "evidence": [
+        "0135"
+       ]
+      },
+      "edit": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "create": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "render": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "calculate": {
+       "state": "not tested",
+       "evidence": []
+      }
+     }
+    }
+   },
+   "experiments": [
+    "0035",
+    "0064",
+    "0065",
+    "0066",
+    "0078",
+    "0103",
+    "0104",
+    "0105",
+    "0106",
+    "0107",
+    "0108",
+    "0109",
+    "0110",
+    "0111",
+    "0112",
+    "0121",
+    "0132",
+    "0135",
+    "0175",
+    "0223",
+    "0248",
+    "0265",
+    "0315",
+    "0316",
+    "0370",
+    "0371"
+   ]
+  },
+  {
+   "id": "tables.cell-styles",
+   "feature": "Cell fill, text style, alignment and wrap",
+   "owner": 11,
+   "owner_url": "https://github.com/alehel/iwork-format/issues/11",
+   "spec": "spec/tables.html#cells",
+   "page": "spec/features.html#feature-tables-cell-styles",
+   "formats": {
+    "Pages": {
+     "applies": "yes",
+     "releases": [],
+     "capabilities": {
+      "read": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "edit": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "create": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "render": {
+       "state": "not tested",
+       "evidence": []
+      }
+     }
+    },
+    "Numbers": {
+     "applies": "yes",
+     "releases": [
+      "15.4"
+     ],
+     "capabilities": {
+      "read": {
+       "state": "shown",
+       "evidence": [
+        "0043",
+        "0061",
+        "0062"
+       ]
+      },
+      "edit": {
+       "state": "shown",
+       "evidence": [
+        "0309",
+        "0313"
+       ]
+      },
+      "create": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "render": {
+       "state": "not tested",
+       "evidence": []
+      }
+     }
+    },
+    "Keynote": {
+     "applies": "yes",
+     "releases": [],
+     "capabilities": {
+      "read": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "edit": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "create": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "render": {
+       "state": "not tested",
+       "evidence": []
+      }
+     }
+    }
+   },
+   "experiments": [
+    "0043",
+    "0061",
+    "0062",
+    "0309",
+    "0313"
+   ]
+  },
+  {
+   "id": "tables.rich-text-cells",
+   "feature": "Cells holding text with mixed formatting",
+   "owner": 11,
+   "owner_url": "https://github.com/alehel/iwork-format/issues/11",
+   "spec": "spec/tables.html#cells",
+   "page": "spec/features.html#feature-tables-rich-text-cells",
+   "formats": {
+    "Pages": {
+     "applies": "yes",
+     "releases": [],
+     "capabilities": {
+      "read": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "edit": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "create": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "render": {
+       "state": "not tested",
+       "evidence": []
+      }
+     }
+    },
+    "Numbers": {
+     "applies": "yes",
+     "releases": [],
+     "capabilities": {
+      "read": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "edit": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "create": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "render": {
+       "state": "not tested",
+       "evidence": []
+      }
+     }
+    },
+    "Keynote": {
+     "applies": "yes",
+     "releases": [],
+     "capabilities": {
+      "read": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "edit": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "create": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "render": {
+       "state": "not tested",
+       "evidence": []
+      }
+     }
+    }
+   },
+   "experiments": []
+  },
+  {
+   "id": "tables.table-styles",
+   "feature": "Table names, titles and captions, alternating rows, gridlines and borders",
+   "owner": 11,
+   "owner_url": "https://github.com/alehel/iwork-format/issues/11",
+   "spec": "spec/tables.html#cells",
+   "page": "spec/features.html#feature-tables-table-styles",
+   "formats": {
+    "Pages": {
+     "applies": "yes",
+     "releases": [
+      "15.4"
+     ],
+     "capabilities": {
+      "read": {
+       "state": "shown",
+       "evidence": [
+        "0273",
+        "0274"
+       ]
+      },
+      "edit": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "create": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "render": {
+       "state": "not tested",
+       "evidence": []
+      }
+     }
+    },
+    "Numbers": {
+     "applies": "yes",
+     "releases": [
+      "15.4"
+     ],
+     "capabilities": {
+      "read": {
+       "state": "shown",
+       "evidence": [
+        "0122",
+        "0230",
+        "0231",
+        "0232",
+        "0233",
+        "0234",
+        "0235"
+       ]
+      },
+      "edit": {
+       "state": "shown",
+       "evidence": [
+        "0344",
+        "0345"
+       ]
+      },
+      "create": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "render": {
+       "state": "not tested",
+       "evidence": []
+      }
+     }
+    },
+    "Keynote": {
+     "applies": "yes",
+     "releases": [],
+     "capabilities": {
+      "read": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "edit": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "create": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "render": {
+       "state": "not tested",
+       "evidence": []
+      }
+     }
+    }
+   },
+   "experiments": [
+    "0122",
+    "0230",
+    "0231",
+    "0232",
+    "0233",
+    "0234",
+    "0235",
+    "0273",
+    "0274",
+    "0344",
+    "0345"
+   ]
+  },
+  {
+   "id": "tables.controls",
+   "feature": "Checkboxes, star ratings, sliders, steppers and pop-up menus",
+   "owner": 46,
+   "owner_url": "https://github.com/alehel/iwork-format/issues/46",
+   "spec": "spec/tables.html#formats",
+   "page": "spec/features.html#feature-tables-controls",
+   "formats": {
+    "Pages": {
+     "applies": "unverified",
+     "releases": [],
+     "capabilities": {
+      "read": {
+       "state": "not checked",
+       "evidence": []
+      },
+      "edit": {
+       "state": "not checked",
+       "evidence": []
+      },
+      "create": {
+       "state": "not checked",
+       "evidence": []
+      },
+      "render": {
+       "state": "not checked",
+       "evidence": []
+      }
+     }
+    },
+    "Numbers": {
+     "applies": "yes",
+     "releases": [
+      "15.4"
+     ],
+     "capabilities": {
+      "read": {
+       "state": "shown",
+       "evidence": [
+        "0169",
+        "0170",
+        "0171",
+        "0172",
+        "0173"
+       ]
+      },
+      "edit": {
+       "state": "shown",
+       "evidence": [
+        "0338"
+       ]
+      },
+      "create": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "render": {
+       "state": "not tested",
+       "evidence": []
+      }
+     }
+    },
+    "Keynote": {
+     "applies": "unverified",
+     "releases": [],
+     "capabilities": {
+      "read": {
+       "state": "not checked",
+       "evidence": []
+      },
+      "edit": {
+       "state": "not checked",
+       "evidence": []
+      },
+      "create": {
+       "state": "not checked",
+       "evidence": []
+      },
+      "render": {
+       "state": "not checked",
+       "evidence": []
+      }
+     }
+    }
+   },
+   "experiments": [
+    "0169",
+    "0170",
+    "0171",
+    "0172",
+    "0173",
+    "0338"
+   ]
+  },
+  {
+   "id": "tables.sorting-hidden",
+   "feature": "Sorting, and hidden rows and columns",
+   "owner": 46,
+   "owner_url": "https://github.com/alehel/iwork-format/issues/46",
+   "spec": "spec/tables.html#rows-in-a-tile",
+   "page": "spec/features.html#feature-tables-sorting-hidden",
+   "formats": {
+    "Pages": {
+     "applies": "unverified",
+     "releases": [],
+     "capabilities": {
+      "read": {
+       "state": "not checked",
+       "evidence": []
+      },
+      "edit": {
+       "state": "not checked",
+       "evidence": []
+      },
+      "create": {
+       "state": "not checked",
+       "evidence": []
+      },
+      "render": {
+       "state": "not checked",
+       "evidence": []
+      }
+     }
+    },
+    "Numbers": {
+     "applies": "yes",
+     "releases": [
+      "15.4"
+     ],
+     "capabilities": {
+      "read": {
+       "state": "shown",
+       "evidence": [
+        "0119"
+       ]
+      },
+      "edit": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "create": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "render": {
+       "state": "not tested",
+       "evidence": []
+      }
+     }
+    },
+    "Keynote": {
+     "applies": "unverified",
+     "releases": [],
+     "capabilities": {
+      "read": {
+       "state": "not checked",
+       "evidence": []
+      },
+      "edit": {
+       "state": "not checked",
+       "evidence": []
+      },
+      "create": {
+       "state": "not checked",
+       "evidence": []
+      },
+      "render": {
+       "state": "not checked",
+       "evidence": []
+      }
+     }
+    }
+   },
+   "experiments": [
+    "0119"
+   ]
+  },
+  {
+   "id": "tables.conditional-highlighting",
+   "feature": "Conditional highlighting rules",
+   "owner": 30,
+   "owner_url": "https://github.com/alehel/iwork-format/issues/30",
+   "spec": "spec/numbers.html#conditional-highlighting",
+   "page": "spec/features.html#feature-tables-conditional-highlighting",
+   "formats": {
+    "Pages": {
+     "applies": "unverified",
+     "releases": [],
+     "capabilities": {
+      "read": {
+       "state": "not checked",
+       "evidence": []
+      },
+      "edit": {
+       "state": "not checked",
+       "evidence": []
+      },
+      "create": {
+       "state": "not checked",
+       "evidence": []
+      },
+      "render": {
+       "state": "not checked",
+       "evidence": []
+      },
+      "calculate": {
+       "state": "not checked",
+       "evidence": []
+      }
+     }
+    },
+    "Numbers": {
+     "applies": "yes",
+     "releases": [
+      "15.4"
+     ],
+     "capabilities": {
+      "read": {
+       "state": "shown",
+       "evidence": [
+        "0259",
+        "0267",
+        "0280"
+       ]
+      },
+      "edit": {
+       "state": "shown",
+       "evidence": [
+        "0453",
+        "0454",
+        "0455"
+       ]
+      },
+      "create": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "render": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "calculate": {
+       "state": "not tested",
+       "evidence": []
+      }
+     }
+    },
+    "Keynote": {
+     "applies": "unverified",
+     "releases": [],
+     "capabilities": {
+      "read": {
+       "state": "not checked",
+       "evidence": []
+      },
+      "edit": {
+       "state": "not checked",
+       "evidence": []
+      },
+      "create": {
+       "state": "not checked",
+       "evidence": []
+      },
+      "render": {
+       "state": "not checked",
+       "evidence": []
+      },
+      "calculate": {
+       "state": "not checked",
+       "evidence": []
+      }
+     }
+    }
+   },
+   "experiments": [
+    "0259",
+    "0267",
+    "0280",
+    "0453",
+    "0454",
+    "0455"
+   ]
+  },
+  {
+   "id": "numbers.sheets",
+   "feature": "Sheets, the tables and objects on them, and their order",
+   "owner": 28,
+   "owner_url": "https://github.com/alehel/iwork-format/issues/28",
+   "spec": "spec/numbers.html#from-the-root-to-a-tables-cells",
+   "page": "spec/features.html#feature-numbers-sheets",
+   "formats": {
+    "Pages": {
+     "applies": "no",
+     "releases": [],
+     "capabilities": {
+      "read": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "edit": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "create": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "render": {
+       "state": "not applicable",
+       "evidence": []
+      }
+     }
+    },
+    "Numbers": {
+     "applies": "yes",
+     "releases": [
+      "15.4"
+     ],
+     "capabilities": {
+      "read": {
+       "state": "shown",
+       "evidence": [
+        "0037",
+        "0047",
+        "0124",
+        "0126"
+       ]
+      },
+      "edit": {
+       "state": "shown",
+       "evidence": [
+        "0416",
+        "0417",
+        "0418"
+       ]
+      },
+      "create": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "render": {
+       "state": "not tested",
+       "evidence": []
+      }
+     }
+    },
+    "Keynote": {
+     "applies": "no",
+     "releases": [],
+     "capabilities": {
+      "read": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "edit": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "create": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "render": {
+       "state": "not applicable",
+       "evidence": []
+      }
+     }
+    }
+   },
+   "experiments": [
+    "0037",
+    "0047",
+    "0124",
+    "0126",
+    "0416",
+    "0417",
+    "0418"
+   ]
+  },
+  {
+   "id": "tables.calculation",
+   "feature": "Calculation owners and recalculation",
+   "owner": 29,
+   "owner_url": "https://github.com/alehel/iwork-format/issues/29",
+   "spec": "spec/numbers.html#the-calculation-engine",
+   "page": "spec/features.html#feature-tables-calculation",
+   "formats": {
+    "Pages": {
+     "applies": "yes",
+     "releases": [
+      "15.4"
+     ],
+     "capabilities": {
+      "read": {
+       "state": "shown",
+       "evidence": [
+        "0293",
+        "0442"
+       ]
+      },
+      "edit": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "create": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "render": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "calculate": {
+       "state": "not tested",
+       "evidence": []
+      }
+     }
+    },
+    "Numbers": {
+     "applies": "yes",
+     "releases": [
+      "15.4"
+     ],
+     "capabilities": {
+      "read": {
+       "state": "shown",
+       "evidence": [
+        "0293",
+        "0442"
+       ]
+      },
+      "edit": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "create": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "render": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "calculate": {
+       "state": "not tested",
+       "evidence": []
+      }
+     }
+    },
+    "Keynote": {
+     "applies": "yes",
+     "releases": [
+      "15.4"
+     ],
+     "capabilities": {
+      "read": {
+       "state": "shown",
+       "evidence": [
+        "0293",
+        "0442"
+       ]
+      },
+      "edit": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "create": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "render": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "calculate": {
+       "state": "not tested",
+       "evidence": []
+      }
+     }
+    }
+   },
+   "experiments": [
+    "0293",
+    "0442"
+   ]
+  },
+  {
+   "id": "numbers.filters",
+   "feature": "Filters",
+   "owner": 30,
+   "owner_url": "https://github.com/alehel/iwork-format/issues/30",
+   "spec": "spec/numbers.html#filters",
+   "page": "spec/features.html#feature-numbers-filters",
+   "formats": {
+    "Pages": {
+     "applies": "no",
+     "releases": [],
+     "capabilities": {
+      "read": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "edit": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "create": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "render": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "calculate": {
+       "state": "not applicable",
+       "evidence": []
+      }
+     }
+    },
+    "Numbers": {
+     "applies": "yes",
+     "releases": [
+      "15.4"
+     ],
+     "capabilities": {
+      "read": {
+       "state": "shown",
+       "evidence": [
+        "0258"
+       ]
+      },
+      "edit": {
+       "state": "shown",
+       "evidence": [
+        "0383",
+        "0391"
+       ]
+      },
+      "create": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "render": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "calculate": {
+       "state": "not tested",
+       "evidence": []
+      }
+     }
+    },
+    "Keynote": {
+     "applies": "no",
+     "releases": [],
+     "capabilities": {
+      "read": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "edit": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "create": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "render": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "calculate": {
+       "state": "not applicable",
+       "evidence": []
+      }
+     }
+    }
+   },
+   "experiments": [
+    "0258",
+    "0383",
+    "0391"
+   ]
+  },
+  {
+   "id": "numbers.categories",
+   "feature": "Categories and their summaries",
+   "owner": 31,
+   "owner_url": "https://github.com/alehel/iwork-format/issues/31",
+   "spec": "spec/numbers.html#categories",
+   "page": "spec/features.html#feature-numbers-categories",
+   "formats": {
+    "Pages": {
+     "applies": "no",
+     "releases": [],
+     "capabilities": {
+      "read": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "edit": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "create": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "render": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "calculate": {
+       "state": "not applicable",
+       "evidence": []
+      }
+     }
+    },
+    "Numbers": {
+     "applies": "yes",
+     "releases": [
+      "15.4"
+     ],
+     "capabilities": {
+      "read": {
+       "state": "shown",
+       "evidence": [
+        "0226"
+       ]
+      },
+      "edit": {
+       "state": "shown",
+       "evidence": [
+        "0411"
+       ]
+      },
+      "create": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "render": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "calculate": {
+       "state": "not tested",
+       "evidence": []
+      }
+     }
+    },
+    "Keynote": {
+     "applies": "no",
+     "releases": [],
+     "capabilities": {
+      "read": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "edit": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "create": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "render": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "calculate": {
+       "state": "not applicable",
+       "evidence": []
+      }
+     }
+    }
+   },
+   "experiments": [
+    "0226",
+    "0411"
+   ]
+  },
+  {
+   "id": "numbers.pivot-tables",
+   "feature": "Pivot tables",
+   "owner": 32,
+   "owner_url": "https://github.com/alehel/iwork-format/issues/32",
+   "spec": "spec/numbers.html#pivot-tables",
+   "page": "spec/features.html#feature-numbers-pivot-tables",
+   "formats": {
+    "Pages": {
+     "applies": "no",
+     "releases": [],
+     "capabilities": {
+      "read": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "edit": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "create": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "render": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "calculate": {
+       "state": "not applicable",
+       "evidence": []
+      }
+     }
+    },
+    "Numbers": {
+     "applies": "yes",
+     "releases": [
+      "15.4"
+     ],
+     "capabilities": {
+      "read": {
+       "state": "shown",
+       "evidence": [
+        "0227",
+        "0279"
+       ]
+      },
+      "edit": {
+       "state": "shown",
+       "evidence": [
+        "0410"
+       ]
+      },
+      "create": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "render": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "calculate": {
+       "state": "not tested",
+       "evidence": []
+      }
+     }
+    },
+    "Keynote": {
+     "applies": "no",
+     "releases": [],
+     "capabilities": {
+      "read": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "edit": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "create": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "render": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "calculate": {
+       "state": "not applicable",
+       "evidence": []
+      }
+     }
+    }
+   },
+   "experiments": [
+    "0227",
+    "0279",
+    "0410"
+   ]
+  },
+  {
+   "id": "numbers.print",
+   "feature": "Print layout, pages and their headers and footers",
+   "owner": 33,
+   "owner_url": "https://github.com/alehel/iwork-format/issues/33",
+   "spec": null,
+   "page": "spec/features.html#feature-numbers-print",
+   "formats": {
+    "Pages": {
+     "applies": "no",
+     "releases": [],
+     "capabilities": {
+      "read": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "edit": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "create": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "render": {
+       "state": "not applicable",
+       "evidence": []
+      }
+     }
+    },
+    "Numbers": {
+     "applies": "yes",
+     "releases": [],
+     "capabilities": {
+      "read": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "edit": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "create": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "render": {
+       "state": "not tested",
+       "evidence": []
+      }
+     }
+    },
+    "Keynote": {
+     "applies": "no",
+     "releases": [],
+     "capabilities": {
+      "read": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "edit": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "create": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "render": {
+       "state": "not applicable",
+       "evidence": []
+      }
+     }
+    }
+   },
+   "experiments": []
+  },
+  {
+   "id": "keynote.slides",
+   "feature": "Slides: their order, copies, skipping and deleting",
+   "owner": 36,
+   "owner_url": "https://github.com/alehel/iwork-format/issues/36",
+   "spec": "spec/keynote.html#slides",
+   "page": "spec/features.html#feature-keynote-slides",
+   "formats": {
+    "Pages": {
+     "applies": "no",
+     "releases": [],
+     "capabilities": {
+      "read": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "edit": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "create": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "render": {
+       "state": "not applicable",
+       "evidence": []
+      }
+     }
+    },
+    "Numbers": {
+     "applies": "no",
+     "releases": [],
+     "capabilities": {
+      "read": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "edit": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "create": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "render": {
+       "state": "not applicable",
+       "evidence": []
+      }
+     }
+    },
+    "Keynote": {
+     "applies": "yes",
+     "releases": [
+      "15.4"
+     ],
+     "capabilities": {
+      "read": {
+       "state": "shown",
+       "evidence": [
+        "0038",
+        "0070",
+        "0159",
+        "0160",
+        "0161",
+        "0162"
+       ]
+      },
+      "edit": {
+       "state": "shown",
+       "evidence": [
+        "0299",
+        "0378"
+       ]
+      },
+      "create": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "render": {
+       "state": "not tested",
+       "evidence": []
+      }
+     }
+    }
+   },
+   "experiments": [
+    "0038",
+    "0070",
+    "0159",
+    "0160",
+    "0161",
+    "0162",
+    "0299",
+    "0378"
+   ]
+  },
+  {
+   "id": "keynote.layouts",
+   "feature": "Slide layouts, masters, themes and placeholders",
+   "owner": 37,
+   "owner_url": "https://github.com/alehel/iwork-format/issues/37",
+   "spec": "spec/keynote.html#slides",
+   "page": "spec/features.html#feature-keynote-layouts",
+   "formats": {
+    "Pages": {
+     "applies": "no",
+     "releases": [],
+     "capabilities": {
+      "read": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "edit": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "create": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "render": {
+       "state": "not applicable",
+       "evidence": []
+      }
+     }
+    },
+    "Numbers": {
+     "applies": "no",
+     "releases": [],
+     "capabilities": {
+      "read": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "edit": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "create": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "render": {
+       "state": "not applicable",
+       "evidence": []
+      }
+     }
+    },
+    "Keynote": {
+     "applies": "yes",
+     "releases": [
+      "15.4"
+     ],
+     "capabilities": {
+      "read": {
+       "state": "shown",
+       "evidence": [
+        "0046",
+        "0101",
+        "0165",
+        "0168",
+        "0243",
+        "0292"
+       ]
+      },
+      "edit": {
+       "state": "shown",
+       "evidence": [
+        "0312",
+        "0379",
+        "0415",
+        "0452"
+       ]
+      },
+      "create": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "render": {
+       "state": "not tested",
+       "evidence": []
+      }
+     }
+    }
+   },
+   "experiments": [
+    "0046",
+    "0101",
+    "0165",
+    "0168",
+    "0243",
+    "0292",
+    "0312",
+    "0379",
+    "0415",
+    "0452"
+   ]
+  },
+  {
+   "id": "keynote.slide-settings",
+   "feature": "Slide size, slide numbers and backgrounds",
+   "owner": 37,
+   "owner_url": "https://github.com/alehel/iwork-format/issues/37",
+   "spec": "spec/keynote.html#slides",
+   "page": "spec/features.html#feature-keynote-slide-settings",
+   "formats": {
+    "Pages": {
+     "applies": "no",
+     "releases": [],
+     "capabilities": {
+      "read": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "edit": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "create": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "render": {
+       "state": "not applicable",
+       "evidence": []
+      }
+     }
+    },
+    "Numbers": {
+     "applies": "no",
+     "releases": [],
+     "capabilities": {
+      "read": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "edit": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "create": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "render": {
+       "state": "not applicable",
+       "evidence": []
+      }
+     }
+    },
+    "Keynote": {
+     "applies": "yes",
+     "releases": [
+      "15.4"
+     ],
+     "capabilities": {
+      "read": {
+       "state": "shown",
+       "evidence": [
+        "0074",
+        "0075"
+       ]
+      },
+      "edit": {
+       "state": "shown",
+       "evidence": [
+        "0314",
+        "0346",
+        "0381"
+       ]
+      },
+      "create": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "render": {
+       "state": "not tested",
+       "evidence": []
+      }
+     }
+    }
+   },
+   "experiments": [
+    "0074",
+    "0075",
+    "0314",
+    "0346",
+    "0381"
+   ]
+  },
+  {
+   "id": "keynote.notes",
+   "feature": "Presenter notes",
+   "owner": 41,
+   "owner_url": "https://github.com/alehel/iwork-format/issues/41",
+   "spec": "spec/keynote.html#slides",
+   "page": "spec/features.html#feature-keynote-notes",
+   "formats": {
+    "Pages": {
+     "applies": "no",
+     "releases": [],
+     "capabilities": {
+      "read": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "edit": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "create": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "render": {
+       "state": "not applicable",
+       "evidence": []
+      }
+     }
+    },
+    "Numbers": {
+     "applies": "no",
+     "releases": [],
+     "capabilities": {
+      "read": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "edit": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "create": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "render": {
+       "state": "not applicable",
+       "evidence": []
+      }
+     }
+    },
+    "Keynote": {
+     "applies": "yes",
+     "releases": [
+      "15.4"
+     ],
+     "capabilities": {
+      "read": {
+       "state": "shown",
+       "evidence": [
+        "0039",
+        "0163"
+       ]
+      },
+      "edit": {
+       "state": "shown",
+       "evidence": [
+        "0305"
+       ]
+      },
+      "create": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "render": {
+       "state": "not tested",
+       "evidence": []
+      }
+     }
+    }
+   },
+   "experiments": [
+    "0039",
+    "0163",
+    "0305"
+   ]
+  },
+  {
+   "id": "keynote.transitions",
+   "feature": "Transitions and Magic Move",
+   "owner": 39,
+   "owner_url": "https://github.com/alehel/iwork-format/issues/39",
+   "spec": "spec/keynote.html#slides",
+   "page": "spec/features.html#feature-keynote-transitions",
+   "formats": {
+    "Pages": {
+     "applies": "no",
+     "releases": [],
+     "capabilities": {
+      "read": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "edit": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "create": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "render": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "play": {
+       "state": "not applicable",
+       "evidence": []
+      }
+     }
+    },
+    "Numbers": {
+     "applies": "no",
+     "releases": [],
+     "capabilities": {
+      "read": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "edit": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "create": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "render": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "play": {
+       "state": "not applicable",
+       "evidence": []
+      }
+     }
+    },
+    "Keynote": {
+     "applies": "yes",
+     "releases": [
+      "15.4"
+     ],
+     "capabilities": {
+      "read": {
+       "state": "shown",
+       "evidence": [
+        "0071",
+        "0091",
+        "0092",
+        "0093",
+        "0094",
+        "0095",
+        "0196",
+        "0347"
+       ]
+      },
+      "edit": {
+       "state": "shown",
+       "evidence": [
+        "0302"
+       ]
+      },
+      "create": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "render": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "play": {
+       "state": "not tested",
+       "evidence": []
+      }
+     }
+    }
+   },
+   "experiments": [
+    "0071",
+    "0091",
+    "0092",
+    "0093",
+    "0094",
+    "0095",
+    "0196",
+    "0302",
+    "0347"
+   ]
+  },
+  {
+   "id": "keynote.builds",
+   "feature": "Builds: in, out and actions, their order and timing",
+   "owner": 38,
+   "owner_url": "https://github.com/alehel/iwork-format/issues/38",
+   "spec": "spec/keynote.html#slide-contents",
+   "page": "spec/features.html#feature-keynote-builds",
+   "formats": {
+    "Pages": {
+     "applies": "no",
+     "releases": [],
+     "capabilities": {
+      "read": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "edit": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "create": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "render": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "play": {
+       "state": "not applicable",
+       "evidence": []
+      }
+     }
+    },
+    "Numbers": {
+     "applies": "no",
+     "releases": [],
+     "capabilities": {
+      "read": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "edit": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "create": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "render": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "play": {
+       "state": "not applicable",
+       "evidence": []
+      }
+     }
+    },
+    "Keynote": {
+     "applies": "yes",
+     "releases": [
+      "15.4"
+     ],
+     "capabilities": {
+      "read": {
+       "state": "shown",
+       "evidence": [
+        "0257",
+        "0263",
+        "0264"
+       ]
+      },
+      "edit": {
+       "state": "shown",
+       "evidence": [
+        "0368",
+        "0448",
+        "0449",
+        "0450"
+       ]
+      },
+      "create": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "render": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "play": {
+       "state": "not tested",
+       "evidence": []
+      }
+     }
+    }
+   },
+   "experiments": [
+    "0257",
+    "0263",
+    "0264",
+    "0368",
+    "0448",
+    "0449",
+    "0450"
+   ]
+  },
+  {
+   "id": "keynote.playback",
+   "feature": "Presentation playback: autoplay, looping, restarting when idle and self-playing",
+   "owner": 41,
+   "owner_url": "https://github.com/alehel/iwork-format/issues/41",
+   "spec": "spec/keynote.html#parts",
+   "page": "spec/features.html#feature-keynote-playback",
+   "formats": {
+    "Pages": {
+     "applies": "no",
+     "releases": [],
+     "capabilities": {
+      "read": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "edit": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "create": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "render": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "play": {
+       "state": "not applicable",
+       "evidence": []
+      }
+     }
+    },
+    "Numbers": {
+     "applies": "no",
+     "releases": [],
+     "capabilities": {
+      "read": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "edit": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "create": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "render": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "play": {
+       "state": "not applicable",
+       "evidence": []
+      }
+     }
+    },
+    "Keynote": {
+     "applies": "yes",
+     "releases": [
+      "15.4"
+     ],
+     "capabilities": {
+      "read": {
+       "state": "shown",
+       "evidence": [
+        "0087",
+        "0088",
+        "0089",
+        "0197",
+        "0272"
+       ]
+      },
+      "edit": {
+       "state": "shown",
+       "evidence": [
+        "0380"
+       ]
+      },
+      "create": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "render": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "play": {
+       "state": "not tested",
+       "evidence": []
+      }
+     }
+    }
+   },
+   "experiments": [
+    "0087",
+    "0088",
+    "0089",
+    "0197",
+    "0272",
+    "0380"
+   ]
+  },
+  {
+   "id": "keynote.dynamic-backgrounds",
+   "feature": "Dynamic backgrounds",
+   "owner": 40,
+   "owner_url": "https://github.com/alehel/iwork-format/issues/40",
+   "spec": "spec/keynote.html#slides",
+   "page": "spec/features.html#feature-keynote-dynamic-backgrounds",
+   "formats": {
+    "Pages": {
+     "applies": "no",
+     "releases": [],
+     "capabilities": {
+      "read": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "edit": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "create": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "render": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "play": {
+       "state": "not applicable",
+       "evidence": []
+      }
+     }
+    },
+    "Numbers": {
+     "applies": "no",
+     "releases": [],
+     "capabilities": {
+      "read": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "edit": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "create": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "render": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "play": {
+       "state": "not applicable",
+       "evidence": []
+      }
+     }
+    },
+    "Keynote": {
+     "applies": "yes",
+     "releases": [
+      "15.4"
+     ],
+     "capabilities": {
+      "read": {
+       "state": "shown",
+       "evidence": [
+        "0271"
+       ]
+      },
+      "edit": {
+       "state": "shown",
+       "evidence": [
+        "0440"
+       ]
+      },
+      "create": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "render": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "play": {
+       "state": "not tested",
+       "evidence": []
+      }
+     }
+    }
+   },
+   "experiments": [
+    "0271",
+    "0440"
+   ]
+  },
+  {
+   "id": "keynote.print",
+   "feature": "Printing, handouts and notes pages",
+   "owner": 49,
+   "owner_url": "https://github.com/alehel/iwork-format/issues/49",
+   "spec": null,
+   "page": "spec/features.html#feature-keynote-print",
+   "formats": {
+    "Pages": {
+     "applies": "no",
+     "releases": [],
+     "capabilities": {
+      "read": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "edit": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "create": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "render": {
+       "state": "not applicable",
+       "evidence": []
+      }
+     }
+    },
+    "Numbers": {
+     "applies": "no",
+     "releases": [],
+     "capabilities": {
+      "read": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "edit": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "create": {
+       "state": "not applicable",
+       "evidence": []
+      },
+      "render": {
+       "state": "not applicable",
+       "evidence": []
+      }
+     }
+    },
+    "Keynote": {
+     "applies": "yes",
+     "releases": [],
+     "capabilities": {
+      "read": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "edit": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "create": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "render": {
+       "state": "not tested",
+       "evidence": []
+      }
+     }
+    }
+   },
+   "experiments": []
+  },
+  {
+   "id": "drawables.geometry",
+   "feature": "Position, size, rotation, flips and locking",
+   "owner": 17,
+   "owner_url": "https://github.com/alehel/iwork-format/issues/17",
+   "spec": "spec/drawables.html#geometry",
+   "page": "spec/features.html#feature-drawables-geometry",
+   "formats": {
+    "Pages": {
+     "applies": "yes",
+     "releases": [
+      "15.4"
+     ],
+     "capabilities": {
+      "read": {
+       "state": "shown",
+       "evidence": [
+        "0055",
+        "0056",
+        "0213",
+        "0214"
+       ]
+      },
+      "edit": {
+       "state": "shown",
+       "evidence": [
+        "0373",
+        "0405"
+       ]
+      },
+      "create": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "render": {
+       "state": "not tested",
+       "evidence": []
+      }
+     }
+    },
+    "Numbers": {
+     "applies": "yes",
+     "releases": [],
+     "capabilities": {
+      "read": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "edit": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "create": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "render": {
+       "state": "not tested",
+       "evidence": []
+      }
+     }
+    },
+    "Keynote": {
+     "applies": "yes",
+     "releases": [
+      "15.4"
+     ],
+     "capabilities": {
+      "read": {
+       "state": "shown",
+       "evidence": [
+        "0097",
+        "0100"
+       ]
+      },
+      "edit": {
+       "state": "shown",
+       "evidence": [
+        "0303"
+       ]
+      },
+      "create": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "render": {
+       "state": "not tested",
+       "evidence": []
+      }
+     }
+    }
+   },
+   "experiments": [
+    "0055",
+    "0056",
+    "0097",
+    "0100",
+    "0213",
+    "0214",
+    "0303",
+    "0373",
+    "0405"
+   ]
+  },
+  {
+   "id": "drawables.images",
+   "feature": "Images, masks, adjustments and removed backgrounds",
+   "owner": 17,
+   "owner_url": "https://github.com/alehel/iwork-format/issues/17",
+   "spec": "spec/drawables.html#images",
+   "page": "spec/features.html#feature-drawables-images",
+   "formats": {
+    "Pages": {
+     "applies": "yes",
+     "releases": [
+      "15.4"
+     ],
+     "capabilities": {
+      "read": {
+       "state": "shown",
+       "evidence": [
+        "0023",
+        "0245",
+        "0284",
+        "0285"
+       ]
+      },
+      "edit": {
+       "state": "shown",
+       "evidence": [
+        "0348",
+        "0390",
+        "0412",
+        "0446",
+        "0447"
+       ]
+      },
+      "create": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "render": {
+       "state": "not tested",
+       "evidence": []
+      }
+     }
+    },
+    "Numbers": {
+     "applies": "yes",
+     "releases": [
+      "15.4"
+     ],
+     "capabilities": {
+      "read": {
+       "state": "shown",
+       "evidence": [
+        "0128"
+       ]
+      },
+      "edit": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "create": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "render": {
+       "state": "not tested",
+       "evidence": []
+      }
+     }
+    },
+    "Keynote": {
+     "applies": "yes",
+     "releases": [
+      "15.4"
+     ],
+     "capabilities": {
+      "read": {
+       "state": "shown",
+       "evidence": [
+        "0069"
+       ]
+      },
+      "edit": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "create": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "render": {
+       "state": "not tested",
+       "evidence": []
+      }
+     }
+    }
+   },
+   "experiments": [
+    "0023",
+    "0069",
+    "0128",
+    "0245",
+    "0284",
+    "0285",
+    "0348",
+    "0390",
+    "0412",
+    "0446",
+    "0447"
+   ]
+  },
+  {
+   "id": "drawables.text-boxes",
+   "feature": "Text boxes",
+   "owner": 12,
+   "owner_url": "https://github.com/alehel/iwork-format/issues/12",
+   "spec": "spec/drawables.html#text-boxes-and-shapes",
+   "page": "spec/features.html#feature-drawables-text-boxes",
+   "formats": {
+    "Pages": {
+     "applies": "yes",
+     "releases": [
+      "15.4"
+     ],
+     "capabilities": {
+      "read": {
+       "state": "shown",
+       "evidence": [
+        "0049"
+       ]
+      },
+      "edit": {
+       "state": "shown",
+       "evidence": [
+        "0349"
+       ]
+      },
+      "create": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "render": {
+       "state": "not tested",
+       "evidence": []
+      }
+     }
+    },
+    "Numbers": {
+     "applies": "yes",
+     "releases": [
+      "15.4"
+     ],
+     "capabilities": {
+      "read": {
+       "state": "shown",
+       "evidence": [
+        "0127"
+       ]
+      },
+      "edit": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "create": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "render": {
+       "state": "not tested",
+       "evidence": []
+      }
+     }
+    },
+    "Keynote": {
+     "applies": "yes",
+     "releases": [
+      "15.4"
+     ],
+     "capabilities": {
+      "read": {
+       "state": "shown",
+       "evidence": [
+        "0068"
+       ]
+      },
+      "edit": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "create": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "render": {
+       "state": "not tested",
+       "evidence": []
+      }
+     }
+    }
+   },
+   "experiments": [
+    "0049",
+    "0068",
+    "0127",
+    "0349"
+   ]
+  },
+  {
+   "id": "drawables.shapes",
+   "feature": "Shapes, their paths and the text in them",
+   "owner": 17,
+   "owner_url": "https://github.com/alehel/iwork-format/issues/17",
+   "spec": "spec/drawables.html#text-boxes-and-shapes",
+   "page": "spec/features.html#feature-drawables-shapes",
+   "formats": {
+    "Pages": {
+     "applies": "yes",
+     "releases": [
+      "15.4"
+     ],
+     "capabilities": {
+      "read": {
+       "state": "shown",
+       "evidence": [
+        "0050",
+        "0217",
+        "0218",
+        "0219",
+        "0220",
+        "0221"
+       ]
+      },
+      "edit": {
+       "state": "shown",
+       "evidence": [
+        "0333"
+       ]
+      },
+      "create": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "render": {
+       "state": "not tested",
+       "evidence": []
+      }
+     }
+    },
+    "Numbers": {
+     "applies": "yes",
+     "releases": [
+      "15.4"
+     ],
+     "capabilities": {
+      "read": {
+       "state": "shown",
+       "evidence": [
+        "0129"
+       ]
+      },
+      "edit": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "create": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "render": {
+       "state": "not tested",
+       "evidence": []
+      }
+     }
+    },
+    "Keynote": {
+     "applies": "yes",
+     "releases": [
+      "15.4"
+     ],
+     "capabilities": {
+      "read": {
+       "state": "shown",
+       "evidence": [
+        "0167"
+       ]
+      },
+      "edit": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "create": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "render": {
+       "state": "not tested",
+       "evidence": []
+      }
+     }
+    }
+   },
+   "experiments": [
+    "0050",
+    "0129",
+    "0167",
+    "0217",
+    "0218",
+    "0219",
+    "0220",
+    "0221",
+    "0333"
+   ]
+  },
+  {
+   "id": "drawables.lines",
+   "feature": "Lines",
+   "owner": 17,
+   "owner_url": "https://github.com/alehel/iwork-format/issues/17",
+   "spec": "spec/drawables.html#text-boxes-and-shapes",
+   "page": "spec/features.html#feature-drawables-lines",
+   "formats": {
+    "Pages": {
+     "applies": "yes",
+     "releases": [
+      "15.4"
+     ],
+     "capabilities": {
+      "read": {
+       "state": "shown",
+       "evidence": [
+        "0051"
+       ]
+      },
+      "edit": {
+       "state": "shown",
+       "evidence": [
+        "0403",
+        "0404"
+       ]
+      },
+      "create": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "render": {
+       "state": "not tested",
+       "evidence": []
+      }
+     }
+    },
+    "Numbers": {
+     "applies": "unverified",
+     "releases": [],
+     "capabilities": {
+      "read": {
+       "state": "not checked",
+       "evidence": []
+      },
+      "edit": {
+       "state": "not checked",
+       "evidence": []
+      },
+      "create": {
+       "state": "not checked",
+       "evidence": []
+      },
+      "render": {
+       "state": "not checked",
+       "evidence": []
+      }
+     }
+    },
+    "Keynote": {
+     "applies": "yes",
+     "releases": [
+      "15.4"
+     ],
+     "capabilities": {
+      "read": {
+       "state": "shown",
+       "evidence": [
+        "0166"
+       ]
+      },
+      "edit": {
+       "state": "shown",
+       "evidence": [
+        "0439"
+       ]
+      },
+      "create": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "render": {
+       "state": "not tested",
+       "evidence": []
+      }
+     }
+    }
+   },
+   "experiments": [
+    "0051",
+    "0166",
+    "0403",
+    "0404",
+    "0439"
+   ]
+  },
+  {
+   "id": "drawables.fills-strokes",
+   "feature": "Fills, gradients, borders, shadows, reflections, opacity and style presets",
+   "owner": 17,
+   "owner_url": "https://github.com/alehel/iwork-format/issues/17",
+   "spec": "spec/drawables.html#text-boxes-and-shapes",
+   "page": "spec/features.html#feature-drawables-fills-strokes",
+   "formats": {
+    "Pages": {
+     "applies": "yes",
+     "releases": [
+      "15.4"
+     ],
+     "capabilities": {
+      "read": {
+       "state": "shown",
+       "evidence": [
+        "0057",
+        "0077",
+        "0215",
+        "0250",
+        "0251",
+        "0260",
+        "0275",
+        "0278",
+        "0283"
+       ]
+      },
+      "edit": {
+       "state": "shown",
+       "evidence": [
+        "0330",
+        "0331",
+        "0332",
+        "0384",
+        "0385",
+        "0413",
+        "0444",
+        "0445"
+       ]
+      },
+      "create": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "render": {
+       "state": "not tested",
+       "evidence": []
+      }
+     }
+    },
+    "Numbers": {
+     "applies": "yes",
+     "releases": [],
+     "capabilities": {
+      "read": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "edit": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "create": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "render": {
+       "state": "not tested",
+       "evidence": []
+      }
+     }
+    },
+    "Keynote": {
+     "applies": "yes",
+     "releases": [
+      "15.4"
+     ],
+     "capabilities": {
+      "read": {
+       "state": "shown",
+       "evidence": [
+        "0098",
+        "0099"
+       ]
+      },
+      "edit": {
+       "state": "shown",
+       "evidence": [
+        "0304"
+       ]
+      },
+      "create": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "render": {
+       "state": "not tested",
+       "evidence": []
+      }
+     }
+    }
+   },
+   "experiments": [
+    "0057",
+    "0077",
+    "0098",
+    "0099",
+    "0215",
+    "0250",
+    "0251",
+    "0260",
+    "0275",
+    "0278",
+    "0283",
+    "0304",
+    "0330",
+    "0331",
+    "0332",
+    "0384",
+    "0385",
+    "0413",
+    "0444",
+    "0445"
+   ]
+  },
+  {
+   "id": "drawables.groups",
+   "feature": "Groups",
+   "owner": 17,
+   "owner_url": "https://github.com/alehel/iwork-format/issues/17",
+   "spec": "spec/drawables.html#groups",
+   "page": "spec/features.html#feature-drawables-groups",
+   "formats": {
+    "Pages": {
+     "applies": "yes",
+     "releases": [
+      "15.4"
+     ],
+     "capabilities": {
+      "read": {
+       "state": "shown",
+       "evidence": [
+        "0216"
+       ]
+      },
+      "edit": {
+       "state": "shown",
+       "evidence": [
+        "0372"
+       ]
+      },
+      "create": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "render": {
+       "state": "not tested",
+       "evidence": []
+      }
+     }
+    },
+    "Numbers": {
+     "applies": "unverified",
+     "releases": [],
+     "capabilities": {
+      "read": {
+       "state": "not checked",
+       "evidence": []
+      },
+      "edit": {
+       "state": "not checked",
+       "evidence": []
+      },
+      "create": {
+       "state": "not checked",
+       "evidence": []
+      },
+      "render": {
+       "state": "not checked",
+       "evidence": []
+      }
+     }
+    },
+    "Keynote": {
+     "applies": "unverified",
+     "releases": [],
+     "capabilities": {
+      "read": {
+       "state": "not checked",
+       "evidence": []
+      },
+      "edit": {
+       "state": "not checked",
+       "evidence": []
+      },
+      "create": {
+       "state": "not checked",
+       "evidence": []
+      },
+      "render": {
+       "state": "not checked",
+       "evidence": []
+      }
+     }
+    }
+   },
+   "experiments": [
+    "0216",
+    "0372"
+   ]
+  },
+  {
+   "id": "drawables.captions",
+   "feature": "Captions and titles of objects",
+   "owner": 17,
+   "owner_url": "https://github.com/alehel/iwork-format/issues/17",
+   "spec": "spec/drawables.html#images",
+   "page": "spec/features.html#feature-drawables-captions",
+   "formats": {
+    "Pages": {
+     "applies": "yes",
+     "releases": [
+      "15.4"
+     ],
+     "capabilities": {
+      "read": {
+       "state": "shown",
+       "evidence": [
+        "0228",
+        "0229"
+       ]
+      },
+      "edit": {
+       "state": "shown",
+       "evidence": [
+        "0374"
+       ]
+      },
+      "create": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "render": {
+       "state": "not tested",
+       "evidence": []
+      }
+     }
+    },
+    "Numbers": {
+     "applies": "yes",
+     "releases": [],
+     "capabilities": {
+      "read": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "edit": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "create": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "render": {
+       "state": "not tested",
+       "evidence": []
+      }
+     }
+    },
+    "Keynote": {
+     "applies": "yes",
+     "releases": [
+      "15.4"
+     ],
+     "capabilities": {
+      "read": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "edit": {
+       "state": "shown",
+       "evidence": [
+        "0430"
+       ]
+      },
+      "create": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "render": {
+       "state": "not tested",
+       "evidence": []
+      }
+     }
+    }
+   },
+   "experiments": [
+    "0228",
+    "0229",
+    "0374",
+    "0430"
+   ]
+  },
+  {
+   "id": "drawables.descriptions",
+   "feature": "Descriptions of images for accessibility",
+   "owner": 45,
+   "owner_url": "https://github.com/alehel/iwork-format/issues/45",
+   "spec": "spec/drawables.html#images",
+   "page": "spec/features.html#feature-drawables-descriptions",
+   "formats": {
+    "Pages": {
+     "applies": "yes",
+     "releases": [
+      "15.4"
+     ],
+     "capabilities": {
+      "read": {
+       "state": "shown",
+       "evidence": [
+        "0177"
+       ]
+      },
+      "edit": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "create": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "render": {
+       "state": "not tested",
+       "evidence": []
+      }
+     }
+    },
+    "Numbers": {
+     "applies": "unverified",
+     "releases": [],
+     "capabilities": {
+      "read": {
+       "state": "not checked",
+       "evidence": []
+      },
+      "edit": {
+       "state": "not checked",
+       "evidence": []
+      },
+      "create": {
+       "state": "not checked",
+       "evidence": []
+      },
+      "render": {
+       "state": "not checked",
+       "evidence": []
+      }
+     }
+    },
+    "Keynote": {
+     "applies": "yes",
+     "releases": [
+      "15.4"
+     ],
+     "capabilities": {
+      "read": {
+       "state": "shown",
+       "evidence": [
+        "0102"
+       ]
+      },
+      "edit": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "create": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "render": {
+       "state": "not tested",
+       "evidence": []
+      }
+     }
+    }
+   },
+   "experiments": [
+    "0102",
+    "0177"
+   ]
+  },
+  {
+   "id": "drawables.media",
+   "feature": "Sounds and movies, their volume and repetition",
+   "owner": 44,
+   "owner_url": "https://github.com/alehel/iwork-format/issues/44",
+   "spec": "spec/drawables.html#sounds-and-movies",
+   "page": "spec/features.html#feature-drawables-media",
+   "formats": {
+    "Pages": {
+     "applies": "yes",
+     "releases": [
+      "15.4"
+     ],
+     "capabilities": {
+      "read": {
+       "state": "shown",
+       "evidence": [
+        "0188"
+       ]
+      },
+      "edit": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "create": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "render": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "play": {
+       "state": "not tested",
+       "evidence": []
+      }
+     }
+    },
+    "Numbers": {
+     "applies": "yes",
+     "releases": [
+      "15.4"
+     ],
+     "capabilities": {
+      "read": {
+       "state": "shown",
+       "evidence": [
+        "0188"
+       ]
+      },
+      "edit": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "create": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "render": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "play": {
+       "state": "not tested",
+       "evidence": []
+      }
+     }
+    },
+    "Keynote": {
+     "applies": "yes",
+     "releases": [
+      "15.4"
+     ],
+     "capabilities": {
+      "read": {
+       "state": "shown",
+       "evidence": [
+        "0185",
+        "0186",
+        "0187"
+       ]
+      },
+      "edit": {
+       "state": "shown",
+       "evidence": [
+        "0363"
+       ]
+      },
+      "create": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "render": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "play": {
+       "state": "not tested",
+       "evidence": []
+      }
+     }
+    }
+   },
+   "experiments": [
+    "0185",
+    "0186",
+    "0187",
+    "0188",
+    "0363"
+   ]
+  },
+  {
+   "id": "charts.types",
+   "feature": "Chart types",
+   "owner": 19,
+   "owner_url": "https://github.com/alehel/iwork-format/issues/19",
+   "spec": "spec/drawables.html#charts",
+   "page": "spec/features.html#feature-charts-types",
+   "formats": {
+    "Pages": {
+     "applies": "yes",
+     "releases": [
+      "15.4"
+     ],
+     "capabilities": {
+      "read": {
+       "state": "shown",
+       "evidence": [
+        "0222",
+        "0224"
+       ]
+      },
+      "edit": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "create": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "render": {
+       "state": "not tested",
+       "evidence": []
+      }
+     }
+    },
+    "Numbers": {
+     "applies": "yes",
+     "releases": [
+      "15.4"
+     ],
+     "capabilities": {
+      "read": {
+       "state": "shown",
+       "evidence": [
+        "0225"
+       ]
+      },
+      "edit": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "create": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "render": {
+       "state": "not tested",
+       "evidence": []
+      }
+     }
+    },
+    "Keynote": {
+     "applies": "yes",
+     "releases": [
+      "15.4"
+     ],
+     "capabilities": {
+      "read": {
+       "state": "shown",
+       "evidence": [
+        "0067",
+        "0079",
+        "0080",
+        "0081",
+        "0082",
+        "0083",
+        "0084",
+        "0085",
+        "0195"
+       ]
+      },
+      "edit": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "create": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "render": {
+       "state": "not tested",
+       "evidence": []
+      }
+     }
+    }
+   },
+   "experiments": [
+    "0067",
+    "0079",
+    "0080",
+    "0081",
+    "0082",
+    "0083",
+    "0084",
+    "0085",
+    "0195",
+    "0222",
+    "0224",
+    "0225"
+   ]
+  },
+  {
+   "id": "charts.data",
+   "feature": "Chart data, its grouping and links to tables",
+   "owner": 19,
+   "owner_url": "https://github.com/alehel/iwork-format/issues/19",
+   "spec": "spec/drawables.html#charts",
+   "page": "spec/features.html#feature-charts-data",
+   "formats": {
+    "Pages": {
+     "applies": "yes",
+     "releases": [],
+     "capabilities": {
+      "read": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "edit": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "create": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "render": {
+       "state": "not tested",
+       "evidence": []
+      }
+     }
+    },
+    "Numbers": {
+     "applies": "yes",
+     "releases": [
+      "15.4"
+     ],
+     "capabilities": {
+      "read": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "edit": {
+       "state": "shown",
+       "evidence": [
+        "0409"
+       ]
+      },
+      "create": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "render": {
+       "state": "not tested",
+       "evidence": []
+      }
+     }
+    },
+    "Keynote": {
+     "applies": "yes",
+     "releases": [
+      "15.4"
+     ],
+     "capabilities": {
+      "read": {
+       "state": "shown",
+       "evidence": [
+        "0086"
+       ]
+      },
+      "edit": {
+       "state": "shown",
+       "evidence": [
+        "0317",
+        "0350"
+       ]
+      },
+      "create": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "render": {
+       "state": "not tested",
+       "evidence": []
+      }
+     }
+    }
+   },
+   "experiments": [
+    "0086",
+    "0317",
+    "0350",
+    "0409"
+   ]
+  },
+  {
+   "id": "charts.styles",
+   "feature": "Chart options, axes and series styles",
+   "owner": 19,
+   "owner_url": "https://github.com/alehel/iwork-format/issues/19",
+   "spec": "spec/drawables.html#charts",
+   "page": "spec/features.html#feature-charts-styles",
+   "formats": {
+    "Pages": {
+     "applies": "yes",
+     "releases": [],
+     "capabilities": {
+      "read": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "edit": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "create": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "render": {
+       "state": "not tested",
+       "evidence": []
+      }
+     }
+    },
+    "Numbers": {
+     "applies": "yes",
+     "releases": [],
+     "capabilities": {
+      "read": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "edit": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "create": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "render": {
+       "state": "not tested",
+       "evidence": []
+      }
+     }
+    },
+    "Keynote": {
+     "applies": "yes",
+     "releases": [
+      "15.4"
+     ],
+     "capabilities": {
+      "read": {
+       "state": "shown",
+       "evidence": [
+        "0295",
+        "0296",
+        "0297"
+       ]
+      },
+      "edit": {
+       "state": "shown",
+       "evidence": [
+        "0298",
+        "0399",
+        "0400",
+        "0456",
+        "0457",
+        "0458",
+        "0459"
+       ]
+      },
+      "create": {
+       "state": "not tested",
+       "evidence": []
+      },
+      "render": {
+       "state": "not tested",
+       "evidence": []
+      }
+     }
+    }
+   },
+   "experiments": [
+    "0295",
+    "0296",
+    "0297",
+    "0298",
+    "0399",
+    "0400",
+    "0456",
+    "0457",
+    "0458",
+    "0459"
+   ]
+  }
+ ]
+}

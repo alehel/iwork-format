@@ -26,6 +26,7 @@ In your first pull request, add this line to its description:
    To open a document from a script, use `open -a "Pages Creator Studio" FILE` and then work on the front document: AppleScript's own `open` is sometimes refused with "the operation is not permitted" ([0302](experiments/0302-writing-a-transition.md)).
 4. Compare the documents with `iwork-probe`, and paste only the part of the output that changed.
 5. Record the Pages and macOS versions. The format can change between releases.
+6. Add the experiment's number to the Evidence column of each feature it shows something about in [`spec/features.md`](spec/features.md). The site works out from its setup which app it ran in and whether it wrote the document; a feature found in an app's interface that the inventory doesn't list yet gets a new row and an owning issue.
 
 ## Publishing the site
 

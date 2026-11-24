@@ -17,6 +17,10 @@ Chapter 1 is confirmed for Keynote and Numbers 15.4 too ([0024](../experiments/0
 
 The spec describes the format as the 15.4 apps write it. Pages, Numbers and Keynote 14.5 and 16.0 write the same format, with a few differences; [releases.md](releases.md) lists the releases checked, how to tell which one saved a document, and every difference.
 
+## Features and scope
+
+[features.md](features.md) defines what full support for each app means: the read, edit, create, render, calculate and play capabilities, the profiles built from them, and the releases and producers in scope. It lists every feature with one owning issue, and shows for each app which capabilities its experiments have shown, worked out from the experiments themselves. Its coverage is also published as [features.json](features.json).
+
 ## Corrected claims and where they hold
 
 Some earlier statements in the spec and guides said more than their experiments showed, or contradicted each other. Each was corrected in place. This table records what each correction rests on in each app, for the 15.4 apps unless a release is named. *Shown* means an experiment in that app supports the corrected statement; *not tested* means nothing has checked it there yet, so the statement is not claimed for that app, even where the type numbers match.

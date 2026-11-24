@@ -282,6 +282,24 @@ table.types td.exps summary { cursor: pointer; color: var(--accent); min-height:
   table.types td.exps summary::after { content: " experiments"; }
 }
 
+/* Feature inventory (spec/features.md) */
+table.features th[scope="row"] { white-space: normal; width: auto; min-width: 13rem; font-weight: normal; }
+table.features th[scope="row"] code { font-weight: 600; }
+table.features .where { display: block; margin-top: .25rem; font-size: .85em; color: var(--fg-soft); }
+table.features td { font-size: .88rem; min-width: 8.5rem; }
+table.features td.owner { min-width: 0; white-space: nowrap; }
+table.features .state.shown { font-weight: 600; }
+table.features .app { display: none; }
+table.features tr:target { background: var(--accent-soft); }
+table.features td.exps summary { cursor: pointer; color: var(--accent); min-height: 24px; white-space: nowrap; }
+/* Narrow screens: each feature becomes a block, with each app's coverage under it, labelled */
+@media (max-width: 60rem) {
+  table.features thead { display: none; }
+  table.features tr { display: block; border-bottom: 1px solid var(--rule); padding: .4rem 0; }
+  table.features th[scope="row"], table.features td { display: block; border: 0; padding: .15rem .4rem; min-width: 0; }
+  table.features .app { display: inline; font-weight: 600; }
+}
+
 /* Tables without a header row (an experiment's setup): the first column names each row */
 tbody th[scope="row"] { background: none; font-weight: 600; white-space: nowrap; width: 1%; }
 

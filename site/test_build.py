@@ -163,6 +163,63 @@ class Experiments(Case):
         self.assertEqual(b.experiment_releases(md), ["15.4"])
 
 
+class Features(Case):
+    HEADER = "<!-- feature-inventory -->\n\n| ID | Feature | Apps | Also | Evidence | Owner | Spec |\n| --- | --- | --- | --- | --- | --- | --- |\n"
+    OWNER = "[#7](https://github.com/alehel/iwork-format/issues/7)"
+
+    def row(self, fid="text.x", apps="Pages, Numbers?", also="—", evidence="0007", owner=OWNER):
+        return f"| `{fid}` | X | {apps} | {also} | {evidence} | {owner} | — |\n"
+
+    def test_apps_come_from_setup_rows(self):
+        self.assertEqual(b.experiment_apps("## Setup\n\n| | |\n| --- | --- |\n| Pages, Keynote | 15.4 |\n| macOS | 26 |\n"),
+                         ["Pages", "Keynote"])
+        md = "## Setup\n\n| | |\n| --- | --- |\n| Apps | Pages and Numbers 14.5 installed; no Keynote there |\n"
+        self.assertEqual(b.experiment_apps(md), ["Pages", "Numbers"])
+        self.assertEqual(b.experiment_apps("## Setup\n\n| | |\n| --- | --- |\n| Tool | `iwork-probe` |\n"), [])
+
+    def test_writer_row_or_name_marks_an_edit(self):
+        self.assertTrue(b.experiment_writes("0999-x.md", "## Setup\n\n| | |\n| --- | --- |\n| Writer | a.py |\n"))
+        self.assertTrue(b.experiment_writes("0999-writing-x.md", ""))
+        self.assertFalse(b.experiment_writes("0999-x.md", "## Setup\n\n| | |\n| --- | --- |\n| Pages | 15.4 |\n"))
+
+    def test_coverage_is_worked_out_from_the_evidence(self):
+        # 0007 read bold in Pages; 0310 wrote a cell's text style in Numbers.
+        self.render(self.HEADER + self.row(apps="Pages, Numbers?, Keynote", evidence="0007, 0310"), "spec/features.md")
+        self.assertEqual(b.PROBLEMS, [])
+        f = b.FEATURES[0]
+        self.assertEqual(b.capability_state(f, "Pages", "read"), "shown")
+        self.assertEqual(b.capability_state(f, "Pages", "edit"), "not tested")
+        self.assertEqual(b.capability_state(f, "Numbers", "edit"), "shown")  # evidence settles the question mark
+        self.assertEqual(b.capability_state(f, "Keynote", "read"), "not tested")
+
+    def test_unchecked_and_absent_apps(self):
+        self.render(self.HEADER + self.row(apps="Pages, Numbers?", evidence="—"), "spec/features.md")
+        f = b.FEATURES[0]
+        self.assertEqual(b.capability_state(f, "Numbers", "read"), "not checked")
+        self.assertEqual(b.capability_state(f, "Keynote", "read"), "not applicable")
+
+    def test_named_capability_and_also_column(self):
+        self.render(self.HEADER + self.row(also="calculate", evidence="calculate 0007"), "spec/features.md")
+        self.assertEqual(b.capability_state(b.FEATURES[0], "Pages", "calculate"), "shown")
+        self.render(self.HEADER + self.row(evidence="play 0007"))
+        self.assertProblem("which the feature doesn't have")
+
+    def test_evidence_from_an_app_left_out_is_reported(self):
+        self.render(self.HEADER + self.row(apps="Numbers", evidence="0007"))
+        self.assertProblem("0007 ran in Pages")
+
+    def test_bad_rows_are_reported(self):
+        self.render(self.HEADER + self.row() + self.row(owner="#7") + self.row(fid="Bad", evidence="12"))
+        self.assertProblem("used twice")
+        self.assertProblem("exactly one issue link")
+        self.assertProblem("isn't area.name")
+        self.assertProblem("isn't an experiment number")
+
+    def test_wrong_columns_are_reported(self):
+        self.render("<!-- feature-inventory -->\n\n| ID | Feature |\n| --- | --- |\n| `a.b` | X |\n")
+        self.assertProblem("feature inventory needs the columns")
+
+
 class RecordTypes(Case):
     def test_forms(self):
         text = "a type-2001 record, types 401, 2022 and 2023, and type 6001"

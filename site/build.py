@@ -40,8 +40,8 @@ CURRENT_VERSION = "15.4"
 SPEC_PAGES = [("README.md", "index.html"), ("container.md", "container.html"), ("text.md", "text.html"),
               ("styles.md", "styles.html"), ("tables.md", "tables.html"), ("drawables.md", "drawables.html"),
               ("pages.md", "pages.html"), ("keynote.md", "keynote.html"), ("numbers.md", "numbers.html"),
-              ("releases.md", "releases.html")]
-GENERATED = {"spec/types.html", "experiments/topics.html", "search.html"}  # pages the build makes without a Markdown source, which Markdown may link to
+              ("releases.md", "releases.html"), ("features.md", "features.html")]
+GENERATED = {"spec/types.html", "experiments/topics.html", "search.html", "spec/features.json"}  # pages the build makes without a Markdown source, which Markdown may link to
 RELEASE_MARK = re.compile(r"\[release: ([^\]]+)\]")
 
 
@@ -165,6 +165,23 @@ def render(md, here, toc=None):
             flush()
             out.append(release_differences(here))
             i += 1
+            continue
+        if line.strip() == "<!-- feature-inventory -->":
+            flush()
+            i += 1
+            while i < len(lines) and not lines[i].strip():
+                i += 1
+            header = [c.strip() for c in lines[i].strip().strip("|").split("|")] if i < len(lines) else []
+            if header != FEATURE_COLUMNS:
+                problem(here, f"the feature inventory needs the columns {' | '.join(FEATURE_COLUMNS)}")
+            i += 2
+            rows = []
+            while i < len(lines) and lines[i].startswith("|"):
+                rows.append([c.strip() for c in lines[i].strip().strip("|").split("|")])
+                if len(rows[-1]) != len(FEATURE_COLUMNS):
+                    problem(here, f"table row has {len(rows[-1])} cells, its header {len(FEATURE_COLUMNS)}: {lines[i][:60]}")
+                i += 1
+            out.append(feature_inventory(rows, here))
             continue
         m = re.match(r"^<!--\s*include:\s*(\S+)\s*-->$", line.strip())
         if m:
@@ -340,6 +357,196 @@ def experiment_releases(md):
     return found
 
 
+# --- Feature inventory -------------------------------------------------------------------------
+
+# spec/features.md lists every feature in one table after `<!-- feature-inventory -->`. The table says
+# which apps have the feature, which experiments are its evidence and which issue owns it; the builder
+# works out from each cited experiment's setup which app and release it ran with and whether it wrote
+# the document, so what the coverage columns say is never typed by hand. It also writes the result to
+# spec/features.json for other tools.
+APPS = ("Pages", "Numbers", "Keynote")
+CAPABILITIES = ("read", "edit", "create", "render")  # every feature has these
+EXTRA_CAPABILITIES = ("calculate", "play")            # a feature has these when its Also column names them
+FEATURE_COLUMNS = ["ID", "Feature", "Apps", "Also", "Evidence", "Owner", "Spec"]
+FEATURE_ID = re.compile(r"^[a-z]+(?:\.[a-z0-9]+(?:-[a-z0-9]+)*)+$")
+EVIDENCE_ITEM = re.compile(rf"^(?:({'|'.join(CAPABILITIES + EXTRA_CAPABILITIES)})\s+)?(\d{{4}})$")
+STATE_TEXT = {"shown": "Shown", "not tested": "Not tested", "not applicable": "Doesn't apply",
+              "not checked": "Not checked whether the app has it"}
+FEATURES = []        # filled by render() from the current spec/features.md, for spec/features.json
+_EXPERIMENT_FILES = {}
+
+
+def experiment_file(number):
+    """The experiment's Markdown file name for a four-digit number, or None."""
+    if not _EXPERIMENT_FILES:
+        for f in os.listdir(os.path.join(ROOT, "experiments")):
+            if re.match(r"^\d{4}-.*\.md$", f):
+                _EXPERIMENT_FILES[f[:4]] = f
+    return _EXPERIMENT_FILES.get(number)
+
+
+def experiment_apps(md):
+    """The apps an experiment ran with, from the Pages, Numbers, Keynote or Apps rows of its setup."""
+    setup = re.search(r"^## Setup\s*$(.*?)(?=^## |\Z)", md, re.M | re.S)
+    md = setup.group(1) if setup else md
+    found = []
+    for m in re.finditer(r"^\|\s*([^|\n]+?)\s*\|([^|\n]*)\|", md, re.M):
+        label, value = m.group(1), m.group(2)
+        if label == "Apps":
+            names = re.split(r"\d", value, maxsplit=1)[0]  # "Pages and Numbers 14.5 ...; no Keynote there"
+        elif re.fullmatch(r"(?:Pages|Numbers|Keynote)(?:,?\s+(?:and\s+)?(?:Pages|Numbers|Keynote))*", label):
+            names = label
+        else:
+            continue
+        found += [a for a in APPS if re.search(rf"\b{a}\b", names) and a not in found]
+    return [a for a in APPS if a in found]
+
+
+def experiment_writes(name, md):
+    """Whether an experiment changed a saved document with the project's writer, rather than only reading one."""
+    setup = re.search(r"^## Setup\s*$(.*?)(?=^## |\Z)", md, re.M | re.S)
+    return "-writing-" in name or bool(setup and re.search(r"^\|\s*Writers?\s*\|", setup.group(1), re.M))
+
+
+def parse_features(rows, here):
+    """The inventory's rows as feature records, reporting anything the coverage can't be worked out from."""
+    features, seen = [], set()
+    for r in rows:
+        if len(r) != len(FEATURE_COLUMNS):
+            continue  # render() has reported the row already
+        fid, name, apps, also, evidence, owner, spec = r
+        fid = fid.strip("`")
+        if not FEATURE_ID.match(fid):
+            problem(here, f"feature ID isn't area.name in lower case: {fid}")
+        if fid in seen:
+            problem(here, f"feature ID used twice: {fid}")
+        seen.add(fid)
+        applies = {a: "no" for a in APPS}
+        for token in [t.strip() for t in apps.split(",") if t.strip()]:
+            if token.rstrip("?") not in APPS:
+                problem(here, f"{fid}: unknown app {token!r}")
+                continue
+            applies[token.rstrip("?")] = "unverified" if token.endswith("?") else "yes"
+        caps = list(CAPABILITIES)
+        for token in [t.strip() for t in also.split(",") if t.strip() not in ("", "—")]:
+            if token not in EXTRA_CAPABILITIES:
+                problem(here, f"{fid}: unknown capability in Also: {token!r}")
+            elif token not in caps:
+                caps.append(token)
+        owners = re.findall(r"\[#(\d+)\]\(https://github\.com/alehel/iwork-format/issues/(\d+)\)", owner)
+        if len(owners) != 1 or owners[0][0] != owners[0][1]:
+            problem(here, f"{fid}: the Owner column needs exactly one issue link, [#N]({REPO}/issues/N)")
+        formats = {a: {"applies": applies[a], "releases": [], "capabilities": {c: [] for c in caps}} for a in APPS}
+        cited = []
+        for token in [t.strip() for t in evidence.split(",") if t.strip() not in ("", "—")]:
+            m = EVIDENCE_ITEM.match(token)
+            f = experiment_file(m.group(2)) if m else None
+            if not f:
+                problem(here, f"{fid}: evidence isn't an experiment number: {token!r}")
+                continue
+            md = read(f"experiments/{f}")
+            cap = m.group(1) or ("edit" if experiment_writes(f, md) else "read")
+            if cap not in caps:
+                problem(here, f"{fid}: evidence for {cap}, which the feature doesn't have: {token}")
+                continue
+            cited.append(f)
+            for a in experiment_apps(md):
+                if applies[a] == "no":
+                    problem(here, f"{fid}: {m.group(2)} ran in {a}, which its Apps column leaves out")
+                    continue
+                applies[a] = formats[a]["applies"] = "yes"
+                if m.group(2) not in formats[a]["capabilities"][cap]:
+                    formats[a]["capabilities"][cap].append(m.group(2))
+                for rel in experiment_releases(md):
+                    if rel not in formats[a]["releases"]:
+                        formats[a]["releases"].append(rel)
+        for a in APPS:
+            formats[a]["releases"].sort(key=version_key)
+        features.append({"id": fid, "name": name, "owner": int(owners[0][0]) if owners else None,
+                         "spec": spec, "capabilities": caps, "formats": formats, "experiments": cited})
+    return features
+
+
+def capability_state(feature, app, cap):
+    fmt = feature["formats"][app]
+    if fmt["applies"] == "no":
+        return "not applicable"
+    if fmt["applies"] == "unverified":
+        return "not checked"
+    return "shown" if fmt["capabilities"][cap] else "not tested"
+
+
+def feature_cell(feature, app):
+    fmt = feature["formats"][app]
+    states = {c: capability_state(feature, app, c) for c in feature["capabilities"]}
+    if fmt["applies"] != "yes":
+        return f'<span class="state">{STATE_TEXT[states["read"]]}</span>'
+    shown = [c for c in feature["capabilities"] if states[c] == "shown"]
+    untested = [c for c in feature["capabilities"] if states[c] == "not tested"]
+    parts = []
+    if shown:
+        parts.append(f'<span class="state shown">Shown: {", ".join(shown)}</span>'
+                     + (f' <span class="release">{html.escape(", ".join(fmt["releases"]))}</span>' if fmt["releases"] else ""))
+    if untested:
+        parts.append(f'<span class="state">Not tested: {", ".join(untested)}</span>')
+    return "<br>".join(parts)
+
+
+def feature_inventory(rows, here):
+    """The inventory table, with each app's coverage worked out from the cited experiments."""
+    features = parse_features(rows, here)
+    if here == "spec/features.md":
+        FEATURES[:] = features
+    out_here = here_out(here)
+    counts = []
+    for a in APPS:
+        has = [f for f in features if f["formats"][a]["applies"] == "yes"]
+        unchecked = sum(1 for f in features if f["formats"][a]["applies"] == "unverified")
+        shown = {c: sum(1 for f in has if f["formats"][a]["capabilities"].get(c)) for c in CAPABILITIES}
+        counts.append(f'<tr><th scope="row">{a}</th><td>{len(has)}</td><td>{unchecked}</td>'
+                      + "".join(f"<td>{shown[c]}</td>" for c in CAPABILITIES) + "</tr>")
+    summary = ('<div class="table"><table><thead><tr><th scope="col">App</th><th scope="col">Has the feature</th>'
+               '<th scope="col">Not checked</th>' + "".join(f'<th scope="col">{c.capitalize()} shown</th>' for c in CAPABILITIES)
+               + "</tr></thead><tbody>" + "".join(counts) + "</tbody></table></div>")
+    body = []
+    for f in features:
+        links = ", ".join(f'<a href="{html.escape(relpath(SITE_PAGES.get("experiments/" + e, "experiments/" + e[:-3] + ".html"), out_here))}">{e[:4]}</a>'
+                          for e in f["experiments"])
+        n = len(f["experiments"])
+        links = (f'<details><summary>{n} experiment{"s" if n != 1 else ""}</summary>{links}</details>' if n else "None yet")
+        owner = f'<a href="{REPO}/issues/{f["owner"]}">#{f["owner"]}</a>' if f["owner"] else ""
+        spec = f'<span class="where">{inline(f["spec"], here)}</span>' if f["spec"] not in ("", "—") else ""
+        body.append(f'<tr id="feature-{html.escape(f["id"].replace(".", "-"))}"><th scope="row"><code>{html.escape(f["id"])}</code> '
+                    f'{inline(f["name"], here)}{spec}</th>'
+                    + "".join(f'<td><span class="app">{a}: </span>{feature_cell(f, a)}</td>' for a in APPS)
+                    + f'<td class="exps">{links}</td><td class="owner"><span class="app">Owner: </span>{owner}</td></tr>')
+    table = ('<div class="table"><table class="features"><thead><tr><th scope="col">Feature</th>'
+             + "".join(f'<th scope="col">{a}</th>' for a in APPS)
+             + '<th scope="col">Evidence</th><th scope="col">Owner</th></tr></thead><tbody>'
+             + "".join(body) + "</tbody></table></div>")
+    return summary + table
+
+
+def features_json():
+    """spec/features.json: the inventory with every capability's state spelled out, for other tools."""
+    out = []
+    for f in FEATURES:
+        formats = {}
+        for a in APPS:
+            fmt = f["formats"][a]
+            formats[a] = {"applies": fmt["applies"], "releases": fmt["releases"],
+                          "capabilities": {c: {"state": capability_state(f, a, c), "evidence": fmt["capabilities"][c]}
+                                           for c in f["capabilities"]}}
+        spec = re.match(r"^\[[^\]]+\]\(([^)]+)\)", f["spec"])
+        out.append({"id": f["id"], "feature": re.sub(r"[`*]", "", f["name"]), "owner": f["owner"],
+                    "owner_url": f"{REPO}/issues/{f['owner']}" if f["owner"] else None,
+                    "spec": "spec/" + link_target(spec.group(1), "spec/features.md") if spec else None,
+                    "page": f"spec/features.html#feature-{f['id'].replace('.', '-')}",
+                    "formats": formats, "experiments": [e[:4] for e in f["experiments"]]})
+    return {"producer": "Apple Pages, Numbers and Keynote for macOS",
+            "states": list(STATE_TEXT), "capabilities": list(CAPABILITIES + EXTRA_CAPABILITIES), "features": out}
+
+
 # --- Record type index -------------------------------------------------------------------------
 
 # "type 6001", "type-6001 record", "types 401, 2022 and 2023", "Type-10012 field"
@@ -360,7 +567,7 @@ def record_types(text):
 
 CHAPTERS = {"README.md": "Layers and status", "container.md": "Container", "text.md": "Text", "styles.md": "Styles",
             "tables.md": "Tables", "drawables.md": "Drawables", "pages.md": "Pages", "keynote.md": "Keynote",
-            "numbers.md": "Numbers"}
+            "numbers.md": "Numbers", "features.md": "Features and scope"}
 
 
 def type_mentions(md):
@@ -695,6 +902,7 @@ NAV = [
     ("Reference", None),
     ("Search", "search.html"),
     ("Record types", "spec/types.html"),
+    ("Features and scope", "spec:features.html"),
     ("Releases", "spec:releases.html"),
     ("Evidence", None),
     ("All experiments", "experiments/index.html"),
@@ -944,10 +1152,13 @@ def main():
             "<div class=\"table\"><table><thead><tr><th>No.</th><th>Experiment</th><th>App release</th></tr></thead><tbody>"
             + "".join(rows) + "</tbody></table></div>")
     page("experiments/index.html", "All experiments", body)
-    chapters = [src for src, _ in SPEC_PAGES if src != "releases.md"]
+    chapters = [src for src, _ in SPEC_PAGES if src not in ("releases.md", "features.md")]
     n_types = types_page(chapters, experiments)
     n_topics = topics_page([src for src in chapters if src != "README.md"], experiments)
     n_search = search_page()
+    with open(os.path.join(OUT, "spec", "features.json"), "w", encoding="utf-8") as f:
+        json.dump(features_json(), f, indent=1, ensure_ascii=False)
+        f.write("\n")
 
     shutil.copy(os.path.join(ROOT, "site", "style.css"), os.path.join(OUT, "style.css"))
     files = os.path.join(ROOT, "site", "files")
@@ -955,7 +1166,7 @@ def main():
         shutil.copytree(files, os.path.join(OUT, "files"))
     open(os.path.join(OUT, ".nojekyll"), "w").close()
     print(f"built {len(experiments) + len(spec_map) + len(guides) + 4} pages into docs/, indexing {n_types} record types, "
-          f"{n_topics} topics and {n_search} search entries")
+          f"{n_topics} topics, {n_search} search entries and {len(FEATURES)} features")
     for here, message in PROBLEMS:
         print(f"markdown: {here}: {message}", file=sys.stderr)
     problems = check_links(OUT)
