@@ -68,7 +68,7 @@ The six encrypted documents were made too; the four Pages ones decrypt with thei
 
 Every document the recipes make comes out of 13.1 with the structure 15.4 gives it, apart from a short list of fields, the radial wipe, and Apple's own templates. 13.1 lacks everything 14.5 lacks, and two fields more (4008.16 and 6001.93). What it has that 15.4 lacks is a language on scripted text, another number for one view-state field, and type-4010 records for some formulas.
 
-A reader of 15.4 documents needs to change nothing to read a 13.1 document, except to accept a missing field 93 on a table model and field 16 on an owner, and a language entry on text 15.4 leaves without one. 13.1's set isn't published with the fixtures yet.
+A reader of 15.4 documents needs to change nothing to read a 13.1 document, except to accept a missing field 93 on a table model and field 16 on an owner, and a language entry on text 15.4 leaves without one. 13.1's set is published with the fixtures under `release/13.1/`, 316 documents of it.
 
 ## Confidence
 
