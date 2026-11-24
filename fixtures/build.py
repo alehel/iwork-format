@@ -1,9 +1,11 @@
 """Collect the experiments' sample documents that can be published, check them, and pack them.
 
-Usage: python3 -I fixtures/build.py OUT.zip
+Usage: python3 -I fixtures/build.py OUT_DIR
 
-Reads the local samples/ folder (gitignored), writes fixtures/INDEX.md (committed) and OUT.zip
-(published as a GitHub release asset). A document is published only if:
+Reads the local samples/ folder (gitignored), writes fixtures/INDEX.md (committed) and, in OUT_DIR,
+one zip per app release, iwork-format-fixtures-RELEASE.zip, holding the documents that release saved
+(published as GitHub release assets; one zip per release keeps each well under the size limit for an
+asset). A document is published only if:
   - it isn't from an experiment on Apple's templates (0090, 0155-0158, 0198, 0199);
   - a Keynote presentation comes from samples/theme/ or samples/release/, made with the project's
     test theme (experiments 0291, 0292, 0473), never from Basic White;
@@ -183,7 +185,13 @@ def problem(path, rel):
     return None
 
 
-def main(out_zip):
+def zip_name(release):
+    return f"iwork-format-fixtures-{release}.zip"
+
+
+def main(out_dir):
+    out_dir = os.path.abspath(out_dir)
+    os.makedirs(out_dir, exist_ok=True)
     os.chdir(ROOT)
     candidates = []
     for d in sorted(os.listdir("samples")):
@@ -208,9 +216,14 @@ def main(out_zip):
             first = open(os.path.join("experiments", f), encoding="utf-8").readline()
             titles[m.group(1)] = (f, first.lstrip("# ").strip())
 
-    with zipfile.ZipFile(out_zip, "w", zipfile.ZIP_STORED) as z:
-        rows = []
+    zips, rows, per_release = {}, [], {}
+    try:
         for rel, _ in kept:
+            release = (saved_by(rel).removeprefix("saved by ") or "15.4")
+            if release not in zips:
+                zips[release] = zipfile.ZipFile(os.path.join(out_dir, zip_name(release)), "w", zipfile.ZIP_STORED)
+            z = zips[release]
+            per_release[release] = per_release.get(release, 0) + 1
             arc = rel.replace("samples/theme/", "keynote/").replace("samples/", "")
             if os.path.isdir(rel):
                 h, size = hashlib.sha256(), 0
@@ -235,11 +248,17 @@ def main(out_zip):
             note = "; ".join(n for n in notes if n)
             rows.append(f"| `{arc}` | [{title}](../experiments/{titles.get(num, (num,))[0]}) | {size:,} | `{digest}` |"
                         + (f" {note} |" if note else " |"))
-        z.write("fixtures/LICENSE.md", "LICENSE.md")
+    finally:
+        for z in zips.values():
+            z.write("fixtures/LICENSE.md", "LICENSE.md")
+            z.close()
+    order = sorted(per_release, key=lambda r: tuple(int(x) for x in r.split(".")), reverse=True)
+    listing = ", ".join(f"`{zip_name(r)}` ({per_release[r]:,} documents)" for r in order)
 
     index = ["# Fixtures", "",
-             "Sample documents from the experiments, for testing readers and writers. They are published as a zip "
-             "attached to the repository's GitHub release `fixtures`, not committed. Built by `python3 -I fixtures/build.py`, "
+             "Sample documents from the experiments, for testing readers and writers. They are published as one zip "
+             "per app release, attached to the repository's GitHub release `fixtures`, not committed: each zip holds the documents that release saved, "
+             f"under the paths listed here. {listing}. Built by `python3 -I fixtures/build.py`, "
              "which leaves out anything from Apple's templates or images, and anything holding a personal name except those whose comments, highlights or tracked changes name the project owner as their author. "
              f"See [LICENSE.md](LICENSE.md).", "",
              f"{len(kept)} documents. Keynote presentations, under `keynote/`, were made with the project's test theme "
@@ -259,7 +278,8 @@ def main(out_zip):
              if why.endswith("see samples/theme/") else why) for rel, why in left]
     index += [f"| `{rel.replace('samples/', '')}` | {why} |" for rel, why in left if rel not in replaced]
     open("fixtures/INDEX.md", "w", encoding="utf-8").write("\n".join(index) + "\n")
-    print(f"{len(kept)} kept, {len(left)} left out, {os.path.getsize(out_zip) / 1e6:.1f} MB")
+    sizes = ", ".join(f"{r}: {per_release[r]} documents, {os.path.getsize(os.path.join(out_dir, zip_name(r))) / 1e6:.1f} MB" for r in order)
+    print(f"{len(kept)} kept, {len(left)} left out; {sizes}")
 
 
 if __name__ == "__main__":
