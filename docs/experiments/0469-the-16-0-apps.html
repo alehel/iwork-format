@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0469: New documents in the 16.0 apps · iWork file format specification</title>
+<meta name="description" content="iWork file format specification">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<a class="skip" href="#page-content">Skip to content</a>
+<header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><form class="search" action="../search.html" role="search"><input type="search" name="q" aria-label="Search the specification" placeholder="Search, e.g. 6001"></form><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
+<p class="wip"><strong>Work in progress.</strong> This specification is incomplete and changes as new experiments run. Each finding says how sure it is: <em>confirmed</em>, <em>likely</em> or <em>unknown</em>. See <a href="../spec/index.html">what each chapter covers so far</a>.</p>
+<div class="layout no-toc">
+<nav class="side" aria-label="Contents"><details open><summary>Contents</summary><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="../guides/anatomy.html">Reading a Pages document</a></li><li><a href="../guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="../guides/writing.html">Writing a document</a></li><li><a href="../guides/samples.html">Sample files</a></li><li class="group">Specification</li><li class="releases-line"><a href="../spec/releases.html">Describes 15.4 · also checked: 16.0, 14.5</a></li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2. Text</a></li><li><a href="../spec/styles.html">3. Styles</a></li><li><a href="../spec/tables.html">4. Tables</a></li><li><a href="../spec/drawables.html">5. Drawables, media and charts</a></li><li class="group">Apps</li><li><a href="../spec/pages.html">Pages</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li class="group">Reference</li><li><a href="../search.html">Search</a></li><li><a href="../spec/types.html">Record types</a></li><li><a href="../spec/releases.html">Releases</a></li><li class="group">Evidence</li><li><a href="index.html">All experiments</a></li><li><a href="topics.html">By topic</a></li></ul></details></nav>
+
+<main id="page-content" tabindex="-1">
+<h1 id="0469-new-documents-in-the-160-apps">0469: New documents in the 16.0 apps<a class="anchor" href="#0469-new-documents-in-the-160-apps" aria-label="Link to this section: 0469: New documents in the 16.0 apps">#</a></h1><p class="ran">App release: <span class="release">16.0</span></p>
+<p><strong>Status:</strong> run</p>
+<p>Pages, Numbers and Keynote updated themselves to 16.0, replacing 14.5. 15.4 isn't installed any more either, so the 16.0 apps can be compared only with the documents 15.4 left. This experiment reruns, unchanged, every recipe that 0461, 0464 and 0466 reran in 14.5, and compares each 16.0 document with the one 15.4 made from the same recipe.</p>
+<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section: Setup">#</a></h2>
+<div class="table"><table><tbody><tr><th scope="row">Apps</th><td>Pages, Numbers and Keynote 16.0 (build <code>M16.0-7052.0.68-2</code>, bundle version 7052.0.68), in Norwegian, installed as "Pages Creator Studio" and so on in <code>/Applications</code>; Spotlight lists no other copy</td></tr><tr><th scope="row">macOS</th><td>26.5.2 (25F84)</td></tr><tr><th scope="row">Date</th><td>2026-11-24</td></tr><tr><th scope="row">Recipes</th><td>Pages and Numbers: 0001, 0002 and 0026 (<a href="0461-new-documents-in-14-5.html">0461</a>), and the 24 of <a href="0464-recipes-rerun-in-14-5.html">0464</a>. Keynote: the 14 of <a href="0466-keynote-14-5.html">0466</a>, with Basic White and <code>IWORK_KEYNOTE_THEME</code> unset. 43 documents in all</td></tr><tr><th scope="row">Compared with</th><td>Each experiment's own 15.4 sample, with [<code>recipes/0461-compare-structure.py</code>](../recipes/0461-compare-structure.py)</td></tr><tr><th scope="row">Script</th><td>The new [<code>recipes/0469-rerun-in-16-0.sh</code>](../recipes/0469-rerun-in-16-0.sh), which runs the recipes and the comparisons</td></tr></tbody></table></div>
+<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section: Recipe">#</a></h2>
+<pre class="lang-bash"><code>bash recipes/0469-rerun-in-16-0.sh samples/0469
+for i in 2 3; do
+  osascript recipes/0044-numbers-merge.applescript &quot;$PWD/samples/0469/0044-merged-run$i.numbers&quot;
+  osascript recipes/0047-numbers-second-table.applescript &quot;$PWD/samples/0469/0047-two-tables-run$i.numbers&quot;
+  osascript recipes/0078-numbers-error.applescript &quot;$PWD/samples/0469/0078-error-run$i.numbers&quot;
+done</code></pre>
+<p>The second step makes three of the Numbers documents twice more, to see whether their calculation engines differ from run to run (see below).</p>
+<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section: Observation">#</a></h2>
+<p>Every recipe ran unchanged, and the 16.0 apps saved every document with no alert. Keynote 0196 ran whole, radial wipe included, and its slides carry the same transition identifiers as the 15.4 presentation's, <code>apple:radial wipe</code> among them.</p>
+<p>In all 43 pairs: the same parts, the same version in header field 2.2 for every record type both releases write, and the same top-level fields for every type but four. The differences, besides UUIDs:</p>
+<div class="table"><table><thead><tr><th scope="col"></th><th scope="col">15.4</th><th scope="col">16.0</th></tr></thead><tbody><tr><td><code>Properties.plist</code> <code>fileFormatVersion</code></td><td><code>26.4.0</code></td><td><code>27.0.1</code>; the same two flags as 15.4</td></tr><tr><td><code>BuildVersionHistory.plist</code></td><td><code>Template: Blank (dev/15.4)</code> (Keynote: <code>21_BasicWhite (dev/15.4)</code>), <code>M15.4-7051.0.79-2</code></td><td><code>Template: Blank (dev/winter2026)</code> (Keynote: <code>21_BasicWhite (dev/winter2026)</code>), <code>M16.0-7052.0.68-2</code></td></tr><tr><td><code>ViewState.iwa</code>, Pages' type 10133</td><td></td><td>field 49, 1 in all 10 Pages documents</td></tr><tr><td><code>ViewState.iwa</code>, Numbers' type 12026</td><td></td><td>fields 34 (varint, 1) and 35 (float, 0) in all 17 Numbers documents</td></tr><tr><td><code>ViewState.iwa</code>, Keynote's types 3 and 23</td><td></td><td>type 3 field 43 (float, 0) and type 23 field 13 (varint, 1) in all 16 presentations</td></tr><tr><td>Numbers' <code>DocumentStylesheet.iwa</code></td><td>245 paragraph styles (type 2022) or more, with <code>text-12-paragraphstyle-Table Title 1</code></td><td>one fewer: no <em>Table Title 1</em>, as in 14.5</td></tr><tr><td>Keynote's master thumbnails <code>Data/mt-UUID-N.jpg</code></td><td>16, with one set of UUIDs</td><td>16, with a third set, sharing no UUID with 15.4 or 14.5; the same set in every 16.0 presentation</td></tr></tbody></table></div>
+<p>What 16.0 shares with 15.4 and not with 14.5: the empty type-4011 record in <code>CalculationEngine.iwa</code>, named by field 15 of the engine's root (type 4000); field 32, 0, on every slide node (type 4), 19 of them in <code>0159-dup.key</code>; <code>blankMoviePosterImage</code> kept as an app resource rather than in the package; and Basic White's paragraph styles, 225 of them, with no unnamed <em>Liten infotekst</em> variation.</p>
+<p>Three Numbers pairs (0044, 0047 and 0078) had one owner (type 4008) more or fewer in the calculation engine, and in 0047 three more type-4009 lists and no engine UUID (field 17 of type 4000). Made twice more in 16.0, those documents had 13, 25 and 13 owners, and 0047 its UUID back, as 15.4 had for 0044 and 0047, while 15.4's 0078 and 14.5's 0044 and 0078 have 14. The counts follow the run, not the release. Field 17 is absent from 20 of 22 Numbers documents from 15.4 under <code>samples/0026</code> to <code>samples/0079</code> too.</p>
+<p>Slide thumbnails (<code>st-UUID-N.jpg</code>) differ in number in some pairs, as in <a href="0466-keynote-14-5.html">0466</a>.</p>
+<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section: Conclusion">#</a></h2>
+<p>The 16.0 apps write the same format as 15.4. Everything these recipes make, from text, shapes and tables to formulas, charts, slides, notes, transitions and placeholders, is laid out the same way, down to the record versions. Where 14.5 and 15.4 differ, 16.0 sides with 15.4, apart from Numbers' <em>Table Title 1</em> style, which it leaves out as 14.5 does.</p>
+<p>What is new in 16.0 is all in <code>ViewState.iwa</code>, which records how the document was last shown and which a reader can ignore: one more field in each app's view-state record. What they hold is <em>unknown</em>.</p>
+<p>16.0 writes the file format version <code>27.0.1</code>. Its build history names its template <code>(dev/winter2026)</code> rather than a release number.</p>
+<p>Whether 16.0 opens and draws the 15.4 samples as 15.4 did is the next experiment's question. Whether 15.4 or 14.5 open a 16.0 document can't be tested on this Mac now: the 14.5 apps are kept only as a disk image, and 15.4 not at all.</p>
+<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section: Confidence">#</a></h2>
+<p><em>Confirmed</em>: for the 43 documents of these recipes, the 16.0 apps write the same structure as 15.4, apart from the differences listed. <em>Unknown</em>: what the new view-state fields are for.</p>
+<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Source: <a href="https://github.com/alehel/iwork-format/blob/main/experiments/0469-the-16-0-apps.md"><code>experiments/0469-the-16-0-apps.md</code></a>.</p></footer>
+</main>
+</div>
+<script>
+// On narrow screens the contents and on-this-page lists start folded; on wide ones they stay open.
+(function () {
+  // From 48rem to 72rem the on-this-page list sits folded above the page instead of beside it.
+  var narrow = window.matchMedia("(max-width: 48rem)");
+  var middle = window.matchMedia("(max-width: 72rem)");
+  var side = document.querySelector(".side > details"), toc = document.querySelector(".toc > details");
+  var tocSummary = document.querySelector(".toc summary");
+  function fit() {
+    if (side) side.open = !narrow.matches;
+    if (toc) toc.open = !middle.matches;
+    // On wide screens the list can't fold, so its heading isn't a control.
+    if (tocSummary) { if (middle.matches) tocSummary.removeAttribute("tabindex"); else tocSummary.tabIndex = -1; }
+    scrollers();
+  }
+  // A table or code block wider than the page scrolls sideways; make it reachable by keyboard, with a name.
+  function scrollers() {
+    var boxes = document.querySelectorAll("main .table, main pre");
+    for (var i = 0; i < boxes.length; i++) {
+      var b = boxes[i];
+      if (b.scrollWidth > b.clientWidth + 1) {
+        b.tabIndex = 0; b.setAttribute("role", "region");
+        b.setAttribute("aria-label", (b.tagName === "PRE" ? "Code" : "Table") + ", scrolls sideways");
+      } else if (b.hasAttribute("role")) {
+        b.removeAttribute("tabindex"); b.removeAttribute("role"); b.removeAttribute("aria-label");
+      }
+    }
+  }
+  window.addEventListener("resize", scrollers);
+  fit();
+  if (narrow.addEventListener) { narrow.addEventListener("change", fit); middle.addEventListener("change", fit); }
+  // The release dropdown closes when you click anywhere else.
+  document.addEventListener("click", function (e) {
+    var release = document.querySelector(".side .release[open]");
+    if (release && !release.contains(e.target)) release.open = false;
+  });
+  document.addEventListener("keydown", function (e) {
+    var release = document.querySelector(".side .release[open]");
+    if (release && e.key === "Escape") { release.open = false; release.querySelector("summary").focus(); }
+  });
+  document.addEventListener("click", function (e) {
+    if (middle.matches && e.target.closest && e.target.closest(".toc a")) fit();
+  });
+})();
+</script>
+</body>
+</html>

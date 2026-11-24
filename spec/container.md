@@ -24,8 +24,8 @@ A new document holds these 13 parts. *Confirmed* ([0001](../experiments/0001-emp
 | --- | --- |
 | `Index/*.iwa` (seven parts) | The document's objects, encoded as below |
 | `Metadata/DocumentIdentifier` | A UUID as 36 ASCII characters, with no line ending |
-| `Metadata/Properties.plist` | A binary property list of UUIDs, a file format version and flags. [release: differs by release] Its `fileFormatVersion` is `26.4.0` from the 15.4 apps and `14.4.1` from 14.5, and 14.5 writes one flag, `hasExternalReferenceOrMissingOrUnmaterializedRemoteData`, where 15.4 writes two ([0461](../experiments/0461-new-documents-in-14-5.md)). |
-| `Metadata/BuildVersionHistory.plist` | A list of strings naming the template and the Pages build. [release: differs by release] The build is `M15.4-7051.0.79-2` from 15.4 and `M14.5-7045.0.17-4` from 14.5 ([0461](../experiments/0461-new-documents-in-14-5.md)). |
+| `Metadata/Properties.plist` | A binary property list of UUIDs, a file format version and flags. [release: differs by release] Its `fileFormatVersion` is `26.4.0` from the 15.4 apps, `27.0.1` from 16.0 and `14.4.1` from 14.5, and 14.5 writes one flag, `hasExternalReferenceOrMissingOrUnmaterializedRemoteData`, where 15.4 and 16.0 write two ([0461](../experiments/0461-new-documents-in-14-5.md), [0469](../experiments/0469-the-16-0-apps.md)). |
+| `Metadata/BuildVersionHistory.plist` | A list of strings naming the template and the Pages build. [release: differs by release] The build is `M15.4-7051.0.79-2` from 15.4, `M16.0-7052.0.68-2` from 16.0 and `M14.5-7045.0.17-4` from 14.5 ([0461](../experiments/0461-new-documents-in-14-5.md), [0469](../experiments/0469-the-16-0-apps.md)). |
 | `preview.jpg`, `preview-web.jpg`, `preview-micro.jpg` | JPEG previews of the first page |
 
 The seven `.iwa` parts of a new document are `AnnotationAuthorStorage-N`, `CalculationEngine-N`, `Document`, `DocumentMetadata`, `DocumentStylesheet`, `Metadata` and `ViewState`. Where a name ends in a number, it is the ID of the part's first object. *Confirmed* ([0001](../experiments/0001-empty-document.md), [0002](../experiments/0002-one-word.md))
@@ -42,7 +42,7 @@ Identical files are stored once ([0142](../experiments/0142-same-image-twice.md)
 
 In Keynote, a theme's own photos are such entries: field 4 (the stored name) is empty, field 5 is a path to the resource inside the app, such as `21_basicwhite/910457886_1434x1669`, Only a reduced copy, at most 256 pixels on the longer side, is stored in `Data/`, with its own entry, whose field 18 is the file's size in bytes. In every image's entry, stored or not, field 10.100.1 is the image's size in pixels: a message with the width in field 1 and the height in field 2, as floats.
 
-Each data entry kept as an app resource, and only those, also has a colour: a type-11015 record in `Metadata.iwa` lists entries of a data ID (field 1) and a type-11014 colour (field 2), whose field 1 is RGB (1.1 = 1) with red, green, blue and alpha as floats in 1.3 to 1.6. *Confirmed* for 2,537 entries in 565 documents. The colour isn't the image's average; what it is for is *unknown*. ([0294](../experiments/0294-resource-colours.md)) *Likely* ([0292](../experiments/0292-test-theme-reruns.md)) [release: 15.4 and 14.5 differ] Which data is a resource can differ by release: Keynote 15.4 keeps `blankMoviePosterImage.png` as a resource, with a colour, and Keynote 14.5 stores it in the package as `Data/blankMoviePosterImage-N.png`, without one ([0466](../experiments/0466-keynote-14-5.md)).
+Each data entry kept as an app resource, and only those, also has a colour: a type-11015 record in `Metadata.iwa` lists entries of a data ID (field 1) and a type-11014 colour (field 2), whose field 1 is RGB (1.1 = 1) with red, green, blue and alpha as floats in 1.3 to 1.6. *Confirmed* for 2,537 entries in 565 documents. The colour isn't the image's average; what it is for is *unknown*. ([0294](../experiments/0294-resource-colours.md)) *Likely* ([0292](../experiments/0292-test-theme-reruns.md)) [release: 15.4 and 14.5 differ] Which data is a resource can differ by release: Keynote 15.4 and 16.0 keep `blankMoviePosterImage.png` as a resource, with a colour ([0469](../experiments/0469-the-16-0-apps.md)), and Keynote 14.5 stores it in the package as `Data/blankMoviePosterImage-N.png`, without one ([0466](../experiments/0466-keynote-14-5.md)).
 
 ## Chunks
 
@@ -104,7 +104,7 @@ The key is PBKDF2-HMAC-SHA1 of the password (as UTF-8), using that salt and iter
 
 ## View state
 
-`ViewState.iwa` holds how the document was last shown, which a reader can ignore. Its type-10133 record has the zoom as a scale factor in field 15 (1.25 for 125%), in field 33 whether two pages are shown side by side, and in field 28 whether change tracking is paused ([0270](../experiments/0270-paused-tracking.md)). *Likely* ([0241](../experiments/0241-zoom.md), [0242](../experiments/0242-two-page-view.md), [0270](../experiments/0270-paused-tracking.md))
+`ViewState.iwa` holds how the document was last shown, which a reader can ignore. Its type-10133 record has the zoom as a scale factor in field 15 (1.25 for 125%), in field 33 whether two pages are shown side by side, and in field 28 whether change tracking is paused ([0270](../experiments/0270-paused-tracking.md)). *Likely* ([0241](../experiments/0241-zoom.md), [0242](../experiments/0242-two-page-view.md), [0270](../experiments/0270-paused-tracking.md)). [release: 16.0 only] The 16.0 apps add a field to each app's view-state record: field 49 to Pages' type 10133, fields 34 and 35 to Numbers' type 12026, and field 43 to Keynote's type 3 and field 13 to its type 23; what they hold is *unknown* ([0469](../experiments/0469-the-16-0-apps.md)).
 
 ## IDs and save-to-save changes
 
