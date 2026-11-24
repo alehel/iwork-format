@@ -67,3 +67,15 @@ new = (42).to_bytes(14, "little") + bytes([0x40, 0x30])  # 42 × 10⁰
 - Run tables must cover the new text: positions are in UTF-16 code units.
 - Cells that add strings need string table entries, with use counts.
 - The previews are optional; Pages makes new ones when it next saves.
+- `isMultiPage` in `Metadata/Properties.plist` should say whether the document now has more than one page, slide or sheet.
+
+## What the app changes when it saves your document
+
+Opening a written document in the app and saving it again is a good test of a writer: the app writes out only what it keeps. [Experiment 0476](../../experiments/0476-resaving-every-sample.md) did this for every sample, the written ones included, in Pages, Numbers and Keynote 16.0 and 14.5. Both releases made the same changes:
+
+- Fields the app doesn't keep were dropped, such as fields written into cell styles and formula owners that aren't part of their records.
+- Data files were renamed to the app's own form, and files nothing refers to were left out.
+- `isMultiPage` was corrected where a writer had changed the number of pages.
+- Records the app makes as it needs them, such as section records and view-state records, were counted again, and the calculation engine got its locale.
+
+Everything else came back the same. The copies that changed are published with the fixtures under `resaved/16.0/`, each beside its original, so the two can be compared ([sample files](samples.md#all-fixtures)).

@@ -24,7 +24,7 @@ A new document holds these 13 parts. *Confirmed* ([0001](../experiments/0001-emp
 | --- | --- |
 | `Index/*.iwa` (seven parts) | The document's objects, encoded as below |
 | `Metadata/DocumentIdentifier` | A UUID as 36 ASCII characters, with no line ending |
-| `Metadata/Properties.plist` | A binary property list of UUIDs, a file format version and flags. [release: differs by release] Its `fileFormatVersion` is `26.4.0` from the 15.4 apps, `27.0.1` from 16.0 and `14.4.1` from 14.5, and 14.5 writes one flag, `hasExternalReferenceOrMissingOrUnmaterializedRemoteData`, where 15.4 and 16.0 write two ([0461](../experiments/0461-new-documents-in-14-5.md), [0469](../experiments/0469-the-16-0-apps.md)). |
+| `Metadata/Properties.plist` | A binary property list of UUIDs, a file format version and flags. [release: differs by release] Its `fileFormatVersion` is `26.4.0` from the 15.4 apps, `27.0.1` from 16.0 and `14.4.1` from 14.5, and 14.5 writes one flag, `hasExternalReferenceOrMissingOrUnmaterializedRemoteData`, where 15.4 and 16.0 write two. `isMultiPage` says whether the document has more than one page, slide or sheet; the app sets it when it saves, and a writer that adds or removes pages should too, though Pages reads a document either way ([0476](../experiments/0476-resaving-every-sample.md)) ([0461](../experiments/0461-new-documents-in-14-5.md), [0469](../experiments/0469-the-16-0-apps.md)). |
 | `Metadata/BuildVersionHistory.plist` | A list of strings naming the template and the Pages build. [release: differs by release] The build is `M15.4-7051.0.79-2` from 15.4, `M16.0-7052.0.68-2` from 16.0 and `M14.5-7045.0.17-4` from 14.5 ([0461](../experiments/0461-new-documents-in-14-5.md), [0469](../experiments/0469-the-16-0-apps.md)). |
 | `preview.jpg`, `preview-web.jpg`, `preview-micro.jpg` | JPEG previews of the first page |
 
@@ -117,3 +117,13 @@ Saving the same content twice can change these, and nothing else in the `.iwa` p
 - The order of entries in one list in `Metadata.iwa` record 2.
 
 When a document is saved again, existing objects keep their IDs and newly made ones (such as the view state) get new ones. Saving under a new name gives a new document UUID. *Likely* ([0139](../experiments/0139-resave.md), [0140](../experiments/0140-edit-and-save.md))
+
+Saving a document again also writes out what the app keeps of it, in every release tried (14.5 and 16.0, and 15.4 where its samples show it). Opened and saved again, the 1,211 samples changed in these ways and no others ([0476](../experiments/0476-resaving-every-sample.md)):
+
+- The calculation engine's root gets the locale in fields 5 and 16 ([numbers.md](numbers.md#the-calculation-engine)), and Keynote's slide nodes get field 20 ([keynote.md](keynote.md)).
+- Fields the app doesn't keep are dropped, such as fields a writer added to cell styles (type 6001) or formula owners (type 4008).
+- Data files get the app's own names, and those nothing refers to are left out ([0435](../experiments/0435-writing-an-unused-data-file.md)).
+- `isMultiPage` in `Properties.plist` is set from the document: true when a Pages document has more than one page, false when a presentation or spreadsheet has one slide or sheet left.
+- Records the app makes as needed, such as section records (types 3047 and 3006) and view-state records, are counted again.
+
+A document that comes back from the app without these changes has kept nothing a writer added that the app doesn't know. *Likely*

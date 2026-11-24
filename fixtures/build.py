@@ -158,7 +158,7 @@ def problem(path, rel):
     num = re.search(r"/(\d{4})/", rel).group(1)
     if num in TEMPLATES:
         return "holds Basic Black's photos" if num == "0090" else "holds the template's placeholder text, written by Apple"
-    if rel.endswith(".key") and not rel.startswith(("samples/theme/", "samples/release/")):
+    if rel.endswith(".key") and not rel.startswith(("samples/theme/", "samples/release/", "samples/resaved/")):
         if num in ("0291", "0292"):
             return "a step in building or testing the test theme, which is in theme/"
         if os.path.exists(rel.replace("samples/", "samples/theme/")):
@@ -202,6 +202,10 @@ def main(out_dir):
     for v in sorted(os.listdir("samples/release")) if os.path.isdir("samples/release") else []:
         for d in sorted(os.listdir(f"samples/release/{v}")):
             candidates += [f"samples/release/{v}/{d}/{f}" for f in sorted(os.listdir(f"samples/release/{v}/{d}"))]
+    # Samples a release changed when it saved them again (experiment 0476), beside their originals.
+    for v in sorted(os.listdir("samples/resaved")) if os.path.isdir("samples/resaved") else []:
+        for d, _, files in sorted(os.walk(f"samples/resaved/{v}")):
+            candidates += [f"{d}/{f}" for f in sorted(files)]
     candidates = [c for c in candidates if re.search(r"\.(pages|numbers|key)$", c)]
 
     kept, left = [], []
@@ -244,6 +248,9 @@ def main(out_dir):
             title = titles.get(num, ("", num))[1]
             pw = password(rel)
             notes = [f"password `{pw}`" if pw else "names its author" if rel in AUTHOR_NAMED else "a folder package" if os.path.isdir(rel) else ""]
+            m = re.match(r"samples/resaved/[^/]+/(.*)$", rel)
+            if m:  # name the original, as the zips and the index call it
+                notes.append(f"`{m.group(1).replace('theme/', 'keynote/', 1) if m.group(1).startswith('theme/') else m.group(1)}` saved again")
             notes.append(saved_by(rel))
             note = "; ".join(n for n in notes if n)
             rows.append(f"| `{arc}` | [{title}](../experiments/{titles.get(num, (num,))[0]}) | {size:,} | `{digest}` |"
@@ -266,6 +273,8 @@ def main(out_dir):
              "Documents were saved by the 15.4 apps unless their note names another release, such as 14.5. "
              "Under `release/16.0/` (and so on for later releases) is every sample a recipe can make on its own, made again with that release, "
              "Keynote with the test theme ([0473](../experiments/0473-every-scripted-sample-in-16-0.md)). "
+             "Under `resaved/16.0/` are the samples 16.0 changed when it opened and saved them again, each noting its original "
+             "([0476](../experiments/0476-resaving-every-sample.md)). "
              "Encrypted documents list their test password. A folder package's SHA-256 is taken over each of its files in path order, as the path, a zero byte and the contents.", "",
              "| File | Experiment | Bytes | SHA-256 | Note |", "| --- | --- | --- | --- | --- |"] + rows
     kept_paths = {rel for rel, _ in kept}

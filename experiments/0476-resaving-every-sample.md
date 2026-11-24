@@ -56,6 +56,10 @@ Resaving is a good test of a writer: what the app drops or rewrites shows which 
 
 The view-state fields aren't a 16.0 change: 14.5 writes them too when it saves a document it opened. When the apps write them is *unknown*, and so is what they hold.
 
+## Published copies
+
+The 182 copies 16.0 changed are kept in `samples/resaved/16.0/` and published with the fixtures under `resaved/16.0/`, each noting its original. The fixtures builder keeps 154. It leaves out the other 28 for the reasons it leaves out their originals: Basic White's photos, Apple's template text, the project owner's contact details in 0408's merge fields, and data files under names it doesn't know as the project's (0395, 0431). One, `0395/original-name.pages`, is new to that list: saving it gave its image a file named after what the writer had called it, `holiday-24.png`. The copies that didn't change aren't published, since they add nothing to their originals.
+
 ## Confidence
 
 *Confirmed*: 16.0 and 14.5 write the same structure for all 1,211 samples when they save them again. *Likely*: so did 15.4, as far as its known differences from 14.5 allow.
