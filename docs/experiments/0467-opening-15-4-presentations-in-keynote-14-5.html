@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0467: Opening 15.4 presentations in Keynote 14.5 · iWork file format specification</title>
+<meta name="description" content="iWork file format specification">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<a class="skip" href="#page-content">Skip to content</a>
+<header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><form class="search" action="../search.html" role="search"><input type="search" name="q" aria-label="Search the specification" placeholder="Search, e.g. 6001"></form><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
+<p class="wip"><strong>Work in progress.</strong> This specification is incomplete and changes as new experiments run. Each finding says how sure it is: <em>confirmed</em>, <em>likely</em> or <em>unknown</em>. See <a href="../spec/index.html">what each chapter covers so far</a>.</p>
+<div class="layout no-toc">
+<nav class="side" aria-label="Contents"><details open><summary>Contents</summary><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="../guides/anatomy.html">Reading a Pages document</a></li><li><a href="../guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="../guides/writing.html">Writing a document</a></li><li><a href="../guides/samples.html">Sample files</a></li><li class="group">Specification</li><li class="releases-line"><a href="../spec/releases.html">Describes 15.4 · also checked: 14.5</a></li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2. Text</a></li><li><a href="../spec/styles.html">3. Styles</a></li><li><a href="../spec/tables.html">4. Tables</a></li><li><a href="../spec/drawables.html">5. Drawables, media and charts</a></li><li class="group">Apps</li><li><a href="../spec/pages.html">Pages</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li class="group">Reference</li><li><a href="../search.html">Search</a></li><li><a href="../spec/types.html">Record types</a></li><li><a href="../spec/releases.html">Releases</a></li><li class="group">Evidence</li><li><a href="index.html">All experiments</a></li><li><a href="topics.html">By topic</a></li></ul></details></nav>
+
+<main id="page-content" tabindex="-1">
+<h1 id="0467-opening-154-presentations-in-keynote-145">0467: Opening 15.4 presentations in Keynote 14.5<a class="anchor" href="#0467-opening-154-presentations-in-keynote-145" aria-label="Link to this section: 0467: Opening 15.4 presentations in Keynote 14.5">#</a></h1><p class="ran">App release: <span class="release">14.5</span></p>
+<p><strong>Status:</strong> run</p>
+<p>Keynote 14.5 writes the same format as 15.4 (<a href="0466-keynote-14-5.html">0466</a>). This experiment opens every Keynote sample of the earlier experiments, made or written with Keynote 15.4, in 14.5, and checks what it reads, as <a href="0462-opening-15-4-documents-in-14-5.html">0462</a> did for Pages and Numbers.</p>
+<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section: Setup">#</a></h2>
+<div class="table"><table><tbody><tr><th scope="row">Keynote</th><td>14.5 (build <code>M14.5-7045.0.17-4</code>), in Norwegian</td></tr><tr><th scope="row">macOS</th><td>26.5.2 (25F84)</td></tr><tr><th scope="row">Date</th><td>2026-11-24</td></tr><tr><th scope="row">Input</th><td>Every <code>.key</code> under <code>samples/NNNN/</code> and <code>samples/theme/NNNN/</code> (the test-theme reruns of <a href="0292-test-theme-reruns.html">0292</a>), except experiment 0466's, which 14.5 saved, those of <a href="0379-writing-a-slide-layout.html">0379</a>, written to make Keynote quit, and <code>0180/accent.key</code>, which is password-protected: 323 presentations, from Keynote itself and from the writing experiments</td></tr><tr><th scope="row">Script</th><td>The new [<code>recipes/0467-open-keynote.py</code>](../recipes/0467-open-keynote.py), which opens each with [<code>recipes/0372-in-app.sh</code>](../recipes/0372-in-app.sh), asks Keynote for the number of slides and each slide's title (when it shows) and presenter notes, and checks that the number matches the slide nodes the presentation lists (type 2, field 3.2) and that every title and note equals a text record in the file's slide parts, as <code>iwork-probe text</code> prints it</td></tr></tbody></table></div>
+<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section: Recipe">#</a></h2>
+<pre class="lang-bash"><code>python3 -I recipes/0467-open-keynote.py samples 0379,0180,0466
+python3 -I recipes/0467-open-keynote.py samples/theme 0379,0180
+mkdir -p samples/0467 &amp;&amp; cp samples/0196/all.key samples/0467/all-copy.key
+sh recipes/0372-in-app.sh Keynote samples/0196/all.key &#x27;set p to transition properties of slide 37 of d
+return transition effect of p&#x27;
+sh recipes/0372-in-app.sh Keynote samples/0196/all.key &#x27;set p to transition properties of slide 38 of d
+return transition effect of p&#x27;
+sh recipes/0372-in-app.sh Keynote samples/0467/all-copy.key &quot;set t to object text of default title item of slide 38 of d
+save d in POSIX file \&quot;$PWD/samples/0467/resaved.key\&quot;
+return t&quot;
+grep -rl -a &quot;radial wipe&quot; /Applications/Keynote.app/Contents</code></pre>
+<p>The comparison leaves out white space, control and format characters (such as the soft hyphens in Basic White's prompts) and U+FFFC on both sides.</p>
+<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section: Observation">#</a></h2>
+<div class="table"><table><thead><tr><th scope="col">Result</th><th scope="col">Presentations</th></tr></thead><tbody><tr><td>Opened; slide count, titles and notes agree with the file</td><td>323 (244 under <code>samples/NNNN/</code>, 79 under <code>samples/theme/</code>), 486 slides</td></tr><tr><td>Opened, but don't agree</td><td>0</td></tr><tr><td>Not opened</td><td>0</td></tr></tbody></table></div>
+<p>No alert was shown.</p>
+<p>One reading failed outside these checks. <a href="0196-every-transition.html">0196</a>'s presentation has one slide per transition effect, and 14.5 reports the effect of slides 35 to 37 (<code>twirl</code>, <code>twist</code>, <code>fade and move</code>), but asking for slide 38's effect, <code>apple:radial wipe</code>, fails with "AppleEvent handler failed". It reads that slide's title, <code>radial wipe</code>. Saved again by 14.5, the presentation still holds <code>apple:radial wipe</code> on that slide, and its build history then lists both builds, <code>M15.4-7051.0.79-2</code> and <code>M14.5-7045.0.17-4</code>. No file in Keynote 14.5's bundle contains the string <code>radial wipe</code>, and its AppleScript dictionary has no such effect (<a href="0466-keynote-14-5.html">0466</a>).</p>
+<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section: Conclusion">#</a></h2>
+<p>Keynote 14.5 opens every presentation Keynote 15.4 saved in these experiments, and every one written from this spec, and reads the same slides, titles and notes from them. Nothing 15.4 writes stops it reading a presentation, including slide-node field 32, which 14.5 doesn't write.</p>
+<p>The radial wipe transition is new in 15.4. 14.5 keeps its identifier through a save, but doesn't know the effect: its AppleScript can't report it. How 14.5 plays such a slide wasn't tested. A writer that wants a presentation to play the same in 14.5 should avoid <code>apple:radial wipe</code>.</p>
+<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section: Confidence">#</a></h2>
+<p><em>Confirmed</em>: Keynote 14.5 opens 323 presentations from 15.4 and from the spec's writer and reads the same slides, titles and notes. <em>Likely</em>: radial wipe is a 15.4 effect that 14.5 keeps but doesn't know.</p>
+<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Source: <a href="https://github.com/alehel/iwork-format/blob/main/experiments/0467-opening-15-4-presentations-in-keynote-14-5.md"><code>experiments/0467-opening-15-4-presentations-in-keynote-14-5.md</code></a>.</p></footer>
+</main>
+</div>
+<script>
+// On narrow screens the contents and on-this-page lists start folded; on wide ones they stay open.
+(function () {
+  // From 48rem to 72rem the on-this-page list sits folded above the page instead of beside it.
+  var narrow = window.matchMedia("(max-width: 48rem)");
+  var middle = window.matchMedia("(max-width: 72rem)");
+  var side = document.querySelector(".side > details"), toc = document.querySelector(".toc > details");
+  var tocSummary = document.querySelector(".toc summary");
+  function fit() {
+    if (side) side.open = !narrow.matches;
+    if (toc) toc.open = !middle.matches;
+    // On wide screens the list can't fold, so its heading isn't a control.
+    if (tocSummary) { if (middle.matches) tocSummary.removeAttribute("tabindex"); else tocSummary.tabIndex = -1; }
+    scrollers();
+  }
+  // A table or code block wider than the page scrolls sideways; make it reachable by keyboard, with a name.
+  function scrollers() {
+    var boxes = document.querySelectorAll("main .table, main pre");
+    for (var i = 0; i < boxes.length; i++) {
+      var b = boxes[i];
+      if (b.scrollWidth > b.clientWidth + 1) {
+        b.tabIndex = 0; b.setAttribute("role", "region");
+        b.setAttribute("aria-label", (b.tagName === "PRE" ? "Code" : "Table") + ", scrolls sideways");
+      } else if (b.hasAttribute("role")) {
+        b.removeAttribute("tabindex"); b.removeAttribute("role"); b.removeAttribute("aria-label");
+      }
+    }
+  }
+  window.addEventListener("resize", scrollers);
+  fit();
+  if (narrow.addEventListener) { narrow.addEventListener("change", fit); middle.addEventListener("change", fit); }
+  // The release dropdown closes when you click anywhere else.
+  document.addEventListener("click", function (e) {
+    var release = document.querySelector(".side .release[open]");
+    if (release && !release.contains(e.target)) release.open = false;
+  });
+  document.addEventListener("keydown", function (e) {
+    var release = document.querySelector(".side .release[open]");
+    if (release && e.key === "Escape") { release.open = false; release.querySelector("summary").focus(); }
+  });
+  document.addEventListener("click", function (e) {
+    if (middle.matches && e.target.closest && e.target.closest(".toc a")) fit();
+  });
+})();
+</script>
+</body>
+</html>

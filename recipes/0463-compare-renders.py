@@ -1,12 +1,15 @@
 """Experiment 0463: export documents again with the installed apps and compare with PDFs exported before.
 
-Usage: python3 -I recipes/0463-compare-renders.py SAMPLES_DIR OUT_DIR [SKIP,SKIP,...]
+Usage: python3 -I recipes/0463-compare-renders.py SAMPLES_DIR OUT_DIR [SKIP,SKIP,...] [APPS]
 
 For every SAMPLES_DIR/NNNN/NAME.pdf that sits next to NAME.pages or NAME.numbers, exports that
 document again with recipes/0372-in-app.sh into OUT_DIR/NNNN-NAME.pdf, then compares the two
 first pages with recipes/0399-pdf-diff.swift. Experiments named in SKIP are left out. Documents of
 experiments 0375, 0376, 0377 and 0443 are exported with comments, as they were then. Prints one
 line per document and a total.
+
+APPS names the apps whose documents are compared, separated by commas: Pages, Numbers and Keynote
+(.key, from experiment 0468 on). It defaults to Pages,Numbers, as in experiment 0463.
 """
 import glob
 import os
@@ -17,8 +20,12 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 WITH_COMMENTS = {"0375", "0376", "0377", "0443"}
 
 
-def main(samples, out, skip=""):
+EXTENSIONS = {"Pages": ".pages", "Numbers": ".numbers", "Keynote": ".key"}
+
+
+def main(samples, out, skip="", apps="Pages,Numbers"):
     skip = set(filter(None, skip.split(",")))
+    apps = [(EXTENSIONS[a], a) for a in apps.split(",")]
     os.makedirs(out, exist_ok=True)
     out = os.path.realpath(out)
     pairs = []
@@ -26,7 +33,7 @@ def main(samples, out, skip=""):
         exp = os.path.basename(os.path.dirname(pdf))
         if exp in skip:
             continue
-        for ext, app in ((".pages", "Pages"), (".numbers", "Numbers")):
+        for ext, app in apps:
             doc = pdf[:-4] + ext
             if os.path.exists(doc):
                 pairs.append((exp, doc, app, pdf))
@@ -58,4 +65,4 @@ def main(samples, out, skip=""):
 
 
 if __name__ == "__main__":
-    main(*sys.argv[1:4])
+    main(*sys.argv[1:5])
