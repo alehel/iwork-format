@@ -179,6 +179,25 @@ class RecordTypes(Case):
         self.assertEqual(found[0][2][1], "The table model")
 
 
+class Search(Case):
+    def setUp(self):
+        super().setUp()
+        b.SEARCH_ENTRIES.clear()
+
+    def test_one_entry_per_section(self):
+        body = self.render("# 4. Tables\n\nIntro & more.\n\n## Merged cells\n\nField 47.2.\n\n### Inner\n\nDeeper.")
+        b.index_sections("spec", "spec/tables.html", "Tables", body)
+        got = [(e["t"], e["u"], e["x"]) for e in b.SEARCH_ENTRIES]
+        self.assertEqual(got, [("Tables", "spec/tables.html", "Intro & more."),
+                               ("Tables › Merged cells", "spec/tables.html#merged-cells", "Field 47.2."),
+                               ("Tables › Inner", "spec/tables.html#inner", "Deeper.")])
+
+    def test_experiments_keep_only_named_sections(self):
+        body = self.render("# 0999: x\n\nWhy.\n\n## Observation\n\nBytes.\n\n## Conclusion\n\nA rule.")
+        b.index_sections("exp", "experiments/0999-x.html", "0999: x", body, only={"Conclusion"})
+        self.assertEqual([e["t"] for e in b.SEARCH_ENTRIES], ["0999: x", "0999: x › Conclusion"])
+
+
 class LinkCheck(Case):
     def test_reports_missing_files_fragments_and_repeated_ids(self):
         with tempfile.TemporaryDirectory() as d:

@@ -284,3 +284,36 @@ table.types td.exps summary { cursor: pointer; color: var(--accent); min-height:
 
 /* Tables without a header row (an experiment's setup): the first column names each row */
 tbody th[scope="row"] { background: none; font-weight: 600; white-space: nowrap; width: 1%; }
+
+/* Search: a box in the top bar on every page, and the search page */
+.top .search { margin: -.2rem 0; }
+.top .search input, .search-page input {
+  font: inherit; font-size: .9rem; color: var(--fg); background: var(--bg);
+  border: 1px solid var(--fg-soft); border-radius: 6px; padding: .3rem .55rem; min-height: 24px;
+}
+.top .search input { width: 13rem; }
+.search-page { display: flex; flex-wrap: wrap; gap: .5rem; align-items: center; margin: 1.2rem 0; }
+.search-page label { font-weight: 600; flex: 0 0 100%; }
+.search-page input { flex: 1; min-width: 0; font-size: 1rem; padding: .45rem .65rem; }
+.search-page button {
+  font: inherit; color: var(--bg); background: var(--accent); border: 0; border-radius: 6px; padding: .45rem 1rem; cursor: pointer;
+}
+#search-status { color: var(--fg-soft); }
+ol.results { list-style: none; padding: 0; }
+ol.results li { margin: 0 0 1rem; }
+ol.results p { margin: .15rem 0 0; font-size: .92rem; color: var(--fg-soft); }
+ol.results mark { background: var(--wip-bg); color: var(--fg); border-radius: 2px; padding: 0 .1em; }
+p.more { font-size: .9rem; color: var(--fg-soft); }
+
+/* Experiments by topic */
+table.topics td.exps { min-width: 16rem; }
+table.topics td.exps summary { cursor: pointer; color: var(--accent); min-height: 24px; }
+table.topics td.exps ul, ul.uncited { padding-left: 0; list-style: none; margin: .3rem 0; font-size: .92rem; }
+ul.uncited { columns: 2; column-gap: 2rem; }
+ul.uncited li { break-inside: avoid; }
+@media (max-width: 48rem) {
+  .top .search { order: 4; flex: 0 0 100%; }
+  .top .search input { width: 100%; font-size: 1rem; }
+  ul.uncited { columns: 1; }
+}
+@media print { .top .search { display: none; } }

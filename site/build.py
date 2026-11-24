@@ -18,6 +18,7 @@ Only the Python standard library is used. Markdown is converted by the small con
 which handles the subset the repository's writing uses.
 """
 import html
+import json
 import os
 import re
 import shutil
@@ -40,7 +41,7 @@ SPEC_PAGES = [("README.md", "index.html"), ("container.md", "container.html"), (
               ("styles.md", "styles.html"), ("tables.md", "tables.html"), ("drawables.md", "drawables.html"),
               ("pages.md", "pages.html"), ("keynote.md", "keynote.html"), ("numbers.md", "numbers.html"),
               ("releases.md", "releases.html")]
-GENERATED = {"spec/types.html"}  # pages the build makes without a Markdown source, which Markdown may link to
+GENERATED = {"spec/types.html", "experiments/topics.html", "search.html"}  # pages the build makes without a Markdown source, which Markdown may link to
 RELEASE_MARK = re.compile(r"\[release: ([^\]]+)\]")
 
 
@@ -450,6 +451,8 @@ def types_page(spec_sources, experiments):
         else:
             holds = f'<span class="said">{html.escape(t.get("said", ""))}</span>'
 
+        SEARCH_ENTRIES.append({"k": "type", "t": f"Type {n}", "u": f"{out_path}#type-{n}",
+                               "x": text_of(holds) + " Described in: " + "; ".join(text_of(w) for w in where)})
         rows.append(f'<tr id="type-{n}"><td class="num"><a href="#type-{n}">{n}</a></td><td>{holds}</td>'
                     f'<td class="where">{"<br>".join(where)}</td><td class="exps">{ex_html}</td></tr>')
     body = ("<h1>Record types</h1>"
@@ -466,6 +469,196 @@ def types_page(spec_sources, experiments):
             "<th>Experiments</th></tr></thead><tbody>" + "".join(rows) + "</tbody></table></div>")
     page(out_path, "Record types", body, description="Every iWork record type the specification names, with where it is described.", wide=True)
     return len(found)
+
+
+# --- Search and the experiments-by-topic index -----------------------------------------------
+
+SEARCH_ENTRIES = []  # filled by main(): {"k": kind, "t": title, "u": site path, "x": plain text}
+SEARCH_KINDS = {"type": "Record types", "spec": "Specification", "guide": "Guides", "exp": "Experiments"}
+HEADING = re.compile(r'<h([1-4]) id="([^"]+)">(.*?)<a class="anchor"[^>]*>#</a></h\1>', re.S)
+
+
+def text_of(fragment):
+    """Rendered HTML as plain text on one line."""
+    return re.sub(r"\s+", " ", html.unescape(re.sub(r"<[^>]+>", " ", fragment))).strip()
+
+
+def index_sections(kind, out_path, page_title, body, only=None):
+    """Add one search entry per section of a rendered page. Text before the first section heading
+    goes with the page's title. only, if given, keeps just the sections with those headings."""
+    marks = list(HEADING.finditer(body))
+    starts = [m for m in marks if m.group(1) != "1"]
+    first = starts[0].start() if starts else len(body)
+    intro = HEADING.sub("", body[:first], count=1) if marks and marks[0].group(1) == "1" else body[:first]
+    if text_of(intro):
+        SEARCH_ENTRIES.append({"k": kind, "t": page_title, "u": out_path, "x": text_of(intro)})
+    for n, m in enumerate(starts):
+        heading = text_of(m.group(3))
+        if only is not None and heading not in only:
+            continue
+        end = starts[n + 1].start() if n + 1 < len(starts) else len(body)
+        text = text_of(body[m.end():end])
+        if text:
+            SEARCH_ENTRIES.append({"k": kind, "t": f"{page_title} › {heading}", "u": f"{out_path}#{m.group(2)}", "x": text})
+
+
+EXPERIMENT_LINK = re.compile(r"\]\((?:\.\./)?experiments/(\d{4}-[^)#]+)\.md")
+
+
+def topics_page(spec_sources, experiments):
+    """Build experiments/topics.html: for each section of the current spec, the experiments it cites."""
+    out_path = "experiments/topics.html"
+    titles = {f: title_of(read(f"experiments/{f}")).partition(": ")[2] for f in experiments}
+    cited = set()
+    rows = []
+    for src in spec_sources:
+        md = read(f"spec/{src}")
+        chapter = CHAPTERS.get(src, src)
+        sections = [(None, [])]
+        anchors = set()
+        for line in md.split("\n"):
+            m = re.match(r"^(#{2,4})\s+(.*)$", line)
+            if m:
+                anchor = slug(m.group(2))
+                n = 2
+                while anchor in anchors:
+                    anchor, n = f"{slug(m.group(2))}-{n}", n + 1
+                anchors.add(anchor)
+                sections.append(((m.group(2), anchor), []))
+            elif not line.startswith("#"):
+                sections[-1][1].extend(f + ".md" for f in EXPERIMENT_LINK.findall(line))
+        for heading, found in sections:
+            found = sorted(set(f for f in found if f in titles))
+            if not found:
+                continue
+            cited.update(found)
+            target = SITE_PAGES[f"spec/{src}"] + (f"#{heading[1]}" if heading else "")
+            label = chapter + (f" › {plain(heading[0], f'spec/{src}')}" if heading else "")
+            links = "".join(f'<li><a href="{f[:-3]}.html">{f[:4]}</a> {html.escape(titles[f])}</li>' for f in found)
+            rows.append(f'<tr><td><a href="{relpath(target, out_path)}">{html.escape(label)}</a></td>'
+                        f'<td class="exps"><details><summary>{len(found)}</summary><ul>{links}</ul></details></td></tr>')
+    uncited = [f for f in experiments if f not in cited]
+    rest = "".join(f'<li><a href="{f[:-3]}.html">{f[:4]}</a> {html.escape(titles[f])}</li>' for f in uncited)
+    body = ("<h1>Experiments by topic</h1>"
+            "<p>Each section of the specification, with the experiments it cites as evidence. An experiment cited "
+            "in several sections is listed under each. The section states the rule and how sure it is; the experiments "
+            "are the observations behind it. Generated from the specification's links each time the site is built.</p>"
+            '<div class="table"><table class="topics"><thead><tr><th>Section</th><th>Experiments</th></tr></thead><tbody>'
+            + "".join(rows) + "</tbody></table></div>"
+            f'<h2 id="not-cited">Not cited by the specification<a class="anchor" href="#not-cited" '
+            f'aria-label="Link to this section: Not cited by the specification">#</a></h2>'
+            f"<p>{len(uncited)} experiments no section links to yet: some found nothing new, some only checked a tool or a "
+            "release, and some are evidence the spec hasn't taken in yet.</p>"
+            f'<ul class="uncited">{rest}</ul>')
+    page(out_path, "Experiments by topic", body, description="The experiments behind each section of the iWork specification.", wide=True)
+    return len(rows)
+
+
+SEARCH_SCRIPT = r"""
+(function () {
+  var form = document.getElementById("search-form"), box = document.getElementById("search-q");
+  var out = document.getElementById("search-results"), status = document.getElementById("search-status");
+  var kinds = KINDS, entries = window.SEARCH_INDEX || [];
+  form.hidden = false;
+  document.getElementById("search-needs-script").hidden = true;
+  function esc(s) { return s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); }
+  function source(tok) {
+    // A number or field path matches whole, so 6001 doesn't find 60010 and 4.3 doesn't find 4.3.1.
+    return /^[0-9][0-9.]*$/.test(tok) ? "(?<![0-9.])" + esc(tok) + "(?![0-9]|\\.[0-9])" : esc(tok);
+  }
+  function snippet(text, srcs) {
+    var first = new RegExp(srcs.join("|"), "i").exec(text), at = first ? first.index : 0;
+    var start = Math.max(0, at - 90), end = Math.min(text.length, at + 170);
+    if (start > 0) start = text.indexOf(" ", start) + 1;
+    var s = (start > 0 ? "… " : "") + text.slice(start, end) + (end < text.length ? " …" : "");
+    var frag = document.createDocumentFragment(), re = new RegExp(srcs.join("|"), "gi"), last = 0, m;
+    while ((m = re.exec(s)) && m[0].length) {
+      frag.appendChild(document.createTextNode(s.slice(last, m.index)));
+      var mark = document.createElement("mark"); mark.textContent = m[0]; frag.appendChild(mark);
+      last = m.index + m[0].length;
+    }
+    frag.appendChild(document.createTextNode(s.slice(last)));
+    return frag;
+  }
+  function run(q) {
+    out.textContent = "";
+    var toks = q.trim().split(/\s+/).filter(Boolean);
+    if (!toks.length) { status.textContent = ""; return; }
+    var srcs = toks.map(source), pats = srcs.map(function (x) { return new RegExp(x, "i"); }), groups = {};
+    entries.forEach(function (e) {
+      var score = 0;
+      for (var i = 0; i < pats.length; i++) {
+        var inT = pats[i].test(e.t), inX = pats[i].test(e.x);
+        if (!inT && !inX) return;
+        score += inT ? 10 : 1;
+      }
+      (groups[e.k] = groups[e.k] || []).push({ e: e, s: score });
+    });
+    var total = 0, shown = 0;
+    Object.keys(kinds).forEach(function (k) {
+      var list = groups[k];
+      if (!list) return;
+      list.sort(function (a, b) { return b.s - a.s; });
+      total += list.length;
+      var h = document.createElement("h2"); h.textContent = kinds[k] + " (" + list.length + ")";
+      out.appendChild(h);
+      var ol = document.createElement("ol"); ol.className = "results";
+      list.slice(0, 40).forEach(function (r) {
+        var li = document.createElement("li"), a = document.createElement("a");
+        a.href = PREFIX + r.e.u; a.textContent = r.e.t; li.appendChild(a);
+        var p = document.createElement("p"); p.appendChild(snippet(r.e.x, srcs)); li.appendChild(p);
+        ol.appendChild(li); shown++;
+      });
+      out.appendChild(ol);
+      if (list.length > 40) {
+        var more = document.createElement("p"); more.className = "more";
+        more.textContent = (list.length - 40) + " more " + kinds[k].toLowerCase() + " results; add a word to narrow them.";
+        out.appendChild(more);
+      }
+    });
+    status.textContent = total ? total + (total === 1 ? " result" : " results") + " for " + q.trim()
+      : "Nothing found for " + q.trim() + ". Try fewer words, a record type such as 6001, or a field path such as 4.3.1.2, or browse the indexes below.";
+  }
+  var timer;
+  box.addEventListener("input", function () {
+    clearTimeout(timer);
+    timer = setTimeout(function () {
+      var u = new URL(location.href);
+      if (box.value) u.searchParams.set("q", box.value); else u.searchParams.delete("q");
+      history.replaceState(null, "", u);
+      run(box.value);
+    }, 150);
+  });
+  form.addEventListener("submit", function (e) { e.preventDefault(); run(box.value); });
+  var q = new URLSearchParams(location.search).get("q") || "";
+  box.value = q;
+  run(q);
+})();
+"""
+
+
+def search_page():
+    """Build search.html and search-index.js. The index is a script, not JSON, so it also loads from file://."""
+    with open(os.path.join(OUT, "search-index.js"), "w", encoding="utf-8") as f:
+        f.write("window.SEARCH_INDEX=" + json.dumps(SEARCH_ENTRIES, ensure_ascii=False, separators=(",", ":")) + ";\n")
+    script = SEARCH_SCRIPT.replace("KINDS", json.dumps(SEARCH_KINDS)).replace("PREFIX", json.dumps(""))
+    body = ("<h1>Search</h1>"
+            "<p>Searches the specification, the guides, the record types and each experiment's summary and conclusion. "
+            "Results from the specification are the rules; results from experiments are what was observed. "
+            "A number or field path, such as <code>6001</code> or <code>4.3.1.2</code>, matches only whole.</p>"
+            '<form id="search-form" class="search-page" role="search" hidden><label for="search-q">Search for</label>'
+            '<input id="search-q" type="search" name="q" autocomplete="off" spellcheck="false">'
+            '<button type="submit">Search</button></form>'
+            '<p id="search-needs-script" class="note">Search needs JavaScript. Without it, use the indexes below.</p>'
+            '<p id="search-status" role="status" aria-live="polite"></p><div id="search-results"></div>'
+            '<h2 id="indexes">Indexes<a class="anchor" href="#indexes" aria-label="Link to this section: Indexes">#</a></h2><ul>'
+            '<li><a href="spec/types.html">Record types</a>: every type number, what it is and where it is described</li>'
+            '<li><a href="experiments/topics.html">Experiments by topic</a>: the experiments behind each section of the spec</li>'
+            '<li><a href="experiments/index.html">All experiments</a>, by number</li>'
+            '<li><a href="spec/index.html">The specification\'s chapters</a></li></ul>'
+            '<script src="search-index.js"></script><script>' + script + "</script>")
+    page("search.html", "Search", body, description="Search the iWork file format specification and its experiments.")
+    return len(SEARCH_ENTRIES)
 
 
 # --- Pages -----------------------------------------------------------------------------------
@@ -500,10 +693,12 @@ NAV = [
     ("Keynote", "spec:keynote.html"),
     ("Numbers", "spec:numbers.html"),
     ("Reference", None),
+    ("Search", "search.html"),
     ("Record types", "spec/types.html"),
     ("Releases", "spec:releases.html"),
     ("Evidence", None),
     ("All experiments", "experiments/index.html"),
+    ("By topic", "experiments/topics.html"),
 ]
 
 
@@ -590,7 +785,7 @@ def page(out_path, title, body, toc=None, description="", version=None, source=N
 </head>
 <body>
 <a class="skip" href="#page-content">Skip to content</a>
-<header class="top"><a class="brand" href="{home}">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><a class="repo" href="{REPO}">Repository</a></header>
+<header class="top"><a class="brand" href="{home}">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><form class="search" action="{relpath("search.html", out_path)}" role="search"><input type="search" name="q" aria-label="Search the specification" placeholder="Search, e.g. 6001"></form><a class="repo" href="{REPO}">Repository</a></header>
 <p class="wip"><strong>Work in progress.</strong> This specification is incomplete and changes as new experiments run. Each finding says how sure it is: <em>confirmed</em>, <em>likely</em> or <em>unknown</em>. See <a href="{relpath("spec/index.html", out_path)}">what each chapter covers so far</a>.</p>{archived}
 <div class="layout{'' if toc_html else ' no-toc'}{' wide' if wide and not toc_html else ''}">
 <nav class="side" aria-label="Contents"><details open><summary>Contents</summary><ul>{''.join(nav)}</ul></details></nav>
@@ -706,6 +901,8 @@ def main():
         toc = []
         body = render(md, src, toc)
         page(out, title_of(md), body, toc, version=version, source=src)
+        if version == "spec" and not src.endswith(("README.md", "releases.md")):
+            index_sections("spec", out, CHAPTERS.get(os.path.basename(src), title_of(md)), body)
 
     for f in guides:
         if f == "index.md":
@@ -713,7 +910,9 @@ def main():
         src = f"site/guides/{f}"
         md = read(src)
         toc = []
-        page(f"guides/{f[:-3]}.html", title_of(md), render(md, src, toc), toc, source=src)
+        body = render(md, src, toc)
+        page(f"guides/{f[:-3]}.html", title_of(md), body, toc, source=src)
+        index_sections("guide", f"guides/{f[:-3]}.html", title_of(md), body)
 
     rows = []
     for f in experiments:
@@ -726,6 +925,7 @@ def main():
             badge = f'<p class="ran">App release: ' + ", ".join(f'<span class="release">{html.escape(r)}</span>' for r in releases) + "</p>"
             body = body.replace("</h1>", "</h1>" + badge, 1)
         page(f"experiments/{f[:-3]}.html", title, body, None, source=src)
+        index_sections("exp", f"experiments/{f[:-3]}.html", title, body, only={"Conclusion", "Confidence"})
         num, _, name = title.partition(": ")
         rel = ", ".join(releases) or "tool only"
         rows.append(f'<tr><td class="num">{html.escape(num)}</td><td><a href="{f[:-3]}.html">{html.escape(name or title)}</a></td>'
@@ -744,14 +944,18 @@ def main():
             "<div class=\"table\"><table><thead><tr><th>No.</th><th>Experiment</th><th>App release</th></tr></thead><tbody>"
             + "".join(rows) + "</tbody></table></div>")
     page("experiments/index.html", "All experiments", body)
-    n_types = types_page([src for src, _ in SPEC_PAGES if src != "releases.md"], experiments)
+    chapters = [src for src, _ in SPEC_PAGES if src != "releases.md"]
+    n_types = types_page(chapters, experiments)
+    n_topics = topics_page([src for src in chapters if src != "README.md"], experiments)
+    n_search = search_page()
 
     shutil.copy(os.path.join(ROOT, "site", "style.css"), os.path.join(OUT, "style.css"))
     files = os.path.join(ROOT, "site", "files")
     if os.path.isdir(files):
         shutil.copytree(files, os.path.join(OUT, "files"))
     open(os.path.join(OUT, ".nojekyll"), "w").close()
-    print(f"built {len(experiments) + len(spec_map) + len(guides) + 2} pages into docs/, indexing {n_types} record types")
+    print(f"built {len(experiments) + len(spec_map) + len(guides) + 4} pages into docs/, indexing {n_types} record types, "
+          f"{n_topics} topics and {n_search} search entries")
     for here, message in PROBLEMS:
         print(f"markdown: {here}: {message}", file=sys.stderr)
     problems = check_links(OUT)

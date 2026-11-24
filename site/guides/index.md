@@ -34,6 +34,8 @@ Five chapters describe what the three apps share, and one chapter per app what i
 | [Keynote](../../spec/keynote.md) | Slides, layouts, builds, transitions and backgrounds |
 | [Numbers](../../spec/numbers.md) | Sheets, the way to a table's cells, categories, pivot tables, filters, conditional highlighting and the calculation engine |
 | [Record types](../../spec/types.html) | Every record type the spec names, and where it is described |
+| [Experiments by topic](../../experiments/topics.html) | The experiments behind each section of the spec |
+| [Search](../../search.html) | The spec, the guides, the record types and the experiments' conclusions, by word, type number or field path |
 | [Layers and status](../../spec/README.md) | What each chapter covers so far, and the experiments behind it |
 
 Where to start, after [1. Container](../../spec/container.md):
