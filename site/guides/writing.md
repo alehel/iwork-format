@@ -71,11 +71,11 @@ new = (42).to_bytes(14, "little") + bytes([0x40, 0x30])  # 42 × 10⁰
 
 ## What the app changes when it saves your document
 
-Opening a written document in the app and saving it again is a good test of a writer: the app writes out only what it keeps. [Experiment 0476](../../experiments/0476-resaving-every-sample.md) did this for every sample, the written ones included, except the password-protected ones and the files written to make an app fail, in Pages, Numbers and Keynote 16.0 and 14.5. Both releases made the same changes:
+Opening a written document in the app and saving it again is a good test of a writer: the app writes out only what it keeps. [Experiment 0476](../../experiments/0476-resaving-every-sample.md) did this for every sample, the written ones included, except the password-protected ones and the files written to make an app fail, in Pages, Numbers and Keynote 16.0, twice, with the same changes both times:
 
 - Fields the app doesn't keep were dropped, such as fields the writer added to table models (type 6001) and formula owners (type 4008) that aren't part of those records.
 - Data files were renamed to the app's own form, and files nothing refers to were left out.
 - `isMultiPage` was corrected where a writer had changed the number of pages.
 - Records the app makes as it needs them, such as view-state records, were counted again, and the calculation engine got its locale.
 
-Everything else came back the same. Most of the copies that changed, 154 of 182, are published with the fixtures under `resaved/16.0/`, each beside its original, so the two can be compared ([sample files](samples.md#all-fixtures)).
+Everything else came back the same. Some of the copies that changed are published with the fixtures under `resaved/16.0/`, chosen so that they hold every field the 182 of them hold, each beside its original, so the two can be compared ([sample files](samples.md#all-fixtures)).

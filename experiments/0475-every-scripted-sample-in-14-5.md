@@ -56,7 +56,7 @@ The six encrypted documents decrypt with their test passwords in `iwork-probe`, 
 
 ## Conclusion
 
-Every document the recipes make comes out of 14.5 with the structure 15.4 gives it, apart from the differences every 14.5 document has, the radial wipe, and three made from Apple's own templates, which differ between releases. 14.5's set is published with the fixtures under `release/14.5/`, beside 16.0's, with the same names, so a reader can be tested on the same content from three releases.
+Every document the recipes make comes out of 14.5 with the structure 15.4 gives it, apart from the differences every 14.5 document has, the radial wipe, and three made from Apple's own templates, which differ between releases. A choice of 14.5's set, enough to hold every field path the set holds, is published with the fixtures under `release/14.5/` ([`fixtures/SELECTED.txt`](../fixtures/SELECTED.txt)), under the same names as 16.0's.
 
 A date field's (type 2034, [text.md](../spec/text.md)) field 10, which 15.4 writes as 0 in the date fields of Apple's essay and letter templates, is new to this experiment; what it holds is *unknown*.
 

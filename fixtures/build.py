@@ -2,16 +2,21 @@
 
 Usage: python3 -I fixtures/build.py OUT_DIR
 
-Reads the local samples/ folder (gitignored), writes fixtures/INDEX.md (committed) and, in OUT_DIR,
-one zip per app release, iwork-format-fixtures-RELEASE.zip, holding the documents that release saved
-(published as GitHub release assets; one zip per release keeps each well under the size limit for an
-asset). A document is published only if:
+Reads the local samples/ folder (gitignored) and fixtures/SELECTED.txt (fixtures/select.py), writes
+fixtures/INDEX.md (committed) and, in OUT_DIR, one zip per app release, iwork-format-fixtures-RELEASE.zip,
+holding the documents that release saved, and iwork-format-fixtures-starter.zip, a smaller set from the
+newest release, copied from its zip (published as GitHub release assets; one zip per release keeps each
+well under the size limit for an asset). Candidates are the experiments' documents, the newest release's
+set of every scripted sample (experiment 0473), and, of older releases' sets and of the samples the newest
+release saved again (0476), those SELECTED.txt lists. A document that is byte for byte another one's copy
+is published once and listed as a copy. A document is published only if:
   - it isn't from an experiment on Apple's templates (0090, 0155-0158, 0198, 0199);
-  - a Keynote presentation comes from samples/theme/ or samples/release/, made with the project's
+  - a Keynote presentation comes from samples/theme/, samples/release/ or samples/resave/, made with the project's
     test theme (experiments 0291, 0292, 0473), never from Basic White;
   - every file under Data/ is one the project made: the test cards, Keynote's thumbnails of
     them, or the project's own images, sound and movie;
-  - no part, decoded or decrypted, holds a name this Mac knows its user by (site/examples.py).
+  - no part, decoded or decrypted, holds a name this Mac knows its user by (site/examples.py), apart
+    from the author records (type 212) of the documents in AUTHOR_NAMED and their copies.
 Folder packages and documents that fail a check are listed as left out, with the reason.
 """
 import hashlib
@@ -25,6 +30,7 @@ import zipfile
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PROBE = os.path.join(ROOT, "target", "release", "iwork-probe")
+NEWEST = "16.0"  # the release the specification describes
 
 
 def load(name, path):
@@ -75,6 +81,37 @@ def password(rel):
     if m:
         return PASSWORDS.get(f"samples/{m.group(1)}") or PASSWORDS.get(f"samples/theme/{m.group(1)}")
     return PASSWORDS.get(rel)
+
+
+def original(rel):
+    """The 15.4 sample a resaved copy (experiment 0476) was made from, or the path itself."""
+    return re.sub(r"^samples/resave/[^/]+/", "samples/", rel)
+
+
+def published(rel):
+    """The path a sample is published under."""
+    return re.sub(r"^samples/(theme/)?", lambda m: "keynote/" if m.group(1) else "", re.sub(r"^samples/resave/", "samples/resaved/", rel))
+
+
+def selected():
+    """fixtures/SELECTED.txt as {section: [path in samples/]}."""
+    sections, current = {}, None
+    for line in open(os.path.join(ROOT, "fixtures", "SELECTED.txt"), encoding="utf-8").read().splitlines():
+        if line.startswith("[") and line.endswith("]"):
+            current = sections.setdefault(line[1:-1], [])
+        elif line and not line.startswith("#"):
+            current.append(line)
+    return sections
+
+
+def without_authors(data):
+    """A part's decoded records without the author records (type 212), whose name is published knowingly."""
+    out = bytearray()
+    for header, payloads in writer.records(data):
+        for info, payload in zip([v for f, _, v in header if f == 2], payloads):
+            if next(writer.read_varint(v, 0)[0] for f, _, v in writer.parse_message(info) if f == 1) != 212:
+                out += payload
+    return bytes(out)
 
 
 def saved_by(rel):
@@ -153,15 +190,15 @@ def folder_files(path):
 
 
 def problem(path, rel):
-    if rel in SKIP:
-        return SKIP[rel]
+    if original(rel) in SKIP:
+        return SKIP[original(rel)]
     num = re.search(r"/(\d{4})/", rel).group(1)
     if num in TEMPLATES:
         return "holds Basic Black's photos" if num == "0090" else "holds the template's placeholder text, written by Apple"
-    if rel.endswith(".key") and not rel.startswith(("samples/theme/", "samples/release/", "samples/resaved/")):
+    if rel.endswith(".key") and not original(rel).startswith(("samples/theme/", "samples/release/")):
         if num in ("0291", "0292"):
             return "a step in building or testing the test theme, which is in theme/"
-        if os.path.exists(rel.replace("samples/", "samples/theme/")):
+        if os.path.exists(original(rel).replace("samples/", "samples/theme/")):
             return "Keynote with Basic White's photos; see samples/theme/"
         # Otherwise it may have been made with the test theme from the start: the media check decides.
     words = examples.forbidden()
@@ -173,11 +210,11 @@ def problem(path, rel):
     foreign = [n[5:] for n in names if n.startswith("Data/") and not OURS.match(n[5:])]
     if foreign:
         return "media not made by the project: " + ", ".join(foreign[:3])
-    if rel in AUTHOR_NAMED:
-        return None
     pw = password(rel)
     parts = folder_parts(path) if os.path.isdir(path) else decrypted_parts(path, pw) if pw else plain_parts(path)
     for name, data in parts:
+        if original(rel) in AUTHOR_NAMED and name.endswith(".iwa"):
+            data = without_authors(data)
         low = data.lower()
         for word in words:
             if word in low or word.decode().encode("utf-16-le") in low or word.decode().encode("utf-16-be") in low:
@@ -198,20 +235,32 @@ def main(out_dir):
         if re.fullmatch(r"\d{4}", d):
             candidates += [f"samples/{d}/{f}" for f in sorted(os.listdir(f"samples/{d}"))]
     candidates += [f"samples/theme/{d}/{f}" for d in sorted(os.listdir("samples/theme")) for f in sorted(os.listdir(f"samples/theme/{d}"))]
-    # Each release's set of every scripted sample, made again with that release (experiment 0473).
-    for v in sorted(os.listdir("samples/release")) if os.path.isdir("samples/release") else []:
-        for d in sorted(os.listdir(f"samples/release/{v}")):
-            candidates += [f"samples/release/{v}/{d}/{f}" for f in sorted(os.listdir(f"samples/release/{v}/{d}"))]
-    # Samples a release changed when it saved them again (experiment 0476), beside their originals.
-    for v in sorted(os.listdir("samples/resaved")) if os.path.isdir("samples/resaved") else []:
-        for d, _, files in sorted(os.walk(f"samples/resaved/{v}")):
-            candidates += [f"{d}/{f}" for f in sorted(files)]
+    chosen = {k: [f"samples/{p}" for p in v] for k, v in selected().items()}
+    # The newest release's set of every scripted sample (experiment 0473), and what is chosen of the others.
+    for d in sorted(os.listdir(f"samples/release/{NEWEST}")):
+        candidates += [f"samples/release/{NEWEST}/{d}/{f}" for f in sorted(os.listdir(f"samples/release/{NEWEST}/{d}"))]
+    for k in sorted(chosen):
+        if k.startswith("release/"):
+            candidates += chosen[k]
+    # Samples the newest release saved again (experiment 0476), beside their originals.
+    candidates += sorted(p for p in set(chosen["resaved"]) | set(chosen["starter"]) if p.startswith("samples/resave/"))
     candidates = [c for c in candidates if re.search(r"\.(pages|numbers|key)$", c)]
 
-    kept, left = [], []
+    kept, left, copies, by_digest = [], [], [], {}
     for rel in candidates:
         why = problem(rel, rel)
-        (left if why else kept).append((rel, why))
+        if why:
+            left.append((rel, why))
+            continue
+        if os.path.isfile(rel):
+            same = by_digest.setdefault(hashlib.sha256(open(rel, "rb").read()).hexdigest(), rel)
+            if same != rel:
+                copies.append((rel, same))
+                continue
+        kept.append((rel, None))
+    missing = [p for v in chosen.values() for p in v if p not in {r for r, _ in kept} | {r for r, _ in copies}]
+    if missing:
+        sys.exit(f"SELECTED.txt names documents that can't be published: {missing[:5]}; run fixtures/select.py")
 
     titles = {}
     for f in os.listdir("experiments"):
@@ -228,7 +277,7 @@ def main(out_dir):
                 zips[release] = zipfile.ZipFile(os.path.join(out_dir, zip_name(release)), "w", zipfile.ZIP_STORED)
             z = zips[release]
             per_release[release] = per_release.get(release, 0) + 1
-            arc = rel.replace("samples/theme/", "keynote/").replace("samples/", "")
+            arc = published(rel)
             if os.path.isdir(rel):
                 h, size = hashlib.sha256(), 0
                 for d, subdirs, files in os.walk(rel):
@@ -248,36 +297,46 @@ def main(out_dir):
             title = titles.get(num, ("", num))[1]
             pw = password(rel)
             notes = [f"password `{pw}`" if pw else "names its author" if rel in AUTHOR_NAMED else "a folder package" if os.path.isdir(rel) else ""]
-            m = re.match(r"samples/resaved/[^/]+/(.*)$", rel)
-            if m:  # name the original, as the zips and the index call it
-                notes.append(f"`{m.group(1).replace('theme/', 'keynote/', 1) if m.group(1).startswith('theme/') else m.group(1)}` saved again")
+            if original(rel) != rel:  # name the original, as the zips and the index call it
+                notes.append(f"`{published(original(rel))}` saved again")
+            if rel in chosen["starter"]:
+                notes.append("in the starter set")
             notes.append(saved_by(rel))
             note = "; ".join(n for n in notes if n)
             rows.append(f"| `{arc}` | [{title}](../experiments/{titles.get(num, (num,))[0]}) | {size:,} | `{digest}` |"
                         + (f" {note} |" if note else " |"))
+        zips["starter"] = zipfile.ZipFile(os.path.join(out_dir, zip_name("starter")), "w", zipfile.ZIP_STORED)
+        starter = [by_digest.get(hashlib.sha256(open(p, "rb").read()).hexdigest(), p) if os.path.isfile(p) else p for p in chosen["starter"]]
+        for rel in sorted(set(starter)):
+            zips["starter"].write(rel, published(rel))
     finally:
         for z in zips.values():
             z.write("fixtures/LICENSE.md", "LICENSE.md")
             z.close()
     order = sorted(per_release, key=lambda r: tuple(int(x) for x in r.split(".")), reverse=True)
     listing = ", ".join(f"`{zip_name(r)}` ({per_release[r]:,} documents)" for r in order)
+    n_starter = len(set(starter))
 
     index = ["# Fixtures", "",
              "Sample documents from the experiments, for testing readers and writers. They are published as one zip "
              "per app release, attached to the repository's GitHub release `fixtures`, not committed: each zip holds the documents that release saved, "
-             f"under the paths listed here. {listing}. Built by `python3 -I fixtures/build.py`, "
+             f"under the paths listed here. {listing}. `{zip_name('starter')}` is a smaller set to start with, {n_starter} of the {NEWEST} documents that together hold every field path seen in {NEWEST}'s. Built by `python3 -I fixtures/build.py`, "
              "which leaves out anything from Apple's templates or images, and anything holding a personal name except those whose comments, highlights or tracked changes name the project owner as their author. "
              f"See [LICENSE.md](LICENSE.md).", "",
              f"{len(kept)} documents. Keynote presentations, under `keynote/`, were made with the project's test theme "
              "([0291](../experiments/0291-test-theme.md), [0292](../experiments/0292-test-theme-reruns.md)). "
              "Documents were saved by the 15.4 apps unless their note names another release, such as 14.5. "
-             "Under `release/16.0/` (and so on for later releases) is every sample a recipe can make on its own, made again with that release, "
+             f"Under `release/{NEWEST}/` is every sample a recipe can make on its own, made again with that release, "
              "Keynote with the test theme ([0473](../experiments/0473-every-scripted-sample-in-16-0.md)). "
-             "Under `resaved/16.0/` are the samples 16.0 changed when it opened and saved them again, each noting its original "
-             "([0476](../experiments/0476-resaving-every-sample.md)). "
+             "Under `release/` for older releases are the documents of their sets that together hold every field path the set holds, and under "
+             f"`resaved/{NEWEST}/` samples {NEWEST} saved again, each noting its original ([0476](../experiments/0476-resaving-every-sample.md)), chosen the same way by "
+             "[`fixtures/select.py`](select.py). "
              "Encrypted documents list their test password. A folder package's SHA-256 is taken over each of its files in path order, as the path, a zero byte and the contents.", "",
              "| File | Experiment | Bytes | SHA-256 | Note |", "| --- | --- | --- | --- | --- |"] + rows
-    kept_paths = {rel for rel, _ in kept}
+    index += ["", "## Copies", "", f"{len(copies)} documents of experiments are byte for byte the same as another, such as the original a writing "
+              "experiment started from, and are in the zips once.", "", "| File | Same as |", "| --- | --- |"]
+    index += [f"| `{published(rel)}` | `{published(same)}` |" for rel, same in copies]
+    kept_paths = {rel for rel, _ in kept} | {rel for rel, _ in copies}
     replaced = [rel for rel, why in left if why.endswith("see samples/theme/")
                 and rel.replace("samples/", "samples/theme/") in kept_paths]
     index += ["", "## Left out", "",
@@ -285,10 +344,11 @@ def main(out_dir):
               "that are included as their test-theme versions under `keynote/`.", "", "| File | Why |", "| --- | --- |"]
     left = [(rel, "Keynote with Basic White's photos; its test-theme version is left out too"
              if why.endswith("see samples/theme/") else why) for rel, why in left]
-    index += [f"| `{rel.replace('samples/', '')}` | {why} |" for rel, why in left if rel not in replaced]
+    index += [f"| `{published(rel)}` | {why} |" for rel, why in left if rel not in replaced]
     open("fixtures/INDEX.md", "w", encoding="utf-8").write("\n".join(index) + "\n")
     sizes = ", ".join(f"{r}: {per_release[r]} documents, {os.path.getsize(os.path.join(out_dir, zip_name(r))) / 1e6:.1f} MB" for r in order)
-    print(f"{len(kept)} kept, {len(left)} left out; {sizes}")
+    print(f"{len(kept)} kept, {len(copies)} copies, {len(left)} left out; {sizes}; "
+          f"starter: {n_starter} documents, {os.path.getsize(os.path.join(out_dir, zip_name('starter'))) / 1e6:.1f} MB")
 
 
 if __name__ == "__main__":

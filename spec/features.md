@@ -59,27 +59,28 @@ The builder stops when a feature cites an experiment that ran in an app its Apps
 
 ## Releases and producers
 
-The specification describes the format as Pages, Numbers and Keynote 15.4 for macOS write it, on macOS 26.5.2. All three 13.1, 14.5 and 16.0 apps have been checked against it and write the same format, with the differences listed on the [releases](releases.md) page. The releases each feature's evidence ran with are shown with its states.
+The specification describes the format as the newest apps write it, Pages, Numbers and Keynote 16.0 for macOS. Most of the evidence comes from 15.4, which writes the same format; the [releases](releases.md) page says how 16.0, 14.5 and 13.1 were checked against it and what differs. The releases each feature's evidence ran with are shown with its states.
 
 | Producer or release | Scope | Why |
 | --- | --- | --- |
-| Pages, Numbers and Keynote 15.4 for macOS | Baseline | The release the specification describes, from [0001](../experiments/0001-empty-document.md) on |
-| The 13.1, 14.5 and 16.0 apps for macOS | Checked | Write the same format ([0461](../experiments/0461-new-documents-in-14-5.md), [0466](../experiments/0466-keynote-14-5.md), [0469](../experiments/0469-the-16-0-apps.md)); every scripted sample was made again with them ([0473](../experiments/0473-every-scripted-sample-in-16-0.md), [0475](../experiments/0475-every-scripted-sample-in-14-5.md), [0477](../experiments/0477-every-scripted-sample-in-13-1.md)) |
+| Pages, Numbers and Keynote 16.0 for macOS | Current | The release the specification describes. It opens, draws and saves the 15.4 samples as 15.4 wrote them ([0470](../experiments/0470-opening-15-4-samples-in-16-0.md), [0471](../experiments/0471-drawing-15-4-samples-in-16-0.md), [0476](../experiments/0476-resaving-every-sample.md)), and makes new ones with the same structure ([0473](../experiments/0473-every-scripted-sample-in-16-0.md)) |
+| The 15.4 apps for macOS | Evidence | The release most experiments ran with, from [0001](../experiments/0001-empty-document.md) to [0460](../experiments/0460-third-regression-check.md) |
+| The 13.1 and 14.5 apps for macOS | Checked | Write the same format ([0461](../experiments/0461-new-documents-in-14-5.md), [0466](../experiments/0466-keynote-14-5.md)); every scripted sample was made again with them ([0475](../experiments/0475-every-scripted-sample-in-14-5.md), [0477](../experiments/0477-every-scripted-sample-in-13-1.md)) |
 | Other releases of the macOS apps | Not tested | No copy has been run yet; [#23](https://github.com/alehel/iwork-format/issues/23) |
 | The iPhone and iPad apps, and iWork for iCloud in a browser | Not tested | They save documents in the same packages, which no experiment has checked yet; [#23](https://github.com/alehel/iwork-format/issues/23) |
 | Other applications that save iWork documents | Not tested | Their output may differ from the apps'; [#23](https://github.com/alehel/iwork-format/issues/23) |
 | iWork '09 and earlier, which saved XML rather than records | Excluded for now | A different format from the one specified here; reading it would need its own specification. [#23](https://github.com/alehel/iwork-format/issues/23) owns the decision |
 
-A statement that holds for some releases only carries a release mark where it stands; the releases page gathers them.
+A statement that doesn't hold for every release checked carries a version note where it stands; the releases page gathers them.
 
 ## Closing a feature issue
 
 An issue that owns features can close when, for each feature it owns and each app that has it:
 
-1. Every capability the feature has is *shown* in the baseline release, with experiments cited in the inventory, or the gap is moved to another open issue that the inventory then names as its owner.
+1. Every capability the feature has is *shown* in the current release, or in 15.4, with experiments cited in the inventory, or the gap is moved to another open issue that the inventory then names as its owner.
 2. Every *not checked* entry has been checked in the app's interface and changed to the app or removed.
 3. The chapter describing the feature states its rules with a confidence level, and nothing it relies on is left *unknown* without an open issue to settle it.
-4. Releases other than the baseline are shown, or left to [#23](https://github.com/alehel/iwork-format/issues/23) explicitly.
+4. Older releases are shown, or left to [#23](https://github.com/alehel/iwork-format/issues/23) explicitly.
 
 Closing an issue finishes a piece of research; it doesn't mean the format is fully supported. Full support for an app is reached only when every feature in its column is *shown* for every capability it has, which the summary table shows directly. An audit that finds a gap links it to an open owner; it doesn't declare it out of scope.
 
@@ -103,7 +104,7 @@ The first table counts, for each app, the features it has (not counting those st
 | `container.references` | Object references and the roots of each kind of document | Pages, Numbers, Keynote | — | 0022, 0027, 0029, 0397 | [#3](https://github.com/alehel/iwork-format/issues/3) | [Container](container.md#following-references) |
 | `container.data-files` | Data files for images, sounds and movies | Pages, Numbers, Keynote | — | 0142, 0143, 0145, 0148, 0395, 0435 | [#3](https://github.com/alehel/iwork-format/issues/3) | [Container](container.md#data-files) |
 | `container.password` | Password protection | Pages, Numbers, Keynote | — | 0179, 0180, 0266 | [#20](https://github.com/alehel/iwork-format/issues/20) | [Container](container.md#password-protection) |
-| `container.versions` | The saving release, payload versions and malformed input | Pages, Numbers, Keynote | — | 0461, 0466, 0469 | [#21](https://github.com/alehel/iwork-format/issues/21) | [Releases](releases.md#telling-which-release-saved-a-document) |
+| `container.versions` | The saving release, payload versions and malformed input | Pages, Numbers, Keynote | — | 0461, 0466, 0469, 0481 | [#21](https://github.com/alehel/iwork-format/issues/21) | [Releases](releases.md#telling-which-release-saved-a-document) |
 | `container.save-back` | What changes from save to save, and what an editor must keep | Pages, Numbers, Keynote | — | 0139, 0140, 0287 | [#6](https://github.com/alehel/iwork-format/issues/6) | [Container](container.md#ids-and-save-to-save-changes) |
 | `container.view-state` | View state: zoom, page view and what was last selected | Pages, Numbers?, Keynote? | — | 0241, 0242 | [#47](https://github.com/alehel/iwork-format/issues/47) | [Container](container.md#view-state) |
 | `container.metadata` | Document metadata and collaboration state | Pages, Numbers, Keynote | — | 0465 | [#47](https://github.com/alehel/iwork-format/issues/47) | [Releases](releases.md#telling-which-release-saved-a-document) |

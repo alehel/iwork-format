@@ -223,34 +223,7 @@ main { grid-column: 2; grid-row: 1; }
 .side li.releases-line a { color: var(--fg-soft); padding-top: .15rem; padding-bottom: .15rem; }
 .side li.releases-line a:hover { color: var(--fg); }
 
-/* Which frozen copy of the spec to read: a dropdown, shown only once one exists */
-.side li.versions { margin: .3rem 0 .6rem; }
-.side .release { position: relative; }
-.side .release summary {
-  display: flex; align-items: center; gap: .5rem; cursor: pointer; list-style: none;
-  padding: .3rem .6rem; border: 1px solid var(--rule); border-radius: 6px; background: var(--bg);
-}
-.side .release summary::-webkit-details-marker { display: none; }
-.side .release summary:hover { border-color: var(--fg-soft); }
-.side .release summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
-.side .release .label { color: var(--fg-soft); font-size: .8rem; }
-.side .release .value { flex: 1; font-weight: 600; font-variant-numeric: tabular-nums; }
-.side .release summary::after {
-  content: ""; width: .4rem; height: .4rem; margin: 0 .15rem .2rem 0;
-  border-right: 2px solid var(--fg-soft); border-bottom: 2px solid var(--fg-soft); transform: rotate(45deg);
-}
-.side .release[open] summary::after { transform: rotate(-135deg); margin: .2rem .15rem 0 0; }
-.side .release ul {
-  position: absolute; z-index: 2; left: 0; right: 0; top: calc(100% + .25rem);
-  padding: .25rem; background: var(--bg); border: 1px solid var(--rule); border-radius: 6px;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, .12);
-}
-.side .release li { margin: 0; }
-.side .release a { font-variant-numeric: tabular-nums; }
-.wip.archived { background: var(--accent-soft); border-bottom-color: var(--rule); }
-.wip.archived strong { color: var(--accent); }
-
-/* Release marks: statements that hold for some app releases only, and the release an experiment ran with. */
+/* Version notes: which app release a statement holds since or until, and the release an experiment ran with. */
 .release { display: inline-block; font-family: var(--sans); font-size: .74em; font-weight: 600; line-height: 1.5;
   padding: 0 .45em; margin: 0 .15em; border-radius: 999px; color: var(--accent); background: var(--accent-soft);
   border: 1px solid var(--rule); white-space: nowrap; vertical-align: .08em; }

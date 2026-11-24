@@ -100,6 +100,10 @@ class Code(Case):
 
 
 class Inline(Case):
+    def test_code_in_a_link_label(self):
+        out = b.inline("[`a<b` text](text.md) and `[not](a link)`", "spec/container.md")
+        self.assertEqual(out, '<a href="text.html"><code>a&lt;b</code> text</a> and <code>[not](a link)</code>')
+
     def test_text_is_escaped(self):
         self.assertEqual(b.inline("a < b & c", "spec/text.md"), "a &lt; b &amp; c")
 
@@ -126,9 +130,41 @@ class Inline(Case):
         b.inline("[gone](../experiments/9999-nothing.md)", "spec/text.md")
         self.assertProblem("missing file")
 
-    def test_release_mark_becomes_a_badge(self):
-        out = b.inline("[release: 15.4 only] The record", "spec/numbers.md")
-        self.assertIn('<span class="release" title="Holds for some releases only">15.4 only</span>', out)
+    def test_version_note_becomes_a_badge(self):
+        out = b.inline("[since: 15.4] The record", "spec/numbers.md")
+        self.assertIn('<span class="release" title="In 15.4 and later; not in 14.5 or earlier">Since 15.4</span>', out)
+        out = b.inline("[until: 13.1] The record", "spec/numbers.md")
+        self.assertIn('<span class="release" title="In 13.1 and earlier; no longer in 14.5 or later">Until 13.1</span>', out)
+        self.assertEqual(b.PROBLEMS, [])
+
+    def test_version_notes_that_say_nothing_are_reported(self):
+        # The oldest release checked can't have added anything, and the newest can't have stopped anything.
+        for note in ("[since: 13.1]", "[until: 16.0]", "[since: 12.0]"):
+            b.PROBLEMS.clear()
+            b.inline(note + " x", "spec/numbers.md")
+            self.assertProblem("doesn't name a release")
+
+    def test_old_release_mark_is_reported(self):
+        b.inline("[release: 15.4 only] x", "spec/numbers.md")
+        self.assertProblem("version notes replaced")
+
+
+class Releases(Case):
+    def test_history_is_newest_first(self):
+        b.SITE_PAGES["spec/releases.md"] = "spec/releases.html"
+        b.RELEASE_NOTES[:] = [("until", "13.1", "Old way.", "spec/text.md", "runs", "Runs"),
+                              ("since", "16.0", "New field.", "spec/text.md", "", "")]
+        out = b.release_history("spec/releases.md")
+        b.RELEASE_NOTES.clear()
+        self.assertLess(out.index("New field."), out.index("Old way."))
+        self.assertIn('<td><span class="release">14.5</span></td><td>Until 13.1</td><td>Old way.', out)
+        self.assertIn('href="text.html#runs"', out)
+        self.assertIn("No change noted from 14.5.", out)
+
+    def test_a_note_covers_one_sentence(self):
+        line = "| 4 | A node. [since: 15.4] Field 32, always 0 ([0466](../experiments/0466.md)). Field 20 | `x` |"
+        m = b.VERSION_NOTE.search(line)
+        self.assertEqual(b.statement_after(line, m.end()), "Field 32, always 0 ([0466](../experiments/0466.md)).")
 
 
 class Directives(Case):

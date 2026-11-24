@@ -52,13 +52,15 @@ iwork-probe text hello.pages
 
 ## All fixtures
 
-The fixtures are attached to the repository's [`fixtures` release](https://github.com/alehel/iwork-format/releases/tag/fixtures) as one zip per app release, each holding the documents that release saved. No path is in more than one zip, so they can be unpacked into one folder.
+The fixtures are attached to the repository's [`fixtures` release](https://github.com/alehel/iwork-format/releases/tag/fixtures). To test a reader, start with the starter set: documents from the newest apps that together hold every field the project has seen them write. The other zips hold what each release saved, and can be unpacked into one folder.
 
-| Zip | Documents | Size |
-| --- | --- | --- |
-| [`iwork-format-fixtures-15.4.zip`](https://github.com/alehel/iwork-format/releases/download/fixtures/iwork-format-fixtures-15.4.zip) | 1,143 | about 449 MB |
-| [`iwork-format-fixtures-16.0.zip`](https://github.com/alehel/iwork-format/releases/download/fixtures/iwork-format-fixtures-16.0.zip) | 520 | about 198 MB |
-| [`iwork-format-fixtures-14.5.zip`](https://github.com/alehel/iwork-format/releases/download/fixtures/iwork-format-fixtures-14.5.zip) | 359 | about 115 MB |
+| Zip | Documents | Size | What it holds |
+| --- | --- | --- | --- |
+| [`starter`](https://github.com/alehel/iwork-format/releases/download/fixtures/iwork-format-fixtures-starter.zip) | 257 | about 64 MB | From 16.0: a choice of the documents in the next zip, under the same paths |
+| [`16.0`](https://github.com/alehel/iwork-format/releases/download/fixtures/iwork-format-fixtures-16.0.zip) | 436 | about 137 MB | Every document a recipe makes on its own, and samples 16.0 saved again |
+| [`15.4`](https://github.com/alehel/iwork-format/releases/download/fixtures/iwork-format-fixtures-15.4.zip) | 1,009 | about 402 MB | The evidence: the documents of experiments 0001 to 0460, as the spec cites them |
+| [`14.5`](https://github.com/alehel/iwork-format/releases/download/fixtures/iwork-format-fixtures-14.5.zip) | 99 | about 36 MB | The documents of the experiments with 14.5, and a choice of the recipes' documents made again |
+| [`13.1`](https://github.com/alehel/iwork-format/releases/download/fixtures/iwork-format-fixtures-13.1.zip) | 51 | about 18 MB | A choice of the recipes' documents made again |
 
 Inside them:
 
@@ -66,8 +68,11 @@ Inside them:
 | --- | --- |
 | `NNNN/` | The documents of experiment NNNN, as the experiment made or wrote them: from 15.4 up to experiment 0460, and from the release it names after that |
 | `keynote/NNNN/` | Keynote presentations made with the project's test theme instead of Basic White ([0292](../../experiments/0292-test-theme-reruns.md), and for 14.5 and 16.0 [0472](../../experiments/0472-keynote-16-0-with-the-test-theme.md) and [0474](../../experiments/0474-keynote-14-5-with-the-test-theme.md)) |
-| `release/16.0/NNNN/`, `release/14.5/NNNN/` | Every document an experiment's recipe makes on its own, made again with that release, under the same names as the 15.4 ones, so a reader can be tested on the same content from three releases ([0473](../../experiments/0473-every-scripted-sample-in-16-0.md), [0475](../../experiments/0475-every-scripted-sample-in-14-5.md)) |
-| `resaved/16.0/NNNN/` | Samples that 16.0 changed when it opened them and saved them again, each beside its original (the index names it): what the app kept of a document, mostly one the spec's writer wrote ([0476](../../experiments/0476-resaving-every-sample.md), and [what saving changes](writing.md#what-the-app-changes-when-it-saves-your-document)) |
+| `release/16.0/NNNN/` | Every document an experiment's recipe makes on its own, made again with 16.0, under the same names as the 15.4 ones ([0473](../../experiments/0473-every-scripted-sample-in-16-0.md)) |
+| `release/14.5/NNNN/`, `release/13.1/NNNN/` | The same made with 14.5 and 13.1, cut down to documents that together hold every field path their sets hold ([0475](../../experiments/0475-every-scripted-sample-in-14-5.md), [0477](../../experiments/0477-every-scripted-sample-in-13-1.md)). `recipes/0473-release-set.py` makes the whole sets |
+| `resaved/16.0/NNNN/` | Samples 16.0 opened and saved again, each beside its original (the index names it): features made by hand as 16.0 writes them, and what the app keeps of a document the spec's writer wrote ([0476](../../experiments/0476-resaving-every-sample.md), and [what saving changes](writing.md#what-the-app-changes-when-it-saves-your-document)) |
+
+A document that is byte for byte another one's copy, such as the original a writing experiment started from, is in the zips once; the index lists the other names under [Copies](../../fixtures/INDEX.md#copies).
 
 The [index](../../fixtures/INDEX.md) lists each file with its experiment, size, SHA-256, the release that saved it when that isn't 15.4, the original of a resaved copy and, for encrypted documents, the test password.
 

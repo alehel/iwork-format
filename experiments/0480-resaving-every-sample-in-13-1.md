@@ -2,7 +2,7 @@
 
 **Status:** run
 
-[0476](0476-resaving-every-sample.md) opened every 15.4 sample in 16.0 and 14.5 and saved a copy, to see how each release writes every feature in the samples, those made by hand included. This experiment does the same in 13.1.
+[0476](0476-resaving-every-sample.md) opened every 15.4 sample in 16.0 and saved a copy, to see how it writes every feature in the samples, those made by hand included. This experiment does the same in 13.1.
 
 ## Setup
 
@@ -36,16 +36,16 @@ All 1,211 samples were saved by 13.1.
 | What differs in 13.1's copy | Documents |
 | --- | --- |
 | A type-4010 record in the calculation engine, one more than 16.0's | 13 spreadsheets from 0226, 0227, 0279, 0410 and 0411, with categories and pivot tables |
-| No field 10 on date fields (type 2034), which 15.4's copies, 14.5's and 16.0's keep as 0 | 12 Pages documents |
+| No field 10 on date fields (type 2034), which the 15.4 originals have and 16.0 keeps, as 0 | 12 Pages documents |
 | Fields 7 and 13 of the engine's root (type 4000) and 4, 5 and 9 of formula owners (type 4008), which 16.0's copies lack | 11 spreadsheets, eight from [0409](0409-writing-a-numbers-chart-link.md), and 0030, 0063 and 0225 |
 | A record or two more: type 3047 in `Document.iwa`, or types 8 and 153 (a build and its stage) on a slide whose build list the writer took out | 2 Pages documents, 2 presentations |
-| Field 5 of the engine's root, where 16.0's copy has field 15 instead: the two copies 16.0 made differently from 14.5's in 0476, and like it when saved once more | 1 spreadsheet (`0248/SMALL.numbers`), 1 presentation (`theme/0195/line_3d-row.key`) |
+| Field 5 of the engine's root, where 16.0's copy has field 15 instead: the two copies 16.0 made differently in its two runs in 0476 | 1 spreadsheet (`0248/SMALL.numbers`), 1 presentation (`theme/0195/line_3d-row.key`) |
 | No field 14 on drawables (type 6000) | 2 Pages documents |
-| Field 1 of the comment author storage (type 213), which the original has too and 16.0 and 14.5 drop | 1 Pages document (`0193/empty-comment.pages`) |
+| Field 1 of the comment author storage (type 213), which the original has too and 16.0 drops | 1 Pages document (`0193/empty-comment.pages`) |
 
-Field 10 of date fields, *unknown* in [0475](0475-every-scripted-sample-in-14-5.md), is therefore not just from a template: 13.1 drops it from documents that have it, and 14.5 and 16.0 keep it.
+Field 10 of date fields, *unknown* in [0475](0475-every-scripted-sample-in-14-5.md), is therefore not just from a template: 13.1 drops it from documents that have it, and 16.0 keeps it.
 
-**13.1 against the 15.4 originals.** 877 copies are the same as their originals but for 13.1's known differences, 329 differ, and 5 folder packages weren't compared. In the calculation engine and slide nodes they are the changes 0476 found saving makes in every release, the slide nodes' field 20 (92 presentations) among them.
+**13.1 against the 15.4 originals.** 877 copies are the same as their originals but for 13.1's known differences, 329 differ, and 5 folder packages weren't compared. In the calculation engine and slide nodes they are the changes 0476 found saving makes in 16.0, the slide nodes' field 20 (92 presentations) among them.
 
 ## Conclusion
 

@@ -3,12 +3,12 @@
 Usage: python3 -I site/build.py
 
 Sources:
-  spec/*.md            the specification for the current app release, one page per layer
-  spec/versions/*/     the specification as frozen for earlier releases (site/archive.py)
+  spec/*.md            the specification, which describes the newest app release, one page per layer
 
-A statement in the spec that holds for some releases only carries a release mark, `[release: TEXT]`,
-such as `[release: 15.4 only]`. It is drawn as a badge, and spec/releases.md gathers every marked
-statement where it says `<!-- release-differences -->`.
+A statement in the spec that doesn't hold for every release checked begins with a version note:
+`[since: 15.4]` for what 15.4 was the first checked release to have, `[until: 14.5]` for what the
+newest release no longer does and 14.5 was the last checked release to do. It is drawn as a badge, and
+spec/releases.md gathers every noted statement where it says `<!-- release-history -->`.
   experiments/*.md     every experiment, one page each
   site/guides/*.md     walkthroughs written for the site, which may embed generated excerpts
   site/examples/*.txt  excerpts of iwork-probe output, made by site/examples.py from local samples
@@ -30,35 +30,34 @@ OUT = os.path.join(ROOT, "docs")
 REPO = "https://github.com/alehel/iwork-format"
 TITLE = "iWork file format specification"
 
-# The specification is versioned by the release of the apps it describes. spec/ holds the current
-# release and is published at spec/. When a new release is taken up, site/archive.py freezes a copy
-# of spec/ in spec/versions/<release>/, published at spec/<release>/, and CURRENT_VERSION moves on.
-# That is for a release that changes the format. Releases that write the same format share one spec,
-# whose release marks note what differs (spec/releases.md). Experiments and guides aren't versioned:
-# each experiment records the release it ran on, which the experiment list shows.
-CURRENT_VERSION = "15.4"
+# The releases experiments have run with, newest first. The specification describes the newest one; what
+# older ones lack or do differently is marked with version notes where it stands. Experiments aren't
+# versioned: each records the release it ran with. main() stops when an experiment names another one.
+RELEASES = ("16.0", "15.4", "14.5", "13.1")
+CURRENT = RELEASES[0]
 SPEC_PAGES = [("README.md", "index.html"), ("container.md", "container.html"), ("text.md", "text.html"),
               ("styles.md", "styles.html"), ("tables.md", "tables.html"), ("drawables.md", "drawables.html"),
               ("pages.md", "pages.html"), ("keynote.md", "keynote.html"), ("numbers.md", "numbers.html"),
               ("releases.md", "releases.html"), ("features.md", "features.html")]
 GENERATED = {"spec/types.html", "experiments/topics.html", "search.html", "spec/features.json"}  # pages the build makes without a Markdown source, which Markdown may link to
-RELEASE_MARK = re.compile(r"\[release: ([^\]]+)\]")
+VERSION_NOTE = re.compile(r"\[(since|until): ([^\]]+)\](?!\()")
+OLD_MARK = re.compile(r"\[release: [^\]]+\]")
 
 
 def version_key(name):
     return tuple(int(p) if p.isdigit() else -1 for p in name.split("."))
 
 
-def spec_versions():
-    """Every version of the spec, newest first, as (release, source folder, output folder)."""
-    found = [("CURRENT", "spec", "spec")]
-    archive = os.path.join(ROOT, "spec", "versions")
-    if os.path.isdir(archive):
-        for name in sorted(os.listdir(archive), key=version_key, reverse=True):
-            if os.path.isdir(os.path.join(archive, name)) and name != CURRENT_VERSION:
-                found.append((name, f"spec/versions/{name}", f"spec/{name}"))
-    found[0] = (CURRENT_VERSION,) + found[0][1:]
-    return found
+def version_note(kind, release):
+    """A note's badge and what it means in words, or None when it names no release that can carry it."""
+    if release not in RELEASES:
+        return None
+    i = RELEASES.index(release)
+    if kind == "since" and i + 1 < len(RELEASES):
+        return f"Since {release}", f"In {release} and later; not in {RELEASES[i + 1]} or earlier"
+    if kind == "until" and i > 0:
+        return f"Until {release}", f"In {release} and earlier; no longer in {RELEASES[i - 1]} or later"
+    return None
 
 
 # --- Markdown subset -------------------------------------------------------------------------
@@ -96,20 +95,29 @@ def link_target(url, here):
     return f"{REPO}/blob/main/{target}{anchor}"
 
 
+def note_badge(kind, release, here):
+    note = version_note(kind, release)
+    if not note:
+        problem(here, f"version note [{kind}: {release}] doesn't name a release that can carry it")
+        return ""
+    return f'<span class="release" title="{note[1]}">{note[0]}</span>'
+
+
 def inline(text, here):
-    out = []
-    parts = re.split(r"(`[^`]+`)", text)
-    for part in parts:
-        if part.startswith("`") and part.endswith("`") and len(part) > 1:
-            out.append("<code>" + html.escape(part[1:-1]) + "</code>")
-            continue
-        s = html.escape(part, quote=False)
-        s = RELEASE_MARK.sub(lambda m: f'<span class="release" title="Holds for some releases only">{m.group(1)}</span>', s)
-        s = re.sub(r"\[([^\]]+)\]\(([^)\s]+)\)", lambda m: f'<a href="{html.escape(link_target(html.unescape(m.group(2)), here))}">{m.group(1)}</a>', s)
-        s = re.sub(r"\*\*([^*]+)\*\*", r"<strong>\1</strong>", s)
-        s = re.sub(r"(?<![\w*])\*([^*\s][^*]*?)\*(?![\w*])", r"<em>\1</em>", s)
-        out.append(s)
-    return "".join(out)
+    codes = []
+
+    def keep(m):  # inline code is set aside so that nothing inside it is read as Markdown
+        codes.append("<code>" + html.escape(m.group(0)[1:-1]) + "</code>")
+        return f"\x00{len(codes) - 1}\x00"
+
+    s = html.escape(re.sub(r"`[^`]+`", keep, text), quote=False)
+    if OLD_MARK.search(s):
+        problem(here, f"release mark, which version notes replaced: {OLD_MARK.search(s).group(0)}")
+    s = VERSION_NOTE.sub(lambda m: note_badge(m.group(1), m.group(2), here), s)
+    s = re.sub(r"\[([^\]]+)\]\(([^)\s]+)\)", lambda m: f'<a href="{html.escape(link_target(html.unescape(m.group(2)), here))}">{m.group(1)}</a>', s)
+    s = re.sub(r"\*\*([^*]+)\*\*", r"<strong>\1</strong>", s)
+    s = re.sub(r"(?<![\w*])\*([^*\s][^*]*?)\*(?![\w*])", r"<em>\1</em>", s)
+    return re.sub(r"\x00(\d+)\x00", lambda m: codes[int(m.group(1))], s)
 
 
 def render(md, here, toc=None):
@@ -161,9 +169,9 @@ def render(md, here, toc=None):
             out.append(f'<h{level} id="{anchor}">{text}<a class="anchor" href="#{anchor}" aria-label="Link to this section: {html.escape(re.sub(r'<[^>]+>', '', text), quote=True)}">#</a></h{level}>')
             i += 1
             continue
-        if line.strip() == "<!-- release-differences -->":
+        if line.strip() == "<!-- release-history -->":
             flush()
-            out.append(release_differences(here))
+            out.append(release_history(here))
             i += 1
             continue
         if line.strip() == "<!-- feature-inventory -->":
@@ -293,13 +301,13 @@ def include_excerpt(name, here=None):
 
 
 
-RELEASE_NOTES = []  # (mark, statement Markdown, source page, section anchor, section title), filled by main()
+RELEASE_NOTES = []  # (kind, release, statement Markdown, source page, section anchor, section title), filled by main()
 
 
 def statement_after(text, start):
-    """The sentence a release mark begins, up to its full stop (links and code kept whole)."""
+    """The sentence a version note begins, up to its full stop (links and code kept whole)."""
     rest = text[start:]
-    depth, i = 0, 0
+    i = 0
     while i < len(rest):
         c = rest[i]
         if c in "([`":
@@ -324,23 +332,26 @@ def collect_release_notes(sources):
             if m:
                 anchor, section = slug(m.group(1)), m.group(1)
                 continue
-            for mark in RELEASE_MARK.finditer(line):
-                notes.append((mark.group(1), statement_after(line, mark.end()), src, anchor, section))
+            for note in VERSION_NOTE.finditer(line):
+                notes.append((note.group(1), note.group(2), statement_after(line, note.end()), src, anchor, section))
     return notes
 
 
-def release_differences(here):
-    if not RELEASE_NOTES:
-        return "<p>No statement in the specification is marked as holding for some releases only.</p>"
+def release_history(here):
+    """What each release added and stopped doing, newest first, gathered from the version notes."""
     rows = []
-    for mark, statement, src, anchor, section in sorted(RELEASE_NOTES, key=lambda n: (n[0], n[2])):
-        where = relpath(SITE_PAGES[src] + (f"#{anchor}" if anchor else ""), here_out(here))
-        page_name = title_of(read(src))
-        rows.append(f'<tr><td><span class="release">{html.escape(mark)}</span></td><td>{inline(statement, src)}'
-                    f'<span class="where">In <a href="{html.escape(where)}">{html.escape(page_name)}'
-                    f'{": " + inline(section, src) if section else ""}</a></span></td></tr>')
-    return ('<div class="table"><table class="differences"><thead><tr><th>Release</th><th>Statement</th></tr></thead><tbody>'
-            + "".join(rows) + "</tbody></table></div>")
+    for newer, older in zip(RELEASES, RELEASES[1:]):
+        changes = [("Added", n) for n in RELEASE_NOTES if n[:2] == ("since", newer)]
+        changes += [(f"Until {older}", n) for n in RELEASE_NOTES if n[:2] == ("until", older)]
+        for what, (_, _, statement, src, anchor, section) in changes:
+            where = relpath(SITE_PAGES[src] + (f"#{anchor}" if anchor else ""), here_out(here))
+            rows.append(f'<tr><td><span class="release">{newer}</span></td><td>{what}</td><td>{inline(statement, src)}'
+                        f'<span class="where">In <a href="{html.escape(where)}">{html.escape(title_of(read(src)))}'
+                        f'{": " + inline(section, src) if section else ""}</a></span></td></tr>')
+        if not changes:
+            rows.append(f'<tr><td><span class="release">{newer}</span></td><td>—</td><td>No change noted from {older}.</td></tr>')
+    return ('<div class="table"><table class="differences"><thead><tr><th scope="col">Release</th><th scope="col">Change</th>'
+            '<th scope="col">Statement</th></tr></thead><tbody>' + "".join(rows) + "</tbody></table></div>")
 
 
 def experiment_releases(md):
@@ -889,86 +900,48 @@ NAV = [
     ("Writing a document", "guides/writing.html"),
     ("Sample files", "guides/samples.html"),
     ("Specification", None),
-    ("Layers and status", "spec:index.html"),
-    ("1. Container", "spec:container.html"),
-    ("2. Text", "spec:text.html"),
-    ("3. Styles", "spec:styles.html"),
-    ("4. Tables", "spec:tables.html"),
-    ("5. Drawables, media and charts", "spec:drawables.html"),
+    ("Layers and status", "spec/index.html"),
+    ("1. Container", "spec/container.html"),
+    ("2. Text", "spec/text.html"),
+    ("3. Styles", "spec/styles.html"),
+    ("4. Tables", "spec/tables.html"),
+    ("5. Drawables, media and charts", "spec/drawables.html"),
     ("Apps", None),
-    ("Pages", "spec:pages.html"),
-    ("Keynote", "spec:keynote.html"),
-    ("Numbers", "spec:numbers.html"),
+    ("Pages", "spec/pages.html"),
+    ("Keynote", "spec/keynote.html"),
+    ("Numbers", "spec/numbers.html"),
     ("Reference", None),
     ("Search", "search.html"),
     ("Record types", "spec/types.html"),
-    ("Features and scope", "spec:features.html"),
-    ("Releases", "spec:releases.html"),
+    ("Features and scope", "spec/features.html"),
+    ("Releases", "spec/releases.html"),
     ("Evidence", None),
     ("All experiments", "experiments/index.html"),
     ("By topic", "experiments/topics.html"),
 ]
 
 
-VERSIONS = []      # filled by main(): (release, source folder, output folder), newest first
 BUILD_REVISION = None  # filled by main(): (commit the build was made on, whether sources had uncommitted changes)
-OTHER_RELEASES = []  # filled by main(): releases other than CURRENT_VERSION that experiments ran with
-VERSION_PAGES = {}  # output folder -> the page names that version has
 
 
-def version_switch(out_path, view, name):
-    """A dropdown of each release's spec: to the same page where that release has it, else its overview."""
-    links = []
-    shown = ""
-    for release, _, folder in VERSIONS:
-        target = f"{folder}/{name}" if name in VERSION_PAGES[folder] else f"{folder}/index.html"
-        label = html.escape(f"Format of {release}" + (" (current)" if release == CURRENT_VERSION else ""))
-        if folder == view:
-            shown = label
-            links.append(f'<li><a class="current" aria-current="page" href="{relpath(target, out_path)}">{label}</a></li>')
-        else:
-            links.append(f'<li><a href="{relpath(target, out_path)}">{label}</a></li>')
-    return ('<li class="versions"><details class="release"><summary><span class="label">Spec version</span>'
-            f'<span class="value">{shown}</span></summary><ul>' + "".join(links) + "</ul></details></li>")
-
-
-def releases_line(out_path, view):
+def releases_line(out_path):
     """What the spec describes and which other releases were checked, linking to the releases page."""
-    shown = next((r for r, _, f in VERSIONS if f == view), CURRENT_VERSION)
-    text = f"Describes {shown}"
-    if view == "spec" and OTHER_RELEASES:
-        text += " · also checked: " + ", ".join(OTHER_RELEASES)
-    target = f"{view}/releases.html" if "releases.html" in VERSION_PAGES.get(view, ()) else "spec/releases.html"
-    return f'<li class="releases-line"><a href="{relpath(target, out_path)}">{html.escape(text)}</a></li>'
+    text = f"Describes {CURRENT} · also checked: " + ", ".join(RELEASES[1:])
+    return f'<li class="releases-line"><a href="{relpath("spec/releases.html", out_path)}">{html.escape(text)}</a></li>'
 
 
-def page(out_path, title, body, toc=None, description="", version=None, source=None, wide=False):
-    """version is the output folder of the spec release this page belongs to, or None outside the spec.
-    source is the repository path of the Markdown the page is built from, linked in the footer.
+def page(out_path, title, body, toc=None, description="", source=None, wide=False):
+    """source is the repository path of the Markdown the page is built from, linked in the footer.
     wide lets a page without an on-this-page list use that column too, for wide tables."""
-    view = version or "spec"
-    name = out_path[len(view) + 1:] if version else "index.html"
     nav = []
     for label, href in NAV:
         if href is None:
             nav.append(f'<li class="group">{html.escape(label)}</li>')
             if label == "Specification":
-                # The picker only appears once a copy of the spec has been frozen for an earlier format.
-                if len(VERSIONS) > 1:
-                    nav.append(version_switch(out_path, view, name))
-                nav.append(releases_line(out_path, view))
+                nav.append(releases_line(out_path))
             continue
-        if href.startswith("spec:"):
-            href = f"{view}/{href[5:]}"
         cls = ' class="current" aria-current="page"' if href == out_path else ""
         nav.append(f'<li><a{cls} href="{relpath(href, out_path)}">{html.escape(label)}</a></li>')
-    archived = ""
-    if version and version != "spec":
-        release = next(r for r, _, f in VERSIONS if f == version)
-        current = f"spec/{name}" if name in VERSION_PAGES["spec"] else "spec/index.html"
-        archived = (f'\n<p class="wip archived"><strong>Earlier release.</strong> This is the specification as it stood for '
-                    f'the {html.escape(release)} apps, kept for documents they wrote. The current one describes '
-                    f'{html.escape(CURRENT_VERSION)}: <a href="{relpath(current, out_path)}">read this page there</a>.</p>')
     toc_html = ""
     if toc:
         toc_html = '<nav class="toc" aria-label="On this page"><details open><summary>On this page</summary><ul>' + "".join(
@@ -994,7 +967,7 @@ def page(out_path, title, body, toc=None, description="", version=None, source=N
 <body>
 <a class="skip" href="#page-content">Skip to content</a>
 <header class="top"><a class="brand" href="{home}">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><form class="search" action="{relpath("search.html", out_path)}" role="search"><input type="search" name="q" aria-label="Search the specification" placeholder="Search, e.g. 6001"></form><a class="repo" href="{REPO}">Repository</a></header>
-<p class="wip"><strong>Work in progress.</strong> This specification is incomplete and changes as new experiments run. Each finding says how sure it is: <em>confirmed</em>, <em>likely</em> or <em>unknown</em>. See <a href="{relpath("spec/index.html", out_path)}">what each chapter covers so far</a>.</p>{archived}
+<p class="wip"><strong>Work in progress.</strong> This specification is incomplete and changes as new experiments run. Each finding says how sure it is: <em>confirmed</em>, <em>likely</em> or <em>unknown</em>. See <a href="{relpath("spec/index.html", out_path)}">what each chapter covers so far</a>.</p>
 <div class="layout{'' if toc_html else ' no-toc'}{' wide' if wide and not toc_html else ''}">
 <nav class="side" aria-label="Contents"><details open><summary>Contents</summary><ul>{''.join(nav)}</ul></details></nav>
 {toc_html}
@@ -1034,15 +1007,6 @@ def page(out_path, title, body, toc=None, description="", version=None, source=N
   window.addEventListener("resize", scrollers);
   fit();
   if (narrow.addEventListener) {{ narrow.addEventListener("change", fit); middle.addEventListener("change", fit); }}
-  // The release dropdown closes when you click anywhere else.
-  document.addEventListener("click", function (e) {{
-    var release = document.querySelector(".side .release[open]");
-    if (release && !release.contains(e.target)) release.open = false;
-  }});
-  document.addEventListener("keydown", function (e) {{
-    var release = document.querySelector(".side .release[open]");
-    if (release && e.key === "Escape") {{ release.open = false; release.querySelector("summary").focus(); }}
-  }});
   document.addEventListener("click", function (e) {{
     if (middle.matches && e.target.closest && e.target.closest(".toc a")) fit();
   }});
@@ -1074,26 +1038,17 @@ def main():
 
     global BUILD_REVISION
     BUILD_REVISION = build_revision()
-    VERSIONS[:] = spec_versions()
-    found = set()
-    for f in os.listdir(os.path.join(ROOT, "experiments")):
-        if re.match(r"^\d{4}-.*\.md$", f):
-            found.update(experiment_releases(read(f"experiments/{f}")))
-    OTHER_RELEASES[:] = sorted(found - {CURRENT_VERSION}, key=version_key, reverse=True)
-    spec_map = {}  # source -> (output, version folder)
-    for _, src_dir, out_dir in VERSIONS:
-        VERSION_PAGES[out_dir] = set()
-        for src, out in SPEC_PAGES:
-            if os.path.isfile(os.path.join(ROOT, src_dir, src)):
-                spec_map[f"{src_dir}/{src}"] = (f"{out_dir}/{out}", out_dir)
-                VERSION_PAGES[out_dir].add(out)
-    SITE_PAGES.update({src: out for src, (out, _) in spec_map.items()})
+    spec_map = {f"spec/{src}": f"spec/{out}" for src, out in SPEC_PAGES}
+    SITE_PAGES.update(spec_map)
     SITE_PAGES["README.md"] = "index.html"
     experiments = sorted(f for f in os.listdir(os.path.join(ROOT, "experiments")) if re.match(r"^\d{4}-.*\.md$", f))
     for f in experiments:
         SITE_PAGES[f"experiments/{f}"] = f"experiments/{f[:-3]}.html"
-    RELEASE_NOTES[:] = collect_release_notes([src for src, (_, version) in spec_map.items()
-                                                if version == "spec" and not src.endswith("releases.md")])
+    for f in experiments:
+        for r in experiment_releases(read(f"experiments/{f}")):
+            if r not in RELEASES:
+                problem(f"experiments/{f}", f"ran with {r}, which RELEASES in site/build.py doesn't list")
+    RELEASE_NOTES[:] = collect_release_notes([src for src in spec_map if not src.endswith("releases.md")])
     guides = sorted(f for f in os.listdir(os.path.join(ROOT, "site", "guides")) if f.endswith(".md"))
     for f in guides:
         SITE_PAGES[f"site/guides/{f}"] = f"guides/{f[:-3]}.html"
@@ -1104,12 +1059,12 @@ def main():
     toc = []
     page("index.html", "Overview", render(md, "site/guides/index.md", toc), toc, source="site/guides/index.md")
 
-    for src, (out, version) in spec_map.items():
+    for src, out in spec_map.items():
         md = read(src)
         toc = []
         body = render(md, src, toc)
-        page(out, title_of(md), body, toc, version=version, source=src)
-        if version == "spec" and not src.endswith(("README.md", "releases.md")):
+        page(out, title_of(md), body, toc, source=src)
+        if not src.endswith(("README.md", "releases.md")):
             index_sections("spec", out, CHAPTERS.get(os.path.basename(src), title_of(md)), body)
 
     for f in guides:
@@ -1142,7 +1097,7 @@ def main():
     for f in experiments:
         for r in experiment_releases(read(f"experiments/{f}")):
             counts[r] = counts.get(r, 0) + 1
-    by_release = " and ".join(f"{n} with the {r} apps" for r, n in sorted(counts.items(), key=lambda x: version_key(x[0]), reverse=True))
+    by_release = ", ".join(f"{n} with the {r} apps" for r, n in sorted(counts.items(), key=lambda x: version_key(x[0]), reverse=True))
     tool_only = sum(1 for f in experiments if not experiment_releases(read(f"experiments/{f}")))
     body = ("<h1>All experiments</h1><p>Each experiment changes one thing in a document, saves it, and "
             "records what changed in the file. The specification cites them as its evidence. "

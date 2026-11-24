@@ -1,4 +1,4 @@
-"""Experiment 0476: open every sample in the installed apps and save a copy, then compare the copies.
+"""Experiment 0476: open every sample in one release of the apps and save a copy, then compare the copies.
 
 Usage: python3 -I recipes/0476-resave.py RELEASE [--compare | --pair OTHER] [--only NNNN,NNNN] [--skip NNNN,NNNN] [--apps APP,APP] [--limit N]
 
@@ -9,7 +9,9 @@ whole document out again from what it read, so the copy shows how the installed 
 every feature in the sample, including those made by hand in the app. Left out: experiments 0179
 and 0180, whose password prompt would hold the run up, and those whose files were written to make
 an app fail (0379, 0394, 0396, 0424, 0434, 0451). A sample already copied is skipped, so a run can
-be resumed. --apps (from experiment 0480 on) keeps to some of Pages, Numbers and Keynote. Prints OK or FAILED per document and a total. RELEASE only names the folder.
+be resumed. --apps (from experiment 0480 on) keeps to some of Pages, Numbers and Keynote. Prints OK or FAILED per document and a total.
+RELEASE names the folder, and a copy whose build history says another release saved it counts as FAILED
+(from experiment 0481 on): set IWORK_APP_DIR for a release that isn't the installed one.
 
 With --compare, compares each copy with its original using --compare of
 recipes/0473-release-set.py, which knows what every document of RELEASE differs in. With --pair
@@ -21,9 +23,12 @@ Only the standard library is used.
 import glob
 import importlib.util
 import os
+import plistlib
 import re
+import shutil
 import subprocess
 import sys
+import zipfile
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 HELPER = os.path.join(ROOT, "recipes", "0372-in-app.sh")
@@ -42,6 +47,17 @@ def samples(only, skip=frozenset()):
                 if os.path.splitext(f)[1] in APPS:
                     docs.append(os.path.relpath(os.path.join(d, f), os.path.join(ROOT, "samples")))
     return docs
+
+
+def saved_by(path):
+    """The release of the app that saved a document last, from its build history."""
+    if os.path.isdir(path):
+        data = open(os.path.join(path, "Metadata", "BuildVersionHistory.plist"), "rb").read()
+    else:
+        with zipfile.ZipFile(path) as z:
+            data = z.read("Metadata/BuildVersionHistory.plist")
+    builds = [b for b in plistlib.loads(data) if re.match(r"M\d+\.\d+-", b)]
+    return builds[-1][1:].split("-")[0] if builds else None
 
 
 def pair(a, b):
@@ -111,9 +127,7 @@ def main(argv):
         spec.loader.exec_module(rs)
         # Fields 5 and 16 of the engine's root, the locale, appear whenever a document is saved again,
         # in 15.4 too (0139's resaved.pages): not a difference between releases.
-        # 14.5 also writes 16.0's view-state fields when it saves a document it opened (this experiment).
-        rs.compare(release, base, prefer_theme=False,
-                   also_known={(4000, 5), (4000, 16)} | rs.BY_RELEASE["16.0"]["fields"])
+        rs.compare(release, base, prefer_theme=False, also_known={(4000, 5), (4000, 16)})
         return
     only = set(rest[rest.index("--only") + 1].split(",")) if "--only" in rest else None
     limit = int(rest[rest.index("--limit") + 1]) if "--limit" in rest else None
@@ -138,6 +152,9 @@ def main(argv):
             ok, why = False, ["timed out"]
         if ok and before is not None and os.stat(src).st_mtime != before:
             ok, why = False, ["the original changed"]
+        if ok and saved_by(out) != release:
+            ok, why = False, [f"saved by {saved_by(out)}, not {release}"]
+            shutil.rmtree(out) if os.path.isdir(out) else os.remove(out)  # so a later run doesn't skip it
         counts["OK" if ok else "FAILED"] += 1
         print(f"{'OK' if ok else 'FAILED'} {rel}" + ("" if ok else f" :: {' '.join(why)[:200]}"), flush=True)
         failed_in_a_row = 0 if ok else failed_in_a_row + 1

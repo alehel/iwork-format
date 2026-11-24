@@ -1,36 +1,57 @@
 # Releases
 
-The specification describes the file format as the 15.4 apps write it. Other releases checked against it write the same format, with the few differences listed below; a statement that holds for some releases only carries a mark such as [release: 15.4 only] where it stands in the spec.
+The specification describes the files the newest apps write, Pages, Keynote and Numbers 16.0. Older releases write the same format with a few differences. Each is noted where it matters in the chapters: [since: 15.4] means 15.4 was the first release checked to have something, and [until: 14.5] means 14.5 was the last one checked to do something the newest no longer does. This page gathers the notes.
+
+Only the releases below have been checked. Something new since 15.4 is in 15.4 and not in 14.5; which release between them added it is *unknown*. A statement without a note holds for every release it has been checked in, and things the oldest one already had get no note.
 
 ## Releases checked
 
-| Release | Apps | macOS | `fileFormatVersion` | Build |
-| --- | --- | --- | --- | --- |
-| 15.4 | Pages, Keynote, Numbers | 26.5.2 | `26.4.0` | `M15.4-7051.0.79-2` |
-| 16.0 | Pages, Keynote, Numbers | 26.5.2 | `27.0.1` | `M16.0-7052.0.68-2` |
-| 14.5 | Pages, Keynote, Numbers | 26.5.2 | `14.4.1` | `M14.5-7045.0.17-4` |
-| 13.1 | Pages, Keynote, Numbers | 26.5.2 | `13.1.2` | `M13.1-7037.0.101-2` |
+| Release | `fileFormatVersion` | Build | Samples |
+| --- | --- | --- | --- |
+| 16.0 | `27.0.1` | `M16.0-7052.0.68-2` | Every scripted sample made again ([0473](../experiments/0473-every-scripted-sample-in-16-0.md)), every sample saved again ([0476](../experiments/0476-resaving-every-sample.md)) |
+| 15.4 | `26.4.0` | `M15.4-7051.0.79-2` | The originals of experiments [0001](../experiments/0001-empty-document.md) to [0460](../experiments/0460-third-regression-check.md) |
+| 14.5 | `14.4.1` | `M14.5-7045.0.17-4` | Every scripted sample made again ([0475](../experiments/0475-every-scripted-sample-in-14-5.md)) |
+| 13.1 | `13.1.2` | `M13.1-7037.0.101-2` | Every scripted sample made again ([0477](../experiments/0477-every-scripted-sample-in-13-1.md)), every sample saved again ([0480](../experiments/0480-resaving-every-sample-in-13-1.md)) |
 
-- **15.4** is the release the spec describes, from [0001](../experiments/0001-empty-document.md) on. Its apps are named "Pages Creator Studio" and so on.
-- **14.5** writes the same format ([0461](../experiments/0461-new-documents-in-14-5.md), [0464](../experiments/0464-recipes-rerun-in-14-5.md)), opens and reads the 15.4 samples ([0462](../experiments/0462-opening-15-4-documents-in-14-5.md)) and draws them the same ([0463](../experiments/0463-drawing-15-4-documents-in-14-5.md)).
-- **16.0** writes the same format too ([0469](../experiments/0469-the-16-0-apps.md)), and where 14.5 and 15.4 differ it sides with 15.4, apart from Numbers' *Table Title 1* style, which it leaves out as 14.5 does. What is new is one more field in each app's view-state record, which a reader can ignore. It opens the 15.4 samples and reads the same text, tables, slides and notes from them, the radial wipe included ([0470](../experiments/0470-opening-15-4-samples-in-16-0.md)), and draws them as 15.4 did, a body switched off over text included ([0471](../experiments/0471-drawing-15-4-samples-in-16-0.md)). Saving every sample again, 16.0 and 14.5 write the same structure for all of them, features made by hand included ([0476](../experiments/0476-resaving-every-sample.md)). Its apps are named "Pages Creator Studio" and so on, as 15.4's were, and they replaced both 15.4 and 14.5 on the Mac the experiments run on, so documents can't be taken back to those releases.
-- **Keynote 14.5** writes the same format too ([0466](../experiments/0466-keynote-14-5.md)), apart from a slide-node field, a resource and its Basic White template; it opens and reads the 15.4 presentations ([0467](../experiments/0467-opening-15-4-presentations-in-keynote-14-5.md)) and draws them the same ([0468](../experiments/0468-drawing-15-4-presentations-in-keynote-14-5.md)). It doesn't know the radial wipe transition.
-- **13.1** writes the same format with a longer list of differences, all small ([0477](../experiments/0477-every-scripted-sample-in-13-1.md)): no properties flags, no type-4011 record, and a few fields left out or added. It opens the 15.4 samples and reads the same from them ([0478](../experiments/0478-opening-15-4-samples-in-13-1.md)), and draws them the same apart from tables of contents, which it rebuilds from the headings, and a body switched off over text, which it doesn't draw, as in 14.5 ([0479](../experiments/0479-drawing-15-4-samples-in-13-1.md)). Saving the samples again, it writes the same structure as 16.0 but for fields it doesn't know ([0480](../experiments/0480-resaving-every-sample-in-13-1.md)). For a few documents it warns that they were made in a newer version before it exports or saves them; what triggers the warning is *unknown*. It doesn't know the radial wipe. It was run from a disk image.
-
-## A set of samples per release
-
-From 16.0 on, each release gets a set of every sample the experiments' recipes make on their own, made again with that release: `python3 -I recipes/0473-release-set.py RELEASE` makes it in `samples/release/RELEASE/`, and `--compare` checks it against the 15.4 samples. The 16.0 set has 319 documents, the same in structure as 15.4's but for the differences listed below ([0473](../experiments/0473-every-scripted-sample-in-16-0.md)). So has 14.5's, made from its disk image, apart from the radial wipe and the three made from Apple's own templates ([0475](../experiments/0475-every-scripted-sample-in-14-5.md)), and 13.1's ([0477](../experiments/0477-every-scripted-sample-in-13-1.md)). The sets are published with the fixtures under `release/`.
+All three apps of each release, on macOS 26.5.2. The 15.4 and 16.0 apps are named "Pages Creator Studio" and so on.
 
 ## Telling which release saved a document
 
-`Metadata/Properties.plist` holds the file format version in `fileFormatVersion`, and `Metadata/BuildVersionHistory.plist` lists the template and the build of the app that saved it, such as `M14.5-7045.0.17-4`. The format version doesn't follow the app's version: 13.1 writes `13.1.2`, 14.5 writes `14.4.1`, 15.4 writes `26.4.0` and 16.0 writes `27.0.1` ([0461](../experiments/0461-new-documents-in-14-5.md)). A reader doesn't need either to read a document, but they say which differences below can apply. Every sample document's build was checked against the release its experiment names, and all matched ([0465](../experiments/0465-which-release-saved-each-sample.md)).
+`Metadata/BuildVersionHistory.plist` lists the template and the build of each release that saved the document; the last build is the release that saved it last. `Metadata/Properties.plist` holds the file format version in `fileFormatVersion`, and `Metadata.iwa` repeats it ([data files](container.md#data-files)). The format version doesn't follow the app's version ([0461](../experiments/0461-new-documents-in-14-5.md), [0481](../experiments/0481-the-format-version-in-metadata.md)). A reader doesn't need either to read a document, but they say which of the notes apply. Every sample was saved by the release its experiment names ([0465](../experiments/0465-which-release-saved-each-sample.md), [0481](../experiments/0481-the-format-version-in-metadata.md)).
 
-## Differences
+## What each release changed
 
-Every statement in the spec marked as holding for some releases only, gathered from where it stands:
+Every statement with a version note, newest release first, gathered from where it stands:
 
-<!-- release-differences -->
+<!-- release-history -->
 
-## Releases that change the format
+## Templates
 
-When a release writes a format that differs in more than a few details, the spec moves on to describe it, and the spec as it stood is kept for documents the earlier release wrote: `python3 -I site/archive.py RELEASE` freezes it in `spec/versions/RELEASE/`, and the site shows a *Spec version* menu to switch between them. No release has needed that yet.
+Apple's own templates and themes change between releases. A document takes its styles, images and layouts from the template it was made from, so these differences are in what was copied, not in how the format works. Readers find styles and data by reference and need nothing for them.
+
+| Template | Difference |
+| --- | --- |
+| Keynote's Basic White, master thumbnails | `mt-UUID-N.jpg` has one set of UUIDs in 16.0, another in 15.4 and a third in 14.5 ([0466](../experiments/0466-keynote-14-5.md), [0469](../experiments/0469-the-16-0-apps.md)) |
+| Keynote's Basic White, paragraph styles | In 16.0 and 15.4, 26 empty texts on its template slides use the *Brødtekst* (Body) style. In 14.5, 17 of them use an unnamed variation of *Liten infotekst* (Caption Small) at 56 points, one more type-2022 style ([0466](../experiments/0466-keynote-14-5.md), [0469](../experiments/0469-the-16-0-apps.md)) |
+| Keynote's Basic White, movie poster | 16.0 and 15.4 keep `blankMoviePosterImage.png` as an app resource, with a colour. 14.5 stores it in the package as `Data/blankMoviePosterImage-N.png`, without one ([0466](../experiments/0466-keynote-14-5.md), [0469](../experiments/0469-the-16-0-apps.md)) |
+| Numbers' blank template | 15.4 has one paragraph style the others lack, `text-12-paragraphstyle-Table Title 1` ([0464](../experiments/0464-recipes-rerun-in-14-5.md), [0469](../experiments/0469-the-16-0-apps.md)) |
+
+Presentations made in 14.5 and 16.0 from the project's test theme, which 15.4 saved, have 15.4's styles and resources, so the Basic White differences are the template's ([0472](../experiments/0472-keynote-16-0-with-the-test-theme.md), [0474](../experiments/0474-keynote-14-5-with-the-test-theme.md)).
+
+## What was checked
+
+Most experiments ran with 15.4. The others were checked against it:
+
+| Release | New documents | Opens the 15.4 samples | Draws them the same | Saves them again |
+| --- | --- | --- | --- | --- |
+| 16.0 | 313 of the 319 documents the recipes make compared, all with 15.4's structure but for the notes ([0473](../experiments/0473-every-scripted-sample-in-16-0.md), [0469](../experiments/0469-the-16-0-apps.md)) | All 1,211, and reads the same from them; also nine documents of the password experiments ([0470](../experiments/0470-opening-15-4-samples-in-16-0.md)) | 396 of 399, the other three for reasons other than the release ([0471](../experiments/0471-drawing-15-4-samples-in-16-0.md)) | All 1,211, hand-made features included ([0476](../experiments/0476-resaving-every-sample.md)) |
+| 14.5 | 309 documents with 15.4's structure but for the notes ([0475](../experiments/0475-every-scripted-sample-in-14-5.md), [0461](../experiments/0461-new-documents-in-14-5.md), [0464](../experiments/0464-recipes-rerun-in-14-5.md), [0466](../experiments/0466-keynote-14-5.md)) | 893 of 895 Pages and Numbers documents, the other two for want of a password, and 323 presentations ([0462](../experiments/0462-opening-15-4-documents-in-14-5.md), [0467](../experiments/0467-opening-15-4-presentations-in-keynote-14-5.md)) | Yes, but for a body switched off over text ([0463](../experiments/0463-drawing-15-4-documents-in-14-5.md), [0468](../experiments/0468-drawing-15-4-presentations-in-keynote-14-5.md)) | Not tested |
+| 13.1 | 306 documents with 15.4's structure but for the notes ([0477](../experiments/0477-every-scripted-sample-in-13-1.md)) | All 1,211 ([0478](../experiments/0478-opening-15-4-samples-in-13-1.md)) | 387 of 399; what differs in substance is tables of contents and a body switched off over text ([0479](../experiments/0479-drawing-15-4-samples-in-13-1.md)) | All 1,211, 994 with 16.0's structure ([0480](../experiments/0480-resaving-every-sample-in-13-1.md)) |
+
+The structure compared is the parts, the record types with their versions and counts, and the top-level fields each type uses, plus which nested fields occur ([0481](../experiments/0481-the-format-version-in-metadata.md)); not every value. Opening an older document in a newer release works; the other way, 13.1 sometimes first warns that a document was made in a newer version, and what triggers that is *unknown* ([0479](../experiments/0479-drawing-15-4-samples-in-13-1.md)).
+
+## When a new release comes
+
+1. Make the set of every sample the recipes make on their own, `python3 -I recipes/0473-release-set.py RELEASE` and `--compare`, and open, draw and save the earlier samples, as for the releases above.
+2. Add the release at the front of `RELEASES` in `site/build.py`, which then shows it as the one described.
+3. Change each statement the new release makes untrue: say what the newest does, with [since: 16.0] as the note for what is new, or a note ending what it no longer does.
