@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0476: Resaving every sample in 16.0 and 14.5 · iWork file format specification</title>
+<meta name="description" content="iWork file format specification">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<a class="skip" href="#page-content">Skip to content</a>
+<header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><form class="search" action="../search.html" role="search"><input type="search" name="q" aria-label="Search the specification" placeholder="Search, e.g. 6001"></form><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
+<p class="wip"><strong>Work in progress.</strong> This specification is incomplete and changes as new experiments run. Each finding says how sure it is: <em>confirmed</em>, <em>likely</em> or <em>unknown</em>. See <a href="../spec/index.html">what each chapter covers so far</a>.</p>
+<div class="layout no-toc">
+<nav class="side" aria-label="Contents"><details open><summary>Contents</summary><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="../guides/anatomy.html">Reading a Pages document</a></li><li><a href="../guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="../guides/writing.html">Writing a document</a></li><li><a href="../guides/samples.html">Sample files</a></li><li class="group">Specification</li><li class="releases-line"><a href="../spec/releases.html">Describes 15.4 · also checked: 16.0, 14.5</a></li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2. Text</a></li><li><a href="../spec/styles.html">3. Styles</a></li><li><a href="../spec/tables.html">4. Tables</a></li><li><a href="../spec/drawables.html">5. Drawables, media and charts</a></li><li class="group">Apps</li><li><a href="../spec/pages.html">Pages</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li class="group">Reference</li><li><a href="../search.html">Search</a></li><li><a href="../spec/types.html">Record types</a></li><li><a href="../spec/releases.html">Releases</a></li><li class="group">Evidence</li><li><a href="index.html">All experiments</a></li><li><a href="topics.html">By topic</a></li></ul></details></nav>
+
+<main id="page-content" tabindex="-1">
+<h1 id="0476-resaving-every-sample-in-160-and-145">0476: Resaving every sample in 16.0 and 14.5<a class="anchor" href="#0476-resaving-every-sample-in-160-and-145" aria-label="Link to this section: 0476: Resaving every sample in 16.0 and 14.5">#</a></h1><p class="ran">App release: <span class="release">16.0</span>, <span class="release">14.5</span></p>
+<p><strong>Status:</strong> run</p>
+<p><a href="0473-every-scripted-sample-in-16-0.html">0473</a> and <a href="0475-every-scripted-sample-in-14-5.html">0475</a> remade every sample a recipe makes on its own. The others, made by hand in the apps (comments, tracked changes, pivot tables, highlighting rules, gradients, shadows, masks) or written by the spec's writer, a later release has only read (<a href="0470-opening-15-4-samples-in-16-0.html">0470</a>), never written. This experiment opens every 15.4 sample in 16.0 and in 14.5 and saves a copy. Saving writes the whole document out again from what the app read, so the copies show how each release writes every feature in the samples.</p>
+<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section: Setup">#</a></h2>
+<div class="table"><table><tbody><tr><th scope="row">Apps</th><td>Pages, Numbers and Keynote 16.0, installed; and 14.5, run from its disk image while the 16.0 apps weren't running</td></tr><tr><th scope="row">macOS</th><td>26.5.2 (25F84)</td></tr><tr><th scope="row">Date</th><td>2026-11-24</td></tr><tr><th scope="row">Input</th><td>Every <code>.pages</code>, <code>.numbers</code> and <code>.key</code> directly under <code>samples/NNNN/</code> (0001 to 0460) and <code>samples/theme/NNNN/</code>, as in 0470: 1,211 documents. Left out: 0179 and 0180, whose password prompt would hold the run up, and the files written to make an app fail (0379, 0394, 0396, 0424, 0434, 0451)</td></tr><tr><th scope="row">Script</th><td>The new [<code>recipes/0476-resave.py</code>](../recipes/0476-resave.py), which opens each sample with [<code>recipes/0372-in-app.sh</code>](../recipes/0372-in-app.sh), saves it with <code>save d in</code> under <code>samples/resave/RELEASE/</code>, checks that the original's modification time didn't change, and compares the copies</td></tr></tbody></table></div>
+<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section: Recipe">#</a></h2>
+<pre class="lang-bash"><code>python3 -I recipes/0476-resave.py 16.0
+python3 -I recipes/0476-resave.py 16.0 --compare           # each copy against its 15.4 original
+# with the 14.5 apps started from the disk image instead:
+python3 -I recipes/0476-resave.py 14.5
+python3 -I recipes/0476-resave.py 14.5 --compare
+python3 -I recipes/0476-resave.py 16.0 --pair 14.5         # each 16.0 copy against 14.5&#x27;s</code></pre>
+<p><code>--compare</code> reuses [<code>recipes/0473-release-set.py</code>](../recipes/0473-release-set.py)'s comparison, with each copy against its own original. <code>--pair</code> compares the two releases' copies of the same sample with each other, so that whatever saving does in both cancels out.</p>
+<p>In 16.0, Pages stopped answering AppleScript once, on five documents of <a href="0402-writing-repeated-header-rows.html">0402</a> in a row, and then quit; the script stops after five failures in a row. Resumed without 0402, the run finished, and the five documents then saved at the first try, in six seconds. In 14.5, every document saved at the first try. The originals' modification times didn't change.</p>
+<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section: Observation">#</a></h2>
+<p>All 1,211 samples were saved by both releases.</p>
+<p><strong>16.0 against 14.5.</strong> 1,208 of the 1,211 pairs are the same, apart from what is already known to differ between 14.5 and 16.0 (<a href="../spec/releases.html">spec/releases.md</a>). The three others differ in parts that vary from run to run: the calculation engine's locale fields and type-4011 record (<code>0248/SMALL.numbers</code>, <code>theme/0195/line_3d-row.key</code>) and a view-state record (<code>0423/table-first.pages</code>). Saved once more in 16.0, all three came out like 14.5's.</p>
+<p><strong>Each copy against its 15.4 original.</strong> 1,024 of 16.0's copies and 1,025 of 14.5's are the same as their originals, apart from the release's known differences. The about 181 others are the same documents in both releases, so what they differ in is what saving does, in either release:</p>
+<div class="table"><table><thead><tr><th scope="col">What saving changes</th><th scope="col">Where</th></tr></thead><tbody><tr><td>Fields 5 and 16 of the calculation engine's root (type 4000), the locale <code>nb_NO</code>, are written</td><td>Every document that had been saved only once; 15.4 does the same (<a href="0139-resave.html">0139</a>'s <code>resaved.pages</code>)</td></tr><tr><td>Slide nodes (type 4) get field 20, and in three presentations field 15</td><td>92 presentations, mostly those with charts (0195, 0399, 0456 to 0459) and the test-theme reruns; 15.4 wrote field 20 too when a presentation was saved by hand (0296's)</td></tr><tr><td>Fields the spec's writer added that the app doesn't keep are dropped, such as fields of cell styles (type 6001) and of formula owners (type 4008)</td><td>Writing experiments, 0287 to 0459</td></tr><tr><td>Data files are renamed to the app's own form, and unused ones left out</td><td>13 documents, such as 0431's non-ASCII name and 0435's unused file</td></tr><tr><td><code>isMultiPage</code> in <code>Properties.plist</code> set to match the document</td><td>15 documents, mostly written with page breaks or section settings (0359, 0361, 0362, 0366)</td></tr><tr><td>Records counted again, such as section records (types 3047 and 3006) and view-state records</td><td>Some of the writing experiments, and documents last shown in another way</td></tr></tbody></table></div>
+<p><strong>View-state fields.</strong> <a href="0469-the-16-0-apps.html">0469</a> took field 49 of Pages' type 10133, fields 34 and 35 of Numbers' type 12026, field 43 of Keynote's type 3 and field 13 of its type 23 to be new in 16.0. 14.5 writes them too, in every copy it saved here, though not in the new documents it made in 0461, 0464 and 0466. No 15.4 sample has them. 16.0 writes them in every document, new or opened.</p>
+<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section: Conclusion">#</a></h2>
+<p>The two releases write every feature in the samples the same way, including those only ever made by hand: comments, tracked changes, highlights, pivot tables, categories, filters, highlighting rules, gradients, shadows, masks, media, builds and transitions. Every difference between a copy and its 15.4 original is one both releases make when they save, not one between releases. Since 14.5 and 15.4 differ only in the known details, and 15.4 is no longer installed to be tried, this is as close as can be checked to saying 16.0 writes these features as 15.4 did.</p>
+<p>Resaving is a good test of a writer: what the app drops or rewrites shows which written fields it keeps. The fields dropped here are listed by <code>--compare</code> per document; which of them the spec describes is for a later experiment to sort out.</p>
+<p>The view-state fields aren't a 16.0 change: 14.5 writes them too when it saves a document it opened. When the apps write them is <em>unknown</em>, and so is what they hold.</p>
+<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section: Confidence">#</a></h2>
+<p><em>Confirmed</em>: 16.0 and 14.5 write the same structure for all 1,211 samples when they save them again. <em>Likely</em>: so did 15.4, as far as its known differences from 14.5 allow.</p>
+<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Source: <a href="https://github.com/alehel/iwork-format/blob/main/experiments/0476-resaving-every-sample.md"><code>experiments/0476-resaving-every-sample.md</code></a>.</p></footer>
+</main>
+</div>
+<script>
+// On narrow screens the contents and on-this-page lists start folded; on wide ones they stay open.
+(function () {
+  // From 48rem to 72rem the on-this-page list sits folded above the page instead of beside it.
+  var narrow = window.matchMedia("(max-width: 48rem)");
+  var middle = window.matchMedia("(max-width: 72rem)");
+  var side = document.querySelector(".side > details"), toc = document.querySelector(".toc > details");
+  var tocSummary = document.querySelector(".toc summary");
+  function fit() {
+    if (side) side.open = !narrow.matches;
+    if (toc) toc.open = !middle.matches;
+    // On wide screens the list can't fold, so its heading isn't a control.
+    if (tocSummary) { if (middle.matches) tocSummary.removeAttribute("tabindex"); else tocSummary.tabIndex = -1; }
+    scrollers();
+  }
+  // A table or code block wider than the page scrolls sideways; make it reachable by keyboard, with a name.
+  function scrollers() {
+    var boxes = document.querySelectorAll("main .table, main pre");
+    for (var i = 0; i < boxes.length; i++) {
+      var b = boxes[i];
+      if (b.scrollWidth > b.clientWidth + 1) {
+        b.tabIndex = 0; b.setAttribute("role", "region");
+        b.setAttribute("aria-label", (b.tagName === "PRE" ? "Code" : "Table") + ", scrolls sideways");
+      } else if (b.hasAttribute("role")) {
+        b.removeAttribute("tabindex"); b.removeAttribute("role"); b.removeAttribute("aria-label");
+      }
+    }
+  }
+  window.addEventListener("resize", scrollers);
+  fit();
+  if (narrow.addEventListener) { narrow.addEventListener("change", fit); middle.addEventListener("change", fit); }
+  // The release dropdown closes when you click anywhere else.
+  document.addEventListener("click", function (e) {
+    var release = document.querySelector(".side .release[open]");
+    if (release && !release.contains(e.target)) release.open = false;
+  });
+  document.addEventListener("keydown", function (e) {
+    var release = document.querySelector(".side .release[open]");
+    if (release && e.key === "Escape") { release.open = false; release.querySelector("summary").focus(); }
+  });
+  document.addEventListener("click", function (e) {
+    if (middle.matches && e.target.closest && e.target.closest(".toc a")) fit();
+  });
+})();
+</script>
+</body>
+</html>

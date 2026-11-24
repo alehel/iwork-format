@@ -133,15 +133,15 @@ def data_name(n):
     return re.sub(r"-\d+(\.\w+)$", r"\1", n) if n.startswith("Data/") else n
 
 
-def compare(release):
+def compare(release, base=None, prefer_theme=True, also_known=()):
     """Compare each document of the release set with its 15.4 namesake and print what isn't known."""
     import importlib.util
     spec = importlib.util.spec_from_file_location("cmp", os.path.join(ROOT, "recipes", "0461-compare-structure.py"))
     cmp = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(cmp)
-    base = os.path.join(ROOT, "samples", "release", release)
+    base = base or os.path.join(ROOT, "samples", "release", release)  # 0476 passes its resaved copies
     own = BY_RELEASE.get(release, {"fields": set(), "props": set(), "types": set()})
-    known_fields, known_props = KNOWN_FIELDS | own["fields"], KNOWN_PROPS | own["props"]
+    known_fields, known_props = KNOWN_FIELDS | own["fields"] | set(also_known), KNOWN_PROPS | own["props"]
     noisy = NOISY_TYPES | own["types"]
     counts = {"SAME": 0, "DIFFERS": 0, "SKIPPED": 0}
     for doc in sorted(glob.glob(os.path.join(base, "*", "**", "*.*"), recursive=True)):
@@ -149,7 +149,7 @@ def compare(release):
             continue
         rel = os.path.relpath(doc, base)
         old = os.path.join(ROOT, "samples", "theme", rel)
-        if not (rel.endswith(".key") and os.path.exists(old)):
+        if not (prefer_theme and rel.endswith(".key") and os.path.exists(old)):
             old = os.path.join(ROOT, "samples", rel)
         why = None
         if not os.path.exists(old):
