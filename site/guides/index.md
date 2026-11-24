@@ -10,7 +10,7 @@ Each finding links to the experiments that support it and carries a confidence l
 | *Likely* | One experiment supports it, and nothing contradicts it |
 | *Unknown* | Seen in files, but its meaning isn't established yet |
 
-The findings come from Pages, Keynote and Numbers 15.4 on macOS 26.5.
+The findings come from Pages, Keynote and Numbers 15.4 on macOS 26.5, checked against 14.5 and 16.0, which write the same format with the few differences listed in [releases.md](../../spec/releases.md).
 
 ## Where to start
 
@@ -46,7 +46,7 @@ Where to start, after [1. Container](../../spec/container.md):
 
 ## In brief
 
-A document is a ZIP file, stored without compression. Most of it is in `.iwa` parts under `Index/`. Each part is a series of chunks of [Snappy](https://github.com/google/snappy/blob/main/format_description.txt)-compressed data. Once decompressed, a part is a list of records: each is a [Protocol Buffers](https://protobuf.dev/programming-guides/encoding/) header, giving the object's ID, type and length, followed by the object itself as a Protocol Buffers message. Objects refer to each other by ID, and every object can be reached from the root objects.
+A document is a ZIP file, stored without compression. Most of it is in `.iwa` parts under `Index/`. Each part is a series of chunks of [Snappy](https://github.com/google/snappy/blob/main/format_description.txt)-compressed data. Once decompressed, a part is a list of records: each is a [Protocol Buffers](https://protobuf.dev/programming-guides/encoding/) header, giving the object's ID, type and length, followed by the object itself as a Protocol Buffers message. Objects refer to each other by ID. Record headers list the references that lead down the tree, and in documents the apps save every object can be reached from the root objects through them ([container.md](../../spec/container.md#following-references)).
 
 ```
 document.pages (ZIP)

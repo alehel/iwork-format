@@ -41,10 +41,10 @@ All 1,211 samples were saved by both releases.
 | --- | --- |
 | Fields 5 and 16 of the calculation engine's root (type 4000), the locale `nb_NO`, are written | Every document that had been saved only once; 15.4 does the same ([0139](0139-resave.md)'s `resaved.pages`) |
 | Slide nodes (type 4) get field 20, and in three presentations field 15 | 92 presentations, mostly those with charts (0195, 0399, 0456 to 0459) and the test-theme reruns; 15.4 wrote field 20 too when a presentation was saved by hand (0296's) |
-| Fields the spec's writer added that the app doesn't keep are dropped, such as fields of cell styles (type 6001) and of formula owners (type 4008) | Writing experiments, 0287 to 0459 |
+| Fields the spec's writer added that the app doesn't keep are dropped, such as fields of table models (type 6001; first written here as cell styles) and of formula owners (type 4008) | Writing experiments, 0287 to 0459 |
 | Data files are renamed to the app's own form, and unused ones left out | 13 documents, such as 0431's non-ASCII name and 0435's unused file |
 | `isMultiPage` in `Properties.plist` set to match the document | 15 documents, mostly written with page breaks or section settings (0359, 0361, 0362, 0366) |
-| Records counted again, such as section records (types 3047 and 3006) and view-state records | Some of the writing experiments, and documents last shown in another way |
+| Records counted again, such as records of types 3047 and 3006 (first written here as section records; 3006 is an image mask, [drawables.md](../spec/drawables.md), and 3047 isn't identified) and view-state records | Some of the writing experiments, and documents last shown in another way |
 
 **View-state fields.** [0469](0469-the-16-0-apps.md) took field 49 of Pages' type 10133, fields 34 and 35 of Numbers' type 12026, field 43 of Keynote's type 3 and field 13 of its type 23 to be new in 16.0. 14.5 writes them too, in every copy it saved here, though not in the new documents it made in 0461, 0464 and 0466. No 15.4 sample has them. 16.0 writes them in every document, new or opened.
 

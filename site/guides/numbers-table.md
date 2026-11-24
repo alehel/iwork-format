@@ -102,7 +102,7 @@ Key 1 is format kind 260, text, used by 6 cells: the two headers and the four le
 
 ## A reader's steps
 
-1. From the model, read the rows and columns (6, 7) and the tiles (4.3).
+1. From the model, read the rows and columns (6, 7) and the tiles (4.3). In a document the app saved, 6 and 7 agree with the table's type-6267 record, which is what Numbers itself takes the size from ([numbers.md](../../spec/numbers.md), [0364](../../experiments/0364-writing-names-and-table-size.md)); a reader of other writers' files should check them against it.
 2. For each tile, for each row entry: the table row is the tile index × 256 + the row index.
 3. For each column whose offset isn't `ffff`, read the cell: type byte, flags, then the values and keys in flag order.
 4. Look up strings in the string table (4.4) and formats in the format list (4.22).

@@ -38,7 +38,7 @@ These are the first bytes of the part as stored:
 | `68` | A Snappy literal tag: 0x68 >> 2 = 26, so 27 literal bytes follow |
 | `56 08 01 12 52 …` | Those literal bytes: the start of the decoded data |
 
-Snappy is Google's public compression format; the chunk data is a raw block, without the framing format's stream header. Each chunk decodes to at most 65,536 bytes, and a part's decoded chunks are joined end to end.
+Snappy is Google's public compression format; the chunk data is a raw block, without the framing format's stream header. The apps write chunks that decode to at most 65,536 bytes, but Pages also reads larger ones, so a reader shouldn't assume that limit ([container.md](../../spec/container.md#chunks)). A part's decoded chunks are joined end to end.
 
 ## 3. Records
 
@@ -113,4 +113,4 @@ Field 1.1 is the style's name, as the app's language shows it (`Brødtekst` is N
 
 ## What was skipped
 
-This walk-through followed one path. The same steps lead everywhere else: list the parts, decode the chunks, read the records, and follow references from objects 1, 2 and 71. The remaining 51 records in `Document.iwa` hold header and footer texts, the section, the document settings and more, each described in the [specification](../../spec/README.md).
+This walk-through followed one path. The same steps lead everywhere else: list the parts, decode the chunks, read the records, and follow references from objects 1, 2 and 71. The remaining 50 records in `Document.iwa` hold header and footer texts, the section, the document settings and more, each described in the [specification](../../spec/README.md).

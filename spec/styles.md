@@ -30,7 +30,7 @@ Field 11 of a character style or a paragraph style holds the character propertie
 | 16 | Ligatures | varint: 0 none; absent means the default ([0208](../experiments/0208-no-ligatures.md)) |
 | 27 | Letter spacing | float, as a fraction of the font size: 0.01 is 1% ([0207](../experiments/0207-looser-letter-spacing.md)) *Confirmed* by writing and measuring ([0322](../experiments/0322-writing-character-properties.md)). |
 
-Field 11.5 is *confirmed* ([0010](../experiments/0010-alignment.md), [0053](../experiments/0053-font.md)), and so are 11.7 ([0013](../experiments/0013-text-colour.md)), 11.11 and 11.12 ([0012](../experiments/0012-underline-and-strikethrough.md)); the rest as above.
+Field 11.5 is *confirmed* ([0010](../experiments/0010-alignment.md), [0053](../experiments/0053-font.md)), and so is 11.7 ([0013](../experiments/0013-text-colour.md)); 11.11 and 11.12 are *likely* ([0012](../experiments/0012-underline-and-strikethrough.md)); the rest as above.
 
 ## Paragraph properties
 
@@ -41,7 +41,7 @@ A paragraph style also has a field 12 for paragraph properties. *Likely* ([0008]
 | 1 | Alignment | varint: 0 left, 1 right, 2 centred, 3 justified, 4 probably natural (the Body style's value, shown as left); 1 and 2 *confirmed* by writing them and measuring the page ([0319](../experiments/0319-writing-paragraph-alignment.md)) |
 | 7 | First-line indent | float, in points from the margin, for the first line only ([0253](../experiments/0253-indents.md); *confirmed* by writing and measuring, [0320](../experiments/0320-writing-indents.md)) |
 | 11 | Left indent | float, in points from the margin, for every line but the first, independent of 7 ([0253](../experiments/0253-indents.md); *confirmed*, [0320](../experiments/0320-writing-indents.md)) |
-| 13 | Line spacing | message: field 1 is the kind (absent for a multiple of lines; 1 at least, 2 exactly and 4 between, in points, [0281](../experiments/0281-other-line-spacing-kinds.md)) and field 2 the amount, such as 2.0 for double ([0252](../experiments/0252-line-spacing.md), [0276](../experiments/0276-exact-line-spacing.md)) *Confirmed* by writing and measuring ([0321](../experiments/0321-writing-spacing.md)). |
+| 13 | Line spacing | message: field 1 is the kind (absent for a multiple of lines; 1 at least, 2 exactly and 4 between, in points, [0281](../experiments/0281-other-line-spacing-kinds.md)) and field 2 the amount, such as 2.0 for double ([0252](../experiments/0252-line-spacing.md), [0276](../experiments/0276-exact-line-spacing.md)). A multiple of lines and exact spacing (kind 2) are *confirmed* by writing and measuring ([0321](../experiments/0321-writing-spacing.md)); kinds 1 and 4 are *likely* ([0281](../experiments/0281-other-line-spacing-kinds.md)). |
 | 19 | Right indent | float, in points from the right margin ([0253](../experiments/0253-indents.md); *confirmed*, [0320](../experiments/0320-writing-indents.md)) |
 | 20 | Space after the paragraph | float, in points ([0256](../experiments/0256-paragraph-spacing.md)) *Confirmed* by writing and measuring ([0321](../experiments/0321-writing-spacing.md)). |
 | 21 | Space before the paragraph | float, in points ([0256](../experiments/0256-paragraph-spacing.md)) *Confirmed* by writing and measuring ([0321](../experiments/0321-writing-spacing.md)). |

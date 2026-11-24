@@ -1,6 +1,6 @@
 # Writing a document
 
-A specification is tested best by writing from it. Experiments [0287](../../experiments/0287-rewriting-a-document.md) to [0290](../../experiments/0290-writing-a-cell.md) wrote documents with a small Python program built only from what the spec says, and opened the results in the apps. The program, [`recipes/0287-iwa-writer.py`](../../recipes/0287-iwa-writer.py), uses only the Python standard library.
+A specification is tested best by writing from it. Experiments [0287](../../experiments/0287-rewriting-a-document.md) to [0290](../../experiments/0290-writing-a-cell.md) rewrote documents with a small Python program built only from what the spec says, and opened the results in the apps. Each starts from a document an app saved and re-encodes or changes it; making a document with nothing to start from is a separate problem, not yet shown for any of the three apps. The program, [`recipes/0287-iwa-writer.py`](../../recipes/0287-iwa-writer.py), uses only the Python standard library.
 
 ## Re-encoding every part
 
@@ -8,7 +8,7 @@ The writer reads each `.iwa` part, decodes its chunks and records, and encodes t
 
 1. Parse each record: the header length varint, the header, and the payloads whose lengths header field 2.3 gives.
 2. Serialise each record again, recomputing field 2.3 from the payload's actual length.
-3. Split the result into pieces of at most 65,536 bytes. Encode each as a raw Snappy block of literals only, without compression, and prefix it with a chunk header: `00` and the block's length as 24 bits, little-endian.
+3. Split the result into pieces of at most 65,536 bytes, the size the apps write (Pages reads larger chunks too, [0433](../../experiments/0433-writing-chunk-sizes.md)). Encode each as a raw Snappy block of literals only, without compression, and prefix it with a chunk header: `00` and the block's length as 24 bits, little-endian.
 4. Write a ZIP with every entry stored.
 
 A Snappy block of literals is a varint of the decoded length, then for each run a tag byte and the bytes themselves. A run longer than 60 bytes uses tag 60, 61 or 62 with a 1-, 2- or 3-byte length after it:
@@ -71,11 +71,11 @@ new = (42).to_bytes(14, "little") + bytes([0x40, 0x30])  # 42 × 10⁰
 
 ## What the app changes when it saves your document
 
-Opening a written document in the app and saving it again is a good test of a writer: the app writes out only what it keeps. [Experiment 0476](../../experiments/0476-resaving-every-sample.md) did this for every sample, the written ones included, in Pages, Numbers and Keynote 16.0 and 14.5. Both releases made the same changes:
+Opening a written document in the app and saving it again is a good test of a writer: the app writes out only what it keeps. [Experiment 0476](../../experiments/0476-resaving-every-sample.md) did this for every sample, the written ones included, except the password-protected ones and the files written to make an app fail, in Pages, Numbers and Keynote 16.0 and 14.5. Both releases made the same changes:
 
-- Fields the app doesn't keep were dropped, such as fields written into cell styles and formula owners that aren't part of their records.
+- Fields the app doesn't keep were dropped, such as fields the writer added to table models (type 6001) and formula owners (type 4008) that aren't part of those records.
 - Data files were renamed to the app's own form, and files nothing refers to were left out.
 - `isMultiPage` was corrected where a writer had changed the number of pages.
-- Records the app makes as it needs them, such as section records and view-state records, were counted again, and the calculation engine got its locale.
+- Records the app makes as it needs them, such as view-state records, were counted again, and the calculation engine got its locale.
 
-Everything else came back the same. The copies that changed are published with the fixtures under `resaved/16.0/`, each beside its original, so the two can be compared ([sample files](samples.md#all-fixtures)).
+Everything else came back the same. Most of the copies that changed, 154 of 182, are published with the fixtures under `resaved/16.0/`, each beside its original, so the two can be compared ([sample files](samples.md#all-fixtures)).

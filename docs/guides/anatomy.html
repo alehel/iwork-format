@@ -47,7 +47,7 @@
 00000010  03 01 00 05 18 f6 0a 22 07 0a 03 0a 01 2e 18 01  |.......&quot;........|
 00000020  22 09 01 09 f4 48 01 2f 10 01 18 01 22 0b 0a 05  |&quot;....H./....&quot;...|</code></pre>
 <div class="table"><table><thead><tr><th scope="col">Bytes</th><th scope="col">Meaning</th></tr></thead><tbody><tr><td><code>00</code></td><td>Chunk type 0</td></tr><tr><td><code>06 1e 00</code></td><td>Length 0x001e06 = 7,686 bytes of chunk data follow</td></tr><tr><td><code>cb 6e</code></td><td>Start of the chunk data, a raw Snappy block: its decoded length as a varint, 0x4b + (0x6e × 128) = 14,155</td></tr><tr><td><code>68</code></td><td>A Snappy literal tag: 0x68 &gt;&gt; 2 = 26, so 27 literal bytes follow</td></tr><tr><td><code>56 08 01 12 52 …</code></td><td>Those literal bytes: the start of the decoded data</td></tr></tbody></table></div>
-<p>Snappy is Google's public compression format; the chunk data is a raw block, without the framing format's stream header. Each chunk decodes to at most 65,536 bytes, and a part's decoded chunks are joined end to end.</p>
+<p>Snappy is Google's public compression format; the chunk data is a raw block, without the framing format's stream header. The apps write chunks that decode to at most 65,536 bytes, but Pages also reads larger ones, so a reader shouldn't assume that limit (<a href="../spec/container.html#chunks">container.md</a>). A part's decoded chunks are joined end to end.</p>
 <h2 id="3-records">3. Records<a class="anchor" href="#3-records" aria-label="Link to this section: 3. Records">#</a></h2>
 <p>The decoded data is a list of records. Each record is a varint giving the header's length, a header message, then the payload. <code>iwork-probe records</code> lists them:</p>
 <pre class="excerpt"><code>Index/Document.iwa: 52 records, 14155 decoded bytes
@@ -147,7 +147,7 @@ hello</code></pre>
 …</code></pre>
 <p>Field 1.1 is the style's name, as the app's language shows it (<code>Brødtekst</code> is Norwegian for Body, since this document was made in Norwegian) and 1.2 its identifier, which doesn't depend on the language. Field 11 holds its character properties and field 12 its paragraph properties. Styles inherit from a parent, and a property missing from a style comes from the parent (<a href="../spec/styles.html#named-and-unnamed-styles">styles.md</a>).</p>
 <h2 id="what-was-skipped">What was skipped<a class="anchor" href="#what-was-skipped" aria-label="Link to this section: What was skipped">#</a></h2>
-<p>This walk-through followed one path. The same steps lead everywhere else: list the parts, decode the chunks, read the records, and follow references from objects 1, 2 and 71. The remaining 51 records in <code>Document.iwa</code> hold header and footer texts, the section, the document settings and more, each described in the <a href="../spec/index.html">specification</a>.</p>
+<p>This walk-through followed one path. The same steps lead everywhere else: list the parts, decode the chunks, read the records, and follow references from objects 1, 2 and 71. The remaining 50 records in <code>Document.iwa</code> hold header and footer texts, the section, the document settings and more, each described in the <a href="../spec/index.html">specification</a>.</p>
 <footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Source: <a href="https://github.com/alehel/iwork-format/blob/main/site/guides/anatomy.md"><code>site/guides/anatomy.md</code></a>.</p></footer>
 </main>
 </div>
