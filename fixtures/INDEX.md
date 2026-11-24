@@ -2,7 +2,7 @@
 
 Sample documents from the experiments, for testing readers and writers. They are published as a zip attached to the repository's GitHub release `fixtures`, not committed. Built by `python3 -I fixtures/build.py`, which leaves out anything from Apple's templates or images, and anything holding a personal name except those whose comments, highlights or tracked changes name the project owner as their author. See [LICENSE.md](LICENSE.md).
 
-1170 documents. Keynote presentations, under `keynote/`, were made with the project's test theme ([0291](../experiments/0291-test-theme.md), [0292](../experiments/0292-test-theme-reruns.md)). Documents were saved by the 15.4 apps unless their note names another release, such as 14.5. Encrypted documents list their test password. A folder package's SHA-256 is taken over each of its files in path order, as the path, a zero byte and the contents.
+1203 documents. Keynote presentations, under `keynote/`, were made with the project's test theme ([0291](../experiments/0291-test-theme.md), [0292](../experiments/0292-test-theme-reruns.md)). Documents were saved by the 15.4 apps unless their note names another release, such as 14.5. Encrypted documents list their test password. A folder package's SHA-256 is taken over each of its files in path order, as the path, a zero byte and the contents.
 
 | File | Experiment | Bytes | SHA-256 | Note |
 | --- | --- | --- | --- | --- |
@@ -1098,6 +1098,39 @@ Sample documents from the experiments, for testing readers and writers. They are
 | `0464/0066-if.numbers` | [0464: The recipes rerun in 14.5](../experiments/0464-recipes-rerun-in-14-5.md) | 138,407 | `34a5ee240665c21e33126de3faa007a2f99fde032f37f65cce0af5ee60e0f616` | saved by 14.5 |
 | `0464/0078-error.numbers` | [0464: The recipes rerun in 14.5](../experiments/0464-recipes-rerun-in-14-5.md) | 135,617 | `dfa7189b9df1f426efda6b8254cfe9443da0c9c1388c613d044109aece6175dd` | saved by 14.5 |
 | `0464/0198-book.pages` | [0464: The recipes rerun in 14.5](../experiments/0464-recipes-rerun-in-14-5.md) | 84,519 | `a4eb8a7407c1ae6cbed880f449fd47beeb4f25b9c1941f73aacb661a970ee9cf` | saved by 14.5 |
+| `0469/0030-row-300.numbers` | [0469: New documents in the 16.0 apps](../experiments/0469-the-16-0-apps.md) | 170,107 | `b54f8f2074c6ada662d4eb5afd2a7a83630603b10242430eed16f2af7e320f22` | saved by 16.0 |
+| `0469/0031-kinds.numbers` | [0469: New documents in the 16.0 apps](../experiments/0469-the-16-0-apps.md) | 140,154 | `94863c66322f522d7266c8f68a84d6721244fdbc7210998d8c2c31dc8abb2737` | saved by 16.0 |
+| `0469/0035-formulas.numbers` | [0469: New documents in the 16.0 apps](../experiments/0469-the-16-0-apps.md) | 138,289 | `3a047e91d1b28c9912258cddaa00995dadf2df53978885781f5da7e987604630` | saved by 16.0 |
+| `0469/0036-formats.numbers` | [0469: New documents in the 16.0 apps](../experiments/0469-the-16-0-apps.md) | 139,869 | `7b9ad190d0696684c80baa66d50eb8540c5a577cdb752226fb4cfe89f9f2f111` | saved by 16.0 |
+| `0469/0037-two-sheets.numbers` | [0469: New documents in the 16.0 apps](../experiments/0469-the-16-0-apps.md) | 145,324 | `9c5ced78f037e1b43c308984d00c103ede958669dfb61dfb54f5b8b416fc73ab` | saved by 16.0 |
+| `0469/0043-styles.numbers` | [0469: New documents in the 16.0 apps](../experiments/0469-the-16-0-apps.md) | 139,715 | `032c85601b893a24353e0e5c75be6854808fd1706a515497911ea707dc755581` | saved by 16.0 |
+| `0469/0044-merged-run2.numbers` | [0469: New documents in the 16.0 apps](../experiments/0469-the-16-0-apps.md) | 137,332 | `357ae6ccd743f445961aab7cb686da207bcb4d6466c6c0ebdcc2f28380082657` | saved by 16.0 |
+| `0469/0044-merged-run3.numbers` | [0469: New documents in the 16.0 apps](../experiments/0469-the-16-0-apps.md) | 137,274 | `8ba29dfc5a539a63ef5b3f0e300ebbc7272263f7f73ed78728bc0fdf9b4c1dab` | saved by 16.0 |
+| `0469/0044-merged.numbers` | [0469: New documents in the 16.0 apps](../experiments/0469-the-16-0-apps.md) | 137,361 | `875844ca5fb5198d2fa4f53560b9cac01811c8fc7c91f069922e8474a7e7e4c4` | saved by 16.0 |
+| `0469/0045-sizes.numbers` | [0469: New documents in the 16.0 apps](../experiments/0469-the-16-0-apps.md) | 134,909 | `ba417190d232a96be750861d196d6e85b62be314d7af6a3b4c927056bd91a7d6` | saved by 16.0 |
+| `0469/0047-two-tables-run2.numbers` | [0469: New documents in the 16.0 apps](../experiments/0469-the-16-0-apps.md) | 144,441 | `3dd86fc1e7cd805492e390119e88e11693a939d22dff9ece4cbe626b4aa8cf36` | saved by 16.0 |
+| `0469/0047-two-tables-run3.numbers` | [0469: New documents in the 16.0 apps](../experiments/0469-the-16-0-apps.md) | 144,423 | `17f935bd0e951ac11a3f0a332304d025980ada3860db82e661d579fefd0c1b3a` | saved by 16.0 |
+| `0469/0047-two-tables.numbers` | [0469: New documents in the 16.0 apps](../experiments/0469-the-16-0-apps.md) | 144,809 | `29c85442c7e0adb19bf62de6cce76a687fbf902184a074a442ff795ab8edd097` | saved by 16.0 |
+| `0469/0049-text-box.pages` | [0469: New documents in the 16.0 apps](../experiments/0469-the-16-0-apps.md) | 91,279 | `8ca069fd620427a04aaa1547b9516c41e3b020b9db93ddb6ffec74dcb8540e5c` | saved by 16.0 |
+| `0469/0050-shape.pages` | [0469: New documents in the 16.0 apps](../experiments/0469-the-16-0-apps.md) | 93,338 | `caeaf9ee9d9bdc4f8214eb2713bd7cf5d980b43e914a5cf1721b3e79073eefa4` | saved by 16.0 |
+| `0469/0051-line.pages` | [0469: New documents in the 16.0 apps](../experiments/0469-the-16-0-apps.md) | 93,430 | `181ca1a3a4e345cb896b0b3df8b555afd896f7f07277ad9e9fa35a7385e8b9da` | saved by 16.0 |
+| `0469/0052-table.pages` | [0469: New documents in the 16.0 apps](../experiments/0469-the-16-0-apps.md) | 104,237 | `73a203aeed403dbeaeea4ad628cffd9c68f535cae9f48fe8cc250b22269b3e3c` | saved by 16.0 |
+| `0469/0053-font.pages` | [0469: New documents in the 16.0 apps](../experiments/0469-the-16-0-apps.md) | 91,222 | `d4b1ae6e545eb23d8587e00bd0b2db7e5ac5f325afb7c3b6ce75428f98ca2827` | saved by 16.0 |
+| `0469/0054-sizes.pages` | [0469: New documents in the 16.0 apps](../experiments/0469-the-16-0-apps.md) | 91,862 | `549f209ad9071e02f01da57e0cb30166cb04b6fbed2b581cce5b5b918a199604` | saved by 16.0 |
+| `0469/0058-tab.pages` | [0469: New documents in the 16.0 apps](../experiments/0469-the-16-0-apps.md) | 90,437 | `e7c8ccd560f3f7bc0c3099196b058e94398ac6173cf6dfaf8e624e144e2029d5` | saved by 16.0 |
+| `0469/0059-geometry.numbers` | [0469: New documents in the 16.0 apps](../experiments/0469-the-16-0-apps.md) | 124,137 | `d5478c2371c2cd1b3bc5199714df20c09d6aff1aa794e6d8225da198a5908d56` | saved by 16.0 |
+| `0469/0060-headers.numbers` | [0469: New documents in the 16.0 apps](../experiments/0469-the-16-0-apps.md) | 136,409 | `031ee4cff0c52bc732d3a219b3dc6e0b6e9aaa2f3508a066f012d805d17a1812` | saved by 16.0 |
+| `0469/0063-sparse.numbers` | [0469: New documents in the 16.0 apps](../experiments/0469-the-16-0-apps.md) | 204,360 | `e058ea1fc62e4c5f26590f066bfb9301678bb70192ad509fe874259ff601457e` | saved by 16.0 |
+| `0469/0064-functions.numbers` | [0469: New documents in the 16.0 apps](../experiments/0469-the-16-0-apps.md) | 139,548 | `2358da00eaddb318de8a46d5790d013972380b39b3cbe1decc480df5a429d712` | saved by 16.0 |
+| `0469/0065-cross.numbers` | [0469: New documents in the 16.0 apps](../experiments/0469-the-16-0-apps.md) | 145,502 | `b00ff75e5ae5ba7108685c8f69fa008588a543cec27b2b67b7be125d3b6ff659` | saved by 16.0 |
+| `0469/0066-if.numbers` | [0469: New documents in the 16.0 apps](../experiments/0469-the-16-0-apps.md) | 139,781 | `c9ab3c347462f25c013a3dfdf6fa7712f3186fa895d5226fda525ba996d2f0bb` | saved by 16.0 |
+| `0469/0078-error-run2.numbers` | [0469: New documents in the 16.0 apps](../experiments/0469-the-16-0-apps.md) | 136,894 | `ba13a3572479b8be8c87ad710ba199853baa6998f64a45697bf9dbaef1b600a2` | saved by 16.0 |
+| `0469/0078-error-run3.numbers` | [0469: New documents in the 16.0 apps](../experiments/0469-the-16-0-apps.md) | 136,894 | `e9f97c154cfb0fcb1eda0d58ad16864da9348d6e1984c4ebf0c321ba17dd1b02` | saved by 16.0 |
+| `0469/0078-error.numbers` | [0469: New documents in the 16.0 apps](../experiments/0469-the-16-0-apps.md) | 136,894 | `f1a28d4259a027a53362ae55a960268c66f9041793a73e2f3abb029918c6546f` | saved by 16.0 |
+| `0469/0198-book.pages` | [0469: New documents in the 16.0 apps](../experiments/0469-the-16-0-apps.md) | 84,838 | `2a5968d5f5bea150f457ad4c8944dec2b074b230b0083a05d3763ed7346e53d2` | saved by 16.0 |
+| `0469/cells.numbers` | [0469: New documents in the 16.0 apps](../experiments/0469-the-16-0-apps.md) | 137,366 | `5e920246070b99e5ab6480c222d5830ee204b3d1de9cc91b0d99e2ebf02f46f6` | saved by 16.0 |
+| `0469/empty.pages` | [0469: New documents in the 16.0 apps](../experiments/0469-the-16-0-apps.md) | 89,785 | `314ed10636c298e2fd2a237ea263526e76327940acba5f838d1159cf8aed014a` | saved by 16.0 |
+| `0469/hello.pages` | [0469: New documents in the 16.0 apps](../experiments/0469-the-16-0-apps.md) | 90,429 | `908f31d5fec8299ce16093ad55a0441927f21668521dc36b0896dacaef0b766e` | saved by 16.0 |
 | `keynote/0024/empty-a.key` | [0024: Keynote and Numbers](../experiments/0024-keynote-and-numbers.md) | 882,066 | `912b4de37a6cd26f79bf830b1fe894e608e2cccfefa0cadc626d92e0f0358a85` | |
 | `keynote/0024/empty-b.key` | [0024: Keynote and Numbers](../experiments/0024-keynote-and-numbers.md) | 882,065 | `95a5a1cbe9b95a8b5fb33a29d585e0fc999983bd08a717ed3e3eaa84af118085` | |
 | `keynote/0025/empty.key` | [0025: Text on a Keynote slide](../experiments/0025-keynote-title.md) | 882,066 | `912b4de37a6cd26f79bf830b1fe894e608e2cccfefa0cadc626d92e0f0358a85` | |
@@ -1179,7 +1212,7 @@ Sample documents from the experiments, for testing readers and writers. They are
 
 ## Left out
 
-41 documents, besides 78 Keynote presentations in Basic White that are included as their test-theme versions under `keynote/`.
+67 documents, besides 78 Keynote presentations in Basic White that are included as their test-theme versions under `keynote/`.
 
 | File | Why |
 | --- | --- |
@@ -1222,5 +1255,31 @@ Sample documents from the experiments, for testing readers and writers. They are
 | `0440/motion-red.key` | media not made by the project: motionBackground-9094.jpeg |
 | `0440/original.key` | media not made by the project: motionBackground-9094.jpeg |
 | `0440/still-green.key` | media not made by the project: motionBackground-9094.jpeg |
+| `0466/0024-empty-a.key` | media not made by the project: 910457886_1434x1669-small-5644.jpeg, 660384004_1290x1720-small-5876.jpeg, 660384004_rotate_1964x1473-small-8049.jpeg |
+| `0466/0025-hello.key` | media not made by the project: 910457886_1434x1669-small-5644.jpeg, 660384004_1290x1720-small-5876.jpeg, 660384004_rotate_1964x1473-small-8049.jpeg |
+| `0466/0038-two-slides.key` | media not made by the project: 910457886_1434x1669-small-5644.jpeg, 660384004_1290x1720-small-5876.jpeg, 660384004_rotate_1964x1473-small-8049.jpeg |
+| `0466/0039-notes.key` | media not made by the project: 910457886_1434x1669-small-5644.jpeg, 660384004_1290x1720-small-5876.jpeg, 660384004_rotate_1964x1473-small-8049.jpeg |
+| `0466/0046-blank-layout.key` | media not made by the project: 910457886_1434x1669-small-5644.jpeg, 660384004_1290x1720-small-5876.jpeg, 660384004_rotate_1964x1473-small-8049.jpeg |
+| `0466/0067-chart.key` | media not made by the project: 910457886_1434x1669-small-5644.jpeg, 660384004_1290x1720-small-5876.jpeg, 660384004_rotate_1964x1473-small-8049.jpeg |
+| `0466/0068-textbox.key` | media not made by the project: 910457886_1434x1669-small-5644.jpeg, 660384004_1290x1720-small-5876.jpeg, 660384004_rotate_1964x1473-small-8049.jpeg |
+| `0466/0087-autoplay.key` | media not made by the project: 910457886_1434x1669-small-5644.jpeg, 660384004_1290x1720-small-5876.jpeg, 660384004_rotate_1964x1473-small-8049.jpeg |
+| `0466/0091-movein.key` | media not made by the project: 910457886_1434x1669-small-5644.jpeg, 660384004_1290x1720-small-5876.jpeg, 660384004_rotate_1964x1473-small-8049.jpeg |
+| `0466/0096-textstyle.key` | media not made by the project: 910457886_1434x1669-small-5644.jpeg, 660384004_1290x1720-small-5876.jpeg, 660384004_rotate_1964x1473-small-8049.jpeg |
+| `0466/0159-dup.key` | media not made by the project: 910457886_1434x1669-small-5644.jpeg, 660384004_1290x1720-small-5876.jpeg, 660384004_rotate_1964x1473-small-8049.jpeg |
+| `0466/0196-all.key` | media not made by the project: 910457886_1434x1669-small-5644.jpeg, 660384004_1290x1720-small-5876.jpeg, 660384004_rotate_1964x1473-small-8049.jpeg |
+| `0467/all-copy.key` | media not made by the project: 910457886_1434x1669-small-5644.jpeg, 660384004_1290x1720-small-5876.jpeg, 660384004_rotate_1964x1473-small-8049.jpeg |
+| `0467/resaved.key` | media not made by the project: 910457886_1434x1669-small-5644.jpeg, 660384004_1290x1720-small-5876.jpeg, 660384004_rotate_1964x1473-small-8049.jpeg |
+| `0469/0024-empty-a.key` | media not made by the project: 910457886_1434x1669-small-5644.jpeg, 660384004_1290x1720-small-5876.jpeg, 660384004_rotate_1964x1473-small-8049.jpeg |
+| `0469/0025-hello.key` | media not made by the project: 910457886_1434x1669-small-5644.jpeg, 660384004_1290x1720-small-5876.jpeg, 660384004_rotate_1964x1473-small-8049.jpeg |
+| `0469/0038-two-slides.key` | media not made by the project: 910457886_1434x1669-small-5644.jpeg, 660384004_1290x1720-small-5876.jpeg, 660384004_rotate_1964x1473-small-8049.jpeg |
+| `0469/0039-notes.key` | media not made by the project: 910457886_1434x1669-small-5644.jpeg, 660384004_1290x1720-small-5876.jpeg, 660384004_rotate_1964x1473-small-8049.jpeg |
+| `0469/0046-blank-layout.key` | media not made by the project: 910457886_1434x1669-small-5644.jpeg, 660384004_1290x1720-small-5876.jpeg, 660384004_rotate_1964x1473-small-8049.jpeg |
+| `0469/0067-chart.key` | media not made by the project: 910457886_1434x1669-small-5644.jpeg, 660384004_1290x1720-small-5876.jpeg, 660384004_rotate_1964x1473-small-8049.jpeg |
+| `0469/0068-textbox.key` | media not made by the project: 910457886_1434x1669-small-5644.jpeg, 660384004_1290x1720-small-5876.jpeg, 660384004_rotate_1964x1473-small-8049.jpeg |
+| `0469/0087-autoplay.key` | media not made by the project: 910457886_1434x1669-small-5644.jpeg, 660384004_1290x1720-small-5876.jpeg, 660384004_rotate_1964x1473-small-8049.jpeg |
+| `0469/0091-movein.key` | media not made by the project: 910457886_1434x1669-small-5644.jpeg, 660384004_1290x1720-small-5876.jpeg, 660384004_rotate_1964x1473-small-8049.jpeg |
+| `0469/0096-textstyle.key` | media not made by the project: 910457886_1434x1669-small-5644.jpeg, 660384004_1290x1720-small-5876.jpeg, 660384004_rotate_1964x1473-small-8049.jpeg |
+| `0469/0159-dup.key` | media not made by the project: 910457886_1434x1669-small-5644.jpeg, 660384004_1290x1720-small-5876.jpeg, 660384004_rotate_1964x1473-small-8049.jpeg |
+| `0469/0196-all.key` | media not made by the project: 910457886_1434x1669-small-5644.jpeg, 660384004_1290x1720-small-5876.jpeg, 660384004_rotate_1964x1473-small-8049.jpeg |
 | `theme/0090/theme.key` | holds Basic Black's photos |
 | `theme/0271/dynamic.key` | media not made by the project: motionBackground-9094.jpeg |
