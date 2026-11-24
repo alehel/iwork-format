@@ -11,7 +11,7 @@ The specification describes the file format as the 15.4 apps write it. Other rel
 
 - **15.4** is the release the spec describes, from [0001](../experiments/0001-empty-document.md) on. Its apps are named "Pages Creator Studio" and so on.
 - **14.5** writes the same format ([0461](../experiments/0461-new-documents-in-14-5.md), [0464](../experiments/0464-recipes-rerun-in-14-5.md)), opens and reads the 15.4 samples ([0462](../experiments/0462-opening-15-4-documents-in-14-5.md)) and draws them the same ([0463](../experiments/0463-drawing-15-4-documents-in-14-5.md)).
-- **Keynote 14.5** writes the same format too ([0466](../experiments/0466-keynote-14-5.md)), apart from a slide-node field, a resource and its Basic White template, and opens and reads the 15.4 presentations ([0467](../experiments/0467-opening-15-4-presentations-in-keynote-14-5.md)). It doesn't know the radial wipe transition.
+- **Keynote 14.5** writes the same format too ([0466](../experiments/0466-keynote-14-5.md)), apart from a slide-node field, a resource and its Basic White template; it opens and reads the 15.4 presentations ([0467](../experiments/0467-opening-15-4-presentations-in-keynote-14-5.md)) and draws them the same ([0468](../experiments/0468-drawing-15-4-presentations-in-keynote-14-5.md)). It doesn't know the radial wipe transition.
 
 ## Telling which release saved a document
 
