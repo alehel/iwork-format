@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0475: Every scripted sample in 14.5 · iWork file format specification</title>
+<meta name="description" content="iWork file format specification">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<a class="skip" href="#page-content">Skip to content</a>
+<header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><form class="search" action="../search.html" role="search"><input type="search" name="q" aria-label="Search the specification" placeholder="Search, e.g. 6001"></form><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
+<p class="wip"><strong>Work in progress.</strong> This specification is incomplete and changes as new experiments run. Each finding says how sure it is: <em>confirmed</em>, <em>likely</em> or <em>unknown</em>. See <a href="../spec/index.html">what each chapter covers so far</a>.</p>
+<div class="layout no-toc">
+<nav class="side" aria-label="Contents"><details open><summary>Contents</summary><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="../guides/anatomy.html">Reading a Pages document</a></li><li><a href="../guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="../guides/writing.html">Writing a document</a></li><li><a href="../guides/samples.html">Sample files</a></li><li class="group">Specification</li><li class="releases-line"><a href="../spec/releases.html">Describes 15.4 · also checked: 16.0, 14.5</a></li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2. Text</a></li><li><a href="../spec/styles.html">3. Styles</a></li><li><a href="../spec/tables.html">4. Tables</a></li><li><a href="../spec/drawables.html">5. Drawables, media and charts</a></li><li class="group">Apps</li><li><a href="../spec/pages.html">Pages</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li class="group">Reference</li><li><a href="../search.html">Search</a></li><li><a href="../spec/types.html">Record types</a></li><li><a href="../spec/releases.html">Releases</a></li><li class="group">Evidence</li><li><a href="index.html">All experiments</a></li><li><a href="topics.html">By topic</a></li></ul></details></nav>
+
+<main id="page-content" tabindex="-1">
+<h1 id="0475-every-scripted-sample-in-145">0475: Every scripted sample in 14.5<a class="anchor" href="#0475-every-scripted-sample-in-145" aria-label="Link to this section: 0475: Every scripted sample in 14.5">#</a></h1><p class="ran">App release: <span class="release">14.5</span>, <span class="release">16.0</span></p>
+<p><strong>Status:</strong> run</p>
+<p><a href="0473-every-scripted-sample-in-16-0.html">0473</a> made a script that remakes every sample the experiments' recipes make on their own, and ran it in 16.0. This experiment runs it in 14.5, whose apps are kept on a disk image, so 14.5 has a set of its own too.</p>
+<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section: Setup">#</a></h2>
+<div class="table"><table><tbody><tr><th scope="row">Apps</th><td>Pages, Numbers and Keynote 14.5 (build <code>M14.5-7045.0.17-4</code>), in Norwegian, run from a read-only disk image while the installed 16.0 apps weren't running</td></tr><tr><th scope="row">macOS</th><td>26.5.2 (25F84)</td></tr><tr><th scope="row">Date</th><td>2026-11-24</td></tr><tr><th scope="row">Theme</th><td>Keynote: <code>iwork-format test</code> (<a href="0291-test-theme.html">0291</a>)</td></tr><tr><th scope="row">Script</th><td>[<code>recipes/0473-release-set.py</code>](../recipes/0473-release-set.py), whose <code>--compare</code> now also knows the differences every 14.5 document has (<code>BY_RELEASE</code>)</td></tr></tbody></table></div>
+<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section: Recipe">#</a></h2>
+<pre class="lang-bash"><code>hdiutil attach -readonly -nobrowse ~/Desktop/backup/iwork-14-5.dmg
+for a in Pages Numbers Keynote; do open -g -a /Volumes/iwork-14-5/$a.app; done
+python3 -I recipes/0473-release-set.py 14.5
+python3 -I recipes/0473-release-set.py 14.5 --only 0001
+sed -e &#x27;s/, radial wipe}/}/&#x27; -e &#x27;s/, &quot;radial wipe&quot;}/}/&#x27; recipes/0196-keynote-all-transitions.applescript &gt; /tmp/0196.applescript
+IWORK_KEYNOTE_THEME=&#x27;iwork-format test&#x27; osascript /tmp/0196.applescript &quot;$PWD/samples/release/14.5/0196/all.key&quot;
+python3 -I recipes/0473-release-set.py 14.5 --compare</code></pre>
+<p>With the 14.5 apps running, the recipes' <code>tell application &quot;Pages&quot;</code> and so on reached them, not the installed 16.0 apps, which share their bundle IDs. 188 of the 190 commands ran at the first try. The first, 0001's <code>empty-a.pages</code>, timed out while Pages was still starting, and ran on a second try with <code>--only 0001</code>. 0196 doesn't compile in 14.5, which doesn't know <code>radial wipe</code>, so it was run without that effect, as in <a href="0466-keynote-14-5.html">0466</a>.</p>
+<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section: Observation">#</a></h2>
+<p>319 documents, the same names as the 16.0 set. The 313 that aren't encrypted all end their build history with <code>M14.5-7045.0.17-4</code>.</p>
+<div class="table"><table><thead><tr><th scope="col"><code>--compare</code></th><th scope="col">Documents</th></tr></thead><tbody><tr><td>The same as 15.4 but for what every 14.5 document differs in</td><td>308</td></tr><tr><td>Different</td><td>5</td></tr><tr><td>Not compared: encrypted</td><td>6</td></tr></tbody></table></div>
+<p>What every 14.5 document differs in, from <a href="0461-new-documents-in-14-5.html">0461</a> and <a href="0466-keynote-14-5.html">0466</a>: the one combined flag in <code>Properties.plist</code>, no type-4011 record in the calculation engine nor type 4000's field 15 naming it, no field 32 on slide nodes, and Numbers without <em>Table Title 1</em>.</p>
+<p>The five:</p>
+<div class="table"><table><thead><tr><th scope="col">Document</th><th scope="col">Difference</th><th scope="col">Why</th></tr></thead><tbody><tr><td><code>0196/all.key</code></td><td>37 slides, not 38</td><td>made without radial wipe</td></tr><tr><td><code>0090/theme.key</code></td><td>the blank movie poster stored in the package, one paragraph style more</td><td>made from Basic Black, Apple's theme, whose 14.5 copy differs as Basic White's does (<a href="0474-keynote-14-5-with-the-test-theme.html">0474</a>)</td></tr><tr><td><code>0158/essay.pages</code>, <code>0199/letter.pages</code></td><td>field 10 of the date fields (type 2034), 0 in 15.4, absent in 14.5</td><td>made from Apple's templates; whether the field comes with the template or with the release is <em>unknown</em>, since no recipe makes a date field outside them</td></tr><tr><td><code>0024/empty-a.numbers</code></td><td>1 record each of types 3061 and 6030 in <code>ViewState.iwa</code>, not 5</td><td>how the first document after Numbers started was last shown; <code>empty-b.numbers</code>, made right after, has 5 as 15.4</td></tr></tbody></table></div>
+<p>The six encrypted documents decrypt with their test passwords in <code>iwork-probe</code>, and the Pages ones hold <code>one</code>.</p>
+<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section: Conclusion">#</a></h2>
+<p>Every document the recipes make comes out of 14.5 with the structure 15.4 gives it, apart from the differences every 14.5 document has, the radial wipe, and three made from Apple's own templates, which differ between releases. 14.5's set is published with the fixtures under <code>release/14.5/</code>, beside 16.0's, with the same names, so a reader can be tested on the same content from three releases.</p>
+<p>A date field's (type 2034, <a href="../spec/text.html">text.md</a>) field 10, which 15.4 writes as 0 in the date fields of Apple's essay and letter templates, is new to this experiment; what it holds is <em>unknown</em>.</p>
+<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section: Confidence">#</a></h2>
+<p><em>Confirmed</em>: for 308 documents made by the experiments' recipes, 14.5 writes the same structure as 15.4, apart from the differences every 14.5 document has.</p>
+<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Source: <a href="https://github.com/alehel/iwork-format/blob/main/experiments/0475-every-scripted-sample-in-14-5.md"><code>experiments/0475-every-scripted-sample-in-14-5.md</code></a>.</p></footer>
+</main>
+</div>
+<script>
+// On narrow screens the contents and on-this-page lists start folded; on wide ones they stay open.
+(function () {
+  // From 48rem to 72rem the on-this-page list sits folded above the page instead of beside it.
+  var narrow = window.matchMedia("(max-width: 48rem)");
+  var middle = window.matchMedia("(max-width: 72rem)");
+  var side = document.querySelector(".side > details"), toc = document.querySelector(".toc > details");
+  var tocSummary = document.querySelector(".toc summary");
+  function fit() {
+    if (side) side.open = !narrow.matches;
+    if (toc) toc.open = !middle.matches;
+    // On wide screens the list can't fold, so its heading isn't a control.
+    if (tocSummary) { if (middle.matches) tocSummary.removeAttribute("tabindex"); else tocSummary.tabIndex = -1; }
+    scrollers();
+  }
+  // A table or code block wider than the page scrolls sideways; make it reachable by keyboard, with a name.
+  function scrollers() {
+    var boxes = document.querySelectorAll("main .table, main pre");
+    for (var i = 0; i < boxes.length; i++) {
+      var b = boxes[i];
+      if (b.scrollWidth > b.clientWidth + 1) {
+        b.tabIndex = 0; b.setAttribute("role", "region");
+        b.setAttribute("aria-label", (b.tagName === "PRE" ? "Code" : "Table") + ", scrolls sideways");
+      } else if (b.hasAttribute("role")) {
+        b.removeAttribute("tabindex"); b.removeAttribute("role"); b.removeAttribute("aria-label");
+      }
+    }
+  }
+  window.addEventListener("resize", scrollers);
+  fit();
+  if (narrow.addEventListener) { narrow.addEventListener("change", fit); middle.addEventListener("change", fit); }
+  // The release dropdown closes when you click anywhere else.
+  document.addEventListener("click", function (e) {
+    var release = document.querySelector(".side .release[open]");
+    if (release && !release.contains(e.target)) release.open = false;
+  });
+  document.addEventListener("keydown", function (e) {
+    var release = document.querySelector(".side .release[open]");
+    if (release && e.key === "Escape") { release.open = false; release.querySelector("summary").focus(); }
+  });
+  document.addEventListener("click", function (e) {
+    if (middle.matches && e.target.closest && e.target.closest(".toc a")) fit();
+  });
+})();
+</script>
+</body>
+</html>

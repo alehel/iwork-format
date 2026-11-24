@@ -20,7 +20,7 @@ total. With --list, prints the commands without running them. RELEASE is only a 
 With --compare, compares each document made with its namesake under samples/ (for a Keynote
 presentation, the test-theme one under samples/theme/ when there is one), using the survey of
 recipes/0461-compare-structure.py, and prints SAME when the two differ only in what every 16.0
-document differs in (experiment 0469), DIFFERS with what else differs, or SKIPPED with why
+document of that release differs in (BY_RELEASE), DIFFERS with what else differs, or SKIPPED with why
 (encrypted, a folder package, or no namesake). Only the standard library is used.
 """
 import glob
@@ -106,12 +106,21 @@ def collect(out):
     return cmds
 
 
-# Differences every 16.0 document has from its 15.4 namesake, or that vary from run to run
-# (experiment 0469): they are left out of what --compare reports.
-KNOWN_FIELDS = {(10133, 49), (12026, 34), (12026, 35), (3, 43), (23, 13), (4000, 17), (4011, 6)}
+# Differences that vary from run to run in any release (experiment 0469), and those every document of
+# a release has from its 15.4 namesake (spec/releases.md): left out of what --compare reports.
+KNOWN_FIELDS = {(4000, 17), (4011, 6)}
 KNOWN_PROPS = {"BuildVersionHistory", "fileFormatVersion", "documentUUID", "privateUUID", "revision",
                "shareUUID", "stableDocumentUUID", "versionUUID"}
 NOISY_TYPES = {("Index/CalculationEngine", 4008), ("Index/CalculationEngine", 4009)}
+BY_RELEASE = {
+    # 0469: one more view-state field per app.
+    "16.0": {"fields": {(10133, 49), (12026, 34), (12026, 35), (3, 43), (23, 13)}, "props": set(), "types": set()},
+    # 0461, 0466: one combined flag, no type-4011 record or the field naming it, no slide-node field 32.
+    "14.5": {"fields": {(4000, 15), (4, 32)},
+             "props": {"hasExternalReferenceOrMissingData", "hasUnmaterializedRemoteData",
+                       "hasExternalReferenceOrMissingOrUnmaterializedRemoteData"},
+             "types": {("Index/CalculationEngine", 4011)}},
+}
 THUMB = re.compile(r"^Data/(mt|st)-[0-9A-F-]{36}-\d+\.\w+$")
 
 
@@ -127,6 +136,9 @@ def compare(release):
     cmp = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(cmp)
     base = os.path.join(ROOT, "samples", "release", release)
+    own = BY_RELEASE.get(release, {"fields": set(), "props": set(), "types": set()})
+    known_fields, known_props = KNOWN_FIELDS | own["fields"], KNOWN_PROPS | own["props"]
+    noisy = NOISY_TYPES | own["types"]
     counts = {"SAME": 0, "DIFFERS": 0, "SKIPPED": 0}
     for doc in sorted(glob.glob(os.path.join(base, "*", "**", "*.*"), recursive=True)):
         if not doc.endswith((".pages", ".numbers", ".key")):
@@ -155,21 +167,21 @@ def compare(release):
         eb = {data_name(n) for n in nb if not THUMB.match(n)}
         if ea != eb:
             notes.append(f"entries only in 15.4 {sorted(ea - eb)[:4]}, only in {release} {sorted(eb - ea)[:4]}")
-        for k in sorted((set(pa) | set(pb)) - KNOWN_PROPS):
+        for k in sorted((set(pa) | set(pb)) - known_props):
             if pa.get(k) != pb.get(k):
                 notes.append(f"Properties.plist {k}: {pa.get(k)!r} -> {pb.get(k)!r}")
         for part in sorted(set(ta) | set(tb)):
             diff = {t: (ta[part][t], tb[part][t]) for t in set(ta[part]) | set(tb[part])
-                    if ta[part][t] != tb[part][t] and (part, t) not in NOISY_TYPES
+                    if ta[part][t] != tb[part][t] and (part, t) not in noisy
                     and not (rel.endswith(".numbers") and part == "Index/DocumentStylesheet" and t == 2022
                              and ta[part][t] - tb[part][t] == 1)}
             if diff:
                 notes.append(f"{part} records by type {dict(sorted(diff.items()))}")
-        for t in sorted(set(va) | set(vb)):
+        for t in sorted(set(va) & set(vb)):  # a type only one has shows as a record count above
             if va[t] != vb[t]:
                 notes.append(f"type {t} version {sorted(va[t])} -> {sorted(vb[t])}")
         for t in sorted(set(fa) & set(fb)):
-            extra = {(t, f) for f in fa[t] ^ fb[t]} - KNOWN_FIELDS
+            extra = {(t, f) for f in fa[t] ^ fb[t]} - known_fields
             if extra:
                 notes.append(f"type {t} fields only in 15.4 {sorted(fa[t] - fb[t])}, only in {release} {sorted(fb[t] - fa[t])}")
         status = "SAME" if not notes else "DIFFERS"

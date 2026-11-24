@@ -17,7 +17,7 @@ The specification describes the file format as the 15.4 apps write it. Other rel
 
 ## A set of samples per release
 
-From 16.0 on, each release gets a set of every sample the experiments' recipes make on their own, made again with that release: `python3 -I recipes/0473-release-set.py RELEASE` makes it in `samples/release/RELEASE/`, and `--compare` checks it against the 15.4 samples. The 16.0 set has 319 documents, the same in structure as 15.4's but for the differences listed below ([0473](../experiments/0473-every-scripted-sample-in-16-0.md)). The sets are published with the fixtures under `release/`.
+From 16.0 on, each release gets a set of every sample the experiments' recipes make on their own, made again with that release: `python3 -I recipes/0473-release-set.py RELEASE` makes it in `samples/release/RELEASE/`, and `--compare` checks it against the 15.4 samples. The 16.0 set has 319 documents, the same in structure as 15.4's but for the differences listed below ([0473](../experiments/0473-every-scripted-sample-in-16-0.md)). So has 14.5's, made from its disk image, apart from the radial wipe and the three made from Apple's own templates ([0475](../experiments/0475-every-scripted-sample-in-14-5.md)). The sets are published with the fixtures under `release/`.
 
 ## Telling which release saved a document
 
