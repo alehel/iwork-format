@@ -66,7 +66,7 @@ Two runs of the same release differ in three documents of 1,211, so a difference
 
 | File | Compared with | Difference | Shows |
 | --- | --- | --- | --- |
-| `resave/16.0/**` | | `11006#2 7 = x"1b0001"` in every one | *Confirmed*: 16.0 saves all 1,211 samples and keeps the structure of 1,025 but for its known differences; the recipe compares them |
+| `resave/16.0/**` | | `11006#2 7 = x"1b0001"` in every one | *Confirmed*: 16.0 saves all 1,211 samples and keeps the structure of 1,024 and 1,025 in two runs but for its known differences; the recipe compares them |
 
 ## Confidence
 

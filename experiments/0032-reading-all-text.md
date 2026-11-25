@@ -11,7 +11,7 @@ A check of the text layer against everything saved so far. `iwork-probe` gained 
 | Apps | Pages, Keynote and Numbers 15.4 (build `M15.4-7051.0.79-2`) |
 | macOS | 26.5.2 (25F84) |
 | Date | 2026-11-09 |
-| Documents | The samples from experiments 0001–0031 (60 documents; first written as 61) |
+| Documents | All 61 samples from experiments 0001–0031 (60 of them are kept) |
 
 ## Recipe
 

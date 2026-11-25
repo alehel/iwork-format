@@ -67,7 +67,7 @@ No documents of its own: it draws the samples of earlier experiments in 13.1 and
 
 | File | Compared with | Difference | Shows |
 | --- | --- | --- | --- |
-| `0419/no-body.pages` | `0002/hello.pages` | Only `10012#1732614 1: 1 → 0` | *Confirmed*: 13.1 draws nothing where 15.4 drew the text |
+| `0419/no-body.pages` | `0002/hello.pages` | Only `10012#1732614 1: 1 → 0` | *Likely*: 13.1 draws nothing where 15.4 drew the text |
 
 ## Confidence
 

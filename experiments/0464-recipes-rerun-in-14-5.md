@@ -48,7 +48,7 @@ Pages and Numbers 14.5 write text boxes, shapes, lines, tables, cells of every k
 
 | File | Compared with | Difference | Shows |
 | --- | --- | --- | --- |
-| `*-*.numbers` | `*/*.numbers` | `11006#2 7: x"1a0400" → x"0e0401"`, `records 4011: 1 → 0`, `2022 1.2 ≠ "text-12-paragraphstyle-Table Title 1"` | *Confirmed*: 14.5 writes spreadsheets with 15.4's structure, without the *Table Title 1* style |
+| `*-*.numbers` | `*/*.numbers` | `11006#2 7: x"1a0400" → x"0e0401"`, `records 4011: 1 → 0`, `2022 1.2: "text-12-paragraphstyle-Table Title 1" → absent` | *Confirmed*: 14.5 writes spreadsheets with 15.4's structure, without the *Table Title 1* style |
 | `*-*.pages` | `*/*.pages` | `11006#2 7: x"1a0400" → x"0e0401"`, `records 4011: 1 → 0` | *Confirmed*: 14.5 writes Pages documents with 15.4's structure |
 
 ## Confidence

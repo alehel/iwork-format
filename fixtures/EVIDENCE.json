@@ -4847,7 +4847,7 @@
   {
    "file": "samples/0222/column.pages",
    "compared": null,
-   "difference": "`2001 3 = \"One￼\"`, `5021 10000.1 = 1`, `5021 10000.7.1 = \"Område 1\"`, `5021 10000.7.3.1.1 = 17.0`",
+   "difference": "`2001 3 = \"One\\ufffc\"`, `5021 10000.1 = 1`, `5021 10000.7.1 = \"Område 1\"`, `5021 10000.7.3.1.1 = 17.0`",
    "documents": [
     {
      "path": "samples/0222/column.pages",
@@ -17587,7 +17587,7 @@
   {
    "file": "samples/0461/cells.numbers",
    "compared": "samples/0026/cells.numbers",
-   "difference": "`11006#2 7: x\"1a0400\" → x\"0e0401\"`, `records 4011: 1 → 0`, `records 2022: 245 → 244`",
+   "difference": "`11006#2 7: x\"1a0400\" → x\"0e0401\"`, `records 4011: 1 → 0`, `records 2022: 245 → 244`, `2022 1.2: \"text-12-paragraphstyle-Table Title 1\" → absent`",
    "documents": [
     {
      "path": "samples/0461/cells.numbers",
@@ -17618,7 +17618,7 @@
   {
    "file": "samples/0464/*-*.numbers",
    "compared": "samples/*/*.numbers",
-   "difference": "`11006#2 7: x\"1a0400\" → x\"0e0401\"`, `records 4011: 1 → 0`, `2022 1.2 ≠ \"text-12-paragraphstyle-Table Title 1\"`",
+   "difference": "`11006#2 7: x\"1a0400\" → x\"0e0401\"`, `records 4011: 1 → 0`, `2022 1.2: \"text-12-paragraphstyle-Table Title 1\" → absent`",
    "documents": [
     {
      "path": "samples/0464/0030-row-300.numbers",
@@ -18039,7 +18039,7 @@
   {
    "file": "samples/0469/cells.numbers",
    "compared": "samples/0026/cells.numbers",
-   "difference": "`11006#2 7: x\"1a0400\" → x\"1b0001\"`, `12026 34: absent → 1`, `12026 35: absent → 0.0`",
+   "difference": "`11006#2 7: x\"1a0400\" → x\"1b0001\"`, `12026 34: absent → 1`, `12026 35: absent → 0.0`, `2022 1.2: \"text-12-paragraphstyle-Table Title 1\" → absent`",
    "documents": [
     {
      "path": "samples/0469/cells.numbers",

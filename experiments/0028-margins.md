@@ -31,7 +31,7 @@ Fields 30–38 of the document root (object 1, type 10000):
 
 In points (1 cm = 72 / 2.54 points), the four margins are 28.35 (1 cm), 56.69 (2 cm), 85.04 (3 cm) and 113.39 (4 cm).
 
-*Corrected 2026-11-25:* the saved body text is `one` followed by three line ends, so Return, pressed in the sidebar's fields, reached the body as well. The margins are as described.
+*Corrected 2026-11-25:* the saved body text is `one` followed by three line ends, probably from Return pressed in the sidebar's fields. The margins are as described.
 
 ## Conclusion
 

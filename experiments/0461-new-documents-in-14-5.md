@@ -53,7 +53,7 @@ Pages and Numbers 14.5 write the same format as 15.4: everything the spec descri
 | --- | --- | --- | --- |
 | `empty.pages` | `0001/empty-a.pages` | `11006#2 7: x"1a0400" → x"0e0401"`, `records 4011: 1 → 0`, `records 2022: 242 → 242` | *Confirmed*: 14.5 writes the same parts, record types and versions, but for the format version, the build and type 4011 |
 | `hello.pages` | `0002/hello.pages` | `11006#2 7: x"1a0400" → x"0e0401"`, `records 4011: 1 → 0` | *Confirmed*: as above |
-| `cells.numbers` | `0026/cells.numbers` | `11006#2 7: x"1a0400" → x"0e0401"`, `records 4011: 1 → 0`, `records 2022: 245 → 244` | *Confirmed*: as above, with one paragraph style fewer in a spreadsheet |
+| `cells.numbers` | `0026/cells.numbers` | `11006#2 7: x"1a0400" → x"0e0401"`, `records 4011: 1 → 0`, `records 2022: 245 → 244`, `2022 1.2: "text-12-paragraphstyle-Table Title 1" → absent` | *Confirmed*: as above, with one paragraph style fewer in a spreadsheet |
 
 ## Confidence
 

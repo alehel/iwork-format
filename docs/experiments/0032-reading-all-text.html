@@ -19,7 +19,7 @@
 <p><strong>Status:</strong> run</p>
 <p>A check of the text layer against everything saved so far. <code>iwork-probe</code> gained a <code>text</code> command built only on <a href="../spec/text.html">spec/text.md</a>: it prints field 3 of every type-2001 record, with field 1's value. If the spec is right, it should print exactly the text each earlier experiment put in its documents.</p>
 <h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section: Setup">#</a></h2>
-<div class="table"><table><tbody><tr><th scope="row">Apps</th><td>Pages, Keynote and Numbers 15.4 (build <code>M15.4-7051.0.79-2</code>)</td></tr><tr><th scope="row">macOS</th><td>26.5.2 (25F84)</td></tr><tr><th scope="row">Date</th><td>2026-11-09</td></tr><tr><th scope="row">Documents</th><td>The samples from experiments 0001–0031 (60 documents; first written as 61)</td></tr></tbody></table></div>
+<div class="table"><table><tbody><tr><th scope="row">Apps</th><td>Pages, Keynote and Numbers 15.4 (build <code>M15.4-7051.0.79-2</code>)</td></tr><tr><th scope="row">macOS</th><td>26.5.2 (25F84)</td></tr><tr><th scope="row">Date</th><td>2026-11-09</td></tr><tr><th scope="row">Documents</th><td>All 61 samples from experiments 0001–0031 (60 of them are kept)</td></tr></tbody></table></div>
 <h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section: Recipe">#</a></h2>
 <pre class="lang-bash"><code>cargo run --release -- text samples/0016/header.pages
 for f in samples/*/*.pages samples/*/*.key samples/*/*.numbers; do cargo run --release -q -- text &quot;$f&quot;; done</code></pre>

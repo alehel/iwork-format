@@ -42,7 +42,7 @@ Pages stores a chart exactly as Keynote does: a type-5021 drawable with its type
 
 | File | Compared with | Difference | Shows |
 | --- | --- | --- | --- |
-| `column.pages` | | `2001 3 = "One￼"`, `5021 10000.1 = 1`, `5021 10000.7.1 = "Område 1"`, `5021 10000.7.3.1.1 = 17.0` | *Confirmed*, with 0067: a chart in Pages is a type-5021 drawable with its data in 10000.7 |
+| `column.pages` | | `2001 3 = "One\ufffc"`, `5021 10000.1 = 1`, `5021 10000.7.1 = "Område 1"`, `5021 10000.7.3.1.1 = 17.0` | *Confirmed*, with 0067: a chart in Pages is a type-5021 drawable with its data in 10000.7 |
 
 ## Confidence
 
