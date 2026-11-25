@@ -52,7 +52,7 @@ iwork-probe text hello.pages
 
 ## All fixtures
 
-Each published document is a file of its own in [iwork-format-samples](https://github.com/alehel/iwork-format-samples), under the path the index gives it, and the experiments with an Evidence table link to theirs. To get many at once, take the zips. The fixtures are attached to the repository's [`fixtures` release](https://github.com/alehel/iwork-format/releases/tag/fixtures). To test a reader, start with the starter set: documents from the newest apps that together hold every field the project has seen them write. The other zips hold what each release saved, and can be unpacked into one folder.
+Each published document is a file of its own in [iwork-format-samples](https://github.com/alehel/iwork-format-samples), under the path the index gives it, and the Evidence table of each experiment links to its own and says what they show. To get many at once, take the zips. The fixtures are attached to the repository's [`fixtures` release](https://github.com/alehel/iwork-format/releases/tag/fixtures). To test a reader, start with the starter set: documents from the newest apps that together hold every field the project has seen them write. The other zips hold what each release saved, and can be unpacked into one folder.
 
 | Zip | Documents | Size | What it holds |
 | --- | --- | --- | --- |

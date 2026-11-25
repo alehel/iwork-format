@@ -36,6 +36,12 @@ That is type 0, flags 0x0020 (a cell style) and the style key 1.
 
 A cell with formatting but no value is stored as type 0, with no value flags, only its style keys. A reader draws its background but shows no content.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `fill.pages` | | `6002 5.6 = x"05000000000000002000000001000000"` | *Likely*: cell type 0 is a cell with no value, here with only a style |
+
 ## Confidence
 
 *Likely*: cell type 0 is a cell with no value.

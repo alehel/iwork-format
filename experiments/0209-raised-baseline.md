@@ -34,6 +34,12 @@ The body's character style runs (field 8) gain an entry at 4, pointing at a new 
 
 Character property 11.14 is the baseline shift in points: one Raise is 1 point up. Unlike superscript ([0203](0203-superscript.md)), it keeps the size. Lower probably stores a negative value.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `raised.pages` | `0179/plain.pages` | `records 2021: 8 → 9`, `2021 11.14: absent → 1.0` | *Likely*: character property 14 is the baseline shift in points; Pages draws the word slightly higher |
+
 ## Confidence
 
 *Likely*: character property 14 is the baseline shift in points.

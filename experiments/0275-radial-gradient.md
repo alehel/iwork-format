@@ -40,6 +40,12 @@ The fill's gradient (style field 1.11.1.2) has the same two blue stops as 0260 a
 
 Gradient field 1 is the kind: 0 linear, 1 radial. Field 4 is 1 for a gradient made with the advanced editor, which lets stops be added and moved, and 0 for the simple two-colour one. For a radial gradient the angle (field 5.2, in radians) probably sets the direction from the centre to the handle the sidebar draws, here towards the bottom-right corner, which marks the outer edge of the gradient.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `radial.pages` | `0260/gradient.pages` | `2025 1.11.1.2.1: 0 → 1`, `2025 1.11.1.2.4: 0 → 1`, `2025 1.11.1.2.5.2: 4.7124 → 5.4978` | *Likely*: gradient field 1 is 1 for a radial gradient |
+
 ## Confidence
 
 *Likely*: gradient field 1 is 0 for linear and 1 for radial.

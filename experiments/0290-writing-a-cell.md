@@ -31,6 +31,12 @@ Numbers opens the file without a warning. B2's value is 42 and its formatted val
 
 The spec's reading of number cells is precise enough to write: a decimal128 in IEEE 754 BID form, where `40 30` in the last two bytes is exponent 0 (a bias of 6176). Changing those 16 bytes changes the cell. Nothing else holds a copy of the value that Numbers checks: not a cached display string, not a checksum. A reader can trust the decimal128 alone.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `forty-two.numbers` | `0226/plain.numbers` | Only `6002#904547 5.6: changed`, `6002#904547 5.6 ~ x"2a000000000000000000000000004030"` | *Likely*: a number cell's value is its decimal128 alone; Numbers shows 42 |
+
 ## Confidence
 
 *Likely*: a number cell's value is its decimal128 alone, and can be written in place.

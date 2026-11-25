@@ -34,6 +34,12 @@ The body's character style runs (field 8) gain an entry at 4, pointing at a new 
 
 Character property 11.10 is the baseline position, and 1 means superscript. The size isn't stored: Pages works out the smaller size and the raised position when it draws the text.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `superscript.pages` | `0179/plain.pages` | `records 2021: 8 → 9`, `2021 11.10: absent → 1` | *Likely*: character property 10 is 1 for superscript; Pages draws the word smaller and raised |
+
 ## Confidence
 
 *Likely*: character property 10 is 1 for superscript.

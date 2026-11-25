@@ -39,6 +39,12 @@ Field 1 of Numbers' root lists the sheets in order, one reference per sheet. Eac
 
 The object both sheets share (903871) is probably a stylesheet or another document-wide object. It isn't identified here.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `two-sheets.numbers` | `0024/empty-a.numbers` | `1 1: ×1 → ×2`, `records 2: 1 → 2`, `2 1: absent → "Second"`, `records 6001: 1 → 2` | *Likely*: field 1 of Numbers' root lists the sheets, and a new sheet brings its own table |
+
 ## Confidence
 
 *Likely*: Numbers' root field 1 lists the sheets in order, and each new sheet brings its own table with its own parts.

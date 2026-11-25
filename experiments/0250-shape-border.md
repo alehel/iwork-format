@@ -40,6 +40,12 @@ The shape's style reference (1.2) now names a new unnamed type-2025 style, whose
 
 Field 1.11.2 is the stroke: colour in 2.1 and width in points in 2.2. Field 2.6 is the stroke's pattern, and 2.6.1 its kind: 2 for no line and 1 for a solid line. So the default style has a stroke that is turned off, not a missing stroke. Field 2.5 is probably the miter limit, 4 by default. A reader should draw a shape's border only when 2.6.1 is 1 (or another visible pattern), with the width in 2.2.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `border.pages` | `0213/plain-shape.pages` | `2025 1.11.2.2: absent → 5.0`, `2025 1.11.2.6.1: absent → 1`; the default style has `2025 1.11.2.6.1 = 2` | *Likely*: the stroke's width is in 2.2 and its pattern in 2.6.1, 1 for solid and 2 for none; Pages draws a black 5-point border |
+
 ## Confidence
 
 *Likely*: field 1.11.2 is the stroke, with its width in 2.2 and its pattern in 2.6.1 (1 solid, 2 none).

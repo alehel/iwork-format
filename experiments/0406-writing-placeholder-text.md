@@ -54,6 +54,17 @@ A style of 0 in `recipes/0351-add-run.py` writes an entry with no field 2.
 
 A placeholder is exactly the range its table-11 run covers: moving the run's ends moves the placeholder, and without the run there is none, while the body text stays the same. Field 3 of the type-2031 record is the placeholder's script tag, a string, which AppleScript reports as `tag`; with no field 3, the tag is the placeholder's own text. Field 2 made no difference that AppleScript shows.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `original.pages` | `0212/placeholder.pages` | `same bytes`, `2001#1732539 11.1.1 = 4`, `2031#1732700 3 = absent` | *Control*: the placeholder is the second word |
+| `whole.pages` | `original.pages` | Only `2001#1732539 11.1: ×2 → ×1`, `2001#1732539 11 = x"0a080800120408dce069"` (0 → 1732700) | *Confirmed*: the run is the placeholder's range: the whole text |
+| `first-word.pages` | `original.pages` | Only `2001#1732539 11 = x"0a080800120408dce0690a020803"` (0 → 1732700, 3 → none) | *Confirmed*: as above, the first word |
+| `none.pages` | `original.pages` | Only `2001#1732539 11.1: ×2 → ×1`, `2001#1732539 11 = x"0a020800"` (0 → none) | *Confirmed*: without a run there is no placeholder |
+| `field3.pages` | `original.pages` | Only `2031#1732700 3: absent → "mytag"` | *Confirmed*: field 3 is the script tag |
+| `template-kind.pages` | `original.pages` | Only `2031#1732700 2: 0 → 1` | *Unknown*: what field 2 changes; AppleScript shows no difference |
+
 ## Confidence
 
 *Confirmed*: the table-11 run as the placeholder's range and field 3 of type 2031 as its script tag, by writing them. What field 2 changes is *unknown*.

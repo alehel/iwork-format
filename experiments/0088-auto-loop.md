@@ -30,6 +30,12 @@ The presentation record (type 2) changed field 8 from 0 to 1, and nothing else c
 
 Field 8 of the presentation is *auto loop*: 1 repeats the slideshow.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `autoloop.key` | `0025/empty.key` | `2 8: 0 → 1` | *Likely*: presentation field 8 is auto loop |
+
 ## Confidence
 
 *Likely*: presentation field 8 is auto loop.

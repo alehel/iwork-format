@@ -34,6 +34,12 @@ The paragraph runs point at a new paragraph style whose only property is:
 
 Paragraph property 25 is the list of tab stops, one entry in 25.1 per stop, with its position in points in field 1. The alignment and leader aren't stored for a left-aligned stop with no leader. They are probably further fields of each entry, absent when they have their default value.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `tab-stop.pages` | `0236/plain.pages` | `records 2022: 242 → 243`, `2022 12.25.1.1: absent → 85.0394` | *Likely*: paragraph property 25 lists the tab stops, with positions in points |
+
 ## Confidence
 
 *Likely*: paragraph property 25 lists tab stops with their positions in points.

@@ -36,6 +36,13 @@ No paragraph style changes.
 
 Field 9 of the type-10012 document settings turns on hyphenation for the whole document. It is a document setting, not a property of the paragraph styles, so a reader that lays out text should hyphenate every paragraph when it is 1.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `plain.pages` | | `10012 9 = 0` | *Control*: a new document |
+| `hyphenation.pages` | `plain.pages` | `10012 9: 0 → 1`, `records 2022: 242 → 242` | *Likely*: field 9 of type 10012 is hyphenation for the whole document |
+
 ## Confidence
 
 *Likely*: type-10012 field 9 is document-wide hyphenation.

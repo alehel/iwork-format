@@ -48,6 +48,15 @@ Each PDF has one link annotation over `one` (57, 774, 18 × 12, from the page's 
 
 The bookmark is where its run-table-15 entry puts it: moving the entry moves the link's destination with it. The link finds its bookmark only by the UUID after the `#`: with no bookmark of that UUID it goes nowhere, and when both are renamed alike it works as before, so the UUID needn't be one Pages made.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `original.pages` | `0192/bookmark-link.pages` | `same bytes` | *Control*: the link goes to the start of the second word |
+| `moved.pages` | `original.pages` | Only `2001#1732539 15.1.1: 4 → 2` | *Confirmed*: run table 15 places the bookmark: the link's destination moves with it |
+| `link-elsewhere.pages` | `original.pages` | Only `2039#1732745 2: "#B3EA9C7C-BDCF-41C7-9E6B-E441FE2FEF95" → "#11111111-2222-3333-4444-555555555555"` | *Confirmed*: a link with a UUID no bookmark has goes nowhere |
+| `both-renamed.pages` | `link-elsewhere.pages` | Only `2035#1732700 1.1: "B3EA9C7C-BDCF-41C7-9E6B-E441FE2FEF95" → "11111111-2222-3333-4444-555555555555"` | *Confirmed*: the UUIDs join a link to its bookmark: it works again |
+
 ## Confidence
 
 *Confirmed*: run table 15 as a bookmark's position, bookmark field 1.1 as its UUID, and link field 2 as `#` and that UUID, by writing them.

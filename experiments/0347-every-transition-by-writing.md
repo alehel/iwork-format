@@ -32,6 +32,14 @@ All 39 identifiers gave an effect. For the 38 in 0196's table, the effect AppleS
 
 The mapping between stored transition identifiers and Keynote's effects holds in both directions, so the table in 0196 and `recipes/0347-transition-effects.tsv` can be used to read and to write transitions.
 
+## Evidence
+
+No documents of its own: each identifier was written into a copy of 0302's document, and only the effects Keynote reported were kept.
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `0302/original.key` | | `5#2655467 4.2.8.2 = "apple:dissolve"` | *Control*: the slide each identifier was written into |
+
 ## Confidence
 
 *Confirmed*: the identifiers of 38 transition effects and `none`, by writing them.

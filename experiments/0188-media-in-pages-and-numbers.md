@@ -32,6 +32,13 @@ The recipe puts `clip.mov` from 0187 on page 1 of a Pages document with the body
 
 All three apps store sounds and movies as the same type-3007 record. A reader can handle media once for every app: find the file by the data ID in field 14, and the poster image, if any, in field 15.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `movie.pages` | `0179/plain.pages` | `records 3007: 0 → 1`, `3007 14.1 = 24`, `part Data/clip-24.mov: absent → present`, `3007 15.1 = 25` | *Confirmed*, with 0185 and 0187: a movie in Pages is type 3007, naming its file in field 14 |
+| `sound.numbers` | `0181/plain.numbers` | `records 3007: 0 → 1`, `3007 14.1 = 16`, `part Data/tone-16.m4a: absent → present`, `3007 29.1.1 = "soun"` | *Confirmed*, with 0185 and 0187: a sound in Numbers is too |
+
 ## Confidence
 
 *Confirmed*, with 0185 and 0187: sounds and movies are type 3007, naming their file in field 14, in all three apps.

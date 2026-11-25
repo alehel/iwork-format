@@ -35,6 +35,13 @@ The new table has the template's Title style (record 1731491) at 0 and Body at 4
 
 Each paragraph run entry sets its paragraph's style, and Pages lays the paragraphs out with them: the first in the Title style's 30-point bold, the second in Body, moved down to make room. In the original, the second entry has no style and continues Body; here it names Body explicitly, which works the same way.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `original.pages` | `0005/two-lf.pages` | `same bytes` | *Control*: both paragraphs are 11 points |
+| `title.pages` | `original.pages` | Only `2001#1732539 5.1.2: ×1 → ×2`, `2001#1732539 5.1.2.1 = 1731491` | *Confirmed*: table 5 gives each paragraph its style; the first is 30-point bold |
+
 ## Confidence
 
 *Confirmed*: paragraph style runs (table 5), by writing them.

@@ -46,6 +46,14 @@ done
 
 Field 2 decides which objects are on a sheet and in what order Numbers lists them; each object keeps its own position, so the drawing reads top to bottom the same whichever comes first. The list's order is probably the stacking order, as on a page, which overlapping objects would show. An object left out of the list isn't on the sheet, though its records remain.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `original.numbers` | `0047/two-tables.numbers` | `same bytes` | *Control* |
+| `reversed.numbers` | `original.numbers` | Only `2#904532 2: changed`, the two entries the other way round | *Confirmed*: Numbers lists `Second` first; both tables keep their places |
+| `first-only.numbers` | `original.numbers` | Only `2#904532 2: ×2 → ×1`, `2#904532 2.1 ≠ 905254` | *Confirmed*: a table left out of field 2 isn't on the sheet |
+
 ## Confidence
 
 *Confirmed*: sheet field 2 as the list of the sheet's objects, in order, by writing it. *Likely*: the order is the stacking order.

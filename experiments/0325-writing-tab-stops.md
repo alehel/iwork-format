@@ -40,6 +40,14 @@ Each file was opened in Pages on its own, exported as PDF and measured.
 
 A stop's position is in points from the left margin. A left stop puts the start of the text after the tab there, apart from the letter's own side bearing, and a right stop (field 2 = 2) its end. Without stops, Pages uses a default stop every 36 points: `b` starts at 56.69 + 36 plus its side bearing.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `tab.pages` | `0002/hello.pages` | Only `2001#1732539 3: "hello" → "a\tb"` | *Likely*: without stops Pages uses a default stop every 36 points |
+| `left200.pages` | `tab.pages` | Only `2022#1731511 12.25: changed`, `2022#1731511 12.25.1.1: absent → 200.0`, `2022#1731511 12.25.1.2 = absent` | *Confirmed*: a left stop; the text after the tab starts 200 points from the margin |
+| `right200.pages` | `tab.pages` | Only `2022#1731511 12.25: changed`, `2022#1731511 12.25.1.1: absent → 200.0`, `2022#1731511 12.25.1.2: absent → 2` | *Confirmed*: a right stop; the text after the tab ends there |
+
 ## Confidence
 
 *Confirmed*: tab stop position and the left and right alignments, by writing them and measuring.

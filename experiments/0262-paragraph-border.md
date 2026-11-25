@@ -36,6 +36,12 @@ The paragraph runs point at a new paragraph style whose properties, in field 12,
 
 Paragraph property 32 is the border's stroke. It has the same layout as a shape's stroke (field 1.11.2, [0250](0250-shape-border.md)): colour in 1, width in points in 2, and the pattern kind in 6.1 (1, solid). Fields 3 and 4 are 1 here and 0 in a shape's stroke, so they are probably the line cap and join. One of properties 15 and 45 most likely says which edges get the line (the top here), and the other turns the border on. The 6-point offset isn't stored, so it is probably the default.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `border.pages` | `0236/plain.pages` | `2022 12.32.2: absent → 1.0`, `2022 12.32.6.1: absent → 1`, `2022 12.15: absent → 1`, `2022 12.45: absent → 1` | *Likely*: paragraph property 32 is the border's stroke; properties 15 and 45 are unknown |
+
 ## Confidence
 
 *Likely*: paragraph property 32 is the border stroke, in the shape stroke's layout.

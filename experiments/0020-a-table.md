@@ -93,6 +93,15 @@ The table's cell data lives in the many small parts under `Index/Tables/`, which
 
 Header field 2.4 seems to list a record's references to other objects, grouped by the field that holds them. If so, a reader could find every object a record depends on without understanding the payload. That needs checking against records whose references are known.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `plain.pages` | | `2001 3 = "one"` | *Control* |
+| `table.pages` | `plain.pages` | `2001 3: "one" → "one\ufffc"`, `2001 9.1.1: absent → 3`, `records 2003: 0 → 1`, `records 6000: 0 → 1` | *Likely*: a table is anchored by U+FFFC, and field 9 leads to its attachment and drawable |
+| `table.pages` | `plain.pages` | `6001 6: absent → 5`, `6001 7: absent → 4`, `6001 8: absent → "Tabell 1"` | *Likely*: fields 6, 7 and 8 of the model are the rows, columns and name |
+| `table.pages` | `plain.pages` | `records 6002: 0 → 2`, `records 6005: 0 → 24`, `records 6006: 0 → 4` | *Unknown*: how cells are stored in these parts |
+
 ## Confidence
 
 *Likely*:

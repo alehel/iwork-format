@@ -50,6 +50,13 @@ A tracked insertion is a type-2060 change record, applied to the inserted text t
 
 The inserted text is already in the body, so a reader that ignores tracking shows the document as if the change were accepted.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `tracked.pages` | `0179/plain.pages` | `records 2060: 0 → 1`, `records 2062: 0 → 1`, `2060 1 = 1`, `2001 21.1.1: absent → 3` | *Likely*: a tracked insertion is a type-2060 record of kind 1 in run table 21 |
+| `empty-comment.pages` | `0179/plain.pages` | `records 212: 0 → 0`, `records 3056: 0 → 0`, `2001 3 = "one"` | *Not used*: a leftover without any comment; 0200 says Pages drops an empty one on save |
+
 ## Confidence
 
 *Likely*: tracked insertions are type-2060 records in run table 21, with kind 1, a time, and an author through type 2062.

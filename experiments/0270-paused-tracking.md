@@ -39,6 +39,13 @@ For the baseline, repeat step 1, turn tracking on, and save without pausing.
 
 Pausing tracking is a view setting, not a document setting. View state field 28 is 1 while tracking is paused, and the document itself still says tracking is on (root field 40). The visible area is 22.4 points shorter, probably because the review bar grows to show that tracking is paused. A reader can ignore the pause. An editor that honours it should read field 28.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `tracking.pages` | | `10000 40 = 1`, `10133 28 = 0` | *Control*: tracking on, not paused, nothing edited |
+| `paused.pages` | `tracking.pages` | `10133 28: 0 → 1`, `10133 7.2: 799.2 → 776.8`, `10000 40 = 1`, `records 2062: 0 → 0` | *Likely*: view state field 28 is 1 while tracking is paused; why the visible area gets shorter is unknown |
+
 ## Confidence
 
 *Likely*: view state field 28 is 1 while tracking is paused.

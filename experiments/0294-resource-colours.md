@@ -36,6 +36,14 @@ The colours aren't the images' average colours. The averages of Basic White's st
 
 A document keeps a colour for each data file that stays inside the app, and only for those: type 11015 maps the data ID to a type-11014 colour. It is probably what an app shows in place of the resource when it isn't available, but it isn't the image's average colour, so how it is chosen is *unknown*. The six colours the test theme lacks are the six Basic White photos it replaced with stored cards.
 
+## Evidence
+
+No documents of its own: it reads every sample, and the test-theme reruns of [0292](0292-test-theme-reruns.md).
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `theme/0024/empty-a.key` | `0024/empty-a.key` | `records 11015: 1 → 1`, `records 11014: 10 → 4`, `11015 1: ×10 → ×4` | *Confirmed*: the six photos that stay in the app have a colour each, and the stored cards none |
+
 ## Confidence
 
 *Confirmed*: a colour exists for exactly the data entries kept as app resources (2,537 in 565 documents).

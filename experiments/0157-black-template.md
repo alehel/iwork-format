@@ -32,6 +32,12 @@ A template's look is part of the document: the styles are copied in with their o
 
 Different templates also come with their own object ID ranges, so readers can't expect particular IDs.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `black.pages` | `0020/plain.pages` | `10000 15.9: "Application/Blank/ISO" → "Application/20_Blank_Black/ISO"`, `10000 4.1: 1732539 → 1431005`, `2022#1430051 1.1 = "Brødtekst"`, `2022#1430051 11.7.3 = 0.9999` | *Likely*: a template's styles are copied into the document, here a Body style with white text |
+
 ## Confidence
 
 *Likely*: a template's styles are copied into the document.

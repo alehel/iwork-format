@@ -35,6 +35,12 @@ The slide node's field 7 became 1, as in 0071.
 
 The stored name of AppleScript's `push` effect is `apple:push`. Effect names are Keynote's own identifiers with an `apple:` prefix, not AppleScript's names, so a reader needs a table from one to the other. The duration is in field 3, in seconds.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `push.key` | `0025/empty.key` | `5 4.2.8.2: "none" → "apple:push"`, `5 4.2.8.3: 1.0 → 1.5` | *Likely*: the push transition is stored as `apple:push` |
+
 ## Confidence
 
 *Likely*: `push` is stored as `apple:push`.

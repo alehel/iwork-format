@@ -31,6 +31,8 @@ Fields 30–38 of the document root (object 1, type 10000):
 
 In points (1 cm = 72 / 2.54 points), the four margins are 28.35 (1 cm), 56.69 (2 cm), 85.04 (3 cm) and 113.39 (4 cm).
 
+*Corrected 2026-11-25:* the saved body text is `one` followed by three line ends, so Return, pressed in the sidebar's fields, reached the body as well. The margins are as described.
+
 ## Conclusion
 
 | Field | Margin |
@@ -41,6 +43,12 @@ In points (1 cm = 72 / 2.54 points), the four margins are 28.35 (1 cm), 56.69 (2
 | 35 | Bottom |
 
 All are in points, as floats. The other page-setup fields kept the values of 0027.
+
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `margins.pages` | `0002/hello.pages` | `10000 32: 56.6929 → 85.0394`, `10000 33: 56.6929 → 113.3858`, `10000 34: 56.6929 → 28.3465`, `10000 35 = 56.6929` | *Likely*: fields 32 to 35 are the left, right, top and bottom margins |
 
 ## Confidence
 

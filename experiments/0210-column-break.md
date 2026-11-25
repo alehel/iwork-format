@@ -30,6 +30,12 @@ The body text is the bytes `4f 6e 65 0c 54 77 6f`: `One`, U+000C, `Two`. The par
 
 A column break is U+000C (form feed). Like a page break, it also ends the paragraph. In a one-column section it acts as a page break. A reader that only extracts text can treat it as a paragraph break.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `column-break.pages` | `0179/plain.pages` | `2001 3: "one" → "One\fTwo"`, `2001 5.1.1: absent → 4` | *Likely*: a column break is U+000C and ends its paragraph |
+
 ## Confidence
 
 *Likely*: a column break is U+000C and ends its paragraph.

@@ -62,6 +62,12 @@ Two runs of the same release differ in three documents of 1,211, so a difference
 
 `fixtures/select.py` chooses copies to publish under `resaved/16.0/`, each noting its original: of the 182 that 16.0 changed, enough to hold every field path they hold, and of the rest, those that hold a path no document of [0473](0473-every-scripted-sample-in-16-0.md)'s set holds, such as features only made by hand. Left out are copies whose originals are left out: Basic White's photos, Apple's template text, the project owner's contact details in 0408's merge fields, and data files under names the builder doesn't know as the project's (0395, 0431).
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `resave/16.0/**` | | `11006#2 7 = x"1b0001"` in every one | *Confirmed*: 16.0 saves all 1,211 samples and keeps the structure of 1,025 but for its known differences; the recipe compares them |
+
 ## Confidence
 
 *Confirmed*: 16.0 saves all 1,211 samples and, in two runs, keeps the structure of 1,024 and 1,025 of them but for its known differences. *Unknown*: how 14.5 saves a document it opens.

@@ -61,6 +61,21 @@ With 0377's red, green, blue and the original author colour (red → 0.98, 0.60,
 
 Pages draws tracked changes in one of a set of seven colours. A stored colour that is one of the seven is drawn as itself, and any other is drawn as one of the seven. The choice doesn't follow hue or nearness: black became orange and grey teal, though both have no hue, and blue became teal. So a writer should give authors one of the seven colours above, and a reader that wants to match Pages should draw a stored colour as itself when it is one of them. How Pages chooses for other colours is *unknown*.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `c-1-1-0.pages` | `0377/deleted.pages` | Only `212#1732734 2.3: 0.9804 → 1.0000`, `212#1732734 2.4: 0.9373 → 1.0000`, `212#1732734 2.5: 0.3529 → 0.0000` | *Confirmed*: drawn in one of the seven colours, ochre |
+| `c-0-1-1.pages` | `0377/deleted.pages` | Only `212#1732734 2.3: 0.9804 → 0.0000`, `212#1732734 2.4: 0.9373 → 1.0000`, `212#1732734 2.5: 0.3529 → 1.0000` | *Confirmed*: drawn in one of the seven colours, teal |
+| `c-1-0-1.pages` | `0377/deleted.pages` | Only `212#1732734 2.3: 0.9804 → 1.0000`, `212#1732734 2.4: 0.9373 → 0.0000`, `212#1732734 2.5: 0.3529 → 1.0000` | *Confirmed*: drawn in one of the seven colours, pink |
+| `c-0.5-0.5-0.5.pages` | `0377/deleted.pages` | Only `212#1732734 2.3: 0.9804 → 0.5000`, `212#1732734 2.4: 0.9373 → 0.5000`, `212#1732734 2.5: 0.3529 → 0.5000` | *Confirmed*: drawn in one of the seven colours, teal |
+| `c-1-0.5-0.pages` | `0377/deleted.pages` | Only `212#1732734 2.3: 0.9804 → 1.0000`, `212#1732734 2.4: 0.9373 → 0.5000`, `212#1732734 2.5: 0.3529 → 0.0000` | *Confirmed*: drawn in one of the seven colours, orange |
+| `c-0.5-0-1.pages` | `0377/deleted.pages` | Only `212#1732734 2.3: 0.9804 → 0.5000`, `212#1732734 2.4: 0.9373 → 0.0000`, `212#1732734 2.5: 0.3529 → 1.0000` | *Confirmed*: drawn in one of the seven colours, violet |
+| `c-0-0-0.pages` | `0377/deleted.pages` | Only `212#1732734 2.3: 0.9804 → 0.0000`, `212#1732734 2.4: 0.9373 → 0.0000`, `212#1732734 2.5: 0.3529 → 0.0000` | *Confirmed*: drawn in one of the seven colours, orange |
+| `c-1-1-1.pages` | `0377/deleted.pages` | Only `212#1732734 2.3: 0.9804 → 1.0000`, `212#1732734 2.4: 0.9373 → 1.0000`, `212#1732734 2.5: 0.3529 → 1.0000` | *Confirmed*: drawn in one of the seven colours, slate blue |
+| `c-0.98-0.6-0.21.pages` | `0377/deleted.pages` | Only `212#1732734 2.3: 0.9804 → 0.9800`, `212#1732734 2.4: 0.9373 → 0.6000`, `212#1732734 2.5: 0.3529 → 0.2100` | *Confirmed*: one of the seven colours is drawn as written, orange |
+| `c-0.36-0.78-0.69.pages` | `0377/deleted.pages` | Only `212#1732734 2.3: 0.9804 → 0.3600`, `212#1732734 2.4: 0.9373 → 0.7800`, `212#1732734 2.5: 0.3529 → 0.6900` | *Confirmed*: one of the seven colours is drawn as written, teal |
+
 ## Confidence
 
 *Confirmed*: the seven colours Pages draws changes in, and that each of them is kept as written, by writing them. *Unknown*: how other colours are mapped.

@@ -38,6 +38,14 @@ The written box is 320 × 160 at (100, 200). Turned 30° about its centre, its b
 
 The geometry fields are as read. 1.1.1 is the top-left corner of the unrotated box, 1.1.2 its size and 1.1.4 its rotation, all floats. AppleScript's `position` is the corner of the rotated object's bounding box instead, so it matches 1.1.1 only for unrotated objects. Field 1.5 = 1 locks the object.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `original.key` | `theme/0069/image.key` | `same bytes` | *Control*: Keynote reports 8 × 4 at (956, 538), not rotated or locked |
+| `written.key` | `original.key` | Only `3005#2655552 1.1.1.1: 956.0 → 100.0`, `3005#2655552 1.1.1.2: 538.0 → 200.0`, `3005#2655552 1.1.2.1: 8.0 → 320.0`, `3005#2655552 1.1.2.2: 4.0 → 160.0`, `3005#2655552 1.1.4: 0.0 → 30.0`, `3005#2655552 1.5: 0 → 1` | *Confirmed*: the position, size, rotation and lock; Keynote reports 320 × 160, 30° and locked |
+| `resaved.key` | `written.key` | `3005#2655552 1.1.1.1 = 100.0`, `3005#2655552 1.1.2.1 = 320.0`, `3005#2655552 1.1.4 = 30.0`, `3005#2655552 1.5 = 1` | *Likely*: Keynote keeps the values when it saves |
+
 ## Confidence
 
 *Confirmed*: drawable fields 1.1.1, 1.1.2, 1.1.4 and 1.5, by writing them.

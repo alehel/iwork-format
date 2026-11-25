@@ -36,6 +36,13 @@ Only the text changes in the first file: no paragraph run is added for the new p
 
 U+0005 in the text breaks the page, and the text after it starts the next page. The page number field's 1.2 = 1 makes it show the page count, 2, while 0 shows the page's own number, 1; both are worked out from the layout. A paragraph that a writer adds without a paragraph run still lays out, in the default style ([0289](0289-writing-two-paragraphs.md)).
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `two-pages.pages` | `0048/page-number.pages` | Only `2001#1732539 3: "Page \ufffc" → "Page \ufffc\u0005second page"` | *Confirmed*: U+0005 is a page break; the text after it is on page 2 |
+| `count.pages` | `two-pages.pages` | Only `2043#1732717 1.2: 0 → 1` | *Confirmed*: field 1.2 = 1 shows the page count, 2 |
+
 ## Confidence
 
 *Confirmed*: U+0005 as a page break, and field 1.2 of a page number field, by writing them.

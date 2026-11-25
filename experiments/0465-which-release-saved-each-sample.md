@@ -49,6 +49,10 @@ Runs that only opened a document, to read from it or export it, leave no record 
 
 Since a second copy of an app makes the choice the system's, the helper now prints to stderr which app, version and build it used, and warns when Spotlight knows more than one copy of it.
 
+## Evidence
+
+No documents of its own: it reads the build history of every sample.
+
 ## Confidence
 
 *Confirmed*: the release that saved each of 1,289 documents matches its experiment. *Unknown*: which copy performed reads that saved nothing before 0372.

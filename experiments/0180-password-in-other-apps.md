@@ -35,7 +35,7 @@ Every file except `.iwph`, `.iwpv2`, `Properties.plist` and `DocumentIdentifier`
 | Document | Files decrypted |
 | --- | --- |
 | `locked.key` | 49, including the theme's 23 images under `Data/` |
-| `locked.numbers` | 38, including 31 parts under `Index/Tables/` |
+| `locked.numbers` | 38, including 30 parts (first written as 31) under `Index/Tables/` |
 | `image.pages` | 9, including `Data/data-24.png` |
 | `accent.pages` | 8, with the password as UTF-8 |
 
@@ -47,6 +47,15 @@ The decrypted `Data/data-24.png` is byte for byte the original image: 132 bytes 
 ## Conclusion
 
 The same encryption holds across all three apps. It covers embedded data files as well as `.iwa` parts. Passwords are encoded as UTF-8 before key derivation. A reader can decrypt every file other than the four left in the clear, then read the document as normal.
+
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `locked.key` | `0168/untouched.key` | `part .iwph: absent → present`, `part .iwpv2: absent → present`, `part preview*.jpg: present → absent`; read with the password, `records 4: 18 → 18` | *Confirmed*, with 0179: Keynote encrypts a document the way Pages does |
+| `locked.numbers` | `0181/plain.numbers` | `part .iwph: absent → present`, `part .iwpv2: absent → present`, `part preview*.jpg: present → absent`; read with the password, `records 6001: 1 → 1` | *Confirmed*, with 0179: Numbers does too |
+| `accent.pages` | `0179/plain.pages` | `part .iwph: absent → present`, `part .iwpv2: absent → present`, `part preview*.jpg: present → absent`; read with the password, `2001 3 = "one"` | *Likely*: a password is encoded as UTF-8 |
+| `image.pages` | `0023/image.pages` | `part Data/red-8x4-24.png: present → absent`, `part Data/data-24.png: absent → present`; read with the password, `part Data/data-24.png ~ "IHDR"` | *Confirmed*, with 0179: data files are encrypted too; the image decrypts to the original |
 
 ## Confidence
 

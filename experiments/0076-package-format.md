@@ -37,6 +37,8 @@ preview.jpg
 
 `Index.zip` holds the seven `.iwa` parts under `Index/`, with the same names as in a ZIP document, all stored without compression. With `iwork-probe` reading parts inside `Index.zip` (added for this experiment), the text and all 571 objects are found as in a ZIP document. All objects are reachable from objects 1, 2 and 71.
 
+*Corrected 2026-11-25:* the folder also holds an empty `Data/` folder.
+
 ## Conclusion
 
 A Pages document can be a folder as well as a ZIP file. In the folder form:
@@ -47,6 +49,12 @@ A Pages document can be a folder as well as a ZIP file. In the folder form:
 A reader opens either form the same way once it treats `Index.zip` as part of the folder. A document with images would presumably keep its `Data/` folder alongside, but that isn't tested.
 
 AppleScript's `save … in` writes the first save of a new document as a ZIP, whatever file type is chosen. Only a later save in place followed the setting.
+
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `package.pages` | `0020/plain.pages` | `part Index.zip: absent → present`, `part Index/Document.iwa: present → present`, `2001 3 = "one"` | *Likely*: a document can be a folder with its `.iwa` parts in `Index.zip` |
 
 ## Confidence
 

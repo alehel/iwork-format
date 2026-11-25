@@ -39,6 +39,13 @@ A slide's part name isn't a stable rule. The number in it, when there is one, is
 
 New slides after the first get a different default layout from the first slide's.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `ten.key` | `0038/two-slides.key` | `2 3.2: ×2 → ×10`, `records 5: 19 → 27`, `part Index/Slide.iwa: present → present` | *Likely*: a slide's part name doesn't always hold the slide's ID |
+| `ten.key` | `0038/two-slides.key` | `part Index/Slide-*-2.iwa: absent → present`, `part Index/Slide-2652603-2.iwa: absent → present`, original only: no slide part of the remake ends in -2 | *Likely*: a part name sometimes has a suffix such as -2 |
+
 ## Confidence
 
 *Likely*: part names hold the slide's ID, but not always, and sometimes with a suffix such as `-2`.

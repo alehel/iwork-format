@@ -34,6 +34,12 @@ Fields 4.20 and 4.21, set to 1 in the build-in and build-out, are absent.
 
 Actions are type-8 builds too, with `Action` in field 4.18.1 and an `apple:action-…` identifier in 4.18.2. Their settings sit in field 4 beside the effect: the rotation angle in degrees is 4.9. Fields 4.10 and 4.13 probably hold the direction and the easing, which the sidebar showed as counter-clockwise and ease in and out. A reader showing a slide's end state would have to apply the action, here turning the title 45°.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `action.key` | `0257/build.key` | `8 4.18.1: "In" → "Action"`, `8 4.18.2: "apple:dissolve character" → "apple:action-rotation"`, `8 4.9: absent → 45.0`, `8 4.10: absent → 32`, `8 4.13: absent → 3` | *Confirmed*, with 0257 and 0263: an action is a type-8 record too, its kind in 4.18.1; 4.9 is likely its angle, and 4.10 and 4.13 are unknown |
+
 ## Confidence
 
 *Confirmed*, with 0257 and 0263: every build is a type-8 record, its kind given by field 4.18.1.

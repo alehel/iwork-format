@@ -42,6 +42,12 @@ The body text is `Onemandag 9. november 2026`: the date is stored as ordinary te
 
 A date field is a type-2034 smart field over the date's text. Field 2 is the format as a Unicode date pattern (`EEEE` the weekday, `MMMM` the month's name, `y` the year), field 3 the locale and field 8 the date itself, in seconds since 2001 like other times in the format. The text in the body is the date already formatted. A reader can show it as it is, or format field 8 again. Field 4 is probably the date style chosen in the app (4 being the full style), and fields 5–7 options such as showing the time and updating automatically.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `date.pages` | `0179/plain.pages` | `records 2034: 0 → 1`, `2034 2: absent → "EEEE d. MMMM y"`, `2034 8.1: absent → 815943303.40`, `2001 3 = "Onemandag 9. november 2026"` | *Confirmed*, with 0158: a date field is type 2034; that field 8 is the date is likely |
+
 ## Confidence
 
 *Confirmed*, with 0158: a date field is type 2034, with its format in field 2 and its locale in field 3.

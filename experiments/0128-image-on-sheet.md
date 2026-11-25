@@ -28,6 +28,12 @@ The recipe places the PNG of 0023 on sheet 1. `Document.iwa` gained an image rec
 
 Images on a sheet are the same records and data files as in Pages and Keynote, listed in the sheet's field 2.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `image.numbers` | `0024/empty-a.numbers` | `records 3005: 0 → 1`, `part Data/red-8x4-16.png: absent → present`, `2 2: ×1 → ×2` | *Likely*: an image on a sheet is stored as in Pages and Keynote |
+
 ## Confidence
 
 *Likely*: images are stored the same way in all three apps.

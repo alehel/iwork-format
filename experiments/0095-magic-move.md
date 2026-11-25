@@ -31,9 +31,17 @@ The recipe sets slide 1's transition to `magic move`, 1 second. The slide's fiel
 16: (absent) → 1
 ```
 
+*Corrected 2026-11-25:* fields 13, 15 and 16 are next to 4.2.8, not inside it: they are 4.2.13, 4.2.15 and 4.2.16.
+
 ## Conclusion
 
 Magic Move is stored as `apple:magic-move-implied-motion-path`, with three more fields (13, 15 and 16) that the simple effects don't set. They probably hold its options, such as how objects are matched and how text moves. They aren't decoded here.
+
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `magicmove.key` | `0025/empty.key` | `5 4.2.8.2: "none" → "apple:magic-move-implied-motion-path"` | *Likely*: the stored name of Magic Move |
 
 ## Confidence
 

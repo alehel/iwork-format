@@ -33,6 +33,12 @@ Pages deleted the space before `two` along with it, so the deletion covers ` two
 
 A tracked deletion is a type-2060 record with kind 2, applied through run table 22. Insertions use kind 1 and table 21. The deleted text stays in the body until the change is accepted. A reader that shows the document as edited must leave out the ranges in table 22. A reader that ignores tracking shows the deleted text as if it were still there.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `deleted.pages` | `0193/tracked.pages` | `2060 1: 1 → 2`, `2001 22.1.1: absent → 3`, `2001 21.1.1: 3 → absent`, `2001 3 = "One two"` | *Confirmed*, with 0193: field 1 of type 2060 is the kind of change; that kind 2 and table 22 are deletions is likely |
+
 ## Confidence
 
 *Confirmed*, with 0193: tracked changes are type-2060 records whose field 1 gives the kind of change.

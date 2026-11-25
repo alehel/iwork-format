@@ -47,6 +47,24 @@ H marks a highlighted cell, for the values 1, 2, 3 and 4, against the rule's val
 
 The kind codes 7 to 10 are the four inequalities: greater than, greater than or equal, less than and less than or equal. Codes 4 and 6 match everything except 2, and 1, 2, 3 and 5 only 2: with one-digit numbers, tests of equality and text tests such as *starts with*, *ends with* or *contains* give the same answer, so these values can't tell those codes apart. Codes 11 and 12 match every cell: they are probably *between* and *not between*, which need a second value this rule doesn't have. The codes are their own list, as the pivot's summary codes are ([0279](0279-pivot-average.md)).
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `kind-0.numbers` | `0259/highlight.numbers` | Only `6010#905589 3.1.1.1: 7 → 0` | *Likely*: matches nothing; no cell is highlighted |
+| `kind-1.numbers` | `0259/highlight.numbers` | Only `6010#905589 3.1.1.1: 7 → 1` | *Likely*: equality or a text match; only 2 highlighted |
+| `kind-2.numbers` | `0259/highlight.numbers` | Only `6010#905589 3.1.1.1: 7 → 2` | *Likely*: equality or a text match; only 2 highlighted |
+| `kind-3.numbers` | `0259/highlight.numbers` | Only `6010#905589 3.1.1.1: 7 → 3` | *Likely*: equality or a text match; only 2 highlighted |
+| `kind-4.numbers` | `0259/highlight.numbers` | Only `6010#905589 3.1.1.1: 7 → 4` | *Likely*: not equal, or the opposite of a text match; all but 2 highlighted |
+| `kind-5.numbers` | `0259/highlight.numbers` | Only `6010#905589 3.1.1.1: 7 → 5` | *Likely*: equality or a text match; only 2 highlighted |
+| `kind-6.numbers` | `0259/highlight.numbers` | Only `6010#905589 3.1.1.1: 7 → 6` | *Likely*: not equal, or the opposite of a text match; all but 2 highlighted |
+| `kind-7.numbers` | `0259/highlight.numbers` | Only written again: `same records`, `same parts`, `6010#905589 3.1.1.1 = 7` | *Confirmed*: greater than; 3 and 4 highlighted |
+| `kind-8.numbers` | `0259/highlight.numbers` | Only `6010#905589 3.1.1.1: 7 → 8` | *Confirmed*: greater than or equal; 2, 3 and 4 highlighted |
+| `kind-9.numbers` | `0259/highlight.numbers` | Only `6010#905589 3.1.1.1: 7 → 9` | *Confirmed*: less than; 1 highlighted |
+| `kind-10.numbers` | `0259/highlight.numbers` | Only `6010#905589 3.1.1.1: 7 → 10` | *Confirmed*: less than or equal; 1 and 2 highlighted |
+| `kind-11.numbers` | `0259/highlight.numbers` | Only `6010#905589 3.1.1.1: 7 → 11` | *Unknown*: what kind 11 is; every cell is highlighted |
+| `kind-12.numbers` | `0259/highlight.numbers` | Only `6010#905589 3.1.1.1: 7 → 12` | *Unknown*: what kind 12 is; every cell is highlighted |
+
 ## Confidence
 
 *Confirmed*: kinds 7, 8, 9 and 10 as greater than, greater than or equal, less than and less than or equal, by writing them. *Likely*: 1, 2, 3 and 5 test equality or a text match, 4 and 6 the opposite. *Unknown*: which is which among those, and 11 and 12.

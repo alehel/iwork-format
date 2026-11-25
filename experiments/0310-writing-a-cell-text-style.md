@@ -47,6 +47,17 @@ The blue written, 0, 0.5, 1 in sRGB, converts to exactly 2915, 26156, 65429 in G
 
 11.3 is the font size and 11.5 the font, by its PostScript name. The font name holds the family's face, and 11.1 = 1 (bold) is applied on top, so Courier with bold set shows as Courier-Bold. The text colour that counts is 11.46.1, a fill holding a colour. 11.7 is a copy, which Numbers rewrites from 11.46 when it saves, so a writer should set both. This is a third sRGB colour converted exactly to what AppleScript reports.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `original.numbers` | `0043/styles.numbers` | `same bytes` | *Control*: size 20, Helvetica-Bold and red |
+| `written.numbers` | `original.numbers` | Only `2022#905249 11.3: 20.0 → 33.0`, `2022#905256 11.5: "Helvetica-Bold" → "Courier"`, `2022#905265 11.7.3: 1.0 → 0.0`, `2022#905265 11.7.4: 0.1491 → 0.5`, `2022#905265 11.7.5: 0.0 → 1.0` | *Confirmed*: 11.3 is the size and 11.5 the font; Numbers reports 33 and Courier-Bold, and the text still red |
+| `written2.numbers` | `written.numbers` | Only `2022#905265 11.46.1.3: 1.0 → 0.0`, `2022#905265 11.46.1.4: 0.1491 → 0.5`, `2022#905265 11.46.1.5: 0.0 → 1.0` | *Confirmed*: 11.46.1 is the text colour; Numbers reports blue |
+| `only46.numbers` | `original.numbers` | Only `2022#905265 11.46.1.3: 1.0 → 0.0`, `2022#905265 11.46.1.4: 0.1491 → 0.5`, `2022#905265 11.46.1.5: 0.0 → 1.0` | *Confirmed*: 11.46.1 alone makes the text blue |
+| `only46-resaved.numbers` | `only46.numbers` | `2022#905265 11.7.3: 1.0 → 0.0`, `2022#905265 11.7.4: 0.1491 → 0.5`, `2022#905265 11.7.5: 0.0 → 1.0` | *Confirmed*: Numbers rewrites 11.7 from 11.46 when it saves |
+| `resaved.numbers` | `written.numbers` | `2022#905249 11.3 = 33.0`, `2022#905256 11.5 = "Courier"`, `2022#905265 11.7.4: 0.5 → 0.1491` | *Not used*: saved again by Numbers, and not described in the text |
+
 ## Confidence
 
 *Confirmed*: 11.3 the size, 11.5 the font, 11.46.1 the text colour, by writing them; 11.7 is a copy rewritten from 11.46 on saving.

@@ -54,7 +54,7 @@ Two empty saves from the same app had the same part names.
 
 | | Keynote | Numbers |
 | --- | --- | --- |
-| `.iwa` parts | 26 | 37 |
+| `.iwa` parts | 25 (first written as 26) | 37 |
 | Parts where the chunk and record layout failed | 0 | 0 |
 | Chunks with a type other than 0 | 0 | 0 |
 | Objects | 962 | 627 |
@@ -74,6 +74,15 @@ Two empty saves from the same app had the same part names.
 Keynote and Numbers 15.4 write the same container as Pages 15.4. They use ZIP files without compression, the same metadata files, and `.iwa` parts with the same chunk and record layout. Header references reach every object from the same three roots, and the metadata roots (2 and 71) have the same types. So the container layer of the spec applies to all three apps. A reader can decode any of them up to the level of records and references.
 
 The apps differ in their document root, object 1. In Pages it is type 10000, and in both Keynote and Numbers it is type 1. Whether Keynote's and Numbers' type 1 is the same kind of object, or whether type numbers are only unique within one app, is still open. The parts each app adds also differ: slides for Keynote, tables for Numbers. Those, and what lies below object 1, are where each app needs its own layers.
+
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `empty-a.key` | `0001/empty-a.pages` | `records 10000: 1 → 0`, `records 1: 0 → 1`, `11006#2 2 = present`, `11011#71 3 = present` | *Confirmed*: Keynote writes the same package, chunks, records and header references |
+| `empty-b.key` | `empty-a.key` | `part Metadata/DocumentIdentifier: changed`, `part Metadata/BuildVersionHistory.plist: same` | *Control*: a second save with the same part names |
+| `empty-a.numbers` | `0001/empty-a.pages` | `records 10000: 1 → 0`, `records 1: 0 → 1`, `11006#2 2 = present`, `11011#71 3 = present` | *Confirmed*: Numbers does too |
+| `empty-b.numbers` | `empty-a.numbers` | Only `11006#2 2.2: "887E5F54-9282-486D-9D29-4952C59234B1" → "A0F63435-51C0-4744-B737-E5AF3081C96A"`, `4000#905036 9: 815925375.7112 → 815925380.2662`, `part Metadata/DocumentIdentifier: changed`, `part Metadata/Properties.plist: changed` | *Control*: a second save with the same part names |
 
 ## Confidence
 

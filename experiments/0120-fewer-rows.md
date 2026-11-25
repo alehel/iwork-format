@@ -28,6 +28,12 @@ The recipe sets the table's row count to 5. Model field 6 changed from 22 to 5. 
 
 Model field 6 is the number of rows. As in [0059](0059-table-geometry.md), the drawable's stored size wasn't updated.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `fewerrows.numbers` | `0024/empty-a.numbers` | `6001 6: 22 → 5`, `6000 1.1.2.2 = 231.0` | *Confirmed*: model field 6 is the row count |
+
 ## Confidence
 
 *Confirmed*: model field 6 is the row count ([0020](0020-a-table.md) and this experiment).

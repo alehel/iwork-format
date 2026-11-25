@@ -41,6 +41,12 @@ The stored image file is unchanged.
 
 A mask is a type-3006 record named by image field 5. It is a drawable whose parent is the image, positioned relative to the image's corner, with an outline in the path form of shapes ([0217](0217-editable-shape.md), [0218](0218-oval.md)). The image itself is not cropped: a reader draws the whole image, clipped to the mask's outline placed at the mask's position. Here the oval sits at x = 50, centred on the 200-point-wide image.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `oval-mask.pages` | `0228/caption.pages` | `records 3006: 0 → 1`, `3005 5: absent → present`, `3006 1.1.1.1: absent → 50.0`, `part Data/red-8x4*: same` | *Likely*: image field 5 names a type-3006 mask, placed relative to the image; Pages shows only the circle |
+
 ## Confidence
 
 *Likely*: image field 5 names a type-3006 mask, positioned relative to the image and holding a shape path.

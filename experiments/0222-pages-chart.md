@@ -38,6 +38,12 @@ The chart goes into the text: the body becomes `One` and U+FFFC, and `Document.i
 
 Pages stores a chart exactly as Keynote does: a type-5021 drawable with its type in 10000.1 and its own copy of the data in 10000.7. The sample data's labels are in the app's language. A chart inserted from the menu sits in the text, like shapes and tables inserted that way.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `column.pages` | | `2001 3 = "One￼"`, `5021 10000.1 = 1`, `5021 10000.7.1 = "Område 1"`, `5021 10000.7.3.1.1 = 17.0` | *Confirmed*, with 0067: a chart in Pages is a type-5021 drawable with its data in 10000.7 |
+
 ## Confidence
 
 *Confirmed*, with 0067: charts are type-5021 drawables whose data is in 10000.7, in Pages as in Keynote.

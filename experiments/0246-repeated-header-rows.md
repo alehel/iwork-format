@@ -41,6 +41,13 @@ and after the menu command the field is gone. So the option is on in a new table
 
 Table model field 29 is 1 when header rows repeat on each page, and absent when they don't. Pages turns it on for new tables. Numbers tables have it set too (see the pivot source in [0227](0227-pivot-table.md)), though Numbers doesn't lay tables out over pages in the same way. A reader that splits a table over pages should repeat its header rows when field 29 is 1.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `plain-table.pages` | | `6001 29 = 1` | *Control*: a new table |
+| `no-repeat.pages` | `plain-table.pages` | `6001 29: 1 → absent` | *Likely*: table model field 29 is 1 when header rows repeat on each page |
+
 ## Confidence
 
 *Likely*: table model field 29 is 1 when header rows repeat on each page.

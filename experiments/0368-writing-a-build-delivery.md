@@ -47,6 +47,23 @@ The build's only type-153 record names the build in field 1. It has 1.0 in field
 
 Writing the delivery text doesn't change how the build plays: the build stays one stage whatever field 2 says. Changing fields 4.4, 4.20, 4.21 or 5 doesn't either. A build's stages are probably its type-153 records, one per stage, so a delivery in steps would need one such record per paragraph. That is left for a later experiment, starting from a reference file made in Keynote.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `three-words.key` | `0257/build.key` | Only `2001#2652192 3: "One" → "One two three"` | *Control*: two images exported |
+| `by-word.key` | `three-words.key` | Only `8#2652689 2: "All at Once" → "By Word"` | *Confirmed*: field 2 alone doesn't set the number of stages; two images |
+| `by-char.key` | `three-words.key` | Only `8#2652689 2: "All at Once" → "By Character"` | *Confirmed*: as above |
+| `three-paras.key` | `0257/build.key` | Only `2001#2652192 3: "One" → "One\ntwo\nthree"` | *Control*: two images exported |
+| `by-paragraph.key` | `three-paras.key` | Only `8#2652689 2: "All at Once" → "By Paragraph"` | *Confirmed*: the same for paragraphs; two images |
+| `by-bullet.key` | `three-paras.key` | Only `8#2652689 2: "All at Once" → "By Bullet"` | *Confirmed*: the same for bullets; two images |
+| `f4_4-2.key` | `by-word.key` | Only `8#2652689 4.4: 1 → 2` | *Likely*: field 4.4 doesn't set the number of stages; two images |
+| `f4_4-3.key` | `by-word.key` | Only `8#2652689 4.4: 1 → 3` | *Likely*: as above |
+| `f4_20-2.key` | `by-word.key` | Only `8#2652689 4.20: 1 → 2` | *Likely*: field 4.20 doesn't either |
+| `f4_21-2.key` | `by-word.key` | Only `8#2652689 4.21: 1 → 2` | *Likely*: field 4.21 doesn't either |
+| `f5-2.key` | `by-word.key` | Only `8#2652689 5: 1 → 2` | *Likely*: field 5 doesn't either |
+| `f5-3.key` | `by-word.key` | Only `8#2652689 5: 1 → 3` | *Likely*: as above |
+
 ## Confidence
 
 *Confirmed*: field 2 alone doesn't set the number of stages. *Likely*: the type-153 records are the stages.

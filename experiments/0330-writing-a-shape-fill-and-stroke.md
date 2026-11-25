@@ -37,6 +37,13 @@ A first attempt wrote the same values at 11.1 and 11.2, without the leading 1, a
 
 1.11.1.1 is the shape's fill colour and 1.11.2.2 its stroke width in points. The stroke is centred on the outline, so a 15-point stroke reaches 7.5 points outside the 300 – 400 box, against 2.5 for the original 5 points. Writing into the shape's own unnamed style changes only that shape.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `original.pages` | `0250/border.pages` | `same bytes` | *Control*: drawn black with a 5-point stroke |
+| `written.pages` | `original.pages` | Only `2025#1732710 1.11.1: ×0 → ×1`, `2025#1732710 1.11.1.1.3 = 1.0`, `2025#1732710 1.11.2.2: 5.0 → 15.0` | *Confirmed*: 1.11.1.1 is the fill colour and 1.11.2.2 the stroke width; drawn red with a 15-point stroke |
+
 ## Confidence
 
 *Confirmed*: shape style 1.11.1.1 (fill colour) and 1.11.2.2 (stroke width), by writing them and measuring.

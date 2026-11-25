@@ -43,6 +43,15 @@ Positions are in points from the top of the first page. Body lines are 24.8 poin
 
 Field 36 sets the header's distance from the top edge: going from 35.43 to 72 moves the header's ink down 36.4 points. Field 37 sets the footer's distance from the bottom edge: going from 42.52 to 72 moves the footer's ink up 29.5 points, against 29.48 written. Field 35 is the bottom margin: at 200 the body stops above 841.89 − 200 = 641.89, after 24 lines. A header or footer that reaches past the top or bottom margin pushes the body away. With the header 72 points down, the body starts below it at 88.2, not at the margin. With the footer 72 points up, the body loses a line.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `base.pages` | `0327/header.pages` | Only `2001#1732539 3: changed`, `2001#1732539 3 ~ "line 59\nline 60"` | *Control*: 29 body lines on the first page |
+| `header-72.pages` | `base.pages` | Only `10000#1 36: 35.4331 → 72.0` | *Confirmed*: field 36 is the header's distance; it moves down 36.4 points |
+| `footer-72.pages` | `base.pages` | Only `10000#1 37: 42.5197 → 72.0` | *Confirmed*: field 37 is the footer's distance; it moves up 29.5 points |
+| `bottom-200.pages` | `base.pages` | Only `10000#1 35: 56.6929 → 200.0` | *Confirmed*: field 35 is the bottom margin; the first page holds 24 lines |
+
 ## Confidence
 
 *Confirmed*: field 35 as the bottom margin, and fields 36 and 37 as the header and footer distances, by writing them.

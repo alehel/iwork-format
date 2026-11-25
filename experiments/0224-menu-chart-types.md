@@ -45,6 +45,20 @@ The data is in 10000.7 as for other charts. The interactive column chart's sampl
 
 Types 10 and 11 are the mixed and two-axis charts, which AppleScript can't make. Types from 20 up came later: the interactive charts (20, 21, 23, 24), bubble (22), donut (25) and radar (27). The scatter and bubble kinds, and the donut, start grouped by column (2), because their sample data is laid out that way. Type 26 is probably the 3D bubble or another later kind that the menu doesn't offer.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `mixed.pages` | `0222/column.pages` | `5021 10000.1: 1 → 10`, `5021 10000.5 = 1` | *Likely*: chart type 10 is mixed |
+| `two-axis.pages` | `0222/column.pages` | `5021 10000.1: 1 → 11`, `5021 10000.5 = 1` | *Likely*: chart type 11 is two-axis |
+| `interactive-column.pages` | `0222/column.pages` | `5021 10000.1: 1 → 20`, `5021 10000.5 = 1` | *Likely*: chart type 20 is an interactive column chart |
+| `interactive-bar.pages` | `0222/column.pages` | `5021 10000.1: 1 → 21`, `5021 10000.5 = 1` | *Likely*: chart type 21 is an interactive bar chart |
+| `bubble.pages` | `0222/column.pages` | `5021 10000.1: 1 → 22`, `5021 10000.5: 1 → 2` | *Likely*: chart type 22 is a bubble chart |
+| `interactive-scatter.pages` | `0222/column.pages` | `5021 10000.1: 1 → 23`, `5021 10000.5: 1 → 2` | *Likely*: chart type 23 is an interactive scatter chart |
+| `interactive-bubble.pages` | `0222/column.pages` | `5021 10000.1: 1 → 24`, `5021 10000.5: 1 → 2` | *Likely*: chart type 24 is an interactive bubble chart |
+| `donut.pages` | `0222/column.pages` | `5021 10000.1: 1 → 25`, `5021 10000.5: 1 → 2` | *Likely*: chart type 25 is a donut |
+| `radar.pages` | `0222/column.pages` | `5021 10000.1: 1 → 27`, `5021 10000.5 = 1` | *Likely*: chart type 27 is a radar chart |
+
 ## Confidence
 
 *Likely*: the type numbers in the table.

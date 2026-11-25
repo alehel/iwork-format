@@ -38,6 +38,13 @@ Each shape's outline is in field 1.3.3:
 
 Field 1.3.3 is a second kind of parametric path, with a pair of numbers in 3.2 rather than one. Kind 100 is a star: 3.2 holds its number of points and the inner radius as a fraction of the outer (0.382, close to the golden ratio's 1/φ²). Kind 1 is an arrow: 3.2 holds where the head starts along the length (64 of 100 points) and the shaft's thickness as a fraction of the height (0.34). The double arrow is probably another kind number.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `star.pages` | `0219/polygon.pages` | `2011 1.3.4: ×1 → ×0`, `2011 1.3.3.1: absent → 100`, `2011 1.3.3.2.1: absent → 5.0`, `2011 1.3.3.2.2: absent → 0.382` | *Likely*: kind 100 of the two-number path is a star, with its points and inner ratio |
+| `arrow.pages` | `0219/polygon.pages` | `2011 1.3.4: ×1 → ×0`, `2011 1.3.3.1: absent → 1`, `2011 1.3.3.2.1: absent → 64.0`, `2011 1.3.3.2.2: absent → 0.34` | *Likely*: kind 1 is an arrow, with its head position and shaft thickness |
+
 ## Confidence
 
 *Likely*: 1.3.3 is a two-number parametric path, with kinds 100 (star: points, inner ratio) and 1 (arrow: head position, shaft thickness).

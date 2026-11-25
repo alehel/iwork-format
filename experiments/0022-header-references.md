@@ -74,6 +74,14 @@ A record's header lists the objects its payload refers to, in field 2.5 and in f
 
 So a reader can find every object in a document without understanding any payload. It starts at the three roots, object 1 (`Document.iwa`), object 2 (`Metadata.iwa`) and object 71 (`DocumentMetadata.iwa`), and follows the IDs in the headers. The header lists alone also say which objects a record depends on, which helps when deciding what to decode first.
 
+## Evidence
+
+No documents of its own: it reads `0001/empty-a.pages`, `0004/large.pages`, `0019/left-right.pages` and `0021/cells.pages`.
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `0004/large.pages` | | `header 2001#1732539 5 = x"b7d76999d769a7e069ffdf69c8dd69"` | *Confirmed*: the body's header lists objects its payload refers to, here the targets of its run tables |
+
 ## Confidence
 
 *Confirmed*: header IDs are always references found in the payload. This holds in four documents from different experiments, with no exception.

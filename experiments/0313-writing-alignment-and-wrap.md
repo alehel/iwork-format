@@ -39,6 +39,17 @@ Numbers opened each file on its own and read B2 through AppleScript; the written
 
 Text style field 12.1 = 1 right-aligns a cell, as in Pages' paragraph styles, and cell style field 11.3 = 1 wraps its text. A cell with no alignment of its own reads as `auto align`.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `center.numbers` | `0061/center.numbers` | `same bytes` | *Control*: B2 is centred |
+| `right.numbers` | `center.numbers` | Only `2022#905237 12.1: 2 → 1` | *Confirmed*: 12.1 = 1 aligns a cell right, as Numbers reports |
+| `nowrap.numbers` | `0062/top-nowrap.numbers` | `same bytes` | *Control*: B2 is not wrapped |
+| `wrap.numbers` | `nowrap.numbers` | Only `6004#905247 11.3: 0 → 1` | *Confirmed*: 11.3 = 1 wraps the text, as Numbers reports |
+| `right-resaved.numbers` | `right.numbers` | `2022#905237 12.1 = 1` | *Not used*: saved again by Numbers, and not described in the text |
+| `wrap-resaved.numbers` | `wrap.numbers` | `records 6004: 103 → 102` | *Not used*: saved again by Numbers, which leaves out that cell style, and not described in the text |
+
 ## Confidence
 
 *Confirmed*: cell alignment 12.1 and text wrap 11.3, by writing them.

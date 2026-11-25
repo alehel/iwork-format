@@ -37,6 +37,14 @@ ROUND((4 + 2) × 1.5; 0) = 9. In `sum.numbers` the cell still caches 5; saved ag
 
 Function number 168 is SUM and 15 AVERAGE, and a formula can be changed by writing its nodes. Numbers recalculates formulas when it opens a document, so a writer doesn't have to update the cached result, though other readers that trust the cache will show the old value until the app saves again. The cached 9 was stored as 90 × 10⁻¹: a decimal128 isn't normalised.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `original.numbers` | `0104/nested.numbers` | `same bytes` | *Control*: E2 rounds an average and shows 5 |
+| `sum.numbers` | `original.numbers` | Only `6005#904540 3.5.1.1.2: 15 → 168` | *Confirmed*: function 15 is AVERAGE and 168 SUM; Numbers shows SUM and 9 |
+| `sum-resaved.numbers` | `sum.numbers` | `6002 5.6: changed`, `6002 5.6 ~ x"5a000000000000000000000000003e30"` | *Confirmed*: Numbers recalculates on opening; the saved cell caches 9 |
+
 ## Confidence
 
 *Confirmed*: function numbers 15 and 168, and function-call nodes, by writing them; Numbers recalculates on opening.

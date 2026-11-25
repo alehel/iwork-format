@@ -42,6 +42,14 @@ The checked documents include the deliberately unusual ones: parts under other n
 
 The tool still frames and reads every sample, including every file the writing experiments produced, and the rule that headers lead to every object holds for all 1,259 documents Pages or Keynote or Numbers wrote or opened unchanged. The only exception is a file written without the references, which shows that a tool that walks the object tree by headers depends on writers keeping them, even though Pages doesn't.
 
+## Evidence
+
+No documents of its own: it checks all 1,272 samples of 0001 to 0459.
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `0396/text-refs-none.pages` | `0002/hello.pages` | Only `header 2001#1732539 5: ×1 → ×0` | *Confirmed*: the one failure; objects the body text referred to can't be reached by headers |
+
 ## Confidence
 
 *Confirmed*: framing, text and reachability across all 1,272 samples, apart from the one file written without its references.

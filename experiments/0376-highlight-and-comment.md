@@ -42,6 +42,15 @@ swift recipes/0374-pdf-text.swift samples/0376/*.pdf
 
 Whether an annotation is a comment or a highlight depends only on whether its type-3056 record has text in field 1. With text, Pages treats it as a comment with that author and time; without, as a highlight that isn't listed. A reader can tell them apart the same way.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `highlight.pages` | `0200/highlight.pages` | `same bytes`, `3056#1732718 1 = ""` | *Control*: no comment is listed |
+| `highlight-with-text.pages` | `highlight.pages` | Only `3056#1732718 1: "" → "Written note"` | *Confirmed*: with text, a highlight is listed as a comment |
+| `comment.pages` | `0249/comment.pages` | `same bytes`, `3056#1732721 1 = "Note"` | *Control*: the comment is listed |
+| `comment-emptied.pages` | `comment.pages` | Only `3056#1732721 1: "Note" → ""` | *Confirmed*: without text, a comment is a highlight and isn't listed |
+
 ## Confidence
 
 *Confirmed*: an empty field 1 makes a highlight, and text in it a comment, by writing it both ways.

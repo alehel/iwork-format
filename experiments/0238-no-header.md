@@ -36,6 +36,12 @@ In each of the three header-and-footer sets (type 10143, [0016](0016-header-and-
 
 Field 2 of the type-10012 document settings says whether headers are shown. Turning headers off doesn't delete them as such, but Pages replaces their text records with fresh ones. A reader should skip headers when field 2 is 0.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `no-header.pages` | `0236/plain.pages` | `10012 2: 1 → 0`, `10143 1.1: changed` | *Likely*: field 2 of type 10012 shows headers; the header texts are replaced by new ones |
+
 ## Confidence
 
 *Likely*: type-10012 field 2 shows headers.

@@ -30,6 +30,12 @@ The recipe puts 4 in B2, 2 in C2 and `=B2*C2` in E2. The table's formula list ha
 
 Pages tables store formulas in the same postfix node format as Numbers, in the same kind of formula list.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `formula.pages` | `0031/kinds.numbers` | `6005 3.5.1.1.1: ×3 → ×3`, `6005 3.5.1.1.1 = 36`, `6005 3.5.1.1.1 = 3` | *Likely*: Pages stores a formula's nodes as Numbers does |
+
 ## Confidence
 
 *Likely*: formulas are stored the same way in Pages and Numbers.

@@ -48,6 +48,15 @@ An empty text record has no field 3 at all, so the writer adds it.
 
 The caption's and the title's text are the text records their type-633 shapes name, and Pages draws whatever is written there in place of the prompt. An empty one is drawn as the prompt in the app's language. A reader that wants the document's own words should treat an empty caption or title as having no text, not print a prompt.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `original.pages` | `0229/title-and-caption.pages` | `same bytes` | *Control*: an empty caption and title are drawn as prompts |
+| `caption.pages` | `original.pages` | Only `2001#1732703 3: absent → "Written caption"` | *Confirmed*: record 1732703 is the caption's text |
+| `title.pages` | `original.pages` | Only `2001#1732733 3: absent → "Written title"` | *Confirmed*: record 1732733 is the title's text |
+| `both.pages` | `caption.pages` | Only `2001#1732733 3: absent → "Written title"` | *Confirmed*: Pages draws both texts |
+
 ## Confidence
 
 *Confirmed*: the text records of a caption and a title, by writing them.

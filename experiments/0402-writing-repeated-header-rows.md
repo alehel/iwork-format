@@ -47,6 +47,19 @@ Growing the table and labelling its header cell are done through AppleScript aft
 
 Field 29 = 1 makes a table's header rows repeat at the top of each page it reaches; written as 0, or absent, they appear only on the first. A reader laying out a long table over pages should repeat the header rows when the field is 1.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `plain-table.pages` | `0246/plain-table.pages` | `same bytes`, `6001#1732684 29 = 1` | *Control* |
+| `no-repeat.pages` | `0246/no-repeat.pages` | `same bytes`, `6001#1732707 29 = absent` | *Control* |
+| `repeat-written.pages` | `no-repeat.pages` | Only `6001#1732707 29: absent → 1` | *Confirmed*: field 29 repeats the header rows; seen in the grown copy below |
+| `repeat-off-written.pages` | `plain-table.pages` | Only `6001#1732684 29: 1 → 0` | *Confirmed*: 0 turns it off; seen in the grown copy below |
+| `plain-table-grown.pages` | `plain-table.pages` | `6001 6: 5 → 70`, `6005 3.3: absent → "HEAD"`, `6001 29 = 1` | *Control*: the header is on all 3 pages |
+| `no-repeat-grown.pages` | `no-repeat.pages` | `6001 6: 5 → 70`, `6005 3.3: absent → "HEAD"`, `6001 29 = absent` | *Control*: the header is on 1 of 3 pages |
+| `repeat-written-grown.pages` | `repeat-written.pages` | `6001 6: 5 → 70`, `6005 3.3: absent → "HEAD"`, `6001 29 = 1` | *Confirmed*: the header is on all 3 pages |
+| `repeat-off-written-grown.pages` | `repeat-off-written.pages` | `6001 6: 5 → 70`, `6005 3.3: absent → "HEAD"`, `6001 29 ≠ 1` | *Confirmed*: the header is on 1 of 3 pages |
+
 ## Confidence
 
 *Confirmed*: table model field 29 as repeating the header rows on each page, by writing it both ways.

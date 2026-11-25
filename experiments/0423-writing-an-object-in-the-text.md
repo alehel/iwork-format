@@ -48,6 +48,15 @@ done
 
 An object in the text sits where its U+FFFC is, and only when an attachment entry sits at the same position: moving both put the table before the word, and moving either alone left the table undrawn, though Pages still counted it. In the mismatched files AppleScript's `body text` leaves the U+FFFC out, so Pages treats an unattached U+FFFC as nothing. A reader must pair each U+FFFC with the attachment entry at its position, and a writer must keep the two together.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `original.pages` | `0020/table.pages` | `same bytes`, `2001#1732539 9.1.1 = 3` | *Control*: the table is drawn below the word |
+| `table-first.pages` | `original.pages` | Only `2001#1732539 3: "one\ufffc" → "\ufffcone"`, `2001#1732539 9.1.1: 3 → 0` | *Confirmed*: the table is drawn above the word |
+| `char-moved-only.pages` | `original.pages` | Only `2001#1732539 3: "one\ufffc" → "\ufffcone"` | *Confirmed*: without an entry at the character's position the table isn't drawn |
+| `entry-moved-only.pages` | `original.pages` | Only `2001#1732539 9.1.1: 3 → 0` | *Confirmed*: without the character at the entry's position the table isn't drawn |
+
 ## Confidence
 
 *Confirmed*: an object in the text as a U+FFFC with an attachment entry at the same position, by writing them.

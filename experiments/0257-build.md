@@ -51,6 +51,13 @@ A build is a type-8 record listed by the slide in field 2:
 
 Effect identifiers use the `apple:` form of transition names ([0196](0196-every-transition.md)). Here it is `apple:dissolve character`, not `apple:dissolve`. Slide field 43 lists type-153 records, probably the build order shown in the Build Order window, each naming a build. A reader that only shows slides can ignore builds and draw every object.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `plain.key` | | `5 2 = absent`, `5 43 = absent` | *Control*: the slide without a build |
+| `build.key` | `plain.key` | `records 8: 0 → 1`, `records 153: 0 → 1`, `5 2: absent → present`, `8 4.18.1: absent → "In"`, `8 4.18.2: absent → "apple:dissolve character"` | *Likely*: a build is a type-8 record in slide field 2, with its effect in 4.18 |
+
 ## Confidence
 
 *Likely*: builds are type-8 records in slide field 2, with their target in field 1 and their effect in 4.18.

@@ -61,6 +61,14 @@ Nothing in those documents' record headers differs from a plain document's, so w
 
 13.1 draws 387 of the 399 documents exactly as 15.4 did, and the same borders with lines placed up to 0.75 points differently. Where it differs in substance, it rebuilds tables of contents, as 15.4 doesn't, and draws no body that is switched off, as 14.5 doesn't. The other three differences aren't between releases.
 
+## Evidence
+
+No documents of its own: it draws the samples of earlier experiments in 13.1 and compares the drawings. The one drawn differently because of a body switched off over text:
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `0419/no-body.pages` | `0002/hello.pages` | Only `10012#1732614 1: 1 → 0` | *Confirmed*: 13.1 draws nothing where 15.4 drew the text |
+
 ## Confidence
 
 *Confirmed*: 13.1 draws 387 documents written or saved by 15.4 exactly as 15.4 did. *Likely*: it rebuilds tables of contents on opening. *Unknown*: what triggers the newer-version warning.

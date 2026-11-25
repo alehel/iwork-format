@@ -37,6 +37,12 @@ The image record's only change is in field 3, which in 0023 named object 1731560
 
 Opacity is a property of the image's style, not of the image. Field 3 of an image names its style (type 3016), and changing the opacity made an unnamed image style that inherits from the default one and sets field 11.2 to 0.5. This is the same pattern as unnamed character and paragraph styles ([0004](0004-larger-word.md), [0008](0008-runs-and-shared-styles.md)), with field 1.3 as the parent and 11 as the properties. In an image style, though, 11.2 is opacity as a fraction, not italic.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `opacity.pages` | `0023/image.pages` | `3005 3: changed`, `records 3016: 13 → 14`, `3016 11.2: absent → 0.5` | *Likely*: opacity is field 11.2 of the image style that image field 3 names |
+
 ## Confidence
 
 *Likely*:

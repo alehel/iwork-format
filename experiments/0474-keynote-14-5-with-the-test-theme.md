@@ -55,6 +55,12 @@ The fixtures builder keeps all 16.
 
 With the test theme, Keynote 14.5 writes the presentations of these recipes with the same structure as 15.4 and 16.0, apart from the flag, the type-4011 record and slide-node field 32 that every 14.5 document lacks. The paragraph style and stored poster image that 0466 found are differences in 14.5's Basic White, not in how it writes. They are published with the fixtures under `keynote/0474/`, the first presentations from 14.5 there.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `theme/0474/*-*.key` | `theme/*/*.key` | `11006#2 7: x"1a0400" → x"0e0401"`, `records 4011: 1 → 0`, `4 32 ≠ present` | *Confirmed*: with the test theme, Keynote 14.5 differs from 15.4 only as every 14.5 document does |
+
 ## Confidence
 
 *Confirmed*: for these 16 presentations, Keynote 14.5 with the test theme differs from 15.4 only as every 14.5 document does. *Likely*: the extra paragraph style and stored poster image of 0466 belong to 14.5's Basic White.

@@ -37,6 +37,13 @@ The text area is 481.9 points wide. With a gap of 0.05 of that, 24.1 points, eac
 
 11.7.1.1 is the number of columns and 11.7.1.2 the gap between them, as a fraction of the text area's width; the lines wrap to the first column's width, which these values give.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `one.pages` | `0320/long.pages` | `same bytes` | *Control*: lines across the whole text area |
+| `two.pages` | `one.pages` | Only `2024#1732607 11.7: absent → present`, `2024#1732607 11.7.1.1: absent → 2`, `2024#1732607 11.7.1.2: absent → 0.05` | *Confirmed*: 11.7.1 holds the columns and their gap; Pages wraps the lines to the first of two columns |
+
 ## Confidence
 
 *Confirmed*: column style 11.7.1, by writing it and measuring.

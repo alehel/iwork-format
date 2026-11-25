@@ -34,6 +34,12 @@ Apart from the creation time, the only change is in the type-10012 record:
 
 Field 10 of the type-10012 document settings says whether ligatures are used at all. A character style can still turn them off for some text (property 16, 0208). A reader should use ligatures only where both allow them.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `no-ligatures.pages` | `0236/plain.pages` | `10012 10: 1 → 0` | *Likely*: field 10 of type 10012 turns ligatures on for the document |
+
 ## Confidence
 
 *Likely*: type-10012 field 10 turns ligatures on for the document.

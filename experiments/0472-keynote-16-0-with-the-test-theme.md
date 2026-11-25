@@ -45,6 +45,12 @@ The fixtures builder keeps all 16: their `Data/` holds only the test cards and K
 
 Keynote 16.0 makes the same presentations with the test theme as 15.4 did, apart from the view-state fields every 16.0 document has. The 16 presentations are published with the fixtures under `keynote/0472/`, the first from a release other than 15.4.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `theme/0472/*-*.key` | `theme/*/*.key` | `11006#2 7: x"1a0400" → x"1b0001"`, `3 43: absent → 0.0`, `23 13: absent → 1` | *Confirmed*: Keynote 16.0 with the test theme writes 15.4's structure but for the format version and the view state |
+
 ## Confidence
 
 *Confirmed*: for the 16 presentations of these recipes, Keynote 16.0 with the test theme writes the same structure as 15.4 with it.

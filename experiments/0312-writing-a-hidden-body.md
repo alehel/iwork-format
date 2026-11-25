@@ -37,6 +37,14 @@ Saved again, slide 2 still names 2655586 in field 6 and lists only the other two
 
 Whether a placeholder shows is decided by fields 7 and 42 alone: an object named in field 6 but missing from those lists is hidden, and Keynote keeps it, so it can come back with its text.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `original.key` | `theme/0243/body.key` | `same bytes` | *Control*: the body of slide 2 shows |
+| `written.key` | `original.key` | Only `5#2655565 7: ×3 → ×2`, `5#2655565 42: ×3 → ×2` | *Confirmed*: a placeholder left out of slide fields 7 and 42 is hidden; Keynote reports the body as not showing |
+| `resaved.key` | `original.key` | `5#2655565 7: ×3 → ×2`, `5#2655565 42: ×3 → ×2`, `5#2655565 6.1 = 2655586` | *Likely*: Keynote keeps the hidden placeholder in field 6 |
+
 ## Confidence
 
 *Confirmed*: a placeholder left out of slide fields 7 and 42 is hidden.

@@ -46,6 +46,13 @@ Elsewhere:
 
 A pivot's value fields are listed in field 5 of its type-6370 record. Each names a column of the source, by ID, and gives its summary function in field 3: 2 for Sum and 18 for Average. These codes are their own list, not the function numbers of formulas (where SUM is 168 and AVERAGE 15). The column labels that show the function's name are stored as text in the app's language. A reader showing a pivot can use its cells, which hold the averaged results, as found in 0227.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `sum.numbers` | | `6370 5.1.3 = 2`, `6365 1 = "(summer)"` | *Control*: the pivot of 0227, which sums |
+| `average.numbers` | `sum.numbers` | `6370 5.1.3: 2 → 18`, `6365 1: "(summer)" → "(gjennomsnitt)"` | *Likely*: a pivot's value field holds its summary function in 5.1.3: 2 sum, 18 average |
+
 ## Confidence
 
 *Likely*:

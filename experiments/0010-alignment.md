@@ -81,6 +81,14 @@ Body confirms the readings of 0007: 11.1 bold, 11.2 italic, 11.3 size, plus 11.5
 
 Field 10 isn't simply the number of properties set (57 against 59 for the full styles). It is still unknown.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `center.pages` | `0004/plain.pages` | `records 2022: 242 → 243`, `2022 12.1: absent → 2` | *Likely*: field 12.1 of a paragraph style is the alignment, 2 centred |
+| `right.pages` | `0004/plain.pages` | `records 2022: 242 → 243`, `2022 12.1: absent → 1` | *Likely*: 1 is right |
+| `justify.pages` | `0004/plain.pages` | `records 2022: 242 → 243`, `2022 12.1: absent → 3` | *Likely*: 3 is justified |
+
 ## Confidence
 
 *Likely*:

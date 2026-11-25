@@ -47,6 +47,15 @@ done
 
 The type-10015 list decides what is drawn on the page: a shape left out of it isn't drawn, though it is still in the file and AppleScript still counts it. The body's text must be in the list too; without it Pages fails to open the document. Putting the shape before the body changed nothing visible here, where they don't overlap; the order is probably the stacking order. A reader should draw the page's objects from this list, and a writer adding an object to the page must list it.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `original.pages` | `0213/plain-shape.pages` | `same bytes`, `10015#1732364 1.1 = 1732539`, `10015#1732364 1.1 = 1732647` | *Control*: the word and the square are drawn |
+| `shape-dropped.pages` | `original.pages` | Only `10015#1732364 1: ×2 → ×1`, `10015#1732364 1.1 ≠ 1732647` | *Confirmed*: a shape left out of the list isn't drawn |
+| `shape-first.pages` | `original.pages` | Only `10015#1732364 1: changed`, the two entries the other way round | *Likely*: the order is the stacking order; nothing drawn changes here |
+| `body-dropped.pages` | `original.pages` | Only `10015#1732364 1: ×2 → ×1`, `10015#1732364 1.1 ≠ 1732539` | *Confirmed*: the list must hold the body; Pages quits while opening the file |
+
 ## Confidence
 
 *Confirmed*: type 10015's field 1 as the list of what is drawn on the page, which must include the body, by writing it. *Likely*: its order is the stacking order.

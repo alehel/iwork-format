@@ -35,6 +35,13 @@ The colour message is laid out as in other colours: 1 = 1 for RGB, then red, gre
 
 Section field 30.1 is the page's background colour, and Pages fills the whole page with it, out to the edges. The colour comes out on the page with exactly the components written, read in sRGB. That supports [0309](0309-writing-a-cell-colour.md)'s finding that colours are stored as sRGB, from the drawn page this time rather than from AppleScript.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `background.pages` | `0002/hello.pages` | Only `10011#1732296 30: ×0 → ×1`, `10011#1732296 30.1.3 = 0.6`, `10011#1732296 30.1.4 = 0.8`, `10011#1732296 30.1.5 = 1.0` | *Confirmed*: section field 30 is the page background, with sRGB components |
+| `background-resaved.pages` | `background.pages` | `10011#1732296 30.1.3 = 0.6`, `10011#1732296 30.1.4 = 0.8`, `10011#1732296 30.1.12: absent → 1` | *Not used*: Pages' own save of it |
+
 ## Confidence
 
 *Confirmed*: section field 30 as the page background, by writing it; colours are sRGB components (five colours matched).

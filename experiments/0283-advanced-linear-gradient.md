@@ -36,6 +36,12 @@ The stops are the same two blue stops in all three.
 
 Gradient field 4 is 1 for a gradient made in the advanced editor and 0 for the simple one, whatever its kind. Only field 1 says whether the gradient is linear or radial. A reader can ignore field 4: it only tells Pages which editor to show.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `advanced-linear.pages` | `0260/gradient.pages` | `2025 1.11.1.2.4: 0 → 1`, `2025 1.11.1.2.1 = 0`, `2025 1.11.1.2.5.2 = 4.7124` | *Likely*: gradient field 4 marks the advanced editor, and field 1 alone gives the kind |
+
 ## Confidence
 
 *Likely*: gradient field 4 marks the advanced editor, and field 1 alone gives the kind.

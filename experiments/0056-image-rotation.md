@@ -30,6 +30,12 @@ The image record's geometry field 1.1.4 is 30.0, where 0023 has 0. Nothing else 
 
 Geometry field 1.1.4 holds the same angle as AppleScript's `rotation`, in degrees. The line of 0051 runs from (100, 100) down to the right to (300, 200). That is a clockwise turn on the page, with y pointing down, and it was stored as 333.43, which is −26.57. So a positive angle turns the object counter-clockwise as seen on the page. Position and size stay those of the unrotated object.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `rotation.pages` | `0023/image.pages` | `3005 1.1.4: 0.0 → 30.0` | *Likely*: field 1.1.4 is the rotation in degrees |
+
 ## Confidence
 
 *Likely*: geometry field 1.1.4 is the rotation in degrees, counter-clockwise on the page, about the object's centre.

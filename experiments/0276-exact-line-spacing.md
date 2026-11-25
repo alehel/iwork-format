@@ -34,6 +34,12 @@ The new paragraph style's only property is:
 
 Line spacing (property 13) has a kind in field 1 and an amount in field 2. For kind 2, exactly, the amount is in points. For the default kind, lines, which isn't stored (0), the amount is a multiple of the line height, as in 0252. The menu's order suggests At Least is 1 and Between 3, but those weren't tested.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `exactly.pages` | `0252/double.pages` | `2022 12.13.1: absent → 2`, `2022 12.13.2: 2.0 → 20.0` | *Likely*: line spacing kind 2 is an exact spacing in points |
+
 ## Confidence
 
 *Likely*: line spacing kind 2 is exact spacing in points, and 0 (absent) is a multiple of lines.

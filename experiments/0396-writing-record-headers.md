@@ -57,6 +57,19 @@ Field 2.2 doesn't decide whether Pages can read a record: a higher, lower or mis
 
 Removing a payload's references in 2.5 changes nothing either. Pages doesn't need them to load this document; they matter to tools that follow the object tree from the headers alone.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `text-ver-106.pages` | `0002/hello.pages` | Only `header 2001#1732539 2: x"010005" → x"010006"` | *Likely*: field 2.2 isn't checked when opening: the text is there |
+| `text-ver-900.pages` | `0002/hello.pages` | Only `header 2001#1732539 2: x"010005" → x"090000"` | *Likely*: as above |
+| `text-ver-000.pages` | `0002/hello.pages` | Only `header 2001#1732539 2: x"010005" → x"000000"` | *Likely*: as above |
+| `text-ver-none.pages` | `0002/hello.pages` | Only `header 2001#1732539 2: x"010005" → absent` | *Likely*: as above |
+| `root-ver-900.pages` | `0002/hello.pages` | Only `header 10000#1 2: x"010005" → x"090000"` | *Likely*: as above, for the document root |
+| `text-refs-none.pages` | `0002/hello.pages` | Only `header 2001#1732539 5: ×1 → ×0` | *Likely*: field 2.5 isn't needed to load: the text is there |
+| `text-type-9999.pages` | `0002/hello.pages` | Only `records 2001: 19 → 18`, `records 9999: 0 → 1` | *Confirmed*: field 2.1 is the payload's type: an unknown one is skipped and the body is empty |
+| `text-type-2022.pages` | `0002/hello.pages` | Only `records 2001: 19 → 18`, `records 2022: 242 → 243` | *Confirmed*: read as another type, the document is damaged to Pages |
+
 ## Confidence
 
 *Confirmed*: header field 2.1 as the payload's type, by writing it. *Likely*: field 2.2 isn't checked when opening, and 2.5 isn't needed to load. What 2.2 and 2.6 mean is still *unknown*.

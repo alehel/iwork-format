@@ -45,6 +45,12 @@ Fields 42 and 43 of a number node hold the number as a decimal128: 42 is the low
 
 A range within one row stores only the first row in 40.2 (`{1: 0}`, the formula's own row), with no last row.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `nested.numbers` | `0064/functions.numbers` | `6005 3.5.1.1.2: absent → 126`, `6005 3.5.1.1.4: absent → 1.5`, `6005 3.5.1.1.42: absent → 15`, `6005 3.5.1.1.43: absent → 3476215962376601600` | *Likely*: number node fields 42 and 43 are the number as a decimal128, and the inner call comes first |
+
 ## Confidence
 
 *Likely*:

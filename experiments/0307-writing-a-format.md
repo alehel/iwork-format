@@ -37,6 +37,14 @@ Saved again, key 2 has kind 258, with its other fields unchanged.
 
 The format list's kind decides how a number is shown: with 258 the same value 1 appears as `100 %`. AppleScript still calls the cell's format automatic in both files, so the format list holds the format Numbers resolved for display, not the inspector's choice of Automatic. Where that choice is stored isn't shown by this test.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `original.numbers` | `0226/plain.numbers` | `same bytes` | *Control*: B2 is shown as 1 |
+| `percent.numbers` | `original.numbers` | Only `6005#904541 3.6.1: 256 → 258` | *Confirmed*: format kind 258 is percent; Numbers shows 100 % |
+| `resaved.numbers` | `original.numbers` | `6005#904541 3.6.1: 256 → 258`, `6005#904541 3.6.2 = 253` | *Likely*: Numbers keeps the kind and the format's other fields |
+
 ## Confidence
 
 *Confirmed*: format kind 258 is percent, and number cells show their format-list entry's kind.

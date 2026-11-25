@@ -38,6 +38,13 @@ The body's `one` stays at 57.2 – 74.8 in both.
 
 A text box's text is its own text storage's field 3, and writing it changes what the box shows, as for the body. The box keeps its size; the longer text fits on one line here.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `original.pages` | `0049/text-box.pages` | `same bytes` | *Control*: the box shows its old text |
+| `written.pages` | `original.pages` | Only `2001#1732650 3: "box" → "A much longer line of text in the box"` | *Confirmed*: a text box's text is in its own text storage |
+
 ## Confidence
 
 *Confirmed*: a text box's text is in its own text storage, by writing it.

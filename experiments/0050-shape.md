@@ -32,9 +32,17 @@ The same records were added as for the text box in 0049: one of type 2011, a tex
 | 1.2, style | 1731559, type 2025, `textbox-0-shapestyle` | 1731553, type 2025, `shape-0-shapestyle` |
 | Text's paragraph style (field 5) | 1731511 (Body) | 1731523 |
 
+*Corrected 2026-11-25:* the records also differ in position (1.1.1), in the path's size (1.3.5.2) and in field 6, 1 for the text box and 0 for the shape.
+
 ## Conclusion
 
 A shape and a text box are the same kind of object, type 2011. They differ in their shape style (type 2025): `shape-0-shapestyle` against `textbox-0-shapestyle`. Their default sizes differ too, as does the paragraph style their text starts with. A reader draws both from their path (1.3) and style, so it doesn't need to tell them apart.
+
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `shape.pages` | `0049/text-box.pages` | `2001 3: "box" → "shape"`, `2011 1.2.1: 1731559 → 1731553`, `2025#1731559 1.1.2 = "textbox-0-shapestyle"`, `2025#1731553 1.1.2 = "shape-0-shapestyle"` | *Likely*: a shape is type 2011 too, told apart by its style and content |
 
 ## Confidence
 

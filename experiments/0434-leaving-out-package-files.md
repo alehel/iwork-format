@@ -51,6 +51,18 @@ After either of the last two, Pages opened no other document either, not even on
 
 Pages doesn't need any single file outside `Index/`: each of the three `Metadata/` files, and the previews, can be left out, and so can all of `Metadata/` at once. But a ZIP with nothing outside `Index/` makes Pages stop opening documents altogether, and so does a document without its view state part, which `Metadata.iwa` lists as a component ([0394](0394-renaming-a-part.md)). So a writer should always include `ViewState.iwa` and keep at least one entry besides `Index/`, such as the `Metadata/` files Pages writes. Why the combination matters is *unknown*.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `no-identifier.pages` | `0002/hello.pages` | Only `part Metadata/DocumentIdentifier: present → absent` | *Confirmed*: Pages opens it |
+| `no-properties.pages` | `0002/hello.pages` | Only `part Metadata/Properties.plist: present → absent` | *Confirmed*: Pages opens it |
+| `no-history.pages` | `0002/hello.pages` | Only `part Metadata/BuildVersionHistory.plist: present → absent` | *Confirmed*: Pages opens it |
+| `no-previews.pages` | `0002/hello.pages` | Only `part preview*: present → absent`, `same records` | *Confirmed*: Pages opens it |
+| `no-metadata-folder.pages` | `0002/hello.pages` | Only `part Metadata/*: present → absent` | *Confirmed*: Pages opens it |
+| `only-index.pages` | `0002/hello.pages` | Only `part Metadata/*: present → absent`, `part preview*: present → absent`, `same records` | *Confirmed*: Pages doesn't open it, and shows no alert |
+| `no-viewstate.pages` | `0002/hello.pages` | `part Index/ViewState.iwa: present → absent`, `records 210: 1 → 0` and the part's other records | *Confirmed*: Pages doesn't open a document without its view state |
+
 ## Confidence
 
 *Confirmed*: Pages opens a document without any one of the `Metadata/` files or the previews, and without all of `Metadata/`, but not without its view state, nor with only `Index/`, by writing them. Why is *unknown*.

@@ -47,6 +47,15 @@ Each gridline button turns off one table style property:
 
 These meanings follow the order of the sidebar's icons, which wasn't checked visually for buttons 3 and 4. The fifth button, for footer rows, had no effect: a new table has no footer rows, so it is probably disabled. A reader draws a set of gridlines unless its property is 0.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `button2.numbers` | `0230/plain.numbers` | `6003 10: 1 → 2`, `6003 11.33: absent → 0` | *Likely*: property 33 is the body's vertical gridlines |
+| `button3.numbers` | `0230/plain.numbers` | `6003 10: 1 → 2`, `6003 11.42: absent → 0` | *Unknown*: whether property 42 is the header rows' lines or the header columns' |
+| `button4.numbers` | `0230/plain.numbers` | `6003 10: 1 → 2`, `6003 11.43: absent → 0` | *Unknown*: whether property 43 is the header columns' lines or the header rows' |
+| `button5.numbers` | `0230/plain.numbers` | Only the save's own traces: `11006#2 2.2: changed`, `header 12009#903870 6: changed`, `4000#905036 9: changed`, `part Metadata/DocumentIdentifier: changed`, `part Metadata/Properties.plist: changed` | *Unknown*: the footer rows' property; the button does nothing in a table without footer rows |
+
 ## Confidence
 
 *Likely*: properties 33 and 34 are the body's vertical and horizontal gridlines.

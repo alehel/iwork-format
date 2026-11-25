@@ -72,6 +72,16 @@ Field 2.2 is fixed for each record type, so it reads as the version of that type
 
 An extra payload of type 0 is ignored by Pages 15.4. The donut's main payload already holds its type, 25, and the extra one holds 5, a pie: the nearest type that existed before donuts. Its header names a place in the main payload (9, the path 10000) and versions (8 and 11). So it is most likely a fallback for older versions of the apps, which would put 5 into 10000.1 in place of a type they don't know. A reader for current documents can skip payloads of type 0 and read the first payload.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `donut.pages` | `0224/donut.pages` | `same bytes`, `5021#1732688 10000.1 = 25`, `0#1732688 1 = 5`, `header 0#1732688 2 = x"ffff03ffff03ffffffff0f"` | *Control*: a donut, with an extra payload |
+| `donut-no-extra.pages` | `donut.pages` | Only `records 0: 1 → 0` | *Confirmed*: Pages ignores the extra payload: the same donut |
+| `donut-extra-bar.pages` | `donut.pages` | Only `0#1732688 1: 5 → 1` | *Confirmed*: as above |
+| `donut-main-pie.pages` | `donut.pages` | Only `5021#1732688 10000.1: 25 → 5`, `0#1732688 1 = 5` | *Likely*: the main payload's 10000.1 is the type Pages draws: a pie |
+| `pie-no-extra.pages` | `donut-no-extra.pages` | Only `5021#1732688 10000.1: 25 → 5`, `records 0: 0 → 0` | *Confirmed*: the extra payload makes no difference: the same pie |
+
 ## Confidence
 
 *Confirmed*: 2.2 is the same for every record of a type, across all samples, and Pages 15.4 ignores a type-0 extra payload, by writing it. *Likely*: an extra payload is a fallback for older versions, placed at the path in its field 9.

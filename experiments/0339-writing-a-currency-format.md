@@ -37,6 +37,14 @@ Numbers opened each file on its own and read B2 and F2 through AppleScript.
 
 In a currency format, field 3 is the ISO 4217 currency code and field 2 the number of decimal places. Numbers formats the code in the user's locale, so `NOK` appears as `kr` in Norwegian and `USD` as `USD`. Both cells use the same format entry, so one change reformats both.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `original.numbers` | `0031/kinds.numbers` | `same bytes` | *Control*: B2 is shown as 42,00 kr |
+| `usd.numbers` | `original.numbers` | Only `6005#904541 3.6.3: "NOK" → "USD"` | *Confirmed*: field 3 is the currency code; B2 is shown as 42,00 USD |
+| `places0.numbers` | `original.numbers` | Only `6005#904541 3.6.2: 2 → 0` | *Confirmed*: field 2 is the decimal places; B2 is shown as 42 kr |
+
 ## Confidence
 
 *Confirmed*: currency format fields 2 (decimal places) and 3 (currency code), by writing them.

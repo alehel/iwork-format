@@ -30,6 +30,12 @@ The copy has its own records throughout. Its title text is a new type-2001 recor
 
 A duplicated slide is a full copy with new IDs: a new slide node, a new slide and new text records. It shares only what any two slides share, such as the layout and the stylesheet. A reader can treat it like any other slide.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `dup.key` | `0038/two-slides.key` | `2001 3: absent → "A"`, `5 17.1: 2651826 → 2651742`, `2 3.2: ×2 → ×2`, `records 15: 2 → 2` | *Likely*: a duplicated slide is a full copy with new records, which shares only its layout and styles |
+
 ## Confidence
 
 *Likely*: a duplicate is a full copy with new IDs, sharing only its layout and styles.

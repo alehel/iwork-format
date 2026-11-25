@@ -37,6 +37,14 @@ Each file was opened in Pages on its own, exported as PDF and measured.
 
 Field 34 is the top margin: the text moves down by 93.3 points, the difference between 150 and 56.69. Field 33 is the right margin: the lines now wrap before 595.28 − 150 = 445.28 points. Both are floats in points, used as written.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `long.pages` | `0320/long.pages` | `same bytes` | *Control*: the first line starts 60.2 points down |
+| `top150.pages` | `long.pages` | Only `10000#1 34: 56.6929 → 150.0` | *Confirmed*: field 34 is the top margin; the text moves down 93.3 points |
+| `right150.pages` | `long.pages` | Only `10000#1 33: 56.6929 → 150.0` | *Confirmed*: field 33 is the right margin; the lines wrap earlier |
+
 ## Confidence
 
 *Confirmed*: root fields 33 and 34, by writing them and measuring.

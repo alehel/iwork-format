@@ -39,6 +39,13 @@ Root field 42 is the orientation: 1 for landscape. The paper size in 30 and 31 i
 
 Field 15.9 names the template the document was made from.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `landscape.pages` | `0020/plain.pages` | `10000 42: 0 → 1`, `10000 30: 595.28 → 842.0`, `10000 31: 841.89 → 595.0`, `10000 44 = "iso-a4"` | *Likely*: root field 42 is the orientation, and 30 and 31 hold the page size as laid out |
+| `landscape.pages` | `0020/plain.pages` | `10000 15.9: "Application/Blank/ISO" → "Application/BlankLandscape/ISO"` | *Likely*: field 15.9 is the template's identifier |
+
 ## Confidence
 
 *Likely*: root field 42 is the orientation (1 landscape), and 30 and 31 hold the page size as laid out.

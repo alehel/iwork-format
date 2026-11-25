@@ -52,6 +52,13 @@ Operators and functions are nodes in the postfix list:
 - type 16 is a function call: field 2 is the function, 168 for SUM, and field 3 the number of arguments. *Note after [0044](0044-merged-cells.md):* the same node `16, 168, 1` also ends the expression for a merged range. So 168 may not mean SUM specifically.
 - type 17 is a number ([0031](0031-cell-kinds.md))
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `formulas.numbers` | `0031/kinds.numbers` | `6005 3.5.1.1.26.1: absent → 5`, `6005 3.5.1.1.26.2: absent → 1`, `6005 3.5.1.1.27.2: absent → 1` | *Likely*: node 36 is a cell reference, a zigzag offset, or an index with the absolute flag |
+| `formulas.numbers` | `0031/kinds.numbers` | `6005 3.5.1.1.1: absent → 67`, `6005 3.5.1.1.40.1.1: absent → -3`, `6005 3.5.1.1.40.2.1: absent → -4`, `6005 3.5.1.1.2: absent → 168` | *Likely*: node 67 is a range of offsets, and node 16 a function call |
+
 ## Confidence
 
 *Likely*:

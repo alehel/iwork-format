@@ -35,6 +35,13 @@ Pages opened each file on its own and exported it as PDF; PDFKit then listed eac
 
 Field 2 of a type-2032 link is its address, used as written, and Pages carries it into exported PDFs as a link annotation.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `original.pages` | `0189/link.pages` | `same bytes` | *Control*: the PDF links to the old address |
+| `written.pages` | `original.pages` | Only `2032#1732708 2: "http://www.apple.com/no" → "https://example.org/written-link"` | *Confirmed*: field 2 is the link's address; the PDF links to the new one |
+
 ## Confidence
 
 *Confirmed*: link field 2, by writing it.

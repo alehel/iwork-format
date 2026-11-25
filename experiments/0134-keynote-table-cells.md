@@ -24,11 +24,17 @@ The recipe makes a 5 × 5 table through Keynote's AppleScript, using the same ta
 
 ## Observation
 
-The recipe puts 42 in B2 and `abc` in C3. The decoded tile record has the SHA-1 `67e56451ad5e…`, the same as in Numbers (0026) and Pages (0131).
+The recipe puts 42 in B2 and `abc` in C3. The decoded tile record has the SHA-1 `ec2d199f066c…`, the same as in Numbers (0026) and Pages (0131).
 
 ## Conclusion
 
 All three apps store a table's cells byte for byte the same.
+
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `cells.key` | `0131/cells.pages` | `6002 5.6 ~ x"0502000000000000013000002a0000000000000000000000000040300100000001000000"`, `6002 5.6 ~ x"050300000000000008100200010000000500000002000000"`; the tile is the same, byte for byte | *Confirmed*: Keynote stores cells as Numbers and Pages do |
 
 ## Confidence
 

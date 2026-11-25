@@ -28,6 +28,12 @@ The recipe puts 2026-01-02 00:00 in B2. The cell is type 5, with flags 0x9004, t
 
 A date without a time is an ordinary date cell whose double falls on midnight. The time is simply zero, with no separate date-only kind. The format key (0x8000) decides whether a time is shown.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `dateonly.numbers` | `0024/empty-a.numbers` | `6005 3.6.1: absent → 261`, `6002 5.6 ~ x"05050000000000000490000000000000a183c741"` | *Likely*: a date at midnight is an ordinary date cell |
+
 ## Confidence
 
 *Likely*: dates at midnight are plain date cells.

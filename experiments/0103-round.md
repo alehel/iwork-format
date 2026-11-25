@@ -40,6 +40,12 @@ The cell holds the decimal128 13 × 10⁻¹ = 1.3.
 
 ROUND is function 126 and takes its two arguments in order, before the call node. That fits the alphabetical numbering found in 0064 (MIN 88 < ROUND 126 < SUM 168).
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `round.numbers` | `0064/functions.numbers` | `6005 3.5.1.1.2: absent → 126`, `6005 3.5.1.1.3: 1 → 2` | *Likely*: ROUND is function 126, here with two arguments |
+
 ## Confidence
 
 *Likely*: ROUND is function 126.

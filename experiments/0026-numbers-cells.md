@@ -34,9 +34,11 @@ cells.pages (0021)   Index/Tables/DataList.iwa          1: 1  2: 2  3: { 1: 1, 2
 cells.numbers        Index/Tables/DataList-904552.iwa   1: 1  2: 2  3: { 1: 1, 2: 1, 3: "abc" }
 ```
 
-The decoded tile record (type 6002) of `cells.numbers` is byte-for-byte the same as that of `cells.pages`. Both have the SHA-1 `67e56451ad5e2eb0bd743e273f6a66a70f399843` over the decoded payload. That includes both rows' offset tables and cell bytes, with the type bytes 2 and 3, the decimal128 42, and the string key 1.
+The decoded tile record (type 6002) of `cells.numbers` is byte-for-byte the same as that of `cells.pages`. Both have the SHA-1 `ec2d199f066c5973fe70a7c972969d11c676fa67` over the decoded payload. That includes both rows' offset tables and cell bytes, with the type bytes 2 and 3, the decimal128 42, and the string key 1.
 
 Numbers names most of its table parts `DataList-N.iwa`, `HeaderStorageBucket-N.iwa` and `Tile.iwa`. *Corrected after [0030](0030-tiles.md):* the first version of this write-up said Numbers never uses Pages' `-2` ending. In fact this file also has `Tile-905022-2.iwa` and three `HeaderStorageBucket-N-2.iwa` parts, which a comparison that collapsed part names had hidden.
+
+*Corrected 2026-11-25:* the SHA-1 was first given as `67e56451…`, which can't be reproduced. The payloads are identical, as written.
 
 ## Conclusion
 
@@ -50,6 +52,14 @@ Numbers stores cells exactly as Pages does. The same values in the same cells gi
 The string table's entry for a text cell doesn't depend on the string's content: the key and count were the same for `Abc` and `abc`.
 
 Both apps use the `-2` ending for some table parts (see the correction above).
+
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `empty.numbers` | `0024/empty-a.numbers` | `same bytes` | *Control* |
+| `cells.numbers` | `empty.numbers` | `6002 5.1: absent → 1`, `6002 5.1: absent → 2`, `6005 3.3: absent → "abc"` | *Confirmed*: cells are kept per row in the tile, and text in the string table |
+| `cells.numbers` | `0021/cells.pages` | `6002 5.6: ×2 → ×2`, `6002 5.6 ~ x"0502000000000000013000002a0000000000000000000000000040300100000001000000"`, `6002 5.6 ~ x"050300000000000008100200010000000500000002000000"`, `6005 3.3: "Abc" → "abc"` | *Confirmed*: Numbers and Pages store the same cells as the same bytes |
 
 ## Confidence
 

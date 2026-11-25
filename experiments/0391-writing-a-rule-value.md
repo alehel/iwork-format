@@ -11,7 +11,7 @@ A conditional highlighting rule is a type-6010 record whose condition is a formu
 | Numbers | 15.4, in Norwegian |
 | macOS | 26.5.2 (25F84) |
 | Date | 2026-11-17 |
-| Input | `samples/0259/highlight.numbers`: `n` 1, 2, 3, 4 in B2:B5, with the rule *greater than 2* and a green fill, so B4 and B5 are green. The rule is record 905589 in `Tables/DataList-904538.iwa`. Its value 2 is in five places: a number node (field 4, a double, and 42) in the formula at 2.1, the same in a second formula at 3.1.1.7, and 3.1.1.5.2, which holds { 1: 2.0 (a double), 2: 2 }. `samples/0258/filter.numbers` keeps its filter's value the same way in record 905584, at 7.1.5.2 |
+| Input | `samples/0259/highlight.numbers`: `n` 1, 2, 3, 4 in B2:B5, with the rule *greater than 2* and a green fill, so B4 and B5 are green. The rule is record 905589 in `Tables/DataList-904538.iwa`. Its value 2 is in six places (first written as five): a number node (field 4, a double, and 42) in the formula at 2.1, the same in a second formula at 3.1.1.7, and 3.1.1.5.2, which holds { 1: 2.0 (a double), 2: 2 }. `samples/0258/filter.numbers` keeps its filter's value the same way in record 905584, at 7.1.5.2 |
 | Writer | The new [`recipes/0391-cell-key.py`](../recipes/0391-cell-key.py) for the cached results and [`recipes/0383-set-nth-path.py`](../recipes/0383-set-nth-path.py); exported with [`recipes/0372-in-app.sh`](../recipes/0372-in-app.sh) and read with [`recipes/0384-pdf-colours.swift`](../recipes/0384-pdf-colours.swift) and [`recipes/0374-pdf-text.swift`](../recipes/0374-pdf-text.swift) |
 
 ## Recipe
@@ -72,6 +72,26 @@ Numbers evaluates a highlighting rule and a filter when it opens a document, and
 So [0383](0383-writing-a-filter.md)'s conclusion, that neither the rule nor the hidden rows decide what is shown, holds for what it wrote, but the filter's value is in a field it didn't write.
 
 Whether field 2 can hold a value that isn't a whole number wasn't tested.
+
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `original.numbers` | `0259/highlight.numbers` | `same bytes`, `6010#905589 3.1.1.5.2.2 = 2` | *Control*: B4 and B5 are green |
+| `b2-cached-match.numbers` | `original.numbers` | Only `6002#904547 5.6: changed`, `6002#904547 5.6 ~ x"01000000000000000000000000004030010000000000000001000000"` | *Confirmed*: the cached result isn't used: B2 stays white |
+| `b5-cached-none.numbers` | `original.numbers` | Only `6002#904547 5.6: changed`, `6002#904547 5.6 ~ x"04000000000000000000000000004030010000000f00000001000000"` | *Confirmed*: as above: B5 stays green |
+| `rule-formula-3.numbers` | `original.numbers` | Only `6010#905589 2.1.1.1.1.4: 2.0 → 3.0`, `6010#905589 2.1.1.1.1.42: 2 → 3` | *Likely*: the formula at 2.1 isn't used to evaluate the rule |
+| `rule-settings-3.numbers` | `original.numbers` | Only `6010#905589 3.1.1.5.2.1: 2.0 → 3.0`, `6010#905589 3.1.1.7.1.1.4: 2.0 → 3.0`, `6010#905589 3.1.1.7.1.1.42: 2 → 3` | *Likely*: nor are the double and the second formula |
+| `rule-all-3.numbers` | `rule-formula-3.numbers` | Only `6010#905589 3.1.1.5.2.1: 2.0 → 3.0`, `6010#905589 3.1.1.7.1.1.4: 2.0 → 3.0`, `6010#905589 3.1.1.7.1.1.42: 2 → 3` | *Likely*: nor all three together: B4 stays green |
+| `rule-all-3-edited.numbers` | `rule-all-3.numbers` | `6002 5.6: changed`, `6002 5.6 ~ x"19000000000000000000000000003e30"` (2.5) | *Likely*: the written values aren't used after a recalculation either: B2 at 2.5 is green |
+| `only-522.numbers` | `original.numbers` | Only `6010#905589 3.1.1.5.2.2: 2 → 3` | *Confirmed*: field 2 of the value message is the value compared with: only B5 is green |
+| `only-522-zero.numbers` | `original.numbers` | Only `6010#905589 3.1.1.5.2.2: 2 → 0` | *Confirmed*: as above: all four are green |
+| `0383/only-522-0.numbers` | `0258/filter.numbers` | Only `6220#905584 7.1.5.2.2: 2 → 0` | *Confirmed*: 7.1.5.2.2 is a filter's value: all four rows are shown |
+| `0383/only-522-3.numbers` | `0258/filter.numbers` | Only `6220#905584 7.1.5.2.2: 2 → 3` | *Confirmed*: as above: only b 4 is shown |
+| `original-edited.numbers` | `original.numbers` | `6002 5.6: changed`, `6002 5.6 ~ x"19000000000000000000000000003e30"` (2.5) | *Control*: B2 set to 2.5 with the rule unchanged |
+| `rule-all-0.numbers` | `original.numbers` | Only `6010#905589 2.1.1.1.1.4: 2.0 → 0.0`, `6010#905589 2.1.1.1.1.42: 2 → 0`, `6010#905589 3.1.1.5.2.1: 2.0 → 0.0`, `6010#905589 3.1.1.7.1.1.4: 2.0 → 0.0`, `6010#905589 3.1.1.7.1.1.42: 2 → 0` | *Not used*: every copy but field 2 set to 0; the text gives no result |
+| `rule-all-0-edited.numbers` | `rule-all-0.numbers` | `6002 5.6: changed`, `6002 5.6 ~ x"19000000000000000000000000003e30"` (2.5) | *Not used*: that with B2 set to 2.5; the text gives no result |
+| `rule-all-3-and-522.numbers` | `rule-all-3.numbers` | Only `6010#905589 3.1.1.5.2.2: 2 → 3` | *Not used*: every copy and field 2 set to 3 |
 
 ## Confidence
 

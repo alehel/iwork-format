@@ -42,6 +42,12 @@ The paragraph-style runs (field 5 of the body):
 
 Pages names a paragraph style in a run entry whenever the style differs from the previous paragraph's. Here it wrote Body explicitly for `three`, after the Heading. It leaves the style out when a paragraph keeps the previous one's style, as for `four`. That fits reading an entry with no style as "the same as the previous paragraph". In this document, though, that style is also Body, so "Body" and "keep the previous" can't be told apart yet. The 0033 rule predicted all four words.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `mixed.pages` | `0005/one.pages` | `2001 3: "onetwo" → "one\ntwo\nthree\nfour"`, `2001 5.1.2.1: absent → 1731502`, `2001#1732539 5.1: ×1 → ×4`, `2001#1732539 5.1.2: ×1 → ×3` | *Likely*: a run entry names a paragraph style where it changes; `four`, which keeps the style before it, has none |
+
 ## Confidence
 
 *Likely*: Pages writes a paragraph style in a run entry wherever it changes, and the 0033 rule holds with mixed paragraph styles.

@@ -30,6 +30,12 @@ The recipe merges B2:C3 and puts 42 in B2. The table model's field 47.2 has the 
 
 Pages records merges like Numbers, in table model field 47.2.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `merge.pages` | `0044/merged.numbers` | `6001 47.2.2 = 1`, `6001 47.2.3.2.1.1.1 = 67`, `6001 47.2.3.2.1.1.33.1 = 1` | *Confirmed*: Pages records merged cells in model field 47.2, as Numbers does |
+
 ## Confidence
 
 *Confirmed*: merges are recorded in table model field 47.2 ([0044](0044-merged-cells.md) and this experiment).

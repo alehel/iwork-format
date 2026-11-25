@@ -58,6 +58,13 @@ Setting the font to `Helvetica-Bold` set two properties, the font name and bold,
 
 The red stored here, (1.0, 0.149, 0.0), is the same as for text coloured red through Pages' AppleScript in 0013. So both apps convert AppleScript colours the same way.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `styles.numbers` | `0031/kinds.numbers` | `6005#904534 3: ×0 → ×4`, `2022 11.3: absent → 20.0`, `2022 11.5: absent → "Helvetica-Bold"`, `2022 11.7.4: absent → 0.1491` | *Likely*: flag 0x40 is a text-style key, and text styles are unnamed paragraph styles |
+| `styles.numbers` | `0031/kinds.numbers` | `records 6004: 102 → 103`, `6004 11.1.1.3: absent → 1.0`, `6004 11.1.1.4: absent → 0.1491` | *Likely*: flag 0x20 is a cell-style key, of type 6004 with the fill colour in 11.1.1 |
+
 ## Confidence
 
 *Likely*:

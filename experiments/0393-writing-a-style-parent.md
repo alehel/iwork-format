@@ -43,6 +43,14 @@ swift recipes/0319-measure-pdf.swift $O/*.pdf
 
 An unnamed style takes every property it doesn't set from the style named in its field 1.3: with *Tittel* as its parent the paragraph is set in 30-point bold, with *Overskrift* in 18-point bold. The property the unnamed style does set, centring, stays, so the line is centred on the same middle whatever its width. This is the chain a reader follows to find a property.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `original.pages` | `0010/center.pages` | `same bytes`, `2022#1732696 1.3.1 = 1731511`, `2022#1732696 12.1 = 2` | *Control*: 11 points, centred |
+| `parent-title.pages` | `original.pages` | Only `2022#1732696 1.3.1: 1731511 → 1731491` | *Confirmed*: field 1.3 is the parent: 30-point bold, still centred |
+| `parent-heading.pages` | `original.pages` | Only `2022#1732696 1.3.1: 1731511 → 1731502` | *Confirmed*: as above: 18-point bold, still centred |
+
 ## Confidence
 
 *Confirmed*: field 1.3 as a style's parent, from which it inherits what it leaves out, by writing it.

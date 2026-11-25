@@ -44,6 +44,24 @@ Red written as 1, 0, 0 with the Display P3 flag is drawn as 1, 0.15, 0 in the ex
 
 Property 13 of a series style is the fill of that series' bars in a column chart. The other eleven colour properties hold the same colour but didn't change the bars; they are probably the series' colour for other chart types or parts, such as lines, areas, pie wedges and points, so a theme can colour each kind differently. Which is which is *unknown* until each is written into a chart of each type.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `baseline.key` | `0296/baseline.key` | `same bytes`, `5028#2651484 10000.13.1.5 = 1.0`, `5021#2655552 10000.1 = 1` | *Control*: the bars are blue |
+| `prop-6.key` | `baseline.key` | Only `5028#2651484 10000.6.1.3: 0.0006 → 1.0`, `5028#2651484 10000.6.1.4: 0.6336 → 0.0`, `5028#2651484 10000.6.1.5: 1.0 → 0.0` | *Unknown*: what property 6 colours; the bar stays blue |
+| `prop-7.key` | `baseline.key` | Only `5028#2651484 10000.7.1.3: 0.0006 → 1.0`, `5028#2651484 10000.7.1.4: 0.6336 → 0.0`, `5028#2651484 10000.7.1.5: 1.0 → 0.0` | *Unknown*: what property 7 colours; the bar stays blue |
+| `prop-8.key` | `baseline.key` | Only `5028#2651484 10000.8.1.3: 0.0006 → 1.0`, `5028#2651484 10000.8.1.4: 0.6336 → 0.0`, `5028#2651484 10000.8.1.5: 1.0 → 0.0` | *Unknown*: what property 8 colours; the bar stays blue |
+| `prop-9.key` | `baseline.key` | Only `5028#2651484 10000.9.1.3: 0.0006 → 1.0`, `5028#2651484 10000.9.1.4: 0.6336 → 0.0`, `5028#2651484 10000.9.1.5: 1.0 → 0.0` | *Unknown*: what property 9 colours; the bar stays blue |
+| `prop-10.key` | `baseline.key` | Only `5028#2651484 10000.10.1.3: 0.0006 → 1.0`, `5028#2651484 10000.10.1.4: 0.6336 → 0.0`, `5028#2651484 10000.10.1.5: 1.0 → 0.0` | *Unknown*: what property 10 colours; the bar stays blue |
+| `prop-11.key` | `baseline.key` | Only `5028#2651484 10000.11.1.3: 0.0006 → 1.0`, `5028#2651484 10000.11.1.4: 0.6336 → 0.0`, `5028#2651484 10000.11.1.5: 1.0 → 0.0` | *Unknown*: what property 11 colours; the bar stays blue |
+| `prop-12.key` | `baseline.key` | Only `5028#2651484 10000.12.1.3: 0.0006 → 1.0`, `5028#2651484 10000.12.1.4: 0.6336 → 0.0`, `5028#2651484 10000.12.1.5: 1.0 → 0.0` | *Unknown*: what property 12 colours; the bar stays blue |
+| `prop-13.key` | `baseline.key` | Only `5028#2651484 10000.13.1.3: 0.0006 → 1.0`, `5028#2651484 10000.13.1.4: 0.6336 → 0.0`, `5028#2651484 10000.13.1.5: 1.0 → 0.0` | *Confirmed*: property 13 is the fill of a column chart's bars; the bar is red |
+| `prop-14.key` | `baseline.key` | Only `5028#2651484 10000.14.1.3: 0.0006 → 1.0`, `5028#2651484 10000.14.1.4: 0.6336 → 0.0`, `5028#2651484 10000.14.1.5: 1.0 → 0.0` | *Unknown*: what property 14 colours; the bar stays blue |
+| `prop-15.key` | `baseline.key` | Only `5028#2651484 10000.15.1.3: 0.0006 → 1.0`, `5028#2651484 10000.15.1.4: 0.6336 → 0.0`, `5028#2651484 10000.15.1.5: 1.0 → 0.0` | *Unknown*: what property 15 colours; the bar stays blue |
+| `prop-16.key` | `baseline.key` | Only `5028#2651484 10000.16.1.3: 0.0006 → 1.0`, `5028#2651484 10000.16.1.4: 0.6336 → 0.0`, `5028#2651484 10000.16.1.5: 1.0 → 0.0` | *Unknown*: what property 16 colours; the bar stays blue |
+| `prop-17.key` | `baseline.key` | Only `5028#2651484 10000.17.1.3: 0.0006 → 1.0`, `5028#2651484 10000.17.1.4: 0.6336 → 0.0`, `5028#2651484 10000.17.1.5: 1.0 → 0.0` | *Unknown*: what property 17 colours; the bar stays blue |
+
 ## Confidence
 
 *Confirmed*: series style property 13 as a column chart's bar fill, by writing it. *Unknown*: what properties 6 to 12 and 14 to 17 colour.

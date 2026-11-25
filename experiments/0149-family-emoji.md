@@ -34,6 +34,13 @@ The second paragraph starts at 9: the emoji's 8 UTF-16 units plus the line feed.
 
 Setting the size of a whole paragraph through AppleScript made an unnamed paragraph style, as Pages did in [0008](0008-runs-and-shared-styles.md), not a character style.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `zwj.pages` | `0020/plain.pages` | `2001 3 ~ x"f09f91a8e2808df09f91a9e2808df09f91a70a74776f"`, `2001 5.1.1: absent → 9` | *Confirmed*: positions count UTF-16 code units, eight for this joined emoji |
+| `zwj.pages` | `0020/plain.pages` | `records 2022: 242 → 243`, `2022 11.3: absent → 20.0`, `2001 8: ×0 → ×0` | *Likely*: formatting a whole paragraph makes a paragraph style |
+
 ## Confidence
 
 *Confirmed*: positions count UTF-16 code units, here for a joined emoji.

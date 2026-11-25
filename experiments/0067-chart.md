@@ -60,7 +60,13 @@ A chart is a drawable of type 5021. Its data is kept in the chart itself, in fie
 
 A reader can draw the chart's data without any other record. The other fields of 10000 (type, grouping, axis and series styles) aren't decoded.
 
-Adding a chart created `Index/ObjectContainer.iwa`, whose object 61 (type 11008) is a fourth root. No other object refers to it, and it lists records that look like chart, axis and series styles (types 5023, 5025 and 5027, each three times for the three columns or series). So the roots of a document are objects 1, 2 and 71, plus 61 when `ObjectContainer.iwa` exists.
+Adding a chart created `Index/ObjectContainer.iwa`, whose object 61 (type 11008) is a fourth root. No other object refers to it, and it lists records that look like chart, axis and series styles (one of type 5023, one of 5025 and three of 5027; first written as three of each). So the roots of a document are objects 1, 2 and 71, plus 61 when `ObjectContainer.iwa` exists.
+
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `chart.key` | `0025/empty.key` | `records 5021: 0 → 1`, `5021 10000.7.1 = "r1"`, `5021 10000.7.3.1.1 = 6.0`, `part Index/ObjectContainer.iwa: absent → present` | *Likely*: a chart is type 5021 with its data in field 10000.7, and `ObjectContainer.iwa` holds a fourth root |
 
 ## Confidence
 

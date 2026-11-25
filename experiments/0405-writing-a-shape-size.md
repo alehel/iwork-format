@@ -45,6 +45,15 @@ swift recipes/0319-measure-pdf.swift $O/*.pdf
 
 A shape with a path is drawn at its path's natural size, 1.3.5.2: writing 200 there made the oval 200 wide, and Pages reports that width and wraps the body text around it (the text moved below the wider oval). The box's size in 1.1.1.2 isn't used for drawing: written alone it changed nothing. So the rule found for masks and lines holds for every shape with a path: place it by the box's position and rotation, size it by the path. Images, which have no path, take their size from the box. A writer should keep the two sizes equal, as Pages does.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `original.pages` | `0218/oval.pages` | `same bytes`, `2011#1732657 1.1.1.2.1 = 100.0`, `2011#1732657 1.3.5.2.1 = 100.0` | *Control*: the oval is 100 wide |
+| `box-200.pages` | `original.pages` | Only `2011#1732657 1.1.1.2.1: 100.0 → 200.0` | *Confirmed*: the box's width isn't used: drawn 100 wide |
+| `natural-200.pages` | `original.pages` | Only `2011#1732657 1.3.5.2.1: 100.0 → 200.0` | *Confirmed*: the path's natural width is: drawn 200 wide |
+| `both-200.pages` | `natural-200.pages` | Only `2011#1732657 1.1.1.2.1: 100.0 → 200.0` | *Confirmed*: no further change: drawn 200 wide |
+
 ## Confidence
 
 *Confirmed*: a shape's drawn size as its path's natural size, not its box's, by writing each.

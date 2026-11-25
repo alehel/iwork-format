@@ -39,6 +39,12 @@ The template slides hold the same Norwegian placeholder texts.
 
 A theme decides the template slides, their images and the slide size. The theme *Basic Black* in its *Standard* form gives 4:3 slides of 1024 × 768. The theme's identity is recorded as the template path in the root's document-properties block, and in `BuildVersionHistory.plist`. The parts and records are the same kinds as for the default theme. A reader needs the theme name only for display, since everything it draws from is in the file.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `theme.key` | `0025/empty.key` | `1 3.9: absent → "Application/20_BasicBlack/Standard"`, `part Metadata/BuildVersionHistory.plist ~ "Template: 20_BasicBlack"`, `2 4.1: 1920.0 → 1024.0`, `2 4.2: 1080.0 → 768.0` | *Likely*: the root names the theme, and its slide size is copied into the file |
+
 ## Confidence
 
 *Likely*: a presentation's theme is named in the root's template path, and its template slides, images and slide size are copied into the file.

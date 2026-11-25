@@ -42,6 +42,12 @@ Adjustments are stored twice:
 
 The original image is kept, so the adjustments can be undone. A reader that can't apply filters should draw the filtered copy named in field 15, which is what Pages shows. The other adjustments the sidebar can reveal are probably further fields of 14.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `adjusted.pages` | `0244/media-placeholder.pages` | `3005 14.1: absent → 0.3`, `3005 14.2: absent → -0.4`, `3005 15.1: absent → 26`, `part Data/red-8x4-filtered-26.jpeg: absent → present` | *Likely*: image field 14 holds the adjustments as fractions, and field 15 names a filtered copy |
+
 ## Confidence
 
 *Likely*:

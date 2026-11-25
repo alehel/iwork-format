@@ -38,6 +38,12 @@ The cell holds 8.
 
 The absolute flag (field 2) is kept separately for the column and the row. `$B2` has an absolute column (index 1, zigzag 2) and a relative row (offset 0). `B$2` has a relative column (offset −3, zigzag 5) and an absolute row (index 1, zigzag 2).
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `mixed.numbers` | `0064/functions.numbers` | `6005 3.5.1.1.26.1: absent → 2`, `6005 3.5.1.1.26.2: absent → 1`, `6005 3.5.1.1.27.1: absent → 2`, `6005 3.5.1.1.27.2: absent → 1` | *Likely*: the column and the row each have an absolute flag |
+
 ## Confidence
 
 *Likely*: column and row each carry their own absolute flag.

@@ -82,6 +82,13 @@ The set that a plain document uses is the one in field 25. The other two are pro
 
 A reader that wants the visible header of a simple document follows the body's field 17 to the section, then field 25 to a set, then field 1 to the three text records.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `header.pages` | `0002/hello.pages` | `2001#1732234 3: absent → "Head"`, `2001#1732492 3: absent → "foot"`, `10143#1732544 1.1 = 1732234`, `10143#1732544 2.1 = 1732492` | *Likely*: headers and footers are text records listed by a type-10143 set |
+| `header.pages` | | `10011 23.1 = 1732380`, `10011 24.1 = 1732482`, `10011 25.1 = 1732544` | *Likely*: the section names three sets, and a plain document uses the one in field 25 |
+
 ## Confidence
 
 *Likely*:

@@ -35,6 +35,17 @@ Every file, original and written, shows `One` and `mandag 9. november 2026`.
 
 Pages draws a date field's text as it is stored in the body, under the smart field's run, and doesn't recompute it from the type-2034 record when it opens or exports a document, even with a new date, pattern or locale, or with field 5, 6 or 7 set. The record holds the field's settings for when Pages next updates the field itself; to change what a date field shows, a writer has to write the text in the body too. Which setting makes Pages update the date on opening isn't one of fields 5 to 7.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `original.pages` | `0211/date.pages` | `same bytes` | *Control*: the page shows the stored date |
+| `date.pages` | `original.pages` | Only `2034#1732708 8.1: 815943303.3976 → 920289600.0` | *Likely*: a date field shows its stored body text; the page is unchanged |
+| `pattern.pages` | `date.pages` | Only `2034#1732708 2: "EEEE d. MMMM y" → "yyyy-MM-dd"`, `2034#1732708 3: "nb_NO" → "en_US"` | *Likely*: as above, with another pattern and locale |
+| `f5.pages` | `pattern.pages` | Only `2034#1732708 5: 0 → 1` | *Unknown*: what field 5 is; the page is unchanged |
+| `f6.pages` | `pattern.pages` | Only `2034#1732708 6: 0 → 1` | *Unknown*: what field 6 is; the page is unchanged |
+| `f7.pages` | `pattern.pages` | Only `2034#1732708 7: 0 → 1` | *Unknown*: what field 7 is; the page is unchanged |
+
 ## Confidence
 
 *Likely*: a date field shows its stored body text, not text made from its record.

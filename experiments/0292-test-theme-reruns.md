@@ -60,6 +60,16 @@ Apart from its photos, the test theme makes presentations that are structurally 
 
 A theme's photos can stay inside the app. Keynote then stores only a reduced copy and a path to the full image, and the six type-11014 colours are probably one per such photo. What the extra type-4009 lists mean, and why the test theme's tables have them, was *unknown* here; [0293](0293-calculation-owners.md) found they belong to the calculation engine's owners.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `empty-default.key` | | `11006 4.5 ~ "21_basicwhite/910457886_1434x1669"` | *Not used*: an empty presentation in Basic White, not named in the text |
+| `empty.key` | `empty-default.key` | `records 11014: 10 → 4`, `part Data/photo-a-9080.jpg: absent → present` | *Not used*: an empty presentation in the first version of the test theme, not named in the text |
+| `theme/0024/empty-a.key` | `0024/empty-a.key` | `records 4: 18 → 18`, `records 5: 18 → 18`, `records 11014: 10 → 4` | *Likely*: the same structure without the theme photos, except six type-11014 records |
+| `theme/0073/table.key` | `0073/table.key` | `records 6001: 1 → 1`, `records 4009: 3 → 5` | *Unknown*: why a table made with the test theme has more type-4009 lists |
+| `theme/0272/self-playing.key` | `0272/self-playing.key` | `2 9 = 1`, `2 10 = 5.0`, `2 11 = 2.0` | *Likely*: the same settings in both themes |
+
 ## Confidence
 
 *Likely*:

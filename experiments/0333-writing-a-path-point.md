@@ -37,6 +37,13 @@ A straight edge from (400, 300) to (350, 400) is at x = 397.5, 375 and 352.5 on 
 
 The path's points are drawn as written: the right edge now runs from the second point to the moved third one, a straight line because the control points sit on the point. The path's coordinates map onto the shape's box, here one to one, since the natural size and the box are both 100 × 100.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `original.pages` | `0217/editable.pages` | `same bytes` | *Control*: a straight right edge |
+| `moved.pages` | `original.pages` | Only `2011#1732647 1.3.8.1.1.1.1: changed`, `2011#1732647 1.3.8.1.1.2.1: changed`, `2011#1732647 1.3.8.1.1.3.1: changed`, `2011#1732647 1.3.8.1.1.2.1 = 50.0` | *Confirmed*: 1.3.8.1.1 holds the path's points; the right edge now slants to the moved one |
+
 ## Confidence
 
 *Confirmed*: editable path points 1.3.8.1.1, by writing one and measuring.

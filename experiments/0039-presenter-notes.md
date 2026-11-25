@@ -41,6 +41,12 @@ A slide's presenter notes are a text record, reached through the slide's field 2
 
 The notes text has field 1 = 4. That is a fourth value for field 1 of a text record ([0032](0032-reading-all-text.md)), alongside Pages' 0 (body) and 1 (header or footer). So field 1 seems to say what kind of text a record holds.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `notes.key` | `0025/empty.key` | `2001 3: absent → "notes here"`, `2001 1 = 4`, `5 27: ×1 → ×1`, `15 1: ×1 → ×1` | *Likely*: slide field 27 leads through a type-15 record to the notes text, which has field 1 = 4 |
+
 ## Confidence
 
 *Likely*:

@@ -56,6 +56,12 @@ To show the right header on a page, a reader has to:
 
 Whether a page is left or right depends on the document's facing-pages setting (field 34 of type 10012) and the page number. The first page of a document is a right-hand page.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `left-right.pages` | `0018/left-page-header.pages` | `10011 19: 0 → 1`, `2001#1732221 3: absent → "left"`, `2001#1732234 3: "left" → "Right"`, `10143#1732482 1.1 = 1732221` | *Likely*: section field 19 is *Left and right pages are different*, and the set in field 24 is for left pages |
+
 ## Confidence
 
 *Likely*:

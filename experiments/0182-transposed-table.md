@@ -40,6 +40,12 @@ So B2 is 1, C2 is 3 and B3 is 2: the values of C2 and B3 have swapped.
 
 Transposing rewrites the table. The row and column counts swap, and each cell is stored at its new place. Nothing records that the table was transposed, so a reader needs no special handling.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `transpose.numbers` | `0181/plain.numbers` | `6001 6: 22 → 7`, `6001 7: 7 → 22`, `6002 5.6 ~ x"0100000001000000 050200000000000001300000 03"`, `6002 5.6 = x"050200000000000001300000 0200000000000000000000000000 4030 0100000001000000"` | *Likely*: a transposed table is an ordinary table with its cells moved |
+
 ## Confidence
 
 *Likely*: a transposed table is stored as an ordinary table with its cells moved.

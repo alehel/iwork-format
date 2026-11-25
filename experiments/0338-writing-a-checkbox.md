@@ -35,6 +35,13 @@ The script finds B2 (row 1, column 1 from 0) and replaces the double after its p
 
 A boolean cell's value is the double after its prefix: 0.0 is false, and Numbers shows the checkbox unchecked. Nothing else in the cell or its control changes between the two.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `original.numbers` | `0036/formats.numbers` | `same bytes` | *Control*: B2 is true |
+| `unchecked.numbers` | `original.numbers` | Only `6002#904547 5.6: changed`, `6002#904547 5.6 ~ x"021404000000000000000000"` | *Confirmed*: a boolean cell holds a double, and 0.0 is false |
+
 ## Confidence
 
 *Confirmed*: boolean cell values, by writing one.

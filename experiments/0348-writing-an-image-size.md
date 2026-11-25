@@ -42,6 +42,15 @@ The extra half point is the pixel grid.
 
 The geometry's 1.1.2 decides the size an image is drawn at, scaling the image to fill it. The image's field 4 doesn't change the drawing; Pages keeps it equal to 1.1.2, so a writer should set both.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `original.pages` | `0023/image.pages` | `same bytes` | *Control*: the image is drawn 8 by 4 points |
+| `both.pages` | `original.pages` | Only `3005#1732647 1.1.2.1: 8.0 → 200.0`, `3005#1732647 1.1.2.2: 4.0 → 100.0`, `3005#1732647 4.1: 8.0 → 200.0`, `3005#1732647 4.2: 4.0 → 100.0` | *Confirmed*: the image is drawn 200 by 100 points |
+| `geometry-only.pages` | `original.pages` | Only `3005#1732647 1.1.2.1: 8.0 → 200.0`, `3005#1732647 1.1.2.2: 4.0 → 100.0` | *Confirmed*: 1.1.2 alone is the drawn size |
+| `field4-only.pages` | `original.pages` | Only `3005#1732647 4.1: 8.0 → 200.0`, `3005#1732647 4.2: 4.0 → 100.0` | *Unknown*: what field 4 is for; the image is drawn at its old size |
+
 ## Confidence
 
 *Confirmed*: 1.1.2 is the drawn size, by writing it and measuring.

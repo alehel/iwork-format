@@ -40,6 +40,12 @@ Record 1732137 is a type-10024 style in the stylesheet, named `dropcap-style-0`:
 
 Run table 28 holds drop caps. Each entry points at a type-10024 drop-cap style, or at nothing for no drop cap. The style's field 12.1.2 is the number of lines the letter spans (3). The number of characters (1) is probably field 12.1.1, counted from 0, or field 10. The other fields are probably spacing and the letter's padding. As with other styles, the stylesheet holds named defaults (`dropcap-style-0`), and a paragraph points at one.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `drop-cap.pages` | `0236/plain.pages` | `2001 28.1.2.1: absent → 1732137`, `10024#1732137 1.2 = "dropcap-style-0"`, `10024#1732137 12.1.2 = 3` | *Likely*: run table 28 names a drop-cap style with the number of lines in 12.1.2; Pages draws the letter three lines high |
+
 ## Confidence
 
 *Likely*: run table 28 holds drop caps, pointing at type-10024 styles whose field 12.1.2 is the number of lines.

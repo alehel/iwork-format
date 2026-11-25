@@ -50,6 +50,13 @@ Keynote 14.5 opens every presentation Keynote 15.4 saved in these experiments, a
 
 The radial wipe transition is new in 15.4. 14.5 keeps its identifier through a save, but doesn't know the effect: its AppleScript can't report it. How 14.5 plays such a slide wasn't tested. A writer that wants a presentation to play the same in 14.5 should avoid `apple:radial wipe`.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `all-copy.key` | `0196/all.key` | `same bytes` | *Control*: opened in 14.5, which can't report the effect of slide 38 |
+| `resaved.key` | `all-copy.key` | `11006#2 7: x"1a0400" → x"0e0401"`, `5 4.2.8.2 = "apple:radial wipe"` | *Likely*: 14.5 keeps the radial wipe identifier when it saves |
+
 ## Confidence
 
 *Confirmed*: Keynote 14.5 opens 323 presentations from 15.4 and from the spec's writer and reads the same slides, titles and notes. *Likely*: radial wipe is a 15.4 effect that 14.5 keeps but doesn't know.

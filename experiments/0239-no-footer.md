@@ -30,9 +30,17 @@ The type-10012 record changes:
 3: 1 → 0
 ```
 
+*Corrected 2026-11-25:* as with headers in [0238](0238-no-header.md), the nine footer text records are also replaced by new ones (type 10143 field 2).
+
 ## Conclusion
 
 Field 3 of the type-10012 document settings says whether footers are shown, next to field 2 for headers.
+
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `no-footer.pages` | `0236/plain.pages` | `10012 3: 1 → 0` | *Confirmed*, with 0238: field 3 of type 10012 shows footers |
 
 ## Confidence
 

@@ -37,6 +37,13 @@ Runs of brightness down the column, each about 19 points, one row:
 
 Table style property 11.1 = 1 shades every second body row, starting with the second, in a light grey from the style. The header row keeps its own colour.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `plain.numbers` | `0226/plain.numbers` | `same bytes` | *Control*: every body row is drawn white |
+| `alternating.numbers` | `plain.numbers` | Only `6003#905007 11.1: absent → 1` | *Confirmed*: 11.1 turns on alternating rows; every second body row is drawn grey |
+
 ## Confidence
 
 *Confirmed*: table style 11.1 turns on alternating rows, by writing it.

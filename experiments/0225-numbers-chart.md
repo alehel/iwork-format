@@ -55,6 +55,12 @@ Each formula uses the node form of cell formulas ([0035](0035-formula-references
 
 A Numbers chart links to its table through a type-12006 record named in 10000.8. That record holds one formula per series for its values (3.1), plus formulas for the category labels (3.3) and the series names (3.4), and the grouping (3.5, 2 here: series are columns). Node type 29 joins two references into a range, the `:` operator. Function 175 seems to be an internal function that wraps a chart's references; it isn't one users type. Field 10000.7 still holds a copy of the values, so a reader can draw the chart without evaluating the formulas.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `linked.numbers` | `0222/column.pages` | `records 12006: 0 → 1`, `5021 10000.8: absent → present`, `12006 3.1.1.1.1 = 29`, `12006 3.1.1.1.2 = 175` | *Likely*: a Numbers chart links to its cells through formulas in a type-12006 record, and node 29 is the range operator; function 175 is unknown |
+
 ## Confidence
 
 *Likely*:

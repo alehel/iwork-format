@@ -48,6 +48,15 @@ A line's length is its path's natural width (5.2.1). Its points are stretched to
 
 So, as for a mask, a reader should draw a line's path at its natural size, from the box's corner, and turn it with the box. A writer should keep the box's width and the natural width the same, as Pages does.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `original.pages` | `0051/line.pages` | `same bytes`, `2011#1732647 1.3.5.2.1 = 223.6068` | *Control*: 224 long |
+| `natural-100.pages` | `original.pages` | Only `2011#1732647 1.3.5.2.1: 223.6068 → 100.0` | *Confirmed*: the path's natural width is the line's length: 100 |
+| `natural-100-width-100.pages` | `natural-100.pages` | Only `2011#1732647 1.1.1.2.1: 223.6068 → 100.0` | *Confirmed*: the box's width moves the line but leaves its length |
+| `point-100.pages` | `original.pages` | Only `2011#1732647 1.3.5.3.1.2.1: 141.4214 → 100.0` | *Confirmed*: the points are stretched to the natural width: still 224 long |
+
 ## Confidence
 
 *Confirmed*: a line's length as its path's natural width, with its points stretched to fill it, by writing them.

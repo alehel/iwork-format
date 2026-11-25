@@ -45,6 +45,14 @@ done
 
 A highlighting rule's cell style gives matched cells their fill and its text style their text colour, as written; cells the rule doesn't match keep their own look. The fill is drawn in its colour without the style's alpha of 0.9 showing against white. A reader can draw highlighted cells by applying the rule's two styles over the cell's own.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `original.numbers` | `0259/highlight.numbers` | `same bytes` | *Control*: B4 is filled green, its digit dark |
+| `fill-blue.numbers` | `original.numbers` | Only `6004#905591 11.1.1.3: 0.6863 → 0.0`, `6004#905591 11.1.1.4: 0.8941 → 0.0`, `6004#905591 11.1.1.5: 0.5373 → 1.0`, `6004#905591 11.1.1.6: 0.9 → 1.0` | *Confirmed*: the rule's cell style gives matched cells their fill; B4 is blue |
+| `text-red.numbers` | `original.numbers` | Only `2022#905590 11.7.3: 0.0 → 1.0`, `2022#905590 11.46.1.3: 0.0 → 1.0` | *Confirmed*: the rule's text style gives them their text colour; B4's digit is red |
+
 ## Confidence
 
 *Confirmed*: the fill of a rule's cell style and the colour of its text style, by writing them.

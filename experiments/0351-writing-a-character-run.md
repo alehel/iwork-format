@@ -37,6 +37,14 @@ Saved again, the run table holds the same two entries.
 
 A run table entry applies its style from its position to the next entry, and an entry with no style means none. A writer can style part of a text by adding entries, without touching the text or the paragraph runs. A named character style that sets only bold makes the paragraph style's font bold.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `plain.pages` | `0002/hello.pages` | Only `2001#1732539 3: "hello" → "plain bold"` | *Control*: no word is bold |
+| `bold.pages` | `plain.pages` | Only `2001#1732539 8: ×0 → ×1`, `2001#1732539 8.1.1 = 6`, `2001#1732539 8.1.2.1 = 1731541` | *Confirmed*: table 8 holds the character style runs; the second word is bold |
+| `bold-resaved.pages` | `bold.pages` | `2001#1732539 8.1: ×2 → ×2`, `2001#1732539 8.1.1 = 6`, `2001#1732539 8.1.2.1 = 1731541` | *Likely*: Pages saves the two entries as written |
+
 ## Confidence
 
 *Confirmed*: character style runs (table 8), by writing them.

@@ -55,6 +55,12 @@ Field 1.11.4 of a shape style is its shadow:
 
 The angle is stored as 90 while the sidebar shows 270°. The two differ by 180°: the sidebar probably gives the direction the light comes from, and the file the direction the shadow falls. With y pointing down on the page, 90° puts the shadow 2 points below the shape.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `shadow.pages` | `0213/plain-shape.pages` | `2025 1.11.4.2: absent → 90.0`, `2025 1.11.4.3: absent → 2.0`, `2025 1.11.4.4: absent → 5`, `2025 1.11.4.5: absent → 0.5`, `2025 1.11.4.6: absent → 1` | *Likely*: field 1.11.4 is the shadow, with its angle, offset, blur, opacity and visibility; the direction of the angle is unknown |
+
 ## Confidence
 
 *Likely*: field 1.11.4 is the shadow, with colour, angle, offset, blur, opacity and visibility in fields 1–6.

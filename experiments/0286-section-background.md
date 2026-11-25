@@ -34,6 +34,12 @@ The only record that changes, apart from the creation time, is the section (type
 
 Section field 30 is the background of the section's pages, a fill in the layout of shape fills ([0077](0077-shape-fill.md)), here a colour in field 1. Since sections hold the background, each section of a document can have its own. A reader should paint each page with its section's field 30 before drawing anything else. The colour layout is the usual one: red, green and blue in 3–5 and alpha in 6.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `yellow-section.pages` | `0236/plain.pages` | `10011 30: absent → present`, `10011 30.1.3: absent → 1.0`, `10011 30.1.4: absent → 0.9425`, `10011 30.1.5: absent → 0.3386` | *Likely*: section field 30 is the page background; Pages shows the whole page yellow |
+
 ## Confidence
 
 *Likely*: section field 30 is the page background, as a fill.

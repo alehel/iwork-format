@@ -44,6 +44,15 @@ done
 
 With field 17 at 1, a section's pages use the previous section's headers and footers, and its own sets are kept but ignored, even when they hold text. With field 17 at 0, the section uses its own sets. A reader must follow field 17 back to the section whose sets are actually used.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `first-only.pages` | `0361/char-only-resaved.pages` | Only `2001#1732676 3: absent → "First header"`, `10011#1732682 17 = 1` | *Confirmed*: with field 17 at 1 the second section has the first's header |
+| `first-only-own.pages` | `first-only.pages` | Only `10011#1732682 17: 1 → 0` | *Confirmed*: with field 17 at 0 it has its own, which is empty |
+| `both.pages` | `first-only.pages` | Only `2001#1732698 3: absent → "Second header"` | *Confirmed*: with field 17 at 1 its own text is ignored |
+| `both-own.pages` | `both.pages` | Only `10011#1732682 17: 1 → 0` | *Confirmed*: with field 17 at 0 its own text is drawn |
+
 ## Confidence
 
 *Confirmed*: section field 17 as *same as previous section*, by writing it.

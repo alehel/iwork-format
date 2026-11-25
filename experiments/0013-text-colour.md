@@ -65,6 +65,14 @@ The stored components aren't the AppleScript values divided by 65535. Pure red c
 
 Field 11.46.1 repeated the same colour in every file. Its purpose is unknown.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `red.pages` | `0008/middle.pages` | `2021 11.1: 1 → absent`, `2021 11.7.3: absent → 1.0`, `2021 11.7.4: absent → 0.1491003`, `2021 11.7.5: absent → 0.0` | *Likely*: field 11.7 is the text colour, with red, green and blue in 7.3 to 7.5 |
+| `blue.pages` | `red.pages` | `2021 11.7.3: 1.0 → 0.0168419`, `2021 11.7.4: 0.1491003 → 0.1983415`, `2021 11.7.5: 0.0 → 1.0` | *Likely*: as above |
+| `mixed.pages` | `red.pages` | `2021 11.7.3: 1.0 → 0.5768957`, `2021 11.7.4: 0.1491003 → 0.3204115` | *Unknown*: the colour space, since the stored components aren't the AppleScript values divided by 65535 |
+
 ## Confidence
 
 *Likely*:

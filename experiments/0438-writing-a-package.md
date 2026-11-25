@@ -27,11 +27,17 @@ swift recipes/0384-pdf-colours.swift $O/image-package.pdf 291,400
 
 ## Observation
 
-The package holds `Index.zip` (the seven parts, 72,080 bytes, stored), `Data/red-8x4-24.png`, `Metadata/` with its three files, and the three previews. Pages opened it as `image-package.pages` without an alert, with the body `one`, the image `red-8x4.png`, and the image drawn red at its place.
+The package holds `Index.zip` (the seven parts, 72,080 bytes in all, stored; the file is 73,004), `Data/red-8x4-24.png`, `Metadata/` with its three files, and the three previews. Pages opened it as `image-package.pages` without an alert, with the body `one`, the image `red-8x4.png`, and the image drawn red at its place.
 
 ## Conclusion
 
 The folder form works as described: a writer can produce a package by moving the `Index/` entries into `Index.zip`, the data files into `Data/` and the rest into the folder, with nothing else to change. The parts' names inside `Index.zip`, `Metadata.iwa`'s lists and the data names are the same in both forms.
+
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `image-package.pages` | `0023/image.pages` | Only `part Index.zip: absent → present`, `same records`; a folder instead of a ZIP | *Confirmed*: the package layout; Pages opens it and draws the image |
 
 ## Confidence
 

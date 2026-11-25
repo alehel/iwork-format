@@ -48,6 +48,13 @@ In both written files Pages still shows one item on the page, the group.
 
 A member's position is an offset from the group's corner: moving the group moves both members with it, and the member written at 50, 60 is drawn at 300 + 50, 300 + 60. The group's size isn't taken from the file as written: after the member moved, Pages gave the group the box around its members, 150 × 160, though field 1.1.2 still said 250 × 100. A writer should still keep the group's box in step with its members.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `group-moved.pages` | `0216/group.pages` | Only `3008#1732829 1.1.1.1: 300.0 → 100.0`, `3008#1732829 1.1.1.2: 300.0 → 400.0` | *Confirmed*: moving the group moves both members with it |
+| `member.pages` | `0216/group.pages` | Only `2011#1732823 1.1.1.1.1: 150.0 → 50.0`, `2011#1732823 1.1.1.1.2: 0.0 → 60.0` | *Confirmed*: a member's position is an offset from the group's corner: Pages puts it at 350, 360 |
+
 ## Confidence
 
 *Confirmed*: a group's position, and its members' positions relative to it, by writing them.

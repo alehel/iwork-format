@@ -39,6 +39,12 @@ A shape style keeps its properties in field 1.11. That is one level deeper than 
 
 Choosing a preset points the shape at the preset's named style instead of making an unnamed copy. A reader finds a shape's fill by following its style (field 1.2) and, if needed, the style's parents.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `red-shape.pages` | `0050/shape.pages` | `2011 1.2.1: 1731553 → 1731556`, `2025#1731556 1.11.1.1.3 = 0.930`, `2025#1731556 1.11.1.1.4 = 0.134`, `2025#1731556 1.11.1.1.5 = 0.052` | *Likely*: shape style field 1.11.1.1 is the fill colour; Pages draws the shape red |
+
 ## Confidence
 
 *Likely*: shape style field 1.11.1.1 is the fill colour.

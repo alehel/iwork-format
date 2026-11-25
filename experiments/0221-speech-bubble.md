@@ -38,6 +38,12 @@ The outline is in field 1.3.6:
 
 Field 1.3.6 is a third parametric form, for callouts. Field 1 is the size of the bubble's box and field 3 most likely its corner radius (8). Fields 2 and 4 describe the tail. The point (0.8, 76.8) lies below the 64-point-high box, so field 2 is probably the tail's tip, and field 4 something like the tail's position or width. Field 5 is probably whether the tail is shown.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `bubble.pages` | `0220/arrow.pages` | `2011 1.3.3.1: 1 → absent`, `2011 1.3.6.1.1: absent → 130.0`, `2011 1.3.6.1.2: absent → 64.0`, `2011 1.3.6.3: absent → 8.0` | *Likely*: an outline in field 1.3.6 is a callout, with the box size in field 1 and the corner radius in field 3 |
+
 ## Confidence
 
 *Likely*: field 1.3.6 is a callout path, with the box size in field 1 and the corner radius in field 3.

@@ -30,6 +30,12 @@ Compared with 0067's chart grouped by row, field 10000.5 is **2** here and 1 the
 
 Field 10000.5 of a chart is how its data is grouped into series: 1 by row, 2 by column. The data grid is stored the same way either way, as rows of values with row and column names. So a reader builds the series from the grid's rows when 10000.5 is 1, and from its columns when it is 2.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `vertical_bar_2d-column.key` | `0067/chart.key` | `5021 10000.5: 1 → 2`, `5021 10000.1 = 1` | *Likely*: chart field 10000.5 is the grouping, 1 by row and 2 by column |
+
 ## Confidence
 
 *Likely*: chart field 10000.5 is the grouping, with 1 for row and 2 for column.

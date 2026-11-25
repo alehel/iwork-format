@@ -34,6 +34,13 @@ Grouped by row, the chart shows categories `a`, `b` and `c` with two series, `r1
 
 Field 10000.5 = 2 makes the grid's columns the series and its rows the categories. The data grid is untouched, as [0086](0086-chart-grouped-by-column.md) found.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `row.key` | `0297/baseline.key` | `same bytes` | *Control*: categories a, b and c with two series |
+| `column.key` | `row.key` | Only `5021#2655552 10000.5: 1 → 2` | *Confirmed*: 10000.5 is the grouping; Keynote draws categories r1 and r2 with three series |
+
 ## Confidence
 
 *Confirmed*: chart field 10000.5 is the grouping, by writing it.

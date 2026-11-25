@@ -91,6 +91,17 @@ Keynote's document is a chain:
 - the slide node points at the slide (type 5), which has its own part
 - the slide holds shapes (type 7), and a shape with text owns a type-2001 text record
 
+## Evidence
+
+No documents of its own: it reads samples of 0002, 0025 and 0026.
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `0002/hello.pages` | | `10000 30 = 595.28`, `10000 31 = 841.89`, `10000 36 = 35.43`, `10000 44 = "iso-a4"` | *Likely*: Pages' root holds the page setup |
+| `0002/hello.pages` | | `10000 15.3 = "nb"`, `10000 15.9 = "Application/Blank/ISO"` | *Likely*: all three roots embed the same block, in Pages in field 15 |
+| `0025/hello.key` | | `1 3.3 = "nb"`, `4 10.1 = 356.0`, `2001 3 = "hello"` | *Likely*: in Keynote the block is in field 3, and the root leads to the slide and its text |
+| `0026/cells.numbers` | | `1 8.3 = "nb"`, `1 8.9 = "Application/Blank/Traditional"`, `1 12.1 = 595.0` | *Likely*: in Numbers the block is in field 8 |
+
 ## Confidence
 
 *Likely*:

@@ -36,6 +36,12 @@ That is type 3 (text) with flags 0x21208: a string key (0x8) of 2, a formula key
 
 A text result is cached like a text cell: its value (`ab`) goes into the string table, and the cell holds that string's key next to the formula's key.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `join.numbers` | `0064/functions.numbers` | `6005 3.3: absent → "ab"`, `6005 3.5.1.1.6: absent → "a"`, `6002 5.6 ~ x"0503000000000000 08120200 02000000 01000000"` | *Likely*: a text result is kept in the string table |
+
 ## Confidence
 
 *Likely*: text results are cached through the string table.

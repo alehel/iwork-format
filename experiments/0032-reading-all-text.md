@@ -11,7 +11,7 @@ A check of the text layer against everything saved so far. `iwork-probe` gained 
 | Apps | Pages, Keynote and Numbers 15.4 (build `M15.4-7051.0.79-2`) |
 | macOS | 26.5.2 (25F84) |
 | Date | 2026-11-09 |
-| Documents | All 61 samples from experiments 0001–0031 |
+| Documents | The samples from experiments 0001–0031 (60 documents; first written as 61) |
 
 ## Recipe
 
@@ -38,7 +38,7 @@ Empty documents (0001) printed nothing.
 
 ### Numbers
 
-Every Numbers sample has one text record, in `Document.iwa`, with field 1 = 1 and the text U+FFFC alone. In `samples/0026/cells.numbers` it is object 904667. Header references lead to it from the root through the sheet: 1 (type 1) → 904532 (type 2, the sheet) → 904667 (type 2001).
+Every Numbers sample has one text record with text (others are empty; first written as one record), in `Document.iwa`, with field 1 = 1 and the text U+FFFC alone. In `samples/0026/cells.numbers` it is object 904667. Header references lead to it from the root through the sheet: 1 (type 1) → 904532 (type 2, the sheet) → 904667 (type 2001).
 
 Its field 9 has one entry, at position 0, like a Pages attachment run. But it points at object 904995, which isn't a type-2003 attachment. It is type 2043 with only these fields:
 
@@ -63,6 +63,10 @@ Field 1 of a text record doesn't mean the same thing in every app. In Pages, 0 i
 *Note after [0048](0048-page-number.md):* the type-2043 record is a page number field, with `decimal` as its number format. So the sheet's text holds a page number. What the Numbers sheet's text is for isn't clear. Its single U+FFFC has a field-9 entry like an anchored object's, but the entry points at a type-2043 record holding the word `decimal`, not at the table. So field 9 entries can point at more than one kind of record. The table is not anchored through this text.
 
 A Keynote theme's placeholder texts are stored in the template slides. Texts can contain U+00AD, so a reader that displays text should treat it as a soft hyphen.
+
+## Evidence
+
+No documents of its own: it reads the samples of 0001 to 0031.
 
 ## Confidence
 

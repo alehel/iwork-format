@@ -47,6 +47,12 @@ Pages has two ways of placing an object:
 
 Field 1.2 of a drawable's geometry block is therefore its parent text, when it has one. For an object on the page, the position in 1.1.1 is relative to the page. For an object in the text, it is probably filled in by Pages' layout and can't be relied on without laying out the text.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `table.pages` | `0020/table.pages` | `2001 3: "one\ufffc" → "one"`, `records 2003: 1 → 0`, `6000 1.2: ×1 → ×0` | *Likely*: a table on the page has no attachment and names no parent text |
+
 ## Confidence
 
 *Likely*:

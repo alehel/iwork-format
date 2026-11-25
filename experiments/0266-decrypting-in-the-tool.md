@@ -46,6 +46,19 @@ The only missing reference is root 61, which documents without a chart don't hav
 
 The reading of 0179 and 0180 is complete enough to rely on. Every part of every protected sample decrypts with valid padding and then frames, and all 3,875 objects are reachable, as in unprotected documents. With 0247, all 353 samples now pass the three checks. The password check in `.iwpv2` works as a reader needs it to: a wrong password is caught before any part is decrypted.
 
+## Evidence
+
+No documents of its own: it reads the six protected samples of 0179 and 0180, each with its password, and all their records are framed and reached.
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `0179/locked.pages` | `0179/plain.pages` | `part .iwpv2: absent → present`; read with the password, `2001 3 = "one"` | *Confirmed*, with 0179 and 0180: the tool decrypts it |
+| `0179/locked2.pages` | `0179/plain.pages` | `part .iwpv2: absent → present`; read with the password, `2001 3 = "one"` | *Confirmed*: as above |
+| `0180/accent.pages` | `0179/plain.pages` | `part .iwpv2: absent → present`; read with the password, `2001 3 = "one"` | *Confirmed*: as above, with a password that isn't ASCII |
+| `0180/image.pages` | `0179/plain.pages` | `part .iwpv2: absent → present`; read with the password, `2001 3 = "one"` | *Confirmed*: as above, with an image |
+| `0180/locked.key` | `0179/plain.pages` | `part .iwpv2: absent → present`; read with the password, `5 4.2.8.2 = "none"` | *Confirmed*: as above, in Keynote |
+| `0180/locked.numbers` | `0179/plain.pages` | `part .iwpv2: absent → present`; read with the password, `6001 8 = "Tabell 1"` | *Confirmed*: as above, in Numbers |
+
 ## Confidence
 
 *Confirmed*, with 0179 and 0180: the encryption scheme, now applied by `iwork-probe` to all six protected samples.

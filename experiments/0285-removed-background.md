@@ -40,6 +40,12 @@ The package still holds only `Data/square-24.png`, unchanged: 64 × 48 RGB with 
 
 Removing a background doesn't touch the image file. Pages stores an outline of the subject in the image's own pixel coordinates (field 10), turns it on with field 22, and adds a mask that crops the image to the subject's bounds. A reader can show the result by clipping the image to the field-10 path, scaled from the image's pixel size (field 9) to its drawn size, or at least by applying the mask. A reader that ignores both shows the original image with its background.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `no-background.pages` | `0284/adjusted.pages` | another image, with `3005 22: absent → 1`, `3005 10.1: ×0 → ×11`, `3005 10.1.2.2: absent → 36.0584`, `records 3006: 0 → 1` | *Likely*: image field 10 is the outline Remove Background leaves, and field 22 turns it on |
+
 ## Confidence
 
 *Likely*:

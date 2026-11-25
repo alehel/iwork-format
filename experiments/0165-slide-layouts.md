@@ -37,6 +37,12 @@ Each slide's field 17 names a different template slide, and each template slide 
 
 Keynote lists layouts in the order of their IDs here. The names in field 10 are in the language of the app, so a reader shouldn't rely on them to tell layouts apart. The new slides in [0162](0162-ten-slides.md) used `Tittel og punkttegn`.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `layouts.key` | `0046/blank-layout.key` | `2 3.2: ×1 → ×6`, `5 17.1: 2652157 → 2651742`, `5 17.1: absent → 2651768`, `5 10 = "Tittel og bilde"` | *Likely*: field 10 of a template slide is its layout's name, in the app's language |
+
 ## Confidence
 
 *Likely*: field 10 of a template slide is its layout name, in the app's language.

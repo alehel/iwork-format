@@ -41,6 +41,15 @@ Both written files store `Data/green-99.png`; `extra-listed.pages` also lists it
 
 Pages opens a document with data nothing uses, listed or not, and drops it when it saves: both the file and its entry are gone. What it keeps is what the records use, as listed in their headers' field 2.6 ([0397](0397-the-data-references-field.md)) and the template's resources. So a reader can ignore files no record names, and a writer doesn't need to tidy up after itself for Pages' sake.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `extra-listed.pages` | `0023/image.pages` | Only `part Data/green-99.png: absent → present`, `11006#2 4: ×5 → ×6` | *Confirmed*: Pages opens a document with data nothing uses, listed |
+| `extra-unlisted.pages` | `0023/image.pages` | Only `part Data/green-99.png: absent → present` | *Confirmed*: Pages opens a document with data nothing uses, not listed |
+| `extra-listed-saved.pages` | `extra-listed.pages` | `part Data/green-99.png: present → absent`, `11006#2 4: ×6 → ×5`, `11006#2 4.1 ≠ 99`, `part Data/red-8x4-24.png: same` | *Confirmed*: on saving, Pages drops the unused file and its entry |
+| `extra-unlisted-saved.pages` | `extra-unlisted.pages` | `part Data/green-99.png: present → absent`, `11006#2 4: ×5 → ×5`, `part Data/red-8x4-24.png: same` | *Confirmed*: on saving, Pages drops the unused file |
+
 ## Confidence
 
 *Confirmed*: Pages drops unused data files and their entries on saving, and opens documents that have them, by writing them.

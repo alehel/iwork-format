@@ -51,6 +51,16 @@ The image keeps its position and its size of 8 × 4 in every file.
 
 Pages finds a data file by the stored name in field 4 of its entry. The name needn't follow the `name-N.ext` pattern: `picture.png` works once the entry says so, and without it the image is drawn as a grey placeholder and Pages warns about the document. Field 3 is only the original name, which AppleScript reports as `file name`. The SHA-1 in field 2 isn't checked when opening: a file with other bytes is drawn as it is. A writer should still keep the SHA-1 right, since Pages uses it to store identical files once ([0142](0142-same-image-twice.md)).
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `original.pages` | `0023/image.pages` | `same bytes` | *Control*: the image is red |
+| `stored-renamed.pages` | `original.pages` | Only `part Data/red-8x4-24.png: present → absent`, `part Data/picture.png: absent → present` | *Confirmed*: renamed but not listed, the image is a grey placeholder and Pages warns |
+| `stored-renamed-listed.pages` | `stored-renamed.pages` | Only `11006#2 4.4: "red-8x4-24.png" → "picture.png"` | *Confirmed*: field 4 is the stored name: the image is red |
+| `original-name.pages` | `original.pages` | Only `11006#2 4.3: "red-8x4.png" → "holiday.png"` | *Confirmed*: field 3 is the original name, which AppleScript reports |
+| `replaced.pages` | `original.pages` | Only `part Data/red-8x4-24.png: changed` | *Likely*: the SHA-1 isn't checked: the image is green |
+
 ## Confidence
 
 *Confirmed*: field 4 of a data entry as the stored file name Pages uses, and field 3 as the original name, by writing them. *Likely*: the SHA-1 isn't checked on opening.

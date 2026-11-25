@@ -11,7 +11,7 @@ A document's ZIP entries are stored without ZIP compression ([0001](0001-empty-d
 | Pages | 15.4 |
 | macOS | 26.5.2 (25F84) |
 | Date | 2026-11-18 |
-| Input | `samples/0023/image.pages`: the body `one` and a red PNG, 91,240 bytes, all 13 entries stored |
+| Input | `samples/0023/image.pages`: the body `one` and a red PNG, 91,240 bytes, all 14 entries (first written as 13) stored |
 | Writer | The new [`recipes/0432-zip-compress.py`](../recipes/0432-zip-compress.py); opened with [`recipes/0372-in-app.sh`](../recipes/0372-in-app.sh) and read with [`recipes/0384-pdf-colours.swift`](../recipes/0384-pdf-colours.swift) |
 
 ## Recipe
@@ -42,6 +42,15 @@ No alert was shown.
 ## Conclusion
 
 Pages reads Deflate-compressed entries as well as stored ones, for the parts, the data files and everything else. It stores its own uncompressed, but a writer may compress: here that halved the file, since the `.iwa` parts' Snappy blocks and the previews compress further. A reader must handle both methods.
+
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `original.pages` | `0023/image.pages` | `same bytes` | *Control*: every entry is stored |
+| `deflate-iwa.pages` | `original.pages` | Only the .iwa parts deflated instead of stored: `same records`, `same parts` | *Confirmed*: Pages opens it and draws the image |
+| `deflate-data.pages` | `original.pages` | Only the data file deflated instead of stored: `same records`, `same parts` | *Confirmed*: Pages opens it and draws the image |
+| `deflate-all.pages` | `original.pages` | Only every entry deflated instead of stored: `same records`, `same parts` | *Confirmed*: Pages opens it and draws the image |
 
 ## Confidence
 

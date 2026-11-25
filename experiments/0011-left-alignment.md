@@ -39,6 +39,12 @@ Field 10 is 1 after two edits, so it doesn't count edits. In every unnamed style
 
 Undoing a change in the sidebar doesn't remove the unnamed style. Pages updated the existing one rather than adding a second.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `center-then-left.pages` | `0010/center.pages` | `2022 12.1: 2 → 0`, `records 2022: 243 → 243` | *Confirmed*: alignment 0 is left |
+
 ## Confidence
 
 *Confirmed*: field 12.1 is the alignment, with 1 right, 2 centred and 3 justified (0010), and 0 left (this experiment).

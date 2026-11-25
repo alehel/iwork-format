@@ -41,6 +41,12 @@ The type-10012 settings ([0236](0236-hyphenation.md)–[0240](0240-no-document-b
 
 Root field 40 is 1 while change tracking is turned on. The type-2062 record is the current editing session: the root names it in fields 16 and 17 (probably the session and the latest one), and new changes point at it. Rejecting an insertion removes the text and its change record, just as accepting a deletion does ([0268](0268-accepted-deletion.md)). Only the session remains. A reader can tell that a document is being tracked from field 40, even when it has no pending changes.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `rejected.pages` | `0236/plain.pages` | `2001 3 = "One"`, `records 2060: 0 → 0`, `records 2062: 0 → 1`, `10000 40: 0 → 1`, `10000 16: absent → present` | *Likely*: root field 40 turns change tracking on, and fields 16 and 17 name the editing session |
+
 ## Confidence
 
 *Likely*:

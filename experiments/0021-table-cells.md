@@ -75,6 +75,12 @@ Each cell starts with a version byte (5) and a type byte. The type byte was 2 fo
 
 The bytes after the type, `01 30 00 00` and `08 10 02 00`, look like flags saying which values follow. The words after the value (`01 00 00 00 01 00 00 00`, `05 00 00 00 02 00 00 00`) are probably keys into other data lists, such as styles and formats. They aren't decoded yet.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `cells.pages` | `0020/table.pages` | `6002 5.1: absent → 1`, `6002 5.1: absent → 2`, `6002 5.6 ~ x"2a000000000000000000000000004030"`, `6005 3.3: absent → "Abc"` | *Likely*: cells are kept per row in the tile, a number as a decimal128 and text as a key into a string table |
+
 ## Confidence
 
 *Likely*:

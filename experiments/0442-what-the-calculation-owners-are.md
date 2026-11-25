@@ -54,6 +54,15 @@ Owners 1, 20 and 8 are named by the type-6366 record, and owners 11 to 14 nowher
 
 Owners are the parts of a document that the calculation engine tracks, and most belong to tables: each table registers one owner for itself, named by its drawable's field 8 and by its filter's row list, one for its filter's rules, one for its categories, named by its drawable's field 7, and others named by its model's fields 84 and 93 and by a type-6316 record. A document-wide type-6366 record names one owner in every document, probably the document itself. Pivot formulas, highlighting rules and filter rules name owners too, where they refer to a table's parts. So owners are bookkeeping for recalculation: a reader can still skip them, and a writer that adds a table would have to register its owners.
 
+## Evidence
+
+No documents of its own: it searches 1,139 sample documents for the places that name their owners, and looks closely at one.
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `0106/mixed.numbers` | | `4008#905049 2 = 9`, `4008#905049 1 = x"08ece692bcecf3dfa5900110a1eb9bd897d094a56a"`, `6000 8 = x"08ece692bcecf3dfa5900110a1eb9bd897d094a56a"`, `6001 70.1 = x"08ece692bcecf3dfa5900110a1eb9bd897d094a56a"` | *Confirmed*: owner 9 is named by the table's drawable and its filter's row list; *likely*: it stands for the table |
+| `0106/mixed.numbers` | | `4008#905043 2 = 17`, `4008#905043 1 = x"08f0e692bcecf3dfa5900110a1eb9bd897d094a56a"`, `6000 7 = x"08f0e692bcecf3dfa5900110a1eb9bd897d094a56a"`, `6001 81.2.1 = x"08f0e692bcecf3dfa5900110a1eb9bd897d094a56a"` | *Confirmed*: owner 17 is named by the drawable and the categories; *likely*: it stands for the categories |
+
 ## Confidence
 
 *Confirmed*: where owners' UUIDs are named, across 1,139 documents. *Likely*: owners stand for a table, its filter, its categories and other table parts. What model fields 84 and 93, and records 6316, 6365, 6366 and 6373, are is *unknown*.

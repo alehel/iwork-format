@@ -54,6 +54,15 @@ The rule held for every word, and the samples exercise each of its parts:
 
 A Heading style can name a bold font (`HelveticaNeue-Bold`) and also set bold. So a reader should treat 11.5 as a font name that may already carry a weight.
 
+## Evidence
+
+No documents of its own: it reads eight samples of 0004, 0006, 0007 and 0008, and compares the prediction with what Pages reports for each word.
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `0008/unbold-middle.pages` | | `2022 11.1 = 1`, `2021 11.1 = 0` | *Likely*: Pages shows `two` regular, so a character style wins over the paragraph style |
+| `0006/heading-ui.pages` | | `2001#1732539 5.1.2.1 = 1731502`, `2022#1731502 11.1 = 1`, `2022#1731502 11.5 = "HelveticaNeue-Bold"` | *Likely*: Pages shows `two` in HelveticaNeue-Bold at 18 points, from the Heading style |
+
 ## Confidence
 
 *Likely*: the rule above, for bold, italic, size and font. It held for all 19 words in 8 documents. It hasn't yet been tested with a named character style, or with differing paragraph styles where a paragraph's entry has no style.

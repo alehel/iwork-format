@@ -75,6 +75,15 @@ Typing a paragraph in Pages may not give the same character as AppleScript does.
 
 `ViewState.iwa` record type 10131 seems to hold a paragraph count.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `one.pages` | | `2001 3 = "onetwo"` | *Control* |
+| `two-cr.pages` | `one.pages` | `2001 3: "onetwo" → "one\rtwo"`, `2001 5.1.1: absent → 4` | *Likely*: U+000D in the text starts a paragraph, with its own entry in field 5 |
+| `two-lf.pages` | `one.pages` | `2001 3: "onetwo" → "one\ntwo"`, `2001 5.1.1: absent → 4` | *Likely*: U+000A does the same, and is kept as given |
+| `three-cr.pages` | `one.pages` | `2001 3: "onetwo" → "one\rtwo\rthree"`, `2001 5.1.1: absent → 4`, `2001 5.1.1: absent → 8` | *Likely*: field 5 has one entry per paragraph, at its first character |
+
 ## Confidence
 
 *Likely*:

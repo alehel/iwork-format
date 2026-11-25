@@ -46,6 +46,14 @@ The body is given text so that its build shows. `no-build.key` drops the slide's
 
 Field 1.1 of a build names the object it moves: pointed at the body, the build hides the body until its stage and leaves the title in place from the start. Everything else about the build, its effect and its stage, stayed the same.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `body-text.key` | `theme/0257/build.key` | Only `2001#2655491 3: absent → "Body words"` | *Control*: the title waits for its stage |
+| `build-body.key` | `body-text.key` | Only `8#2655727 1.1: 2655477 → 2655492` | *Confirmed*: field 1 names the object a build moves; the body waits instead |
+| `no-build.key` | `body-text.key` | Only `5#2655467 2: ×1 → ×0`, `5#2655467 43: ×1 → ×0` | *Control*: the title and the body are shown at once |
+
 ## Confidence
 
 *Confirmed*: build field 1 as the object it animates, by writing it.

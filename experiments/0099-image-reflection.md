@@ -33,6 +33,12 @@ The recipe places the PNG of 0023 on slide 1, sets `reflection showing` to true 
 
 An image's reflection is field 11.4 of its image style. Its field 1 is the strength, 0.4 for 40 percent. A style without field 11.4 has no reflection, so the field's presence is the switch.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `reflection.key` | `0069/image.key` | `records 3016: 13 → 14`, `3016 11.4.1: absent → 0.4` | *Likely*: image style field 11.4 is the reflection, with its strength in 11.4.1 |
+
 ## Confidence
 
 *Likely*: image style field 11.4 is the reflection, with its strength in 11.4.1.

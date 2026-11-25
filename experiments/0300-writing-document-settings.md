@@ -39,6 +39,15 @@ Both apps opened the written files without a warning, and the files saved again 
 
 The three readings hold from the writing side: field 34 of Pages' type-10012 record turns on facing pages, and fields 8 and 18 of Keynote's presentation record make the slideshow loop and play on opening. A writer only needs to set the field; nothing else in the file depends on it.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `facing.pages` | `0002/hello.pages` | Only `10012#1732614 34: 0 → 1` | *Confirmed*: type-10012 field 34 is Facing Pages; Pages reports it on |
+| `loop-play.key` | `theme/0025/hello.key` | Only `2#2652410 8: 0 → 1`, `2#2652410 18: 0 → 1` | *Confirmed*: presentation fields 8 and 18 are Loop Slideshow and Play Automatically; Keynote reports both on |
+| `facing-resaved.pages` | `facing.pages` | `10012#1732614 34 = 1` | *Likely*: Pages keeps it when it saves |
+| `loop-play-resaved.key` | `loop-play.key` | `2#2652410 8 = 1`, `2#2652410 18 = 1` | *Likely*: Keynote keeps both when it saves |
+
 ## Confidence
 
 *Confirmed*: type-10012 field 34 is Facing Pages; presentation fields 8 and 18 are Loop Slideshow and Play Automatically.

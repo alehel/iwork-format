@@ -34,6 +34,13 @@ The original draws vertical bars up to 6. The written file draws horizontal bars
 
 The chart's data grid and type work as read. Each value is a message whose field 1 is a double, rows run in 7.3 order and columns in each row's field order, and Keynote draws from the grid as written, scaling the axis to the data. Type 2 is a horizontal bar chart.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `original.key` | `0297/baseline.key` | `same bytes` | *Control*: vertical bars up to 6 |
+| `written.key` | `original.key` | Only `5021#2655552 10000.1: 1 → 2`, `5021#2655552 10000.7.3.1.1: 6.0 → 12.0` | *Confirmed*: a chart's values and type; Keynote draws horizontal bars, the longest at 12 |
+
 ## Confidence
 
 *Confirmed*: chart values in 10000.7.3 and the chart type in 10000.1, by writing them.

@@ -42,6 +42,15 @@ Left and right ends of the first three lines, in points; the text area runs from
 
 12.7 indents the first line and 12.11 every other line, each measured from the margin on its own, not one from the other: with only 12.11 set, the first line stays at the margin. So a reader must apply 12.7 to the first line and 12.11 to the rest, and Pages' Left setting presumably writes both. 12.19 moves the right edge in by its value: lines now wrap before 538.59 − 72 = 466.59.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `long.pages` | `0002/hello.pages` | Only `2001#1732539 3: changed`, `2001#1732539 3 ~ "measure measure measure"` | *Control*: a paragraph that wraps, with no indents |
+| `left72.pages` | `long.pages` | Only `2022#1731511 12.11: 0.0 → 72.0` | *Confirmed*: 12.11 indents every line but the first |
+| `first36.pages` | `long.pages` | Only `2022#1731511 12.7: 0.0 → 36.0` | *Confirmed*: 12.7 indents the first line only |
+| `right72.pages` | `long.pages` | Only `2022#1731511 12.19: 0.0 → 72.0` | *Confirmed*: 12.19 moves the right edge in |
+
 ## Confidence
 
 *Confirmed*: 12.7, 12.11 and 12.19, by writing them and measuring; 12.7 and 12.11 are independent, both from the margin.

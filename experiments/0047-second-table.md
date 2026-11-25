@@ -39,6 +39,12 @@ A Numbers sheet lists its drawables, such as tables, in its repeated field 2, in
 
 A new table made through AppleScript has 10 rows and 5 columns. The spreadsheet's first table has 22 rows and 7 columns.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `two-tables.numbers` | `0024/empty-a.numbers` | `2 2: ×1 → ×2`, `records 6000: 1 → 2`, `6001 8: absent → "Second"`, `2001 3: ×1 → ×1` | *Likely*: sheet field 2 lists the drawables, and tables aren't anchored in the sheet's text |
+
 ## Confidence
 
 *Likely*:

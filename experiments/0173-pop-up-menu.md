@@ -30,6 +30,12 @@ Numbers accepted the script, but read the cell back with the format `text` and t
 
 Setting the pop-up menu format through AppleScript didn't take, probably because a pop-up menu needs a list of choices that the script can't give. This experiment found nothing about pop-up menus. Making one will need Numbers' own interface.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `popup.numbers` | `0036/formats.numbers` | `6002 5.6 = x"050300000000800008100200020000000500000001000000"`, `6005 3.6.1 = 260`, `6005 3.3: "042" → "x"`, `6005 3.12: ×2 → ×0` | *Unknown*: how a pop-up menu is stored; Numbers kept the cell as text |
+
 ## Confidence
 
 *Unknown*: how a pop-up menu is stored.

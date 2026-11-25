@@ -38,6 +38,15 @@ Numbers opened each file on its own, read B2 through AppleScript, and exported t
 
 Field 4 of a number format is its negative style, Numbers' four choices: 0 a minus sign, 1 red without a sign, 2 in parentheses, 3 red in parentheses.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `neg0.numbers` | `0342/negative.numbers` | `same bytes` | *Confirmed*: 0 is a minus sign |
+| `neg1.numbers` | `0342/negative.numbers` | Only `6005#904541 3.6.4: 0 → 1` | *Confirmed*: 1 is red without a sign |
+| `neg2.numbers` | `0342/negative.numbers` | Only `6005#904541 3.6.4: 0 → 2` | *Confirmed*: 2 is in parentheses |
+| `neg3.numbers` | `0342/negative.numbers` | Only `6005#904541 3.6.4: 0 → 3` | *Confirmed*: 3 is red in parentheses |
+
 ## Confidence
 
 *Confirmed*: the four negative styles, by writing them.

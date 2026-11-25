@@ -39,6 +39,14 @@ In `resaved.key`, the second slide node still has field 4 = 1 and the first 0.
 
 Field 4 of a slide node is the slide's skipped flag: written as 1, it makes Keynote treat the slide as skipped, which AppleScript reports with the slide number −1, and Keynote keeps it when saving. A slide that isn't skipped has the field as 0, not absent.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `two-slides.key` | `theme/0038/two-slides.key` | `same bytes` | *Control*: Keynote reports no skipped slide |
+| `second-skipped.key` | `two-slides.key` | Only `4#2655609 4: 0 → 1` | *Confirmed*: slide node field 4 skips the slide; Keynote reports it as skipped, with number −1 |
+| `resaved.key` | `two-slides.key` | `4#2655609 4: 0 → 1`, `4#2655505 4 = 0` | *Likely*: Keynote keeps the flag when it saves |
+
 ## Confidence
 
 *Confirmed*: slide node field 4 = 1 skips the slide.

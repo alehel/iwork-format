@@ -28,6 +28,12 @@ The image record (type 3005, 1732647) has `a red box` in field 1.8, next to 1.5 
 
 Pages and Keynote store an image's description in the same place, field 1.8 of the drawable block. A reader can use it as alternative text in either app's documents.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `described.pages` | `0023/image.pages` | `3005 1.8: absent → "a red box"` | *Confirmed*: field 1.8 is an image's description in Pages too |
+
 ## Confidence
 
 *Confirmed*: field 1.8 is an image's description ([0102](0102-image-description.md) and this experiment).

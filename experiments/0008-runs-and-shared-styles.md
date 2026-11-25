@@ -93,6 +93,14 @@ A property turned off is stored explicitly: `11.1 = 0` means "not bold". That's 
 
 So to find a character's bold setting, a reader has to look at the character style first, then the paragraph style, then each style's parents. The first one that sets 11.1 wins.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `middle.pages` | `0007/bold.pages` | `2001 3: "hello world" → "one two three"`, `2001 8.1.1: 6 → 4`, `2001 8.1.1: absent → 7` | *Likely*: an entry without a style closes a run before the end of the text |
+| `two-words.pages` | `middle.pages` | `2001 8.1.1: absent → 3`, `2001 8.1.1: absent → 8`, `2001 8.1.2.1: ×1 → ×2`, `records 2021: 9 → 9` | *Likely*: two ranges with the same formatting share one style |
+| `unbold-middle.pages` | `0004/plain.pages` | `records 2022: 242 → 243`, `2022 11.1: absent → 1`, `records 2021: 8 → 9`, `2021 11.1: absent → 0` | *Likely*: formatting of a whole paragraph makes a paragraph style, and an explicit 0 turns bold off |
+
 ## Confidence
 
 *Likely*:

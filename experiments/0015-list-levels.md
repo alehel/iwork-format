@@ -46,6 +46,12 @@ Field 6 of record 2001 is a run table of list levels, with entries starting at p
 
 Unlike the other run tables, field 6's entries carry a number in field 2, not a reference to an object.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `nested-list.pages` | `0014/dash-list.pages` | `2001 6.1.1: absent → 4`, `2001 6.1.2: absent → 1` | *Likely*: field 6 holds list-level runs, with the level in field 2 |
+
 ## Confidence
 
 *Likely*: field 6 holds list-level runs, with the level in field 2.

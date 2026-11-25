@@ -45,6 +45,12 @@ A merge is recorded in the table model, not in the cells. Field 47.2 holds the m
 
 The range node differs from the one in `=SUM(B2:C3)`. It has a field 28, like the four 32-bit parts of a UUID, probably naming the table, and a field 33 of four 1s, probably the absolute flags of the range's four edges. Its field 40 uses parts 3 and 4 instead of 1 and 2. Field 40.4 = {1, 2} fits columns 1 to 2 (B to C) as absolute indices. Field 40.3 = {1: 2}, with no field 2, doesn't obviously fit rows 1 to 2, so how this form encodes rows is open. The expression also ends with the node `16, 168, 1`, which in 0035 belonged to `SUM`, so 168 may not mean SUM in particular.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `merged.numbers` | `0024/empty-a.numbers` | `6001 47.2.2: 0 → 1`, `6001 47.2.3.2.1.1.1: absent → 67`, `6002 5.2: absent → 1`, `6002 5.1: ×0 → ×1` | *Likely*: merges are in field 47.2 of the table model as formula nodes, and only the top-left cell is stored |
+
 ## Confidence
 
 *Likely*:

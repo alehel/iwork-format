@@ -39,6 +39,13 @@ Neither shape has a 1.3.5 path. Each has field 1.3.4 instead:
 
 Field 1.3.4 is a parametric path: a kind of shape in 4.1, one number in 4.2, and the natural size in 4.3. Kind 0 is a rounded rectangle with the corner radius in 4.2, and kind 1 a regular polygon with the number of sides in 4.2. A reader has to draw the shape from these values, as no path points are stored. Field 4.4 is probably whether the corners are drawn as smooth curves: 1 for the rounded rectangle, 0 for the polygon's sharp corners.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `rounded.pages` | `0218/oval.pages` | `2011 1.3.5: ×1 → ×0`, `2011 1.3.4.1: absent → 0`, `2011 1.3.4.2: absent → 15.0` | *Likely*: kind 0 of the parametric path is a rounded rectangle, with its radius |
+| `polygon.pages` | `0218/oval.pages` | `2011 1.3.5: ×1 → ×0`, `2011 1.3.4.1: absent → 1`, `2011 1.3.4.2: absent → 5.0` | *Likely*: kind 1 is a polygon, with its number of sides |
+
 ## Confidence
 
 *Likely*: 1.3.4 is a parametric path, with kinds 0 (rounded rectangle, radius) and 1 (polygon, sides).

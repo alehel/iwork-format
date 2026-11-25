@@ -33,6 +33,13 @@ The stroke (property 32) is the same in all three.
 
 Property 45 is a bit set of edges: 1 top and 2 bottom. The value 15 for all four edges means 4 and 8 are the left and right edges, in an order not yet tested. Property 15 is a single choice rather than a bit set: 1 top, 2 bottom, 4 all edges. It is probably an older setting that Pages still writes alongside 45 for older readers. A reader should use property 45 and fall back on 15.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `bottom-border.pages` | `0262/border.pages` | `2022 12.15: 1 → 2`, `2022 12.45: 1 → 2` | *Likely*: 2 is the bottom edge |
+| `all-edges.pages` | `0262/border.pages` | `2022 12.15: 1 → 4`, `2022 12.45: 1 → 15` | *Likely*: property 45 holds the edges as bits, and 15 a single choice |
+
 ## Confidence
 
 *Likely*:

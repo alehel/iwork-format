@@ -44,6 +44,15 @@ done
 
 Field 1 is what decides whether Pages treats a document as word processing or page layout: written 0, it reports no document body and no body text, and written 1 into a page-layout document, a body, empty. But it doesn't hide the body's text: the written page-layout document still draws `hello` where the body was. When Pages itself turns the body off, it also empties the body's text, so the two agree. A reader should go by field 1 for what kind of document it is, and still draw whatever text the body storage holds, which in a document Pages saved is nothing.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `original.pages` | `0002/hello.pages` | `same bytes`, `10012#1732614 1 = 1` | *Control*: `document body` is true |
+| `no-body.pages` | `original.pages` | Only `10012#1732614 1: 1 → 0` | *Confirmed*: field 1 is the document body switch, reported false; *likely*: the body's text is still drawn |
+| `pages-no-body.pages` | `0240/no-document-body.pages` | `same bytes`, `10012 1 = 0` | *Control*: a page-layout document Pages made |
+| `pages-no-body-on.pages` | `pages-no-body.pages` | Only `10012#1732614 1: 0 → 1` | *Confirmed*: Pages reports a body, empty |
+
 ## Confidence
 
 *Confirmed*: type-10012 field 1 as the document body switch, by writing it both ways. *Likely*: a body's text is drawn even with the switch off.

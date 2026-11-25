@@ -58,6 +58,10 @@ The 16.0 apps draw every document written or saved by 15.4 in these experiments 
 
 With [0469](0469-the-16-0-apps.md) and [0470](0470-opening-15-4-samples-in-16-0.md), the 16.0 apps write, read and draw the format as 15.4 did. The spec holds for 16.0 as written, with the release marks noting its few differences.
 
+## Evidence
+
+No documents of its own: it draws the samples of earlier experiments in 16.0 and compares the drawings.
+
 ## Confidence
 
 *Confirmed*: 16.0 draws 396 documents written or saved by 15.4 exactly as 15.4 did; the other three differ for reasons that have nothing to do with the release.

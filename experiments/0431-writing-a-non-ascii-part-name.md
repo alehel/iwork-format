@@ -44,6 +44,14 @@ With the flag clear, Python decodes the same bytes as code page 437, as the ZIP 
 
 Pages reads ZIP entry names as UTF-8 whether or not the flag is set: it found `blåbær.png` both ways, matching the name in `Metadata.iwa`, which is UTF-8 text. A reader that follows the ZIP specification strictly would get the wrong name when the flag is clear, as Pages leaves it, so it should decode names as UTF-8 regardless, as the spec says.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `original.pages` | `0023/image.pages` | `same bytes` | *Control*: the image is drawn |
+| `blabaer-flag-set.pages` | `original.pages` | Only `11006#2 4.4: "red-8x4-24.png" → "blåbær.png"`, `part Data/red-8x4-24.png: present → absent`, `part Data/blåbær.png: absent → present` | *Confirmed*: Pages finds the image by its UTF-8 name with the flag set |
+| `blabaer-flag-clear.pages` | `blabaer-flag-set.pages` | Only the UTF-8 flag cleared: `same records`, `same parts` | *Confirmed*: Pages reads the name as UTF-8 with the flag clear too |
+
 ## Confidence
 
 *Confirmed*: Pages reads ZIP entry names as UTF-8 with or without the UTF-8 flag, by writing one.

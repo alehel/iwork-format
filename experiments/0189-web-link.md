@@ -42,6 +42,12 @@ The body text (type 2001) gains two run tables, each with one entry at position 
 
 A link is a smart field of type 2032, held in the same run table (field 11) as the placeholder, date and merge fields of [0158](0158-essay-template.md). Its field 2 is the address and field 1 a UUID. The run covers the linked text. The link's look comes separately, from the built-in character style `character-style-hyperlink`. A reader finds links by the type-2032 entries in field 11.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `link.pages` | `0179/plain.pages` | `records 2032: 0 → 1`, `2032 2: absent → "http://www.apple.com/no"`, `2001 11.1.1: absent → 0`, `2001 8.1.1: absent → 0` | *Likely*: a link is a type-2032 smart field in run table 11, with the address in field 2 |
+
 ## Confidence
 
 *Likely*: a link is a type-2032 smart field with the address in field 2, run over the linked text in field 11.

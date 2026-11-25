@@ -28,6 +28,13 @@ The character-style runs are as for one formatted word: none from 0, style 17326
 
 Two properties on the same range go into one character style. As [0010](0010-alignment.md) found, field 10 matched the number of properties set: 1 for the one-property styles of 0013 and 0149, and 2 here, not counting 11.46. Body's 57 doesn't match exactly, as it sets 59 fields in 11 and 12.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `sizecolour.pages` | `0013/red.pages` | `records 2021: 9 → 9`, `2021 11.3: absent → 20.0`, `2021 11.7.4 = 0.1491` | *Likely*: a size and a colour on one range share a character style |
+| `sizecolour.pages` | `0013/red.pages` | `2021 10: absent → 2` | *Unknown*: what field 10 counts; it is 2 with two properties |
+
 ## Confidence
 
 *Likely*: formatting on one range goes into one character style.

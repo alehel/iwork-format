@@ -39,6 +39,14 @@ No alert was shown.
 
 Pages joins a part's chunks before reading it, whatever their size: with 1,000-byte chunks nearly every record is cut across two chunks, and the stylesheet in a single chunk of 338,982 bytes reads as well as in six. The 65,536-byte split is how Pages writes, not something it requires. A reader shouldn't assume a limit on a chunk's decoded size beyond what the 3-byte length allows for the stored block.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `chunks-1000.pages` | `0002/hello.pages` | Only chunks of 1,000 bytes: `same records`, `same parts` | *Confirmed*: Pages reads chunks smaller than 65,536 bytes |
+| `chunks-65536.pages` | `0002/hello.pages` | Only written again in chunks of 65,536 bytes: `same records`, `same parts` | *Control*: Pages opens it |
+| `chunks-1000000.pages` | `0002/hello.pages` | Only one chunk per part, up to 338,982 bytes: `same records`, `same parts` | *Confirmed*: Pages reads a chunk larger than 65,536 bytes |
+
 ## Confidence
 
 *Confirmed*: Pages reads chunks of any decoded size, smaller or larger than 65,536 bytes, by writing them.

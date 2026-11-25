@@ -110,6 +110,14 @@ A formula cell keeps its last result as a value (84) next to the key of its form
 
 AppleScript's `true` became the number 1. A real checkbox cell will need the Numbers window.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `kinds.numbers` | `0026/cells.numbers` | `6002 5.6 ~ x"05050000000000000490000000000060f583c741"`, `6002 5.6 ~ x"050a00000000000001520000"`, `6002 5.6 ~ x"19000000000000000000000000003c30"` | *Likely*: the cell layout and flag bits, with a date as a double, a formula key and a percentage as a fraction |
+| `kinds.numbers` | `0026/cells.numbers` | `6005 3.6.1: absent → 257`, `6005 3.6.3: absent → "NOK"`, `6005 3.6.1: absent → 258`, `6005 3.6.14: absent → "dd.MM.y HH:mm"` | *Likely*: the format list, with a kind in field 1 of each entry |
+| `kinds.numbers` | `0026/cells.numbers` | `6005 3.5.1.1.1: absent → 36`, `6005 3.5.1.1.1: absent → 17`, `6005 3.5.1.1.4: absent → 2.0`, `6005 3.5.1.1.1: absent → 3` | *Likely*: the formula `=B2*2` is a list of postfix nodes |
+
 ## Confidence
 
 *Likely*:

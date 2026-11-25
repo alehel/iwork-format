@@ -38,6 +38,12 @@ The body text (type 2001) gains a run table in field 15, with one entry at posit
 
 A bookmark is a type-2035 record, applied to the bookmarked text through its own run table, field 15. It doesn't use the smart-field table (field 11) that links use. Its field 1 holds a UUID, by which links point at it ([0192](0192-link-to-bookmark.md)). The record stores no name: the Bookmarks list in Pages probably shows the bookmarked text.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `bookmark.pages` | `0179/plain.pages` | `records 2035: 0 → 1`, `2035 1.1: absent → "505D17DE-1387-40A4-B6C8-7E342FB98A7C"`, `2001 15.1.1: absent → 0` | *Likely*: a bookmark is a type-2035 record in run table 15, with a UUID in field 1.1 |
+
 ## Confidence
 
 *Likely*: a bookmark is a type-2035 record in run table 15, identified by the UUID in field 1.1.

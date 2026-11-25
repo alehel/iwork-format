@@ -46,6 +46,10 @@ The only listed ID that didn't exist was root 61, in the documents without a cha
 
 Everything the spec says about the container holds for every document saved so far, from all three apps and in both the ZIP and folder forms: chunk framing, record headers, reference lists, the four roots, data files and UTF-8 entry names. No part or object is left that a reader following the spec couldn't reach.
 
+## Evidence
+
+No documents of its own: it checks every sample saved before it, 0001 to 0177.
+
 ## Confidence
 
 *Confirmed*: the container layer ([container.md](../spec/container.md)) holds for all 203 samples.

@@ -36,6 +36,12 @@ The body text record (1732539) loses its text: field 3 is gone. The root (type 1
 
 Field 1 of the type-10012 document settings says whether the document has a body: 1 for word processing, 0 for page layout. Converting a document only clears the body and adds the page template, so the result looks like a document made from a page-layout template. A reader can tell the two kinds apart by this field as well as by root field 48.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `no-document-body.pages` | `0236/plain.pages` | `10012 1: 1 → 0`, `2001 3: "One" → absent`, `10000 48: absent → present`, `records 10017: 0 → 1` | *Likely*: field 1 of type 10012 is 0 for page layout; root field 48 and the empty body are confirmed, with 0156 |
+
 ## Confidence
 
 *Confirmed*, with 0156: a page-layout document has root field 48 and an empty body.

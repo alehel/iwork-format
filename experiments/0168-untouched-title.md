@@ -28,6 +28,12 @@ The slide's title record holds no text. The number of records of each type in ea
 
 An empty placeholder has an empty text record on the slide. The prompt text belongs to the layout, so a reader showing the slide as it would print can leave the title empty.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `untouched.key` | `0024/empty-a.key` | `records 2001: 83 → 83`, `2001 3: ×35 → ×35`, `2001 3 = "Present\u00adasjons\u00adtittel"` | *Likely*: the prompt is only in the layout; the slide's title holds no text |
+
 ## Confidence
 
 *Likely*: placeholder prompts are stored only in the layout.

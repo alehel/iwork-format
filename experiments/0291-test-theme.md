@@ -46,6 +46,8 @@ The recipe sets each image's `file name` to its card, which AppleScript allows o
 
 **The theme file.** The saved theme is a `.kth` file in `~/Library/Containers/com.apple.Keynote/Data/Library/Application Support/User Templates/`, named by a UUID. It is a ZIP laid out like a `.key`: the same `Index/`, `Metadata/` and `Data/` parts and previews. Its 30 data files are the six cards, their reduced copies, 17 master thumbnails and one slide thumbnail. None of its parts contains the theme's name. Keynote took the name from the presentation's file name. It probably keeps the names with its themes in iCloud: a theme added and then removed from that folder stayed in Keynote's theme list.
 
+*Corrected 2026-11-25:* there are 16 master thumbnails, not 17, since the blank master shares the slide's, and the theme holds 29 data files. How many were redrawn differs between versions: 12 in the first, full-size one, 2 in `test-theme.key` and 5 in `iwork-format test v2.key`.
+
 ## Conclusion
 
 A theme with the project's own images can be built from Basic White by script, except for the final Save Theme. A master's image can be swapped with AppleScript's `file name`. Its master thumbnail, though, is redrawn only once the master is shown, so a builder must use every master on a slide before saving.
@@ -53,6 +55,16 @@ A theme with the project's own images can be built from Basic White by script, e
 A `.kth` theme is a Keynote document in the same container format, with a different extension. Two data findings from Pages carry over to Keynote: identical files are stored once ([0142](0142-same-image-twice.md)), and large images get a reduced `-small` copy ([0148](0148-large-image.md)), here at most 256 pixels on the longer side.
 
 The theme is in the repository as `theme/iwork-format test.kth`, with its cards in `theme/cards/`. How best to install it on another Mac isn't tested yet.
+
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `test-theme.key` | `0292/empty-default.key` | `part Data/910457886_1434x1669*: present → absent`, `part Data/photo-a-9079.jpg: absent → present`, `part Data/photo-a-small-9080.jpeg: absent → present`, `part Data/mt-828461DD*: same` | *Likely*: Keynote stores a reduced copy of each card, and redraws a master thumbnail only when the master is shown |
+| `iwork-format test v2.key` | `test-theme.key` | `part Data/mt-0AFEF83F*: changed`, `part Data/mt-52E8AC51*: changed`, `part Data/mt-828461DD*: changed` | *Likely*: saving again with the masters on slides redraws more thumbnails |
+| `regen.key` | `iwork-format test v2.key` | `part Data/*: same` | *Not used*: a step in building or testing the theme, with the smaller cards |
+| `theme-source.key` | `test-theme.key` | `part Data/photo-f-9076.jpg: changed` | *Not used*: the first version, with the cards at full size |
+| `iwork-format test.key` | `theme-source.key` | `part Data/*: same` | *Not used*: a step in building or testing the first version |
 
 ## Confidence
 

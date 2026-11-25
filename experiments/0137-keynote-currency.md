@@ -36,6 +36,12 @@ They are identical to Numbers' currency cell in 0031. The format list has an ent
 
 Keynote stores a currency cell like Numbers: type 10, flags 0x5001 and a format-list entry of kind 257. Its bytes 6–7 are `02 08`, as in Numbers.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `currency.key` | `0031/kinds.numbers` | `6002 5.6 ~ x"050a000000000208015000002a0000000000000000000000000040300200000002000000"`, `6005 3.6.1 = 257`, `6005 3.6.3 = "NOK"` | *Confirmed*: a currency cell is type 10 with a format of kind 257, as in Numbers |
+
 ## Confidence
 
 *Confirmed*: currency cells are type 10 with a kind-257 format ([0031](0031-cell-kinds.md) and this experiment).

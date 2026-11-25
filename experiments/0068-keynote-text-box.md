@@ -30,6 +30,12 @@ The slide's part gained a record of type 2011, a type-2001 text record holding `
 
 Keynote's text boxes are the same type-2011 shapes as Pages', with their text in a type-2001 record. Their geometry's field 1.2 names the slide they are on, where an object on a Pages page has no field 1.2 ([0052](0052-floating-table.md)). The title box from [0025](0025-keynote-title.md) is type 7, so Keynote has two kinds of shape: placeholders from the layout (type 7) and shapes added by the user (type 2011).
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `textbox.key` | `0025/empty.key` | `records 2011: 11 → 12`, `2001 3: absent → "box"`, `2011 1.1.2.1: ×11 → ×12` | *Likely*: a Keynote text box is type 2011, as in Pages, with its slide named in its drawable block |
+
 ## Confidence
 
 *Likely*: type 2011 is shared between Pages and Keynote. A Keynote drawable's field 1.2 names its slide.

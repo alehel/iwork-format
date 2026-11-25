@@ -42,6 +42,13 @@ As a build-in ([0448](0448-writing-a-build-s-stages.md)), the same build gave th
 
 Field 4.18.1 decides the build's direction: written `Out`, the title is on the slide at first and the build takes it away, where `In` brings it on. The effect, its identifier in 4.18.2, stays the same, so the same dissolve plays either way. A reader showing a slide's starting or final state must apply builds by their direction.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `plain.key` | `theme/0257/plain.key` | `same bytes` | *Control*: the title is shown |
+| `out.key` | `theme/0257/build.key` | Only `8#2655727 4.18.1: "In" → "Out"` | *Confirmed*: field 4.18.1 is the build's direction; the title is there at first, then gone |
+
 ## Confidence
 
 *Confirmed*: field 4.18.1 as the build's direction, by writing `Out` into a build-in.

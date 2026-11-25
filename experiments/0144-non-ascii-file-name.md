@@ -31,6 +31,12 @@ Pages writes ZIP entry names in UTF-8 without saying so. A reader must decode en
 
 Spaces are kept, and the data ID is added before the extension as usual.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `odd-name.pages` | `0023/image.pages` | `11006 4.4: "red-8x4-24.png" → "rød bilde-24.png"`, `part Data/r*d bilde-24.png: absent → present`; the ZIP name is UTF-8 without the UTF-8 flag | *Likely*: ZIP entry names are UTF-8 without the flag that says so |
+
 ## Confidence
 
 *Likely*: ZIP entry names are UTF-8 without the UTF-8 flag.

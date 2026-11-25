@@ -57,6 +57,15 @@ AppleScript reports rotations of 0, 0, 180 and 180, and the same position for al
 
 Flag 0x4 mirrors the shape left to right within its box. With a rotation of 180° added, the result is the shape mirrored top to bottom, which is how Pages stores a vertical flip. A rotation of 180° alone turns the shape upside down and mirrors it both ways, which a reader that ignored the flag would draw instead.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `original.pages` | `0333/moved.pages` | `same bytes`, `2011#1732647 1.1.1.3 = 3` | *Control*: the cut-off corner is at the bottom right |
+| `flipped.pages` | `original.pages` | Only `2011#1732647 1.1.1.3: 3 → 7` | *Confirmed*: flag 0x4 mirrors the shape left to right |
+| `flipped-180.pages` | `original.pages` | Only `2011#1732647 1.1.1.3: 3 → 7`, `2011#1732647 1.1.1.4: 0.0 → 180.0` | *Confirmed*: the flag and 180° mirror it top to bottom |
+| `rotated-180.pages` | `original.pages` | Only `2011#1732647 1.1.1.4: 0.0 → 180.0` | *Control*: 180° alone turns it upside down, mirrored both ways |
+
 ## Confidence
 
 *Confirmed*: flag 0x4 of field 1.1.3 as a horizontal flip, and a vertical flip as that flag plus 180°, by writing them.

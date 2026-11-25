@@ -50,6 +50,12 @@ A shape's fill (1.11.1) holds either a colour (field 1) or a gradient (field 2).
 
 A reader that can't draw gradients can fall back on the first stop's colour.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `gradient.pages` | `0213/plain-shape.pages` | `2025 1.11.1.2.2.1.3: absent → 0.3376`, `2025 1.11.1.2.2.2: absent → 0.0`, `2025 1.11.1.2.2.2: absent → 1.0`, `2025 1.11.1.2.5.2: absent → 4.7124` | *Likely*: fill field 2 is a gradient with its stops in 2.2 and its angle in radians in 2.5.2 |
+
 ## Confidence
 
 *Likely*: fill field 2 is a gradient with stops in 2.2 and the angle in radians in 2.5.2.

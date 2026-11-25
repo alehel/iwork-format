@@ -30,6 +30,12 @@ The recipe sets the header row count to 2. The table model has field 9 = 2, fiel
 
 Pages keeps the header row count in model field 9, as Numbers does.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `headers.pages` | | `6001 9 = 2`, `6001 10 = 1`, `6001 6 = 5`, `6001 7 = 5` | *Confirmed*: model field 9 is the header row count in Pages too |
+
 ## Confidence
 
 *Confirmed*: model field 9 is the header row count ([0060](0060-header-rows.md) and this experiment).

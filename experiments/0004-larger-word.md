@@ -109,6 +109,15 @@ The boundaries in `hi🙂 world` are 2 and 4, and the emoji is the only characte
 
 The 18 type-2001 records that use the header-and-footer paragraph style are probably the text of the document's headers and footers. They are empty in a new document.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `plain.pages` | | `2001 3 = "hello world"`, `2001 8 ≠ present` | *Control* |
+| `large.pages` | `plain.pages` | `2001 8.1.1: absent → 0`, `2001 8.1.1: absent → 6`, `records 2021: 8 → 9`, `2021 11.3: absent → 24.0` | *Likely*: field 8 of type 2001 is the character-style run table, and 11.3 of a character style is the font size |
+| `emoji-plain.pages` | | `2001 3 = "hi🙂 world"`, `2001 8 ≠ present` | *Control* |
+| `emoji-large.pages` | `emoji-plain.pages` | `2001 8.1.1: absent → 2`, `2001 8.1.1: absent → 4`, `2021 11.3: absent → 24.0` | *Confirmed*: positions count UTF-16 code units, since the emoji's run goes from 2 to 4 |
+
 ## Confidence
 
 *Confirmed*: positions in the text count UTF-16 code units (0003 and this experiment).

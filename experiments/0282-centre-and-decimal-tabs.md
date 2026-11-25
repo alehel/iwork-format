@@ -34,6 +34,12 @@
 
 Tab alignment codes are 0 (absent) left, 1 centre, 2 right and 3 decimal. The second stop was placed 36 points (1.27 cm, the default tab spacing) after the first. It stores a space as its leader, although the sidebar shows none. So a leader of a space is equivalent to no leader, and a reader should draw nothing for it.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `centre-decimal.pages` | `0277/right-tab.pages` | `2022 12.25.1.2: 2 → 1`, `2022 12.25.1.2: 2 → 3`, `2022 12.25.1.3: "." → " "`, `2022 12.25.1.1: absent → 121.0394` | *Likely*: tab alignment 1 is centre and 3 decimal, and a space leader draws nothing |
+
 ## Confidence
 
 *Likely*:

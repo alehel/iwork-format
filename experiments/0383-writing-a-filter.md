@@ -50,6 +50,23 @@ Rows in each exported page, after the header:
 
 Neither the value in the rule nor the hidden flags in 70.2.3, as written here, change which rows Numbers shows. With the rule rewritten to > 0 or > 3, Numbers kept showing the rows that passed > 2, even after its filters were turned off and on; with every hidden flag cleared, it still hid rows 1 and 2. So Numbers takes the rows it hides from somewhere this experiment didn't touch, and doesn't evaluate the stored rule when it opens a document or when filters are toggled by script. A reader can't yet rely on either for the rows to hide; turning filters off shows all rows as expected.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `original.numbers` | `0258/filter.numbers` | `same bytes`, `6001#904595 70.2.3.2.3 = 1` | *Control*: the filter > 2 shows a 3, b 4 |
+| `value-0.numbers` | `original.numbers` | Only `6220#905584 7.1.5.2.1: 2.0 → 0.0`, `6220#905584 7.1.7.1.1.4: 2.0 → 0.0`, `6220#905584 7.1.7.1.1.42: 2 → 0`, `6220#905585 3.1.1.1.1.4: 2.0 → 0.0`, `6220#905585 3.1.1.1.1.42: 2 → 0` | *Superseded* by 0391: the same rows are shown, since the value Numbers uses is in a field not written here |
+| `value-3.numbers` | `original.numbers` | Only `6220#905584 7.1.5.2.1: 2.0 → 3.0`, `6220#905584 7.1.7.1.1.4: 2.0 → 3.0`, `6220#905584 7.1.7.1.1.42: 2 → 3`, `6220#905585 3.1.1.1.1.4: 2.0 → 3.0`, `6220#905585 3.1.1.1.1.42: 2 → 3` | *Superseded* by 0391: as above |
+| `all-unhidden.numbers` | `original.numbers` | Only `6001#904595 70.2.3.2.3: 1 → 0` | *Likely*: the hidden flags don't decide which rows are shown |
+| `original-toggled.numbers` | `original.numbers` | `6220 2: 0 → 1` | *Control*: filters turned off and on by script show the same rows |
+| `value-0-toggled.numbers` | `value-0.numbers` | `6220 2: 0 → 1`, `6220 3.1.1.1.1.4 = 0.0` | *Superseded* by 0391: the same rows still |
+| `value-3-toggled.numbers` | `value-3.numbers` | `6220 2: 0 → 1`, `6220 3.1.1.1.1.4 = 3.0` | *Superseded* by 0391: the same rows still |
+| `original-off.numbers` | `original.numbers` | `6001 70.2.3.2.3: 1 → absent` | *Likely*: with filters off all four rows are shown |
+| `value-0-off.numbers` | `value-0.numbers` | `6001 70.2.3.2.3: 1 → absent` | *Likely*: as above |
+| `value-3-off.numbers` | `value-3.numbers` | `6001 70.2.3.2.3: 1 → absent` | *Likely*: as above |
+| `only-522-0.numbers` | `original.numbers` | Only `6220#905584 7.1.5.2.2: 2 → 0` | *Not used*: made and read in 0391 |
+| `only-522-3.numbers` | `original.numbers` | Only `6220#905584 7.1.5.2.2: 2 → 3` | *Not used*: made and read in 0391 |
+
 ## Confidence
 
 *Unknown*: where Numbers keeps the rows a filter hides, and when it re-evaluates the rule. The follow-up is to change a filter's value in Numbers itself and compare every part, not only the table model and the rule records.

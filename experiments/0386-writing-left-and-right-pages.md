@@ -43,6 +43,14 @@ done
 
 Field 19 decides whether left-hand pages get their own headers and footers: with it 0, the second page uses the right-hand set like the first. The left-hand set's text stays in the file but isn't used. Facing pages doesn't gate it: with field 34 at 0, AppleScript reports facing pages off, yet the second page still uses the left-hand set. So *left* and *right* here are even and odd pages whatever the facing-pages setting, and a reader should follow field 19 alone.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `original.pages` | `0019/left-right.pages` | `same bytes`, `10011#1732296 19 = 1` | *Control*: the second page has the left header |
+| `same.pages` | `original.pages` | Only `10011#1732296 19: 1 → 0` | *Confirmed*: with field 19 at 0 both pages have the right header |
+| `not-facing.pages` | `original.pages` | Only `10012#1732614 34: 1 → 0` | *Confirmed*: field 19 applies with facing pages off: the second page keeps the left header |
+
 ## Confidence
 
 *Confirmed*: section field 19 as *left and right pages are different*, by writing it, and that it applies with facing pages off.

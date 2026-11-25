@@ -35,6 +35,12 @@ The paragraph runs point at a new paragraph style whose properties, in field 12,
 
 Paragraph property 21 is the space before the paragraph and 20 the space after, in points. The field numbers run in the opposite order to the sidebar's. A reader adds the larger of one paragraph's space after and the next one's space before, or both, depending on how Pages combines them. That isn't tested here.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `spacing.pages` | `0236/plain.pages` | `2022 12.20: absent → 9.0`, `2022 12.21: absent → 6.0` | *Likely*: properties 20 and 21 are the space after and before, in points |
+
 ## Confidence
 
 *Likely*: paragraph properties 20 and 21 are the space after and before, in points.

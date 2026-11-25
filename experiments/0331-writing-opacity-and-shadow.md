@@ -39,6 +39,13 @@ The shadow is black, straight down, 20 points away, unblurred and opaque. Each f
 
 1.11.3 is the shape's opacity: at 0.5 the red is half see-through over the white page, close to the plain mix of 1, 0.5, 0.5. 1.11.4 is the shadow: with angle 90 and offset 20 it is drawn 20 points below the shape, extending its ink from 407.5 to 428.5 (the shadow of the stroke's outer edge, 21 points down with rounding), and with blur 0 and opacity 1 it is solid black.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `half.pages` | `0330/written.pages` | Only `2025#1732710 1.11.3: absent → 0.5` | *Confirmed*: 1.11.3 is the shape's opacity; its red is drawn half see-through |
+| `shadow.pages` | `0330/written.pages` | Only `2025#1732710 1.11.4: ×0 → ×1`, `2025#1732710 1.11.4.2 = 90.0`, `2025#1732710 1.11.4.3 = 20.0`, `2025#1732710 1.11.4.4 = 0.0` | *Confirmed*: 1.11.4 is the shadow; it's drawn solid black, 20 points below |
+
 ## Confidence
 
 *Confirmed*: shape opacity 1.11.3 and the shadow's colour, angle, offset, blur, opacity and switch, by writing them and measuring.

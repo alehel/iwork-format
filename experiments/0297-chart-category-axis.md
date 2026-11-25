@@ -37,9 +37,18 @@ The chart's other references, in the baseline:
 | 10000.18, 10000.19 | A reference to 0 | |
 | 10000.20 | 25 of type 2022 | `chart-0-paragraphStyle_0` and so on |
 
+*Corrected 2026-11-25:* the baseline's settings record holds 10001 = 1 and 10002 = 1 already; only 10000.13 is new.
+
 ## Conclusion
 
 A chart's category axis is the pair in 10000.15 (style, type 5026) and 10000.16 (settings, type 5027), and its name is shown when setting 10000.13 = 1. The pair in 10000.13 and 10000.14, which has two entries each, holds the value axes. The second is probably the second value axis of a two-axis chart. The chart names six series styles (type 5028), one per series colour of the theme, and 25 paragraph styles (type 2022) for its text, all of them the theme's named styles.
+
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `baseline.key` | `0296/baseline.key` | `5021 10000.17: ×6 → ×6`, `5021 10000.20: ×25 → ×25` | *Likely*: a chart names six series styles and 25 paragraph styles |
+| `x-axis-name.key` | `baseline.key` | `5027 10000.13: absent → 1`, `records 5027: 3 → 3` | *Likely*: setting 10000.13 is the category axis's name switch |
 
 ## Confidence
 

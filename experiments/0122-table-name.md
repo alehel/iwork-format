@@ -28,6 +28,12 @@ The recipe sets the table's name to `Budget`. Model field 8 changed from `Tabell
 
 Model field 8 is the table's name.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `tablename.numbers` | `0024/empty-a.numbers` | `6001 8: "Tabell 1" → "Budget"` | *Confirmed*: model field 8 is the table's name |
+
 ## Confidence
 
 *Confirmed*: model field 8 is the name ([0020](0020-a-table.md) and this experiment).

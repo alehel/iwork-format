@@ -14,6 +14,8 @@ A chart's category axis shows its name when its settings record (type 5027, name
 | Input | `samples/0297/baseline.key`: a bar chart in the test theme whose category axis settings, record 2655561, are empty. Keynote's own version with the name shown: `samples/0297/x-axis-name.key` |
 | Writer | [`recipes/0302-set-path.py`](../recipes/0302-set-path.py); exported with [`recipes/0372-in-app.sh`](../recipes/0372-in-app.sh) and compared with [`recipes/0399-pdf-diff.swift`](../recipes/0399-pdf-diff.swift) |
 
+*Corrected 2026-11-25:* settings record 2655561 holds 10001 = 1 already; only its 10000 is empty.
+
 ## Recipe
 
 ```bash
@@ -43,6 +45,15 @@ swift recipes/0374-pdf-text.swift $O/*.pdf
 ## Conclusion
 
 Field 10000.13 of the category axis's settings shows its name, *Kategoriakse* (category axis) in a Norwegian Keynote, below the chart, exactly as Keynote draws it. The value axis's field, 10000.14, does nothing in the category axis's settings: each kind of axis reads its own field, even though both live in type-5027 records.
+
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `baseline.key` | `0297/baseline.key` | `same bytes`, `5027#2655561 10000.13 = absent` | *Control*: no axis name |
+| `keynote-x-axis-name.key` | `0297/x-axis-name.key` | `same bytes`, `5027 10000.13 = 1` | *Control*: Keynote's own axis name |
+| `category-name.key` | `baseline.key` | Only `5027#2655561 10000.13: absent → 1`, `5027#2655561 10000: "" → x"6801"` | *Confirmed*: category-axis setting 10000.13 shows the axis name, drawn as Keynote's own |
+| `category-14.key` | `baseline.key` | Only `5027#2655561 10000.14: absent → 1`, `5027#2655561 10000: "" → x"7001"` | *Confirmed*: 10000.14 does nothing there |
 
 ## Confidence
 

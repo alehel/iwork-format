@@ -38,6 +38,14 @@ Numbers shows the cell in the new blue. The reported numbers aren't the stored o
 
 Colours are stored as sRGB components, and AppleScript reports them converted to Generic RGB. Writing the colour message changes the cell's background. Field 1 = 1 marks an RGB colour. Field 12 = 1 is probably the colour space, sRGB, but no colour with another value has been seen yet.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `original.numbers` | `0043/styles.numbers` | `same bytes` | *Control*: a red cell |
+| `written.numbers` | `original.numbers` | Only `6004#905274 11.1.1.3: 1.0 → 0.2`, `6004#905274 11.1.1.4: 0.1491 → 0.4`, `6004#905274 11.1.1.5: 0.0 → 0.8` | *Confirmed*: cell style field 11.1.1 is the background colour; Numbers shows the new blue |
+| `resaved.numbers` | `written.numbers` | `6004#905274 11.1.1.3 = 0.2`, `6004#905274 11.1.1.4 = 0.4`, `6004#905274 11.1.1.5 = 0.8` | *Not used*: saved again by Numbers, and not described in the text |
+
 ## Confidence
 
 *Confirmed*: cell style field 11.1.1 is the background colour, by writing it.

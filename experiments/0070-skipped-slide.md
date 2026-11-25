@@ -28,6 +28,12 @@ The slide node (type 4) of slide 1 changed field 4 from 0 to 1. The only other c
 
 Field 4 of a slide node is 1 when the slide is skipped. A reader that plays or exports a presentation leaves those slides out.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `skipped.key` | `0025/empty.key` | `4 4: 0 → 1` | *Likely*: field 4 of a slide node marks a skipped slide |
+
 ## Confidence
 
 *Likely*: slide node field 4 marks a skipped slide.

@@ -60,6 +60,12 @@ Every document the recipes make comes out of 14.5 with the structure 15.4 gives 
 
 A date field's (type 2034, [text.md](../spec/text.md)) field 10, which 15.4 writes as 0 in the date fields of Apple's essay and letter templates, is new to this experiment; what it holds is *unknown*.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `release/14.5/**` | | `11006#2 7 = x"0e0401"` in every one | *Confirmed*: 309 documents made in 14.5 have 15.4's structure, but for what every 14.5 document differs in; the recipe compares them |
+
 ## Confidence
 
 *Confirmed*: for 309 documents made by the experiments' recipes, 14.5 writes the same structure as 15.4, apart from the differences every 14.5 document has.

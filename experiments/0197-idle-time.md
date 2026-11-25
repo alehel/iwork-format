@@ -36,6 +36,13 @@ Field 15 (auto restart) is 0 in both.
 
 Field 16 is the idle time in seconds, set independently of auto restart. 123 minutes is 7,380 seconds, so AppleScript counts in minutes, as in 0089.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `default.key` | | `2 16 = 900.0`, `2 15 = 0` | *Control*: 15 minutes, the default |
+| `idle.key` | `default.key` | `2 16: 900.0 → 7380.0`, `2 15 = 0` | *Confirmed*, with 0089: field 16 is the idle time in seconds, without auto restart |
+
 ## Confidence
 
 *Confirmed*, with 0089: presentation field 16 is the idle time in seconds.

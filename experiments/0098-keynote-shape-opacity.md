@@ -28,9 +28,17 @@ The recipe makes a shape on slide 1 and sets its `opacity` to 50. The shape's st
 1: { 1: { 3: { 1: 2651163 }, 4: 1, 5: { 1: 2652414 } }, 10: 1, 11: { 3: 0.5 } }
 ```
 
+*Corrected 2026-11-25:* the shape's style before was 2651163 (`shape-0-shapestyle`), as in [0097](0097-keynote-shape-rotation.md) and as the new style's parent shows. 2651762 is the style of the slide's other shape.
+
 ## Conclusion
 
 A shape's opacity is field 1.11.3 of its shape style, from 0 to 1. Shape styles keep their properties in field 1.11, as found in [0077](0077-shape-fill.md). Images keep opacity in field 11.2 of their image style instead, so the field number depends on the kind of style.
+
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `opacity.key` | `0097/rotation.key` | `records 2025: 32 → 33`, `2025 1.11.3: absent → 0.5` | *Likely*: shape style field 1.11.3 is the opacity |
 
 ## Confidence
 

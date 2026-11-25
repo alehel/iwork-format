@@ -73,6 +73,10 @@ Every prompt took its password, and the documents were closed unsaved; their fil
 
 The 16.0 apps open every document the 15.4 apps saved in these experiments, the password-protected ones included, and every one written from this spec, and read the same text, tables, slides, titles and notes from them as 15.4 did. Unlike 14.5, Keynote 16.0 knows the radial wipe. Whether 16.0 also draws the samples the same is the next experiment's question.
 
+## Evidence
+
+No documents of its own: it opens the samples of 0001 to 0460 in 16.0.
+
 ## Confidence
 
 *Confirmed*: the 16.0 apps open 1,211 documents from 15.4 and from the spec's writer, and read what 15.4 read; and, with the passwords typed by hand, the nine documents of 0179 and 0180, protected or not.

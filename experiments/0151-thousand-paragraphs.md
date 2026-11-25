@@ -28,6 +28,12 @@ The body text holds `p 1` to `p 1000`, 5,892 bytes. Field 5 has 1000 entries, 4,
 
 Pages writes one paragraph-style entry for every paragraph, even when the style doesn't change. A reader can count paragraphs from field 5. The list tables, though, only record changes.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `paras.pages` | `0020/plain.pages` | `2001 5.1: ×19 → ×1018`, `2001 6.1: ×19 → ×19`, `2001 7.1: ×19 → ×19` | *Confirmed*: field 5 has one entry for each of the 1000 paragraphs |
+
 ## Confidence
 
 *Confirmed*: field 5 has one entry per paragraph ([0005](0005-paragraphs.md) and this experiment).

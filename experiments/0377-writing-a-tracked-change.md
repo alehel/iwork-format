@@ -62,6 +62,18 @@ Field 1 of a change record decides how Pages treats it: written as 2, an inserti
 
 The author's colour does steer the markup, but Pages doesn't draw it as stored: each colour written was drawn as a different colour, nearer some colours than others (red as orange, blue as teal). It seems to pick from a set of its own markup colours. Which set, and how it chooses, is *unknown*; a writer should keep the colours Pages itself gives authors.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `inserted.pages` | `0193/tracked.pages` | `same bytes`, `2060#1732729 1 = 1` | *Control*: an insertion, not struck through |
+| `deleted.pages` | `0194/deleted.pages` | `same bytes`, `2060#1732736 1 = 2` | *Control*: a deletion, struck through |
+| `inserted-as-deletion.pages` | `inserted.pages` | Only `2060#1732729 1: 1 → 2` | *Confirmed*: kind 2 is a deletion: Pages strikes the text through |
+| `deleted-as-insertion.pages` | `deleted.pages` | Only `2060#1732736 1: 2 → 1` | *Confirmed*: kind 1 is an insertion: the strike line goes |
+| `deleted-blue.pages` | `deleted.pages` | Only `212#1732734 2.3: 0.9804 → 0.0`, `212#1732734 2.4: 0.9373 → 0.0`, `212#1732734 2.5: 0.3529 → 1.0` | *Likely*: the author's colour selects the markup's: drawn teal, not as stored |
+| `deleted-red.pages` | `deleted.pages` | Only `212#1732734 2.3: 0.9804 → 1.0000`, `212#1732734 2.4: 0.9373 → 0.0`, `212#1732734 2.5: 0.3529 → 0.0` | *Likely*: as above, drawn orange |
+| `deleted-green.pages` | `deleted.pages` | Only `212#1732734 2.3: 0.9804 → 0.0`, `212#1732734 2.4: 0.9373 → 1.0`, `212#1732734 2.5: 0.3529 → 0.0` | *Likely*: as above, drawn a green that isn't the one stored |
+
 ## Confidence
 
 *Confirmed*: field 1 of a type-2060 change as its kind, 1 insertion and 2 deletion, by writing it both ways. That the author's colour selects the markup colour is *likely*; how it maps is *unknown*.

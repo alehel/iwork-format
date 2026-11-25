@@ -29,6 +29,12 @@ osascript recipes/0068-keynote-variants.applescript "$PWD/samples/0069/image.key
 
 Keynote stores images exactly as Pages does: an image record of type 3005 and the unchanged file under `Data/`, named after the original with `-N` added. Here N is 9076, the next data ID after the theme's images. Keynote placed the image in the middle of the 1920 × 1080 slide.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `image.key` | `0025/empty.key` | `records 3005: 7 → 8`, `3005 1.1.1.1: absent → 956.0`, `part Data/red-8x4-*.png: absent → present` | *Likely*: image records and data files are shared between Pages and Keynote |
+
 ## Confidence
 
 *Likely*: image records (type 3005) and data files are shared between Pages and Keynote.

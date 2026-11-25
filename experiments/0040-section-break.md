@@ -51,6 +51,12 @@ A section break is the character U+0004 in the text. Like a page break (U+0005),
 
 A new section gets its own three header-and-footer sets. Its *Same as previous section* switch (field 17, see [0017](0017-section-switches.md)) is on, so it presumably shows the previous section's headers until that is turned off.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `section-break.pages` | `0018/left-page-header.pages` | `2001 3: "one\u0005Two" → "one\u0004two"`, `2001 17.1.1: absent → 4`, `records 10011: 1 → 2`, `records 10143: 3 → 6` | *Likely*: a section break is U+0004, and the new section has its own header-and-footer sets |
+
 ## Confidence
 
 *Likely*:

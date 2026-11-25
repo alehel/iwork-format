@@ -33,6 +33,13 @@ The recipe opens the copy, sets its body text to `changed`, and saves it in plac
 
 Even a save in place gave the copied document a new document UUID. Pages may treat a file whose UUID matches another file's as a duplicate, because the copy had the same UUID as the original. So this experiment can't tell whether an ordinary save keeps the UUID. Object IDs of existing objects survived, as in 0139.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `edited.pages` | `0002/hello.pages` | `2001#1732539 3: "hello" → "changed"`, `part Index/ViewState-1732662.iwa: absent → present` | *Likely*: existing objects keep their IDs when a document is saved in place |
+| `edited.pages` | `0002/hello.pages` | `part Metadata/DocumentIdentifier: changed` | *Unknown*: whether a save in place keeps the document UUID when the file isn't a copy |
+
 ## Confidence
 
 *Likely*: existing object IDs survive a save.

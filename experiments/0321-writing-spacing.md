@@ -11,7 +11,7 @@ A paragraph style's spacing was read as properties 12.20 (space after) and 12.21
 | Pages | 15.4 |
 | macOS | 26.5.2 (25F84) |
 | Date | 2026-11-10 |
-| Input | `samples/0005/two-lf.pages` (paragraphs `one` and `two`) and `samples/0320/long.pages` (one paragraph wrapping to several lines), both in the 11-point Body style, which has no 12.13 |
+| Input | `samples/0005/two-lf.pages` (paragraphs `one` and `two`) and `samples/0320/long.pages` (one paragraph wrapping to several lines), both in the 11-point Body style, whose 12.13 is an empty message (first written as absent) |
 | Writer | [`recipes/0302-set-path.py`](../recipes/0302-set-path.py) |
 
 ## Recipe
@@ -44,6 +44,17 @@ Bottoms of the first lines, in points from the top of the page:
 ## Conclusion
 
 12.20 adds space after each paragraph and 12.21 before it, in points. Pages leaves out the space before the first paragraph at the top of the page. Line spacing kind 0 multiplies the normal line height: twice 12 is close to the 23.5 to 23.8 measured. Kind 2 sets the distance between baselines to exactly the amount, 30 points, and moves the first line down to suit.
+
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `two.pages` | `0005/two-lf.pages` | `same bytes` | *Control*: lines 12 points apart |
+| `long.pages` | `0320/long.pages` | `same bytes` | *Control*: lines 12 points apart |
+| `after24.pages` | `two.pages` | Only `2022#1731511 12.20: 0.0 → 24.0` | *Confirmed*: 12.20 is the space after; the second line is 24 points lower |
+| `before24.pages` | `two.pages` | Only `2022#1731511 12.21: 0.0 → 24.0` | *Confirmed*: 12.21 is the space before; the second line is 24 points lower |
+| `double.pages` | `long.pages` | Only `2022#1731511 12.13: changed`, `2022#1731511 12.13.1: absent → 0`, `2022#1731511 12.13.2: absent → 2.0` | *Confirmed*: kind 0 multiplies the line height; the lines are 23.5 to 23.8 points apart |
+| `exactly30.pages` | `long.pages` | Only `2022#1731511 12.13: changed`, `2022#1731511 12.13.1: absent → 2`, `2022#1731511 12.13.2: absent → 30.0` | *Confirmed*: kind 2 is exact; the lines are 30 points apart |
 
 ## Confidence
 

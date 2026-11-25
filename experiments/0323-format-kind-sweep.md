@@ -40,6 +40,14 @@ The value stayed 1, and AppleScript's `format` stayed `automatic`, in every case
 
 The kinds that need nothing but the kind show themselves: 258 percent, 259 scientific and 267 rating. Currency, date, duration, checkbox and the others need settings of their own, such as a currency code or a date pattern, which this format doesn't have, so they fall back to showing the plain number. Kind 262 showing `2` and 269 showing scientific notation are probably the fraction and numeral-system formats misreading this format's fields, which belong to a number format, but that wasn't tested. Kinds outside 256 to 269 aren't formats Numbers knows.
 
+## Evidence
+
+No documents of its own: it writes each kind into a copy of one document and keeps only what Numbers showed, in `recipes/0323-format-kinds.tsv`.
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `0226/plain.numbers` | | `6005#904541 3.6.1 = 256` | *Control*: the file whose format the sweep changes |
+
 ## Confidence
 
 *Confirmed*: 258 percent, 259 scientific and 267 rating, by writing them.

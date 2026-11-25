@@ -36,6 +36,12 @@ The cell's flags are `48 10 02 00` = 0x00021048. That is 0x8 (string), 0x40 (tex
 
 Centring a cell gives it a text style that sets paragraph property 12.1 = 2, the same value Pages uses for a centred paragraph. Cell alignment is therefore read exactly like paragraph alignment ([styles.md](../spec/styles.md)).
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `center.numbers` | `0043/styles.numbers` | `2022 12.1: absent → 2`, `6002 5.6 ~ x"0503000000000000 48100200"` | *Likely*: a centred cell has a text style with 12.1 = 2, as in Pages |
+
 ## Confidence
 
 *Likely*: a cell's horizontal alignment is field 12.1 of its text style, with the same values as in Pages.

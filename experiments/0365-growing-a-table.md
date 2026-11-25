@@ -36,6 +36,13 @@ The resaved table model has 30 and 9 in fields 6 and 7. The PDF's page is 1028 �
 
 A table grows when new UUIDs are added, each with its number appended to both maps. Numbers accepts random UUIDs, lets cells in the new rows and columns be set, and keeps them on saving. Only the row and column lists are needed: no tile or header storage changed.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `thirty-by-nine.numbers` | `0226/plain.numbers` | Only `6267#904603 1: ×7 → ×9`, `6267#904603 2: ×7 → ×9`, `6267#904603 3: ×7 → ×9`, `6267#904603 4: ×22 → ×30`, `6267#904603 5: ×22 → ×30`, `6267#904603 6: ×22 → ×30`, `6001#904595 6: 22 → 30`, `6001#904595 7: 7 → 9`, `6305#904672 2: 7 → 9`, `6305#904672 3: 22 → 30` | *Confirmed*: new UUIDs make a table larger; Numbers shows 30 by 9 |
+| `thirty-by-nine-resaved.numbers` | `thirty-by-nine.numbers` | `6267#904603 1: ×9 → ×9`, `6267#904603 4: ×30 → ×30`, `6001#904595 6 = 30`, `6002 5.1: absent → 29` | *Likely*: Numbers keeps the new rows and columns, with I30 set |
+
 ## Confidence
 
 *Confirmed*: a table can be grown by adding row and column UUIDs, by writing them.

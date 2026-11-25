@@ -31,6 +31,12 @@ The body text is `One`: the deleted ` two` is gone, along with run table 22 and 
 
 Accepting a deletion removes the text and every trace of the change. What remains is the editing session (type 2062) and its author, because tracking is still on ([0269](0269-rejected-insertion.md)). A document whose changes have all been accepted reads like an ordinary one.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `accepted.pages` | `0194/deleted.pages` | `2001 3: "One two" → "One"`, `2001 22: present → absent`, `records 2060: 1 → 0`, `records 2062: 1 → 1`, `records 212: 1 → 1` | *Likely*: an accepted change leaves no change record, only the session and its author |
+
 ## Confidence
 
 *Likely*: accepting a change leaves no change record, and the text is as edited.

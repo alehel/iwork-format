@@ -28,6 +28,12 @@ The recipe sets the sheet's name to `Data`. The sheet record (type 2) changed fi
 
 A sheet's field 1 is its name.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `sheetname.numbers` | `0024/empty-a.numbers` | `2 1: "Ark 1" → "Data"` | *Confirmed*: field 1 of a sheet is its name |
+
 ## Confidence
 
 *Confirmed*: sheet field 1 is the name ([0037](0037-second-sheet.md) and this experiment).

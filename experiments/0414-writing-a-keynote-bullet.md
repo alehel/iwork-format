@@ -44,6 +44,14 @@ done
 
 The first field 16 of a list style is the marker of its first level, and Keynote draws whatever text is written there, as Pages does. All three lines are at the first level, so writing only the first occurrence changed every marker. A reader can take a Keynote slide's bullets from the list style exactly as in Pages.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `original.key` | `theme/0072/bullets.key` | `same bytes`, `2023#2651121 16 = "•"` | *Control* |
+| `arrow-level0.key` | `original.key` | Only `2023#2651121 16: changed`, `2023#2651121 16 = "→"`, `2023#2651121 16 = "•"` | *Confirmed*: the first field 16 is the first level's bullet: an arrow on all three lines |
+| `star-all.key` | `original.key` | Only `2023#2651121 16: "•" → "*"` | *Confirmed*: field 16 is the bullet: a star on all three lines |
+
 ## Confidence
 
 *Confirmed*: list style field 16 as the bullet, per level, in Keynote, by writing it.

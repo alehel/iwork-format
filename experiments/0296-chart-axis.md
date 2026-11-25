@@ -52,9 +52,20 @@ In the baseline, the styles are the theme's named styles, and the settings recor
 
 For Axis Name and Axis Line, Keynote also gave the chart drawable a new ID and remade its settings records, all empty except the one changed. The second entries of 10000.13 and 10000.14 didn't change.
 
+*Corrected 2026-11-25:* the settings records aren't quite empty in the baseline: all three hold 10001 = 1 and 10002 = 1, and only their field 10000 is empty. So only the value in 10000 is new.
+
 ## Conclusion
 
 A chart keeps each part's options in two records: a style, for properties that styles can share, and a settings record, for switches of that one chart. Field 10000.13 and 10000.14 hold the axes, the first entry being the value axis. Its line (10000.25) and whether it shows its minimum value (10000.31) are style properties, set through an unnamed child style as with the border in [0295](0295-chart-options.md). Its name switch (10000.14) is a setting. By their pairing, 10000.11 and 10000.12 are probably the legend, and 10000.15 and 10000.16 another axis; neither was tested here.
+
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `baseline.key` | | `5027 10000 = ""`, `5027 10000.14 = absent` | *Control*: the chart as the recipe makes it |
+| `axis-title.key` | `baseline.key` | `5027 10000.14: absent → 1`, `records 5026: 18 → 18` | *Likely*: the value axis's name is a setting |
+| `axis-line.key` | `baseline.key` | `records 5026: 18 → 19`, `5026 10000.25: absent → 1` | *Likely*: the value axis's line is a style property, in an unnamed style |
+| `no-minimum.key` | `baseline.key` | `records 5026: 18 → 19`, `5026 10000.31: absent → 0` | *Likely*: showing the minimum value is a style property |
 
 ## Confidence
 

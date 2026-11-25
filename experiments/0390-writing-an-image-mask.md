@@ -68,6 +68,16 @@ Six of the ten rows drawn are shown; each row left out repeats a neighbour.
 
 The mask's position, 1.1.1, is measured from the image's corner, as read. Its size is not 1.1.2: Pages ignored a width of 200 there. It draws the mask's outline at the path's natural size, 2.5.2, stretching the path's points to fill it, so writing a natural width of 50 or 200 made the oval that wide. A reader should place a mask's outline at 1.1.1 and size it by 2.5.2; a writer should keep 1.1.2 equal to it, as Pages does.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `original.pages` | `0245/oval-mask.pages` | `same bytes` | *Control*: the oval is drawn at x 50 to 150 |
+| `left.pages` | `original.pages` | Only `3006#1732711 1.1.1.1: 50.0 → 0.0` | *Confirmed*: field 1.1.1 is the mask's position from the image's corner: x 0 to 100 |
+| `wide.pages` | `left.pages` | Only `3006#1732711 1.1.2.1: 100.0 → 200.0` | *Likely*: field 1.1.2 is ignored: drawn as before |
+| `natural-50.pages` | `wide.pages` | Only `3006#1732711 2.5.2.1: 100.0 → 50.0` | *Confirmed*: the path's natural size is the drawn size: x 0 to 50 |
+| `natural-200.pages` | `left.pages` | Only `3006#1732711 2.5.2.1: 100.0 → 200.0` | *Confirmed*: as above, x 0 to 200 |
+
 ## Confidence
 
 *Confirmed*: a mask's position (1.1.1) relative to the image, and its drawn size as its path's natural size (2.5.2), by writing them. That 1.1.2 is ignored is *likely*.

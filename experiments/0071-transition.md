@@ -38,6 +38,12 @@ The slide's node (type 4) changed field 7 from 0 to 1.
 
 A slide's transition is in its field 4.2.8: the effect as a name in field 2 (`none`, `apple:dissolve`), and the duration in seconds in field 3. The default for no transition is 1 second. Slide node field 7 becomes 1 with a transition, so it may mark the slide as having one.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `transition.key` | `0025/empty.key` | `5 4.2.8.2: "none" → "apple:dissolve"`, `5 4.2.8.3: 1.0 → 2.0` | *Likely*: slide fields 4.2.8.2 and 4.2.8.3 are the effect and its duration |
+
 ## Confidence
 
 *Likely*: slide field 4.2.8.2 is the transition effect's name, and 4.2.8.3 its duration in seconds.

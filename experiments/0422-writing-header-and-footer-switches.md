@@ -49,6 +49,17 @@ In `texts.pdf` the header is at the top of the page (38–47 points down) and th
 
 Either switch alone leaves headers and footers with text on the page, for headers as found in 0327 and for footers alike. With both at 0, Pages draws neither, even though both still hold text. So whether Pages draws a header or footer that has text depends on the two switches together, not one each, at least when they are written without the texts being emptied as Pages does. A reader of a document Pages saved can still go by the texts: Pages empties those it hides.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `footer.pages` | `0002/hello.pages` | Only `2001#1732501 3: absent → "Footer text"` | *Control*: the footer is drawn |
+| `footer-hidden.pages` | `footer.pages` | Only `10012#1732614 3: 1 → 0` | *Confirmed*: the footer switch alone doesn't hide the footer |
+| `texts.pages` | `footer.pages` | Only `2001#1732234 3: absent → "Header text"` | *Control*: the header and footer are drawn |
+| `headers-off.pages` | `texts.pages` | Only `10012#1732614 2: 1 → 0` | *Confirmed*: the header switch alone hides neither |
+| `footers-off.pages` | `texts.pages` | Only `10012#1732614 3: 1 → 0` | *Confirmed*: the footer switch alone hides neither |
+| `both-off.pages` | `texts.pages` | Only `10012#1732614 2: 1 → 0`, `10012#1732614 3: 1 → 0` | *Confirmed*: with both at 0 neither is drawn, though both hold text |
+
 ## Confidence
 
 *Confirmed*: by writing them, either switch alone doesn't hide a header or footer with text, and both at 0 hide them all. Why the switches act together is *unknown*.

@@ -47,6 +47,17 @@ The first three lines of the long paragraph, top – bottom: 60.2 – 66.2, 72.2
 
 All caps sets `HELLO` in capitals, 12 points wider. Superscript sets the word smaller and raised: it is 7.5 points narrower and its bottom 3 points higher. Tracking 0.5 adds half an em, 5.5 points, after each of the word's letters, 22 points in all for the four gaps and the end. The baseline shift raises the text by 10 points, and each line grows by the same amount to make room, so on the first line the text stays where it was while the spacing between lines grows from 12 to 22 points.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `original.pages` | `0002/hello.pages` | `same bytes` | *Control*: the word is 22 points wide |
+| `caps.pages` | `original.pages` | Only `2022#1731511 11.13: 0 → 1` | *Confirmed*: 11.13 = 1 is all caps; the word is drawn in capitals, 12 points wider |
+| `super.pages` | `original.pages` | Only `2022#1731511 11.10: 0 → 1` | *Confirmed*: 11.10 = 1 is superscript; the word is smaller and raised |
+| `shift10.pages` | `original.pages` | Only `2022#1731511 11.14: 0.0 → 10.0` | *Confirmed*: the first line stays where it was with a baseline shift |
+| `tracking.pages` | `original.pages` | Only `2022#1731511 11.27: 0.0 → 0.5` | *Confirmed*: 11.27 is tracking; the word is 22 points wider |
+| `long-shift10.pages` | `0320/long.pages` | Only `2022#1731511 11.14: 0.0 → 10.0` | *Confirmed*: 11.14 is the baseline shift; the lines are 10 points further apart |
+
 ## Confidence
 
 *Confirmed*: character properties 11.10, 11.13, 11.14 and 11.27, by writing them and measuring.

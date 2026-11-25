@@ -44,6 +44,14 @@ Field 1 of the type-2001 records:
 
 A slide's presenter notes are an ordinary text storage, and writing its field 3 changes them. Field 1 of a text storage says what the text is for: 0 a document body, 1 a header or footer, 2 a footnote, 4 presenter notes and 7 a table of contents, while text inside objects leaves it out. What 1 means in Numbers, where it is common, isn't clear from this survey.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `original.key` | `theme/0039/notes.key` | `same bytes`, `2001#2655508 1 = 4` | *Control*: Keynote reads the notes as they were |
+| `written.key` | `original.key` | Only `2001#2655508 3: "notes here" → "Notes written by a script"` | *Confirmed*: presenter notes are a text storage; Keynote reads the new text |
+| `resaved.key` | `written.key` | `2001#2655508 3 = "Notes written by a script"` | *Likely*: Keynote keeps the text in the same record |
+
 ## Confidence
 
 *Confirmed*: presenter notes are written through their text storage's field 3.

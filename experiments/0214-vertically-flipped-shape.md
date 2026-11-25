@@ -35,6 +35,12 @@ The shape's geometry differs from the baseline in two fields:
 
 There's no separate vertical flip. Pages stores it as a horizontal flip (bit 0x4) plus a rotation of 180°, which gives the same picture: mirroring left to right and then turning half a turn mirrors top to bottom. A reader that handles the horizontal flip and the rotation (applying the flip first) handles both kinds of flip.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `flipped-vertically.pages` | `0213/plain-shape.pages` | `2011 1.1.1.3: 3 → 7`, `2011 1.1.1.4: 0.0 → 180.0` | *Likely*: a vertical flip is a horizontal flip and a 180° rotation |
+
 ## Confidence
 
 *Likely*: a vertical flip is stored as a horizontal flip and a 180° rotation.

@@ -50,6 +50,21 @@ The page is made blue so that a white background shows. (310, 310) and (420, 390
 
 Two things hide a removed background, each enough on its own. Field 10, the subject's outline, clips the image to the subject: with it, the white around the square isn't drawn even without the mask. The mask crops the image to the subject's box: with it, the background is gone even without the outline. Fields 19 and 22 change nothing drawn: 22 is probably the switch the app shows, and 19 is in ordinary images too ([0447](0447-writing-an-image-s-sizes.md)'s has one), so it isn't part of the removed background. The image file keeps its background, so a reader must apply the outline in field 10, or at least the mask, to draw what Pages draws.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `blue.pages` | `0285/no-background.pages` | Only `10011#1732296 30: ×0 → ×1` | *Control*: blue shows where the background is removed |
+| `no-5.pages` | `blue.pages` | Only `3005#1732665 5: ×1 → ×0` | *Confirmed*: the outline alone hides the background |
+| `no-19.pages` | `blue.pages` | Only `3005#1732665 19: ×1 → ×0` | *Confirmed*: field 19 doesn't change the drawing |
+| `no-10-19-22.pages` | `blue.pages` | Only `3005#1732665 10: ×1 → ×0`, `3005#1732665 19: ×1 → ×0`, `3005#1732665 22: 1 → absent` | *Confirmed*: the mask alone hides the background |
+| `no-5-10.pages` | `blue.pages` | Only `3005#1732665 5: ×1 → ×0`, `3005#1732665 10: ×1 → ×0` | *Confirmed*: with neither mask nor outline the white background is drawn |
+| `no-5-19.pages` | `blue.pages` | Only `3005#1732665 5: ×1 → ×0`, `3005#1732665 19: ×1 → ×0` | *Confirmed*: field 19 doesn't change the drawing |
+| `no-5-22.pages` | `blue.pages` | Only `3005#1732665 5: ×1 → ×0`, `3005#1732665 22: 1 → absent` | *Confirmed*: field 22 doesn't change the drawing |
+| `no-5-10-19.pages` | `blue.pages` | Only `3005#1732665 5: ×1 → ×0`, `3005#1732665 10: ×1 → ×0`, `3005#1732665 19: ×1 → ×0` | *Confirmed*: white is drawn, as without the mask and the outline alone |
+| `no-5-19-22.pages` | `blue.pages` | Only `3005#1732665 5: ×1 → ×0`, `3005#1732665 19: ×1 → ×0`, `3005#1732665 22: 1 → absent` | *Confirmed*: fields 19 and 22 don't change the drawing |
+| `no-5-10-19-22.pages` | `blue.pages` | Only `3005#1732665 5: ×1 → ×0`, `3005#1732665 10: ×1 → ×0`, `3005#1732665 19: ×1 → ×0`, `3005#1732665 22: 1 → absent` | *Confirmed*: white is drawn, as without the mask and the outline alone |
+
 ## Confidence
 
 *Confirmed*: image field 10 clips the image to its outline and the mask crops it, each alone hiding the background, while 19 and 22 don't change the drawing, by writing them. What field 19 holds is *unknown*.

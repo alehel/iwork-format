@@ -47,6 +47,14 @@ The differences, besides UUIDs:
 
 Pages and Numbers 14.5 write the same format as 15.4: everything the spec describes for these documents is laid out the same way, down to the record versions. The release that saved a document can be told from `fileFormatVersion` in `Properties.plist` and from the build in `BuildVersionHistory.plist`; the format version doesn't follow the app's version (14.5 writes 14.4.1, 15.4 writes 26.4.0). 15.4 adds an empty type-4011 record to the calculation engine, which a reader can ignore as it ignores the engine. Whether larger documents differ more is for the next experiments.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `empty.pages` | `0001/empty-a.pages` | `11006#2 7: x"1a0400" → x"0e0401"`, `records 4011: 1 → 0`, `records 2022: 242 → 242` | *Confirmed*: 14.5 writes the same parts, record types and versions, but for the format version, the build and type 4011 |
+| `hello.pages` | `0002/hello.pages` | `11006#2 7: x"1a0400" → x"0e0401"`, `records 4011: 1 → 0` | *Confirmed*: as above |
+| `cells.numbers` | `0026/cells.numbers` | `11006#2 7: x"1a0400" → x"0e0401"`, `records 4011: 1 → 0`, `records 2022: 245 → 244` | *Confirmed*: as above, with one paragraph style fewer in a spreadsheet |
+
 ## Confidence
 
 *Confirmed*: for an empty document, a one-word document and a spreadsheet with cells, 14.5 writes the same parts, record types and versions as 15.4, apart from the differences listed.

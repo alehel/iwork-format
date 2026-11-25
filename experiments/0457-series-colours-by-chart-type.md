@@ -67,6 +67,17 @@ The second series kept its green throughout, since only the first series' style 
 
 The twelve colour properties are fills, one per kind of shape a series can be drawn as: 13 for bars, 11 for areas and 17 for pie wedges. Lines and points don't take their colour from any of them; they are probably in the style's stroke properties (the 86-byte properties 4, 5 and 45 to 53) and symbol properties. Which fill the other nine properties are, presumably for the other chart types such as 3D and bubble charts, is *unknown*.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `palette.key` | `0296/baseline.key` | `5028#2651484 10000.13.1.4: 0.6336 → 0.5`, `5028#2651484 10000.11.1.4: 0.6336 → 1.0`, `5028#2651484 10000.17.1.4: 0.6336 → 0.5`, each of 6 to 17 its own colour | *Control*: the input of the others |
+| `type-1.key` | `palette.key` | `same records`, `5021#2655552 10000.1 = 1` | *Confirmed*: property 13 is the fill of bars; they are dark green |
+| `type-3.key` | `palette.key` | Only `5021#2655552 10000.1: 1 → 3` | *Likely*: a line's colour is in another property; it stays the theme's blue |
+| `type-4.key` | `palette.key` | Only `5021#2655552 10000.1: 1 → 4` | *Confirmed*: property 11 is the fill of areas; the area is cyan |
+| `type-5.key` | `palette.key` | Only `5021#2655552 10000.1: 1 → 5` | *Confirmed*: property 17 is the fill of pie wedges; the wedge is teal |
+| `type-9.key` | `palette.key` | Only `5021#2655552 10000.1: 1 → 9` | *Likely*: the points' colour is in another property; they stay the theme's blue |
+
 ## Confidence
 
 *Confirmed*: series style properties 13, 11 and 17 as the fill of bars, areas and pie wedges, by writing them. *Likely*: lines and points are coloured by other properties.

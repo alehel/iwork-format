@@ -28,6 +28,12 @@ The recipe puts `abc` in B2 and C2. Both cells hold string key 1. The string tab
 
 Equal texts share one string-table entry, and the entry's field 2 counts the cells that use it (2 here). So field 3.2 of an entry is a reference count, as 0021 guessed.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `samestring.numbers` | `0024/empty-a.numbers` | `6005 3.3: ×0 → ×1`, `6005 3.3: absent → "abc"`, `6005 3.2: absent → 2`, `6002 5.6 ~ x"081002000100000005000000010000000503000000000000081002000100000005"` | *Likely*: two cells with the same text share one string-table entry, and field 3.2 counts them |
+
 ## Confidence
 
 *Likely*: string-table entries are shared by equal texts, and field 3.2 counts their users.

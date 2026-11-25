@@ -41,6 +41,12 @@ The body text gains run table 23, with one entry at 0 pointing at the type-2013 
 
 A highlight is a type-2013 record, applied through run table 23. Its field 1 points at a type-3056 record that holds what a comment holds: the text (field 1, empty here), the time (field 2), the author (field 3, the same type-212 records as tracked changes) and a 128-bit ID as two 64-bit halves (field 5). A comment on text is probably the same pair of records with text in 3056.1. An empty comment is dropped on save, so it couldn't be tested this way. Field 2 of type 2013 is a UUID.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `highlight.pages` | `0179/plain.pages` | `records 2013: 0 → 1`, `records 3056: 0 → 1`, `3056 1 = ""`, `2001 23.1.1: absent → 0` | *Likely*: a highlight is type 2013 in run table 23, pointing at a type-3056 record without text |
+
 ## Confidence
 
 *Likely*: a highlight is type 2013 in run table 23, pointing at a type-3056 record with a time and an author.

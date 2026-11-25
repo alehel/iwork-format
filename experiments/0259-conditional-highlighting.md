@@ -50,6 +50,14 @@ A conditional highlighting rule is a type-6010 record in the table's list of typ
 
 The comparison's kind also appears as a number (7, `>`) outside the formula. Cells under a rule get new flag bits, one of which probably keys them to the rule. Numbers doesn't store whether each cell currently matches, so a reader that wants the highlighting has to evaluate the rule.
 
+*Corrected 2026-11-25:* a later experiment found that the match result is stored: [0267](0267-highlighting-result.md).
+
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `highlight.numbers` | `0226/plain.numbers` | `records 6010: 0 → 1`, `6010 2.1.1.1.1.1: absent → 63`, `6004 11.1.1.4: absent → 0.8941`, `2022 1.1: absent → "Grønt fyll"`; new flags on the cells, `6002 5.6 ~ x"8131"` | *Likely*: a rule is a type-6010 record holding a formula and two styles; Numbers turns the cells with 3 and 4 green. The flags are unknown |
+
 ## Confidence
 
 *Likely*:

@@ -36,6 +36,13 @@ In `hello-resaved.pages`, the body text record is identical to the one the write
 
 Field 3 of the body text is all a writer has to change to change the text, as long as every run table's entries stay within the new length. Here every table starts at 0 and applies to the whole text. Pages reads the length from the field itself, finds the record through header references the writer didn't touch, and accepts a document without previews. Saving again doesn't rewrite the record, so Pages found nothing in it to correct.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `hello.pages` | `0287/original.pages` | Only `2001#1732539 3: "One" → "Hello, written world"`, `part preview*.jpg: present → absent` | *Likely*: changing the text's field 3 is enough, and previews are optional; Pages reports the new text |
+| `hello-resaved.pages` | `hello.pages` | `2001#1732539 3 = "Hello, written world"` | *Likely*: Pages saves the text record as it was written |
+
 ## Confidence
 
 *Likely*: replacing a body text's field 3 is enough to change a single-paragraph text, and previews are optional.

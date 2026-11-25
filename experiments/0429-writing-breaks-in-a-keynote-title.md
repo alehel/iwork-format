@@ -53,6 +53,15 @@ Each new paragraph is given its own entry in run table 5, since a table with few
 
 Keynote's text breaks work as in Pages: a line feed or a carriage return ends a paragraph, and U+2028 starts a new line within the same paragraph. A reader can split Keynote text into paragraphs and lines by the same rules as Pages text.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `original.key` | `theme/0025/hello.key` | `same bytes` | *Control*: one paragraph on one line |
+| `lf.key` | `original.key` | Only `2001#2655470 3: "hello" → "hello\nworld"`, `2001#2655470 5.1: ×1 → ×2` | *Confirmed*: a line feed ends a paragraph |
+| `cr.key` | `original.key` | Only `2001#2655470 3: "hello" → "hello\rworld"`, `2001#2655470 5.1: ×1 → ×2` | *Confirmed*: a carriage return ends a paragraph |
+| `line-sep.key` | `original.key` | Only `2001#2655470 3: "hello" → "hello\u2028world"` | *Confirmed*: U+2028 starts a new line in the same paragraph |
+
 ## Confidence
 
 *Confirmed*: line feeds and carriage returns as paragraph breaks and U+2028 as a line break in Keynote text, by writing them.

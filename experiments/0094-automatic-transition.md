@@ -34,6 +34,12 @@ The recipe sets slide 1's transition to `dissolve`, 1 second, `automatic transit
 
 Field 4.2.8.6 is 1 when the transition starts automatically, and 4.2.8.5 is the delay before it, in seconds. The default delay is 0.5 seconds, stored even when the transition waits for a click.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `auto.key` | `0025/empty.key` | `5 4.2.8.2: "none" → "apple:dissolve"`, `5 4.2.8.5: 0.5 → 3.0`, `5 4.2.8.6: 0 → 1` | *Likely*: transition field 6 starts it automatically, after the delay in field 5 |
+
 ## Confidence
 
 *Likely*: transition field 6 is the automatic switch and field 5 the delay in seconds.

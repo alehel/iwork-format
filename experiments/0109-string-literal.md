@@ -37,6 +37,12 @@ The cell holds 3.
 
 A text literal is node 19, with the text in field 6. It isn't put in the table's string table. LEN is function 77, which fits the alphabetical order (IF 62 < LEN 77 < MAX 84).
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `len.numbers` | `0064/functions.numbers` | `6005 3.5.1.1.1: absent → 19`, `6005 3.5.1.1.6: absent → "abc"`, `6005 3.5.1.1.2: absent → 77` | *Likely*: node 19 is a text literal, and LEN is function 77 |
+
 ## Confidence
 
 *Likely*: node 19 is a text literal, and LEN is function 77.

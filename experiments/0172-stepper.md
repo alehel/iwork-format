@@ -37,6 +37,12 @@ A stepper is control kind 4. Sliders and steppers have the same range defaults a
 | 6 | Rating |
 | 8 | Checkbox |
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `stepper.numbers` | `0171/slider.numbers` | Only `6005 3.12.1: 5 → 4`, `6002 5.6: changed`, and what changes on every save: `11006 2.2: changed`, `header 12009 6: changed`, `4000 6: changed`, `4000 9: changed`, `part Metadata/*: changed` | *Likely*: control kind 4 is a stepper, otherwise stored as a slider |
+
 ## Confidence
 
 *Likely*: cell-control kinds 4 stepper, 5 slider, 6 rating and 8 checkbox ([0169](0169-unchecked-checkbox.md)–this experiment).

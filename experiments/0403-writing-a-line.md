@@ -46,6 +46,16 @@ A line runs through the middle of its box, from the box's left end to its right 
 
 The width alone doesn't set a line's length: written as 100, the line kept its length of 224 and moved. Pages takes the length from the line's path (field 1.3), as it takes a mask's size from its path ([0390](0390-writing-an-image-mask.md)). A writer changing a line's length must change its path too.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `original.pages` | `0051/line.pages` | `same bytes`, `2011#1732647 1.1.1.4 = 333.4349` | *Control*: from 100, 100 to 300, 200 |
+| `rot-0.pages` | `original.pages` | Only `2011#1732647 1.1.1.4: 333.4349 → 0.0` | *Confirmed*: at 0° the line runs left to right through the middle of its box |
+| `rot-90.pages` | `original.pages` | Only `2011#1732647 1.1.1.4: 333.4349 → 90.0` | *Confirmed*: at 90° from bottom to top, turned about the box's centre |
+| `rot-180.pages` | `original.pages` | Only `2011#1732647 1.1.1.4: 333.4349 → 180.0` | *Confirmed*: at 180° right to left |
+| `width-100.pages` | `original.pages` | Only `2011#1732647 1.1.1.2.1: 223.6068 → 100.0` | *Likely*: the box's width isn't the length: the line moves but stays 224 long |
+
 ## Confidence
 
 *Confirmed*: a line as its box's horizontal middle turned by the rotation, by writing the rotation. *Likely*: a line's length comes from its path, not its width.

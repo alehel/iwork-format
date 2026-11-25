@@ -33,6 +33,10 @@ Six presentations of 0381 have three slides, so their PDFs have three pages. Pag
 
 Keynote 14.5 draws every slide that Keynote 15.4 drew for these presentations, so how the spec reads every field written in these experiments that shows on a slide holds for 14.5 too: slide numbers, bullets, title breaks, hidden titles, dynamic backgrounds as exported, and chart borders, axes, captions and series styles. With [0466](0466-keynote-14-5.md) and [0467](0467-opening-15-4-presentations-in-keynote-14-5.md), Keynote 14.5 writes, reads and draws the format as the spec describes it for 15.4. The exceptions are the few differences those experiments list, and the radial wipe transition.
 
+## Evidence
+
+No documents of its own: it draws presentations of earlier experiments in Keynote 14.5 and compares the drawings.
+
 ## Confidence
 
 *Confirmed*: Keynote 14.5 draws 68 presentations written from the spec, 80 slides, exactly as Keynote 15.4 did.

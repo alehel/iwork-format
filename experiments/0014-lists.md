@@ -66,6 +66,8 @@ All three list styles are type 2023 and store most properties as nine repeated v
 | 16 (×9, text) | — | `-` | — |
 | 25 (×9) | — | — | 0 |
 
+*Corrected 2026-11-25:* field 14 of the body changes too, from one entry at 0 to two, at 0 and 4: `{ 0, 1, 0 }` and `{ 4, 0, 0 }`. What it holds is *unknown*.
+
 ## Conclusion
 
 A list is a list style attached to a range of paragraphs through the list-style runs (field 7). The marker, a dash or a number, is not part of the text. A reader has to draw it from the list style.
@@ -81,6 +83,13 @@ A list style describes nine levels, with each property stored as nine repeated v
 Field 10 equals the number of distinct property fields each list style sets (4, 5 and 6). Together with the unnamed styles of 0007–0011, this suggests field 10 counts properties, though in the named paragraph styles of 0010 it was two less than the count.
 
 Field 6 of record 2001 is unchanged by a single-level list, so it might hold list levels. A nested list would test that.
+
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `dash-list.pages` | `0006/return-ui.pages` | `2001 3: "One\nTwo" → "One\nTwo\nThree"`, `2001#1732539 7.1.2.1: 1731481 → 1731488`, `2023#1731488 11 = 2`, `2023#1731488 16 = "-"` | *Likely*: field 7 attaches a list style, which holds the marker; the text doesn't |
+| `numbered-list.pages` | `dash-list.pages` | `2001#1732539 7.1.2.1: 1731488 → 1731486`, `2023#1731486 11 = 3`, `2023#1731486 16 = absent` | *Likely*: marker kind 3 is a number |
 
 ## Confidence
 

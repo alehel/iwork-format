@@ -47,6 +47,10 @@ All 301 documents opened, and 300 agreed. The exception is `0419/no-body.pages`,
 
 Pages and Numbers 14.5 open every document the 15.4 apps saved in these experiments, and every one written from this spec in experiments 0287 to 0371, and read the same text and tables from them. Nothing 15.4 writes stops the older release reading it, including the type-4011 record 14.5 doesn't write. Whether 14.5 also draws them the same is the next experiment's question.
 
+## Evidence
+
+No documents of its own: it opens the samples of 0001 to 0460 in 14.5.
+
 ## Confidence
 
 *Confirmed*: 14.5 opens 895 documents from 15.4 and from the spec's writer, and reads the same body text and tables, apart from the two password-protected documents not opened and the one written oddity of 0419.

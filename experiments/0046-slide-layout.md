@@ -43,6 +43,12 @@ Records 2651742 and 2652157 are both of type 5 and are the first records of `Tem
 
 A slide's field 17 names its layout: a template slide, which is itself a slide (type 5) in its own `TemplateSlide-N.iwa` part, named in its field 10. Field 1 changes along with it, so it is probably the slide's style, taken from the layout. A reader can show a slide by drawing its layout's template slide first and then the slide's own shapes on top. That drawing order isn't tested.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `blank-layout.key` | `0025/empty.key` | `5 17.1: 2651742 → 2652157`, `5#2651742 10 = "Tittel"`, `5#2652157 10 = "Tom"` | *Likely*: slide field 17 names its layout, a template slide with its name in field 10 |
+
 ## Confidence
 
 *Likely*:

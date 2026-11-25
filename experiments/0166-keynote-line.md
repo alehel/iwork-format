@@ -28,6 +28,12 @@ The slide gained a type-2011 record with a text record and two type-3097 records
 
 A line is stored the same way in Keynote as in Pages, with the same geometry and the same style identifier. The only difference is field 1.2, which names the slide the line is on. Keynote coordinates are in points from the slide's top left corner.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `line.key` | `0168/untouched.key` | `records 2011: 11 → 12`, `records 3097: 146 → 148`, `2011 1.1.1.2.2: absent → 0.0`, `2011 1.1.1.4: absent → 333.4349` | *Confirmed*: a line on a slide is a type-2011 shape with zero height and a rotation |
+
 ## Confidence
 
 *Confirmed*: a line is a type-2011 shape with zero height, rotated about its centre ([0051](0051-line.md) and this experiment).

@@ -14,6 +14,8 @@ A chart's border is chart style property 10000.18 = 1 ([0295](0295-chart-options
 | Input | `samples/0296/baseline.key`: a bar chart in the test theme, chart 2655552, whose 10000.9 names the theme's chart style 2651479, whose first 10000.13 names the theme's value-axis style 2651481, and whose first 10000.14 names an empty settings record, 2655559. Keynote's own versions: `samples/0295/border.key` and `samples/0296/axis-line.key`, `axis-title.key` and `no-minimum.key` |
 | Writer | [`recipes/0302-set-path.py`](../recipes/0302-set-path.py); exported with [`recipes/0372-in-app.sh`](../recipes/0372-in-app.sh) and compared with the new [`recipes/0399-pdf-diff.swift`](../recipes/0399-pdf-diff.swift) |
 
+*Corrected 2026-11-25:* settings record 2655559 holds 10001 = 1 and 10002 = 1 already; only its 10000 is empty.
+
 ## Recipe
 
 ```bash
@@ -59,6 +61,21 @@ The PDF's text gains `Verdiakse` (value axis) with the axis name, and loses the 
 ## Conclusion
 
 Each option draws exactly as Keynote's own, pixel for pixel: chart style property 10000.18 is the border, value-axis style property 10000.25 the axis line, 10000.31 = 0 hides the minimum value, and value-axis setting 10000.14 = 1 shows the axis name, in the app's language. Clearing 10000.18 in Keynote's unnamed style takes the border away again. It makes no difference whether a property is set in the theme's named style or in an unnamed child, as for text styles ([0393](0393-writing-a-style-parent.md)).
+
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `baseline.key` | `0296/baseline.key` | `same bytes` | *Control* |
+| `keynote-border.key` | `0295/border.key` | `same bytes`, `5022#2655837 10000.18 = 1` | *Control*: Keynote's own border |
+| `border.key` | `baseline.key` | Only `5022#2651479 10000.18: 0 → 1` | *Confirmed*: chart style 10000.18 is the border, drawn as Keynote's own |
+| `keynote-border-off.key` | `keynote-border.key` | Only `5022#2655837 10000.18: 1 → 0` | *Confirmed*: clearing it takes the border away |
+| `keynote-axis-line.key` | `0296/axis-line.key` | `same bytes`, `5026 10000.25 = 1` | *Control*: Keynote's own axis line |
+| `axis-line.key` | `baseline.key` | Only `5026#2651481 10000.25: 0 → 1` | *Confirmed*: value-axis style 10000.25 is the axis line, drawn as Keynote's own |
+| `keynote-axis-title.key` | `0296/axis-title.key` | `same bytes`, `5027 10000.14 = 1` | *Control*: Keynote's own axis name |
+| `axis-name.key` | `baseline.key` | Only `5027#2655559 10000.14: absent → 1`, `5027#2655559 10000: "" → x"7001"` | *Confirmed*: value-axis setting 10000.14 shows the axis name, drawn as Keynote's own |
+| `keynote-no-minimum.key` | `0296/no-minimum.key` | `same bytes`, `5026 10000.31 = 0` | *Control*: Keynote's own axis without the minimum |
+| `no-minimum.key` | `baseline.key` | Only `5026#2651481 10000.31: 1 → 0` | *Confirmed*: value-axis style 10000.31 at 0 hides the minimum, drawn as Keynote's own |
 
 ## Confidence
 

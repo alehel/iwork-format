@@ -42,6 +42,16 @@ Each version shows the chart as set, and Keynote shows the title text as `Tittel
 
 A chart's title and legend switches are chart settings in its type-5023 record: 10000.21 for the title and 10000.20 for the legend, 1 when shown. The border is a chart style property, 10000.18, which Keynote sets by giving the chart an unnamed style that inherits from the theme's chart style, as it does for paragraph and character styles. The caption works as for any drawable. The title's own text wasn't found in these records; the default text may come from the app.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `baseline.key` | | `5023 10000.21 = 0`, `5023 10000.20 = absent` | *Control*: no title, legend, border or caption |
+| `title.key` | `baseline.key` | `5023 10000.21: 0 → 1` | *Likely*: the title switch |
+| `legend.key` | `baseline.key` | `5023 10000.20: absent → 1` | *Likely*: the legend switch |
+| `border.key` | `baseline.key` | `records 5022: 6 → 7`, `5022 10000.18: absent → 1`, `5023 10000.20: absent → 0` | *Likely*: the border is a chart style property, in the chart's own unnamed style |
+| `caption.key` | `baseline.key` | `records 633: 0 → 1`, `records 3097: 148 → 147` | *Likely*: a chart's caption is a type-633 record, as for other objects |
+
 ## Confidence
 
 *Likely*: type 5023 field 10000.21 is the title switch and 10000.20 the legend switch; chart style property 10000.18 is the border.

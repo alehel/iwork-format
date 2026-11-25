@@ -30,6 +30,12 @@ The saved file was opened in Keynote, changed with File → Advanced → Change 
 
 Keynote saves the same folder form as Pages. The `.iwa` parts go inside `Index.zip`, while data files go in a `Data/` folder beside it, not inside the ZIP.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `package.key` | `0024/empty-a.key` | `part Index.zip: absent → present`, `part Data/*.jpg: present → present`; the data files lie in a folder beside the inner ZIP file | *Likely*: in the folder form, data files are in a folder of their own beside the ZIP file of parts |
+
 ## Confidence
 
 *Likely*: in the folder form, data files are in a `Data/` folder beside `Index.zip`.

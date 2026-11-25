@@ -50,6 +50,15 @@ The font is Helvetica Neue throughout.
 
 An entry with no style gives its paragraph the previous paragraph's style, whichever that is. A table with fewer entries than the text has paragraphs is ignored altogether: with one entry for three paragraphs, every paragraph took 12-point text, which is neither the entry's style nor *Brødtekst*, and is probably the document's default paragraph style. So a writer must give every paragraph its own entry, as Pages does, and a reader meeting a short table can't trust its entries.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `text.pages` | `0002/hello.pages` | Only `2001#1732539 3: "hello" → "one\ntwo\nthree"` | *Confirmed*: a table with fewer entries than paragraphs isn't used; all are 12-point regular |
+| `title-none-body.pages` | `text.pages` | Only `2001#1732539 5.1: ×1 → ×3`, `2001#1732539 5.1.2.1: ×1 → ×2`, `2001#1732539 5.1 = x"0804"` | *Confirmed*: the entry without a style keeps the style before it, here *Tittel* |
+| `title-body-none.pages` | `text.pages` | Only `2001#1732539 5.1: ×1 → ×3`, `2001#1732539 5.1.2.1: ×1 → ×2`, `2001#1732539 5.1 = x"0808"` | *Confirmed*: the entry without a style keeps the style before it, here *Brødtekst* |
+| `title-only.pages` | `text.pages` | Only `2001#1732539 5.1.2.1: 1731511 → 1731491` | *Confirmed*: a short table isn't used; all are 12-point regular, not *Tittel* |
+
 ## Confidence
 
 *Confirmed*: a table-5 entry without a style keeps the previous paragraph's style, and a table with fewer entries than paragraphs isn't used, by writing them. *Likely*: the 12-point fallback is the document's default paragraph style.

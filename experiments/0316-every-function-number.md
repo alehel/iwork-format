@@ -44,6 +44,14 @@ Of the 400 numbers, 399 gave a formula; number 337 gave none. In order:
 
 Function numbers 1 to 167 are Numbers' original functions in alphabetical order, 168 is SUM, and 169 to 184 are the operators, which formulas also use as nodes. The later functions were added in the order Apple added them, up to 391. The full table is in `recipes/0316-functions.tsv`, so a reader can name any function a formula calls without keeping its own list.
 
+## Evidence
+
+No documents of its own: it writes each number into a copy of one document and keeps only what Numbers showed, in `recipes/0316-functions.tsv`.
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `0104/nested.numbers` | | `6005#904540 3.5.1.1.2 = 15` | *Control*: the file whose function the sweep replaces |
+
 ## Confidence
 
 *Confirmed*: the number of every function from 1 to 391, read from Numbers itself.

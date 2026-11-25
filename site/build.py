@@ -380,7 +380,7 @@ def experiment_releases(md):
 # are the ones recorded, that they name every document of the experiment and that each published
 # document has the recorded checksum (fixtures/INDEX.md), and links each to where it is published.
 EVIDENCE_COLUMNS = ["File", "Compared with", "Difference", "Shows"]
-EVIDENCE_SHOWS = re.compile(r"^\*(Confirmed|Likely|Unknown|Control)\*")
+EVIDENCE_SHOWS = re.compile(r"^\*(Confirmed|Likely|Unknown|Control|Superseded|Not used)\*")
 SAMPLES_REPO = "https://github.com/alehel/iwork-format-samples"
 SAMPLES_REF = "main"  # the branch or commit there that holds the documents; None: link to the zips instead
 _FIXTURES = {}
@@ -422,7 +422,7 @@ def sample_path(cell, number):
     m = re.match(r"^`([^`]+)`", cell)
     if not m:
         return None
-    return "samples/" + (m[1] if re.match(r"^(?:\d{4}|theme|release|resave)/", m[1]) else f"{number}/{m[1]}")
+    return "samples/" + (m[1] if re.match(r"^(?:\d{4}|\*|theme|release|resave)/", m[1]) else f"{number}/{m[1]}")
 
 
 def download_url(path, note):
@@ -435,9 +435,23 @@ def download_url(path, note):
     return f"{REPO}/releases/download/fixtures/iwork-format-fixtures-{release}.zip", f"in the {release} zip"
 
 
+def matching(pattern, paths):
+    """The published paths a File cell's pattern in samples/ stands for; its remakes are under keynote/."""
+    shape = "^(?:keynote/)?" + "".join({"**": ".*", "*": "[^/]*"}.get(x) or re.escape(x) for x in re.split(r"(\*\*?)", published_path(pattern).removeprefix("keynote/"))) + "$"
+    return [p for p in paths if re.match(shape, p)]
+
+
 def evidence_file(cell, rel, documents, here):
     """A document's name with a link to where it is published, or why it isn't."""
     index, name = fixtures_index(), inline(cell, here)
+    if "*" in rel:
+        found = matching(rel, [*index["published"], *index["copies"]])
+        if not found:
+            return f'{name} <span class="where">not published</span>'
+        folder = os.path.dirname(published_path(rel).split("*")[0] + "x")
+        folder = folder if any(p.startswith(folder + "/") for p in found) else "keynote/" + folder
+        url = f"{SAMPLES_REPO}/tree/{SAMPLES_REF}/{urllib.parse.quote(folder)}" if SAMPLES_REF else f"{REPO}/releases/tag/fixtures"
+        return f'{name} <span class="where"><a href="{html.escape(url)}">{len(found):,} published</a></span>'
     path = published_path(rel)
     remade = [d["path"] for d in documents if d["path"] != rel]
     note = ""
@@ -478,11 +492,11 @@ def evidence_table(rows, here):
             problem(here, f"an Evidence row names no document: {file_cell[:40]}")
             continue
         named.update(published_path(d["path"]) for d in records.get(rel, []))
-        named.add(published_path(rel))
+        named.update(matching(rel, [*index["published"], *index["copies"], *index["left"]]) if "*" in rel else [published_path(rel), "keynote/" + rel[len("samples/"):]])
         if not EVIDENCE_SHOWS.match(shows):
             problem(here, f"what a document shows begins with *Confirmed*, *Likely*, *Unknown* or *Control*: {shows[:40]}")
         cells = (evidence_file(file_cell, rel, records.get(rel, []), here),
-                 evidence_file(base_cell, base, [], here) if base and not base.startswith(f"samples/{number}/") else inline(base_cell, here),
+                 evidence_file(base_cell, base, [], here) if base and "*" not in base and not base.startswith(f"samples/{number}/") else inline(base_cell, here),
                  inline(difference, here), inline(shows, here))
         # The roles keep it a table where a narrow page shows each row as a block (style.css).
         out.append('<tr role="row">' + "".join(
@@ -492,7 +506,7 @@ def evidence_table(rows, here):
     for path in sorted({p for k in ("published", "copies", "left") for p in index[k] if ours.match(p)} - named):
         problem(here, f"the Evidence table doesn't name {path}")
     intro = (f'<p class="evidence-note"><code>2021#5 11.1: 0 → 1</code> says that field 11.1 of the type-2021 record with ID 5 held 0 and '
-             'holds 1; without an ID, that some record of the type does. These statements were checked against the documents by script '
+             'holds 1; without an ID, that some record of the type does. <code>=</code> is a value it holds, <code>≠</code> one it doesn\'t, <code>~</code> bytes it contains, and <code>×2</code> how often a field occurs. These statements were checked against the documents by script '
              f'(<a href="{html.escape(link_target("../fixtures/evidence.py", here))}">fixtures/evidence.py</a>); <em>only</em> '
              "means that nothing else differs but the previews. What the app showed, and what follows from it, is the experiment's own.</p>")
     head = "".join(f'<th role="columnheader" scope="col">{c}</th>' for c in EVIDENCE_COLUMNS)
@@ -1209,6 +1223,8 @@ def main():
         page(f"guides/{f[:-3]}.html", title_of(md), body, toc, source=src)
         index_sections("guide", f"guides/{f[:-3]}.html", title_of(md), body)
 
+    index = fixtures_index()
+    with_documents = {m[1] for k in ("published", "copies", "left") for p in index[k] if (m := re.match(r"(?:keynote/)?(\d{4})/", p))}
     rows = []
     for f in experiments:
         md = read(f"experiments/{f}")
@@ -1216,6 +1232,13 @@ def main():
         src = f"experiments/{f}"
         releases = experiment_releases(md)
         body = render(md, src)
+        evidence = re.search(r"^## Evidence\s*$(.*?)(?=^## |\Z)", md, re.M | re.S)
+        if not evidence:
+            problem(src, "there is no Evidence section (CONTRIBUTING.md)")
+        elif not re.search(r"^\| File \| Compared with \| Difference \| Shows \|$", evidence[1], re.M) and not evidence[1].strip().startswith("No documents of its own"):
+            problem(src, "the Evidence section holds neither the table nor \"No documents of its own\"")
+        elif evidence[1].strip().startswith("No documents of its own") and f[:4] in with_documents:
+            problem(src, "fixtures/INDEX.md lists documents of this experiment")
         if releases:
             badge = f'<p class="ran">App release: ' + ", ".join(f'<span class="release">{html.escape(r)}</span>' for r in releases) + "</p>"
             body = body.replace("</h1>", "</h1>" + badge, 1)

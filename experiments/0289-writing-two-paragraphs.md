@@ -44,6 +44,15 @@ Record 1731490 is the paragraph style named `Standard`, with the identifier `par
 
 The paragraph run table needs one entry per paragraph. When a writer supplies them, Pages keeps them as written. An entry without a style continues the previous paragraph's style, here Body. When one is missing, Pages rebuilds the table on open, putting a run at each paragraph start. It then gives every paragraph the stylesheet's default style rather than the one the writer named, so the written style is lost. A writer must therefore add an entry at the start of every paragraph.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `with-run.pages` | `0287/original.pages` | Only `2001#1732539 3: "One" → "One\nTwo"`, `2001#1732539 5.1: ×1 → ×2` | *Likely*: an entry per paragraph; Pages counts two paragraphs |
+| `without-run.pages` | `0287/original.pages` | Only `2001#1732539 3: "One" → "One\nTwo"` | *Likely*: the entry is missing; Pages still counts two paragraphs |
+| `with-run-resaved.pages` | `with-run.pages` | `2001#1732539 5.1: ×2 → ×2`, `2001#1732539 5.1.2.1 = 1731511`, `2001#1732539 5.1.1 = 4` | *Likely*: Pages keeps the entries, and one with no style continues the previous style |
+| `without-run-resaved.pages` | `without-run.pages` | `2001#1732539 5.1: ×1 → ×2`, `2001#1732539 5.1.2.1: 1731511 → 1731490`, `2022#1731490 1.2 = "paragraph-style-default"` | *Likely*: a missing entry makes Pages fall back on the default style |
+
 ## Confidence
 
 *Likely*:

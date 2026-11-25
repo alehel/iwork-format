@@ -30,6 +30,12 @@ The recipe makes a 3 × 3 table on slide 1.
 
 Keynote's tables are the same as Pages' and Numbers': a drawable (type 6000) and a model (type 6001) in `CalculationEngine.iwa`, with cells in table parts. As with other Keynote drawables, field 1.2 names the slide. A table reader can therefore be shared by all three apps. Only the route to the drawable differs: text attachment or page in Pages, sheet in Numbers, slide in Keynote.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `table.key` | `0025/empty.key` | `records 6000: 0 → 1`, `records 6001: 0 → 1`, `6000 1.1.1.1: absent → 95.0`, `part Index/Tables/Tile.iwa: absent → present` | *Likely*: Keynote tables use types 6000 and 6001, as in the other apps |
+
 ## Confidence
 
 *Likely*: Keynote tables use types 6000 and 6001, as in the other apps.

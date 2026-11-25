@@ -30,6 +30,12 @@ The table model (type 6001) gains field 37 with the value 1. Its field 3 still n
 
 Table model field 37 is 1 when the table's title has a border around it. Like field 22 (the title shown), it is a table model field, not a style property. Options about the title sit in the model, and options about the cells in the style.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `title-border.numbers` | `0230/plain.numbers` | `6001 37: absent → 1`, `6003 10 ≠ 2` | *Likely*: table model field 37 is the border around the title, and no new table style is made |
+
 ## Confidence
 
 *Likely*: table model field 37 is the border around the title.

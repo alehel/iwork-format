@@ -104,6 +104,14 @@ Field 20 looks like a record of autocorrections. Each capitalised word is covere
 
 AppleScript and typing don't produce the same file for the same text: typing adds fields 19 and 20, and typing triggers autocorrection. Later experiments that type in the window should say so and keep that in mind when comparing with documents made through AppleScript.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `return-ui.pages` | `0005/two-lf.pages` | `2001 3: "one\ntwo" → "One\nTwo"`, `2001 19.1.2: absent → "nb"`, `2001 20.1.1: ×0 → ×3` | *Likely*: Return writes U+000A, and field 19 holds language runs |
+| `line-break-ui.pages` | `return-ui.pages` | `2001 3: "One\nTwo" → "One\u2028two"`, `2001 5.1.1: 4 → absent`, `2001 20.1.1: ×3 → ×2` | *Likely*: Shift-Return writes U+2028 and doesn't start a paragraph |
+| `heading-ui.pages` | `return-ui.pages` | `2001 5.1.2.1: absent → 1731502`, `2001 20.1.1: ×3 → ×2` | *Likely*: a field-5 entry names a paragraph style where it changes |
+
 ## Confidence
 
 *Likely*:

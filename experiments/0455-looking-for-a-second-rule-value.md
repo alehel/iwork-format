@@ -46,9 +46,18 @@ Each file was exported and B2:B5 read as in 0454.
 
 *Between 2 and 3* would highlight 2 and 3 only, and *not between* 1 and 4.
 
+*Corrected 2026-11-25:* the two `-repeated` documents weren't kept, so that part can't be rechecked without making them again.
+
 ## Conclusion
 
 Neither place holds a rule's second value: with either written, kinds 11 and 12 still match every cell. Where Numbers keeps the upper bound of *between* is still *unknown*; a rule made with *between* in Numbers would show it.
+
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `kind-11-2-3.numbers` | `0259/highlight.numbers` | Only `6010#905589 3.1.1.1: 7 → 11`, `6010#905589 3.1.1.6.1: 0 → 1`, `6010#905589 3.1.1.6.2: absent → x"0900000000000008401003"` | *Unknown*: where a rule's second value is kept; it isn't field 6, as every cell is highlighted |
+| `kind-12-2-3.numbers` | `0259/highlight.numbers` | Only `6010#905589 3.1.1.1: 7 → 12`, `6010#905589 3.1.1.6.1: 0 → 1`, `6010#905589 3.1.1.6.2: absent → x"0900000000000008401003"` | *Unknown*: where a rule's second value is kept; it isn't field 6, as every cell is highlighted |
 
 ## Confidence
 

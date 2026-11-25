@@ -28,6 +28,12 @@ The recipe writes `=C3` in B2, with C3 empty. The cell is type 2 with flags 0x32
 
 A reference to an empty cell gives 0, cached as a number. A reader treats an empty cell as 0 in arithmetic, as Numbers does.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `emptyref.numbers` | `0024/empty-a.numbers` | `6005 3.5.1.1.1: absent → 36`, `6002 5.6 ~ x"05020000000000000132000000000000000000000000000000004030010000000100000002000000"` | *Likely*: a formula that refers to an empty cell is cached as 0 |
+
 ## Confidence
 
 *Likely*: an empty referenced cell is cached as 0.

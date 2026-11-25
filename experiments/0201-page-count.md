@@ -36,6 +36,12 @@ The body text is `One` followed by U+FFFC. Field 9 has one entry at 3, pointing 
 
 Page numbers and page counts are the same type-2043 field, attached at a U+FFFC. Field 1.2 says which: 0 for the page number, 1 for the page count. Field 4 is the number format for both. A reader must lay out the document to know the count. Without layout, it can at least show a placeholder.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `page-count.pages` | `0048/page-number.pages` | `2043 1.2: 0 → 1`, `2043 4 = "decimal"` | *Likely*: field 1.2 is 0 for a page number and 1 for a page count |
+
 ## Confidence
 
 *Likely*: field 1.2 of type 2043 is 0 for a page number and 1 for a page count.

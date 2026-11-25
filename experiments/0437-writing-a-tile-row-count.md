@@ -46,6 +46,16 @@ done
 
 Numbers doesn't use a tile's counts to read its rows: with field 4 written as 0, 2 or 9, or field 6 as 2, it read all five rows as before. It takes the rows from the field-5 entries themselves, each with its own row number. A reader should do the same and treat field 4 (and field 6, which held the same number here) only as a hint; a writer should still fill them in as Pages and Numbers do.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `original.numbers` | `0226/plain.numbers` | `same bytes`, `6002#904547 4 = 5`, `6002#904547 6 = 5` | *Control* |
+| `count-0.numbers` | `original.numbers` | Only `6002#904547 4: 5 → 0` | *Confirmed*: field 4 isn't needed; all five rows are read |
+| `count-2.numbers` | `original.numbers` | Only `6002#904547 4: 5 → 2` | *Confirmed*: field 4 isn't needed; all five rows are read |
+| `count-9.numbers` | `original.numbers` | Only `6002#904547 4: 5 → 9` | *Confirmed*: field 4 isn't needed; all five rows are read |
+| `field6-2.numbers` | `original.numbers` | Only `6002#904547 6: 5 → 2` | *Confirmed*: field 6 isn't needed; all five rows are read |
+
 ## Confidence
 
 *Confirmed*: a tile's fields 4 and 6 aren't needed to read its rows, by writing them. What field 6 counts, if it differs from field 4, is *unknown*.

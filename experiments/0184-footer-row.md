@@ -30,6 +30,12 @@ The table model (type 6001) gains field 11 with the value 1, between fields 10 a
 
 Field 11 of the table model is the number of footer rows, and they are counted within the table's rows: here the last of the 22. A new table has no footer rows and leaves the field out.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `footer.numbers` | `0181/plain.numbers` | `6001 11: absent → 1`, `6001 6 = 22`, `6002 5.1: absent → 9` | *Likely*: field 11 is the number of footer rows, part of the row count |
+
 ## Confidence
 
 *Likely*: field 11 is the number of footer rows, part of the row count.

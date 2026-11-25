@@ -46,6 +46,19 @@ As references, Numbers itself set B2 to 9 in one copy (`numbers-b2-9`), and B2 t
 
 Numbers draws a chart from its link to the table, worked out when it opens the document, and ignores the copy of the data in 10000.7: a written copy changed nothing, and a written cell redrew the chart exactly as Numbers does when the cell is edited. The series formulas are ranges: a reference to the first cell and one to the last, joined by node 29. Moving only the first end to C2 made the range B2:C3, read across each row (1, 2, 3, 4), and moving both ends to column C made series x the same as y. A reader of a Numbers chart should evaluate its link formulas against the table and use 10000.7 only where there is no link, as in Pages and Keynote.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `original.numbers` | `0225/linked.numbers` | `same bytes`, `5021#905458 10000.7.3.1.1 = 1.0`, `12006#905524 3.1.1.1.26.1 = 2` | *Control* |
+| `cache-9.numbers` | `original.numbers` | Only `5021#905458 10000.7.3.1.1: 1.0 → 9.0` | *Confirmed*: the copy of the data isn't used: the sheet is drawn the same |
+| `cell-b2-9.numbers` | `original.numbers` | Only `6002#904547 5.6: changed`, `6002#904547 5.6 ~ x"09000000000000000000000000004030"` (9 in B2) | *Confirmed*: the chart follows the cell, as when Numbers sets it |
+| `numbers-b2-9.numbers` | `original.numbers` | `6002 5.6: changed`, `6002 5.6 ~ x"09000000000000000000000000004030"` (9 in B2) | *Control*: Numbers set B2 to 9 itself |
+| `link-to-c2.numbers` | `original.numbers` | Only `12006#905524 3.1.1.1.26.1: changed` (2, 2, 4, 4 to 4, 2, 4, 4) | *Confirmed*: node 29 joins two references into a range: B2:C3, four bars |
+| `link-to-column-c.numbers` | `link-to-c2.numbers` | Only `12006#905524 3.1.1.1.26.1 ≠ 2` | *Confirmed*: the values come from the link: the first series is drawn from column C |
+| `numbers-x-is-y.numbers` | `original.numbers` | `6002 5.6: changed`, `6002 5.6 ~ x"040000000000000000000000000040300100000002000000050200000000000001300000040000000000000000000000000040300100"` (4 in B3 and C3) | *Control*: Numbers set B2 and B3 to column C's values itself |
+| `numbers-b2-2.numbers` | `original.numbers` | `6002 5.6: changed`, `6002 5.6 ~ x"020000000000000000000000000040300100000002000000050200000000000001300000020000000000000000000000000040300100"` (2 in B2 and C2) | *Not used*: a document with only B2 set to 2; not mentioned in the text |
+
 ## Confidence
 
 *Confirmed*: a Numbers chart's values come from its type-12006 link formulas, not its copy in 10000.7, and node 29 joins two references into a range, by writing them.

@@ -28,6 +28,12 @@ The recipe adds a text item `note` to sheet 1. `Document.iwa` gained a type-2011
 
 A text box on a sheet is the same type-2011 shape as in Pages and Keynote, and joins the sheet's list of drawables (field 2).
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `textbox.numbers` | `0024/empty-a.numbers` | `records 2011: 0 → 1`, `2001 3: absent → "note"`, `2 2: ×1 → ×2` | *Likely*: field 2 of a sheet lists a text box along with its table |
+
 ## Confidence
 
 *Likely*: sheet field 2 lists every drawable on the sheet, of any type.

@@ -41,6 +41,13 @@ The changed area is centred under the chart, near the bottom of the 1920 × 1080
 
 A chart's caption works as in Pages: the type-633 shape that the chart's drawable names holds the caption's text in its own text record, and Keynote draws what is written there, centred below the chart. An empty caption isn't drawn in an exported slide at all; Keynote shows its prompt only while editing.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `original.key` | `0295/caption.key` | `same bytes`, `2001#2655885 3 = absent` | *Control*: an empty caption isn't drawn |
+| `caption-text.key` | `original.key` | Only `2001#2655885 3: absent → "Written chart caption"` | *Confirmed*: the text record holds the chart's caption, drawn below the chart |
+
 ## Confidence
 
 *Confirmed*: a chart's caption as the text record of the type-633 shape it names, by writing it.

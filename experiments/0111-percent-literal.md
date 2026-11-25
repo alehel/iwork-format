@@ -39,6 +39,12 @@ The cell holds the decimal128 20 × 10⁻¹ = 2.
 
 A percent sign is its own operator, node 15, applied after the number it follows (50), not folded into the literal. A reader divides the value before it by 100.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `percent.numbers` | `0064/functions.numbers` | `6005 3.5.1.1.4: 2.0 → 50.0`, `6005 3.5.1.1.1: absent → 15`, `6002 5.6 ~ x"14000000000000000000000000003e30"` | *Likely*: node 15 is the percent operator, after the number 50 |
+
 ## Confidence
 
 *Likely*: node 15 is the percent operator.

@@ -44,6 +44,15 @@ done
 
 A Keynote line behaves exactly as a Pages line: it is turned about its box's centre by the rotation, counter-clockwise, and its length is its path's natural width, with the box's own width unused. The same reader code serves both apps.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `original.key` | `theme/0166/line.key` | `same bytes`, `2011#2655554 1.1.1.4 = 333.4349` | *Control*: from 100, 100 to 300, 200 |
+| `rot-90.key` | `original.key` | Only `2011#2655554 1.1.1.4: 333.4349 → 90.0` | *Confirmed*: the line turns about its box's centre, as in Pages |
+| `natural-100.key` | `original.key` | Only `2011#2655554 1.3.5.2.1: 223.6068 → 100.0` | *Confirmed*: the path's natural width is the line's length, as in Pages |
+| `box-100.key` | `original.key` | Only `2011#2655554 1.1.1.2.1: 223.6068 → 100.0` | *Confirmed*: the box's width doesn't change the length, as in Pages |
+
 ## Confidence
 
 *Confirmed*: Keynote lines' rotation and length work as in Pages, by writing them.

@@ -36,6 +36,12 @@ Type 6 (boolean) with the same flags as the ticked checkbox, 0x00041402, and the
 
 An unticked checkbox is a boolean cell with the value 0.0, not an empty cell. The cell-control entry's kind 8 is a checkbox.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `checkfalse.numbers` | `0036/formats.numbers` | `6002 5.6 = x"0506000000002000021404000000000000000000010000000600000001000000"`, `6005 3.12.1 = 8`, `6005 3.6.1 = 263` | *Confirmed*: false is stored as the double 0.0 in a boolean cell; that control kind 8 is a checkbox is likely |
+
 ## Confidence
 
 *Confirmed*: booleans are doubles, 1.0 true and 0.0 false ([0036](0036-more-cell-formats.md) and this experiment).

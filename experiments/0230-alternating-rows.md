@@ -37,6 +37,13 @@ The rest of field 11, a 4-kilobyte block whose field 32 holds the default cell s
 
 Table model field 3 is the table's style, a type-6003 table style in the stylesheet. Table-wide options such as alternating row colour live there, as properties in field 11: 11.1 = 1 shades alternate rows. As with text styles, changing an option makes a new style that inherits from the previous one. Field 10 is probably the style's version or a count of changed properties.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `plain.numbers` | | `6003 10 = 1` | *Control*: a new document |
+| `alternating.numbers` | `plain.numbers` | `6003 10: 1 → 2`, `6003 11.1: absent → 1` | *Likely*: property 11.1 of the table style turns on alternating row colour |
+
 ## Confidence
 
 *Likely*: table model field 3 is the table style (type 6003), and its property 11.1 turns on alternating row colour.

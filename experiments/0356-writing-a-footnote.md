@@ -36,6 +36,13 @@ The U+FFFC at the start, where Pages draws the footnote's number, is kept. Pages
 
 A footnote's text is its own text storage's field 3, and writing it changes the footnote. Its first character, U+FFFC, is where the footnote's number is drawn; PDFKit happens to list the number after the text.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `original.pages` | `0041/footnote.pages` | `same bytes` | *Control*: the footnote reads note |
+| `written.pages` | `original.pages` | Only `2001#1732708 3: "\ufffc note" → "\ufffc written footnote text"` | *Confirmed*: a footnote's text is in its own text storage |
+
 ## Confidence
 
 *Confirmed*: footnote text, by writing it.

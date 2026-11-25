@@ -39,6 +39,12 @@ The table `Other` has the UUID `85968451-F81E-41AF-9326-70F0F191B079` in its mod
 
 A reference to another table carries that table's UUID in field 28.1, as four 32-bit numbers (fields 2–5) whose little-endian bytes make up the UUID. A reader matches it against field 1 of the table models. The column and row stay relative to the formula's cell, as within a table. The range node of a merge ([0044](0044-merged-cells.md)) had the same field 28, so it names its table the same way.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `cross.numbers` | `0035/formulas.numbers` | `6005 3.5.1.1.28.1.2: absent → 1367643781`, `6005 3.5.1.1.28.1.5: absent → 2041614833`, `6001 1: absent → "85968451-F81E-41AF-9326-70F0F191B079"` | *Likely*: field 28 of a reference names the other table by its UUID; Numbers shows 9 |
+
 ## Confidence
 
 *Likely*: field 28 of a reference or range node names the table by its UUID, stored as four little-endian 32-bit words.

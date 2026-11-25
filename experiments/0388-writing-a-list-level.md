@@ -46,6 +46,15 @@ The left edge of the ink on each line, marker included, in points:
 
 Field 2 of a table-6 entry is the list level of the paragraphs from that position to the next entry. Each level indents the paragraph, marker and all, a further 12 points in the Dash list style, so level 4 is 48 points in from level 0. A level the document never used before (2 and 4 here) is drawn too, so the list style holds settings for every level.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `original.pages` | `0015/nested-list.pages` | `same bytes`, `2001#1732539 6.1.2 = 1` | *Control*: level 1 is drawn 12 points further in than level 0 |
+| `level-0.pages` | `original.pages` | Only `2001#1732539 6.1.2 ≠ 1` | *Confirmed*: level 0: all three paragraphs have the same left edge |
+| `level-2.pages` | `original.pages` | Only `2001#1732539 6.1.2: 1 → 2` | *Confirmed*: level 2 is drawn 24 points in |
+| `level-4.pages` | `original.pages` | Only `2001#1732539 6.1.2: 1 → 4` | *Confirmed*: level 4 is drawn 48 points in |
+
 ## Confidence
 
 *Confirmed*: run table 6's field 2 as the list level, by writing it.

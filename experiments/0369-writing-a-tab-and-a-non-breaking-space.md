@@ -47,6 +47,15 @@ Pages counted 11 characters in both short bodies, so the tab is one character.
 
 A non-breaking space keeps its two words on one line: the line breaks before w20 instead of after it. A tab moves the text after it to the next stop, 56.69 + 36 = 92.69 points, where w02's ink starts. Neither needs anything but the character.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `spaces.pages` | `0002/hello.pages` | Only `2001#1732539 3: changed`, `2001#1732539 3 ~ "w20 w21"` | *Control*: the first line ends with w20 |
+| `nbsp.pages` | `spaces.pages` | Only `2001#1732539 3: changed`, `2001#1732539 3 ~ "w20\u00a0w21"` | *Confirmed*: U+00A0 is a non-breaking space; w20 moves to the second line |
+| `no-tab.pages` | `0002/hello.pages` | Only `2001#1732539 3: "hello" → "w01 w02 w03"` | *Control*: the line is one piece |
+| `tab.pages` | `no-tab.pages` | Only `2001#1732539 3: "w01 w02 w03" → "w01\tw02 w03"` | *Confirmed*: U+0009 is a tab; w02 moves to the next stop |
+
 ## Confidence
 
 *Confirmed*: U+0009 as a tab and U+00A0 as a non-breaking space, by writing them.

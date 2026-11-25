@@ -30,6 +30,13 @@ The root also has a field 48, absent from word-processing documents, which names
 
 A page-layout document still has a body text record, but it's empty, and the document has no body to flow text into. What marks the document as page layout is probably root field 48, which names a page template (type 10017). A reader should take a page-layout document's content from the objects on its pages.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `layout.pages` | `0020/plain.pages` | `10000 48: ×0 → ×1`, `records 10017: 0 → 1`, `10017 1: absent → "Tom"`, `2001 3: "one" → absent` | *Likely*: root field 48 is present only in a page-layout document and names a page template |
+| `layout.pages` | `0020/plain.pages` | `10000 15.9: "Application/Blank/ISO" → "Application/21_Blank_Layout/ISO"` | *Unknown*: whether another flag marks the document as page layout |
+
 ## Confidence
 
 *Likely*: root field 48 is present only in page-layout documents and names a page template (type 10017).

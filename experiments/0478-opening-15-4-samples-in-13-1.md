@@ -42,6 +42,10 @@ Afterwards the samples were compared with checksums taken before: opening and cl
 
 The 13.1 apps open every document the 15.4 apps saved in these experiments, and every one written from this spec, and read the same text, tables, slides, titles and notes from them. The password-protected samples weren't tried in 13.1, since each needs its password typed by hand.
 
+## Evidence
+
+No documents of its own: it opens the samples of 0001 to 0460 in 13.1.
+
 ## Confidence
 
 *Confirmed*: the 13.1 apps open 1,211 documents from 15.4 and from the spec's writer, and read what 15.4 read.

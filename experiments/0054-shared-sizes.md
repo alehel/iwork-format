@@ -42,6 +42,12 @@ Pages reported `one` and `three` at 14 points and `two` at 20, and the 0033 rule
 
 Ranges given the same formatting share one style object even when they are set separately through AppleScript: `one` and `three` both point at 1732647. The spaces between the words, which weren't changed, have runs with no style.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `sizes.pages` | `0008/two-words.pages` | `records 2021: 9 → 10`, `2021 11.3: absent → 14.0`, `2021 11.3: absent → 20.0`, `2001 8.1.2: ×2 → ×3` | *Confirmed*: ranges with the same formatting share one style, here three runs with two styles |
+
 ## Confidence
 
 *Confirmed*: ranges with the same formatting share one style ([0008](0008-runs-and-shared-styles.md) through the window, and this experiment through AppleScript).

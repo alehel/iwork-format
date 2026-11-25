@@ -34,6 +34,12 @@ The body's character style runs (field 8) gain an entry at 4, pointing at a new 
 
 Subscript is the same property as superscript ([0203](0203-superscript.md)), with the value 2. A reader can treat 0 or absent as normal, 1 as superscript and 2 as subscript.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `subscript.pages` | `0203/superscript.pages` | `2021 11.10: 1 → 2` | *Confirmed*, with 0203: character property 10 is the baseline position; that 2 is subscript is likely |
+
 ## Confidence
 
 *Confirmed*, with 0203: character property 10 is the baseline position. *Likely*: 2 is subscript.

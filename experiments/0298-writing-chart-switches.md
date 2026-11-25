@@ -36,6 +36,14 @@ In `resaved.key`, the settings record still holds 10000.20 = 1 and 10000.21 = 1,
 
 Field 10000.21 of a chart's type-5023 settings record shows its title and 10000.20 its legend, read in [0295](0295-chart-options.md) and now produced by writing. Nothing else in the file needs to change for Keynote to draw them: the default title text and the legend entries come from the app and from the chart's data.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `baseline.key` | `0297/baseline.key` | `same bytes` | *Control*: no title or legend |
+| `written.key` | `baseline.key` | Only `5023#2655618 10000.20: absent → 1`, `5023#2655618 10000.21: 0 → 1` | *Confirmed*: the two switches; Keynote draws the title and the legend |
+| `resaved.key` | `baseline.key` | `5023#2655618 10000.20: absent → 1`, `5023#2655618 10000.21: 0 → 1` | *Likely*: Keynote keeps them when it saves |
+
 ## Confidence
 
 *Confirmed*: 10000.21 is the title switch and 10000.20 the legend switch.

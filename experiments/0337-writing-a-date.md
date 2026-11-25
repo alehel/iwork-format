@@ -37,6 +37,14 @@ python3 -I recipes/0337-cell-date.py samples/0337/original.numbers samples/0337/
 
 A date cell's value is the double after its prefix, in seconds since 2001-01-01 00:00. The clock time shown is that count read as UTC, with no shift for the Mac's time zone, so a writer stores the wall-clock time it wants to show.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `original.numbers` | `0031/kinds.numbers` | `same bytes` | *Control*: E2 is shown as 02.01.2026 12:00 |
+| `written.numbers` | `original.numbers` | Only `6002#904547 5.6: changed`, `6002#904547 5.6 ~ x"00000004286dcb41"` | *Confirmed*: a date cell is a double of seconds since 2001; E2 is shown as 01.03.2030 08:30 |
+| `resaved.numbers` | `written.numbers` | `6002#904547 5.6 ~ x"00000004286dcb41"` | *Not used*: Numbers' own save of it |
+
 ## Confidence
 
 *Confirmed*: date cells, by writing one.

@@ -53,6 +53,17 @@ Comparing the records of [0074](0074-slide-numbers.md)'s `slidenumbers.key` with
 
 A slide shows its number when its slide-number placeholder is in its lists of shown objects, fields 7 and 42, like any other placeholder; Keynote fills it with the slide's position, here 2. Field 18 of the slide node doesn't show or hide the number: it was set on its own on every slide without any number appearing. AppleScript's document-wide `slide numbers showing` stayed false even with all three slide nodes set, though it is true in 0074, where the template slides' nodes were set too; it may require every node, layouts included. So a reader should draw a number where the placeholder is listed, and a writer should list the placeholder and set field 18 on every node, as Keynote does.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `original.key` | `theme/0160/move.key` | `same bytes`, `5#2655467 7.1 ≠ 2655501` | *Control*: no numbers shown |
+| `a-numbered.key` | `original.key` | Only `4#2655505 18: 0 → 1` | *Likely*: field 18 alone doesn't show the number |
+| `a-and-b-numbered.key` | `a-numbered.key` | Only `4#2655616 18: 0 → 1` | *Likely*: as above |
+| `all-numbered.key` | `a-and-b-numbered.key` | Only `4#2655739 18: 0 → 1` | *Likely*: as above, on all three slides |
+| `a-placeholder.key` | `original.key` | Only `5#2655467 7: ×3 → ×4`, `5#2655467 42: ×3 → ×4`, `5#2655467 7.1 = 2655501`, `5#2655467 42.1 = 2655501` | *Confirmed*: the placeholder in fields 7 and 42 shows the slide's number, 2 |
+| `a-numbered-placeholder.key` | `a-numbered.key` | Only `5#2655467 7: ×3 → ×4`, `5#2655467 42: ×3 → ×4`, `5#2655467 7.1 = 2655501`, `5#2655467 42.1 = 2655501` | *Confirmed*: the same with field 18 set |
+
 ## Confidence
 
 *Confirmed*: a slide shows its number when its slide-number placeholder is in fields 7 and 42, by writing it. *Likely*: field 18 alone doesn't show it. What field 18 is for is *unknown*.

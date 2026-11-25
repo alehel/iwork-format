@@ -39,6 +39,14 @@ Numbers opened each file on its own and read E2's value and formula.
 
 The offsets are read as written: a range of one cell is shown as that cell alone, and the second row value makes the range two rows tall. Numbers recalculates on opening: 4 × 1.5 = 6, 2 × 1.5 = 3, and the average of B2:C3's two numbers, 3, gives 4.5, rounded to 5. A missing last row (or last column) counts as 0, the formula's own row.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `b-only.numbers` | `0104/nested.numbers` | Only `6005#904540 3.5.1.1.40.1.2: -2 → -3` | *Confirmed*: 40.1 is the columns; Numbers shows the range as B2, and E2 is 6 |
+| `c-only.numbers` | `0104/nested.numbers` | Only `6005#904540 3.5.1.1.40.1.1: -3 → -2` | *Confirmed*: 40.1 is the columns; the range is C2, and E2 is 3 |
+| `b-to-c-rows.numbers` | `0104/nested.numbers` | Only `6005#904540 3.5.1.1.40.2.2: absent → 1` | *Confirmed*: 40.2 is the rows; the range is B2:C3 |
+
 ## Confidence
 
 *Confirmed*: 40.1 and 40.2 as the columns and rows of a range, as signed offsets from the formula's cell, by writing them.

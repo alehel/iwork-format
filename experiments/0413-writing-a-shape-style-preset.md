@@ -43,6 +43,15 @@ done
 
 A shape takes its look from the style its 1.2 names: pointing it at another preset's style changes its fill to that preset's, the same blue Pages draws when the preset is chosen in the sidebar. A writer can give a shape a preset by reference alone, without copying any properties.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `original.pages` | `0213/plain-shape.pages` | `same bytes`, `2011#1732647 1.2.1 = 1731553` | *Control*: black |
+| `pages-blue.pages` | `0215/blue-style.pages` | `same bytes` | *Control*: the blue Pages draws itself |
+| `style-1731554.pages` | `original.pages` | Only `2011#1732647 1.2.1: 1731553 → 1731554` | *Confirmed*: the style reference chooses the preset: the same blue as Pages' own |
+| `style-1731556.pages` | `original.pages` | Only `2011#1732647 1.2.1: 1731553 → 1731556` | *Confirmed*: as above, red |
+
 ## Confidence
 
 *Confirmed*: a shape's style reference (1.2) choosing its preset, by writing it.

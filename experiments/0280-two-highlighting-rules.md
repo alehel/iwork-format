@@ -40,6 +40,12 @@ The cell holding 1 turns red, 3 and 4 turn green, and 2 stays plain. Save as `sa
 
 Flag 0x100's key is the index, from 0, of the first rule a cell matches, or 15 when it matches none. So a reader can apply the highlighting from the cells alone: look up the cell's entry in the conditional-format list (flag 0x80's key, here 2), then take that entry's rule at the cached index and apply its style. 15 is probably a "none" value rather than a limit, but more than 15 rules weren't tested.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `two-rules.numbers` | `0259/highlight.numbers` | `6010 1: 1 → 2`, with the rule keys 1, 15 and 0 after the values 1, 2 and 3: `6002 5.6 ~ x"0100000000000000000000000000403002000000 01000000"`, `6002 5.6 ~ x"0200000000000000000000000000403002000000 0f000000"`, `6002 5.6 ~ x"0300000000000000000000000000403002000000 00000000"` | *Confirmed*: the key of flag 0x100 is the index of the rule a cell matched, or 15 for none |
+
 ## Confidence
 
 *Confirmed*, with 0267: flag 0x100's key caches which rule matched, by index, with 15 for none.

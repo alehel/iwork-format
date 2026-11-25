@@ -42,6 +42,15 @@ For comparison, `samples/0040/section-break.pages` has 0 → 1732296 and 4 → 1
 
 The U+0004 character alone makes the section break: Pages shows two sections, the second starting on a new page. The section runs only need to follow when the sections should differ. With one run, Pages makes the missing section on opening and writes two new section records when it saves. Two runs pointing at the same record are kept as they are, so a section record can be shared.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `char-only.pages` | `0002/hello.pages` | Only `2001#1732539 3: "hello" → "first\u0004second"` | *Confirmed*: U+0004 alone is a section break; Pages shows two sections |
+| `with-run.pages` | `char-only.pages` | Only `2001#1732539 17.1: ×1 → ×2` (both naming section 1732296) | *Likely*: two sections may share one section record |
+| `char-only-resaved.pages` | `char-only.pages` | `2001#1732539 17.1: ×1 → ×2`, `records 10011: 1 → 2`, `2001#1732539 17.1.2.1 = 1732660`, `2001#1732539 17.1.2.1 = 1732682` | *Likely*: Pages makes the missing section, and two new records, when it saves |
+| `with-run-resaved.pages` | `with-run.pages` | `2001#1732539 17.1: ×2 → ×2`, `records 10011: 1 → 1`, `2001#1732539 17.1.2.1 = 1732296` | *Likely*: Pages keeps the shared record when it saves |
+
 ## Confidence
 
 *Confirmed*: U+0004 as a section break, by writing it. *Likely*: two sections may share one section record, since Pages kept the shared record on saving.

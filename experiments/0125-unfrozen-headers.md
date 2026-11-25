@@ -28,6 +28,12 @@ The recipe sets the table's `header rows frozen` to false. Model field 12 change
 
 Table model field 12 is 1 when the header rows are frozen. Absent means 0. It only affects scrolling on screen, so a reader can ignore it.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `unfrozen.numbers` | `0024/empty-a.numbers` | `6001 12: 1 → absent` | *Likely*: model field 12 is 1 when the header rows are frozen |
+
 ## Confidence
 
 *Likely*: model field 12 is *header rows frozen*.

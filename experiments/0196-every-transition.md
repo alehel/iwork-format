@@ -78,6 +78,12 @@ The identifiers often differ from the names Keynote shows. For example, `drop` i
 
 A reader that only needs to know whether a slide has a transition can treat any identifier other than `none` as one. A reader that converts to another format needs this table.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `all.key` | `0091/movein.key` | `records 5: 18 → 55`, `5 4.2.8.2: "apple:slide" → "apple:bounce"`, `5 4.2.8.2: absent → "apple:radial wipe"`, `5 4.2.8.2: absent → "com.apple.iWork.Keynote.BUKTwist"` | *Likely*: the identifiers of 38 effects, one to a slide whose title names the effect |
+
 ## Confidence
 
 *Likely*: the identifiers in the table, from one sample each.

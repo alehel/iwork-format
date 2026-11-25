@@ -46,6 +46,12 @@ New record types appear: 6369, 6370, 6374 and 6382, plus more of types 6267, 630
 
 A pivot table is stored as an ordinary table whose cells hold the current summary, so a reader can show it without understanding pivots. Numbers also keeps a hidden copy of the source data (a table model named "… as Pivot Source Table") and the pivot's settings and last update time in new record types. It probably uses these to rebuild the summary on demand. The extra key on the pivot's number cells (bit 0x200) is probably a link back to the pivot's definition.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `pivot.numbers` | `0226/plain.numbers` | `records 6001: 1 → 3`, `records 6000: 1 → 2`, `6001 8: absent → "Pivot av Tabell 1"`, `6001 8: absent → "Tabell 1 as Pivot Source Table"`; the sums 4 and 6 in its cells, `6002 5.6 ~ x"0132000004"`, `6002 5.6 ~ x"0132000006"` | *Likely*: a pivot table is an ordinary table with its results in its cells, and a hidden table holds a copy of the source |
+
 ## Confidence
 
 *Likely*:

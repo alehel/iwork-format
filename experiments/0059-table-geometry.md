@@ -42,6 +42,12 @@ A Numbers table's size isn't kept in its drawable's geometry. Field 1.1.2 still 
 
 The position's x (50) matches what Numbers reports, but its y is 28 points less (32 against 60). The difference may be the room for the table's name above it, but that isn't established. Resizing a table through AppleScript writes every row and column into the header buckets, not just the ones that differ from the default.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `geometry.numbers` | `0024/empty-a.numbers` | `6000 1.1.1.1: 0.0 → 50.0`, `6000 1.1.2.1 = 494.0`, `6006 2.1: ×2 → ×29`, `6006 2.2: absent → 42.857` | *Likely*: the size is the sum of the rows and columns; Numbers reports 300 × 184 where the drawable holds 494 × 231 |
+
 ## Confidence
 
 *Likely*: a Numbers table's real size is the sum of its row heights and column widths, and drawable field 1.1.2 can be out of date.

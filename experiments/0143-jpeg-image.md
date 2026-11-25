@@ -29,6 +29,12 @@ The package holds `Data/red-8x4-24.jpg`, 777 bytes, the same size as the JPEG pl
 
 A JPEG is stored unchanged with its own extension, as a PNG is. Pages doesn't convert images to one format, so a reader has to handle whatever formats users place.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `jpeg.pages` | `0023/image.pages` | `part Data/red-8x4-24.jpg: absent → present`, `part Data/red-8x4-24.png: present → absent`, `11006 4.4: "red-8x4-24.png" → "red-8x4-24.jpg"`; 777 bytes, like the file placed | *Likely*: a JPEG is stored in its original format |
+
 ## Confidence
 
 *Likely*: image files are stored in their original format.

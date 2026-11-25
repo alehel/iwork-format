@@ -36,6 +36,12 @@ Of the table model's (type 6001) top-level numeric fields, only these changed:
 
 Table model field 9 is the number of header rows, field 10 the number of header columns, and field 11 the number of footer rows. A field left out means 0. In Pages' table of [0020](0020-a-table.md), field 9 was 1, which fits its single header row.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `headers.numbers` | `0024/empty-a.numbers` | `6001 9: 1 → 2`, `6001 10: 1 → absent`, `6001 11: absent → 1` | *Likely*: fields 9, 10 and 11 count the header rows, header columns and footer rows |
+
 ## Confidence
 
 *Likely*: table model fields 9, 10 and 11 are the header row, header column and footer row counts.

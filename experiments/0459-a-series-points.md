@@ -14,6 +14,8 @@ A scatter chart's points kept the theme's blue when the series style's fill prop
 | Input | `samples/0296/baseline.key`, with chart 2655552 made a scatter chart (10000.1 = 9); the first series' style is 2651484. Its properties 54 to 58 are colours like 6 to 17, 30 to 34 are shadows (a colour, an angle of 130°, an offset, a blur of 10, an opacity of 0.5 and a switch), and 47, 48, 50, 51 and 53 solid blue strokes |
 | Writer | [`recipes/0302-set-path.py`](../recipes/0302-set-path.py); exported with [`recipes/0372-in-app.sh`](../recipes/0372-in-app.sh) and read with [`recipes/0384-pdf-colours.swift`](../recipes/0384-pdf-colours.swift) |
 
+*Corrected 2026-11-25:* the files for properties 47 to 53 are named `scatter-s47.key` and so on. Of 54 to 58, only 55 is the blue of 6 to 17; the others are white.
+
 ## Recipe
 
 ```bash
@@ -42,6 +44,22 @@ The box from (700, 470) to (740, 520) holds the first series' middle point, whic
 ## Conclusion
 
 Stroke property 53 is the outline of a scatter chart's points: written red, it drew a red ring of 49 grid points around a still blue centre. The points' fill is in none of the colour properties 6 to 17 and 54 to 58, nor the strokes; where it is is *unknown*. The theme's series style keeps it the same blue as everything else, so a reader can use property 53's colour for the whole point and be right for the documents Keynote makes.
+
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `scatter.key` | `0296/baseline.key` | Only `5021#2655552 10000.1: 1 → 9` | *Control*: the point covers 155 blue grid points |
+| `scatter-54.key` | `scatter.key` | Only `5028#2651484 10000.54.1.4: 1.0 → 0.0`, `5028#2651484 10000.54.1.5: 0.9999 → 0.0`, `5028#2651484 10000.54.1.12: 1 → 0`, `5028#2651484 10000.54.1.3: changed` | *Unknown*: where the points' fill is; colour 54 changes nothing |
+| `scatter-55.key` | `scatter.key` | Only `5028#2651484 10000.55.1.3: 0.0006 → 1.0`, `5028#2651484 10000.55.1.4: 0.6336 → 0.0`, `5028#2651484 10000.55.1.5: 1.0 → 0.0`, `5028#2651484 10000.55.1.12: 1 → 0` | *Unknown*: where the points' fill is; colour 55 changes nothing |
+| `scatter-56.key` | `scatter.key` | Only `5028#2651484 10000.56.1.4: 1.0 → 0.0`, `5028#2651484 10000.56.1.5: 0.9999 → 0.0`, `5028#2651484 10000.56.1.12: 1 → 0`, `5028#2651484 10000.56.1.3: changed` | *Unknown*: where the points' fill is; colour 56 changes nothing |
+| `scatter-57.key` | `scatter.key` | Only `5028#2651484 10000.57.1.4: 1.0 → 0.0`, `5028#2651484 10000.57.1.5: 0.9999 → 0.0`, `5028#2651484 10000.57.1.12: 1 → 0`, `5028#2651484 10000.57.1.3: changed` | *Unknown*: where the points' fill is; colour 57 changes nothing |
+| `scatter-58.key` | `scatter.key` | Only `5028#2651484 10000.58.1.4: 1.0 → 0.0`, `5028#2651484 10000.58.1.5: 0.9999 → 0.0`, `5028#2651484 10000.58.1.12: 1 → 0`, `5028#2651484 10000.58.1.3: changed` | *Unknown*: where the points' fill is; colour 58 changes nothing |
+| `scatter-s47.key` | `scatter.key` | Only `5028#2651484 10000.47.1.3: 0.0006 → 1.0`, `5028#2651484 10000.47.1.4: 0.6336 → 0.0`, `5028#2651484 10000.47.1.5: 1.0 → 0.0`, `5028#2651484 10000.47.1.12: 1 → 0` | *Unknown*: where the points' fill is; stroke 47 changes nothing |
+| `scatter-s48.key` | `scatter.key` | Only `5028#2651484 10000.48.1.3: 0.0006 → 1.0`, `5028#2651484 10000.48.1.4: 0.6336 → 0.0`, `5028#2651484 10000.48.1.5: 1.0 → 0.0`, `5028#2651484 10000.48.1.12: 1 → 0` | *Unknown*: where the points' fill is; stroke 48 changes nothing |
+| `scatter-s50.key` | `scatter.key` | Only `5028#2651484 10000.50.1.3: 0.0006 → 1.0`, `5028#2651484 10000.50.1.4: 0.6336 → 0.0`, `5028#2651484 10000.50.1.5: 1.0 → 0.0`, `5028#2651484 10000.50.1.12: 1 → 0` | *Unknown*: where the points' fill is; stroke 50 changes nothing |
+| `scatter-s51.key` | `scatter.key` | Only `5028#2651484 10000.51.1.3: 0.0006 → 1.0`, `5028#2651484 10000.51.1.4: 0.6336 → 0.0`, `5028#2651484 10000.51.1.5: 1.0 → 0.0`, `5028#2651484 10000.51.1.12: 1 → 0` | *Unknown*: where the points' fill is; stroke 51 changes nothing |
+| `scatter-s53.key` | `scatter.key` | Only `5028#2651484 10000.53.1.3: 0.0006 → 1.0`, `5028#2651484 10000.53.1.4: 0.6336 → 0.0`, `5028#2651484 10000.53.1.5: 1.0 → 0.0`, `5028#2651484 10000.53.1.12: 1 → 0` | *Confirmed*: property 53 is the outline of the points; a red ring around a blue centre |
 
 ## Confidence
 

@@ -28,7 +28,7 @@ The recipe fills table 1 as in [0226](0226-category.md): `kind` a, b, a, b and `
 
 ## Observation
 
-The cells are unchanged. In the table model (type 6001), field 70 grows from 118 to 630 bytes. Its field 2.3 now lists 20 rows by their 128-bit IDs, each with field 3 set to 1. Those are the two rows with n = 1 and 2 and the 18 empty rows, which don't pass the rule either.
+The cells are unchanged. In the table model (type 6001), field 70 grows from 118 to 630 bytes. Its field 2.3 now lists 19 rows (first written as 20) by their 128-bit IDs, each with field 3 set to 1. Those are the two rows with n = 1 and 2 and the 17 empty rows, which don't pass the rule either.
 
 The rule itself is in two type-6220 records in `CalculationEngine.iwa`. Each holds it as a formula in the node form of cell formulas ([0035](0035-formula-references.md)):
 
@@ -43,6 +43,12 @@ One of the records also holds the rule's kind (7 in field 7.1.1) and its value, 
 ## Conclusion
 
 A filter rule is stored as a formula that compares a cell with a value, written relative to the cell being tested. Here that is `cell > 2`, using the comparison node 7 of cell formulas ([0066](0066-comparisons-and-if.md)). Numbers also stores the result: table model field 70.2.3 lists the rows it hides. A reader can hide those rows without evaluating the rule, and keep them when it ignores filters, since the cells aren't touched.
+
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `filter.numbers` | `0226/plain.numbers` | `6220 7.1.1: absent → 7`, `6220 7.1.5.2.1: absent → 2.0`, `6220 3.1.1.1.1.4: absent → 2.0`, `6001 70.2.3.2.3: ×0 → ×19` | *Likely*: the rule is a formula in type-6220 records, and the rows Numbers hides are listed in table model field 70.2.3 |
 
 ## Confidence
 

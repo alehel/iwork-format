@@ -49,6 +49,18 @@ done
 
 Field 15 is auto restart, 1 for on. Field 16 is the idle time in seconds, a double; AppleScript reports it in whole minutes, rounding down (179 seconds is 2, 42.5 is 0). Keynote keeps a time that isn't a whole number of minutes, so a reader should take the seconds from the file.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `original.key` | `theme/0160/move.key` | `same bytes`, `2#2652410 15 = 0`, `2#2652410 16 = 900.0` | *Control*: auto restart off, 15 minutes |
+| `restart.key` | `original.key` | Only `2#2652410 15: 0 → 1` | *Confirmed*: field 15 is auto restart |
+| `idle-60.key` | `original.key` | Only `2#2652410 16: 900.0 → 60.0` | *Confirmed*: field 16 is the idle time in seconds: AppleScript says 1 minute |
+| `idle-150.key` | `original.key` | Only `2#2652410 16: 900.0 → 150.0` | *Confirmed*: 2 minutes, rounded down |
+| `idle-179.key` | `original.key` | Only `2#2652410 16: 900.0 → 179.0` | *Confirmed*: 2 minutes, rounded down |
+| `idle-300.key` | `original.key` | Only `2#2652410 16: 900.0 → 300.0` | *Confirmed*: 5 minutes |
+| `both.key` | `restart.key` | Only `2#2652410 16: 900.0 → 42.5` | *Confirmed*: auto restart on, 0 minutes |
+
 ## Confidence
 
 *Confirmed*: field 15 as auto restart and field 16 as the idle time in seconds, by writing them.

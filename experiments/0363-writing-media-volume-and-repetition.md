@@ -40,6 +40,14 @@ Keynote opened each file on its own and read the properties of the media on slid
 
 Field 7 is the volume as a fraction, which AppleScript shows as a percentage. Field 24 is the repetition: 0 none, 1 loop and 2 loop back and forth. The same fields work for a sound and a movie.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `quarter-loop.key` | `0185/audio.key` | Only `3007#2652476 7: 1.0 → 0.25`, `3007#2652476 24: 0 → 1` | *Confirmed*: field 7 is the volume and field 24 the repetition; Keynote says 25 and loop |
+| `back-and-forth.key` | `0185/audio.key` | Only `3007#2652476 24: 0 → 2` | *Confirmed*: 2 is loop back and forth |
+| `movie-silent.key` | `0185/movie.key` | Only `3007#2652476 7: 1.0 → 0.0`, `3007#2652476 24: 0 → 2` | *Confirmed*: the same for a movie; Keynote says 0 and loop back and forth |
+
 ## Confidence
 
 *Confirmed*: field 7 as the volume and field 24 as the repetition, with 2 meaning loop back and forth, by writing them.

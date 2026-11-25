@@ -39,6 +39,13 @@ The second column starts at 56.69 + 228.9 + 24.1 = 309.7.
 
 U+2028 breaks the line and keeps one paragraph. U+000C ends the paragraph and sends the text after it to the top of the next column, here the right-hand one. Neither needs anything but the character.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `line-break.pages` | `0002/hello.pages` | Only `2001#1732539 3: "hello" → "first line\u2028second line"` | *Confirmed*: U+2028 is a line break; two lines in one paragraph |
+| `column-break.pages` | `0324/two.pages` | Only `2001#1732539 3: changed`, `2001#1732539 3 = "left column\u000cright column"` | *Confirmed*: U+000C is a column break; the text after it is in the second column |
+
 ## Confidence
 
 *Confirmed*: U+2028 as a line break and U+000C as a column break, by writing them.

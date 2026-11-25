@@ -28,6 +28,14 @@ The slide gained the same records as for the line in [0166](0166-keynote-line.md
 
 Shapes are the same type with the same style identifier in Keynote and Pages. A new shape is centred on the slide. Field 6 differs between the apps; its meaning is unknown.
 
+*Corrected 2026-11-25:* field 6 doesn't follow the app: Pages' own shapes and lines ([0050](0050-shape.md), [0051](0051-line.md)) have 0 too, and only text boxes 1.
+
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `shapetext.key` | `0168/untouched.key` | `records 2011: 11 → 12`, `2001 3: absent → "shape"`, `2011 1.1.1.1.1: absent → 910.0`, `2011 1.1.1.1.2: absent → 490.0` | *Confirmed*: a shape with text on a slide is type 2011, as in Pages |
+
 ## Confidence
 
 *Confirmed*: shapes with text are type 2011, with fields 2 and 4 naming the text ([0049](0049-text-box.md), [0050](0050-shape.md) and this experiment).

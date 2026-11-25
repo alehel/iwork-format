@@ -37,6 +37,12 @@ The cell holds 4.
 
 A reference to a whole column is a cell-reference node (36) with a column (field 26, here relative: −3) and no row (field 27). Presumably a whole row would have a row and no column. SUM's argument here is that reference, not a range node.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `whole-column.numbers` | `0064/functions.numbers` | `6005 3.5.1.1.26.1 = 5`, `6005 3.5.1.1.27 ≠ present`, `6005 3.5.1.1.2: absent → 168` | *Likely*: a cell reference without field 27 is a whole column |
+
 ## Confidence
 
 *Likely*: a cell reference without field 27 means the whole column.

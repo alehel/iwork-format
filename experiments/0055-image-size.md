@@ -35,6 +35,13 @@ Field 9 is still 8 × 4, and the position (1.1.1) is unchanged.
 
 An image's field 9 is its natural size: the size of the image file, in pixels taken as points. Fields 1.1.2 and 4 are the size it is drawn at. Why the drawn size is stored twice isn't known. Field 4 may be the size before cropping by the mask path in field 19.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `size.pages` | `0023/image.pages` | `3005 1.1.2.1: 8.0 → 80.0`, `3005 1.1.2.2: 4.0 → 40.0`, `3005 4.1: 8.0 → 80.0`, `3005 4.2: 4.0 → 40.0` | *Likely*: fields 1.1.2 and 4 are the displayed size |
+| `size.pages` | `0023/image.pages` | `3005 9.1 = 8.0`, `3005 9.2 = 4.0` | *Likely*: field 9 is the natural size, which stays 8 × 4 |
+
 ## Confidence
 
 *Likely*: image field 9 is the natural size, and 1.1.2 and 4 are the displayed size.

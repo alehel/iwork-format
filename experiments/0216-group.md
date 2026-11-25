@@ -47,6 +47,12 @@ Each shape's drawable field 1.2 now names the group, and its position is measure
 
 A group is a type-3008 drawable whose repeated field 2 lists its members. The group has its own geometry, the box around its members. Each member names the group as its parent (field 1.2) and is positioned relative to the group's top-left corner, so a reader must add the group's position (and apply its rotation) to place the members on the page. Only the group is listed on the page.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `group.pages` | `0215/blue-style.pages` | `records 3008: 0 → 1`, `3008 2: ×0 → ×2`, `3008 1.1.2.1: absent → 250.0`, `2011 1.1.1.1.1: 450.0 → 150.0` | *Likely*: a group lists its members in field 2, and their positions are relative to it |
+
 ## Confidence
 
 *Likely*: a group is type 3008 listing its members in field 2, and members are positioned relative to it.

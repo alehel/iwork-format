@@ -34,6 +34,12 @@ The paragraph style's property 25 is:
 
 Each tab stop holds its position in points (field 1), its alignment (field 2) and its leader (field 3). The leader is stored as the character itself, so a reader can repeat it to fill the gap. Right alignment is 2. Following the pop-up's order (left, centre, right, decimal), left is 0 and absent by default, centre is probably 1 and decimal 3.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `right-tab.pages` | `0255/tab-stop.pages` | `2022 12.25.1.2: absent → 2`, `2022 12.25.1.3: absent → "."`, `2022 12.25.1.1 = 85.0394` | *Likely*: a tab stop holds its alignment in field 2 and its leader in field 3 |
+
 ## Confidence
 
 *Likely*: tab stop field 2 is the alignment (2 right) and field 3 the leader character.

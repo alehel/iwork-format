@@ -49,6 +49,19 @@ With angles counter-clockwise and y down, let u(θ) = (cos θ, −sin θ). The c
 
 where C is the box's centre and w its width, so d ≈ 35.4 here. For 0° that gives an offset of (−10, +25), for 270° (+25, −10), for 45° (0, +50) and for 225° (+50, 0), matching the grid within its 4-point steps; at 90°, 135° and 180° the centre lies outside the shape, and the reddest point found is on its edge. Put another way: the point d from the centre towards the bottom right, (375, 375), stays where it is, and the centre lies d from it in the direction opposite the angle. At 315° the centre is the box's centre, which is why Pages' own radial gradients are centred.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `angle-0.pages` | `0384/radial.pages` | Only `2025#1732719 1.11.1.2.5.2: 4.7124 → 0.0` | *Likely*: the formula fits; the centre is found at 338, 374 |
+| `angle-45.pages` | `0384/radial.pages` | Only `2025#1732719 1.11.1.2.5.2: 4.7124 → 0.7854` | *Likely*: the formula fits; the centre is found at 350, 398 |
+| `angle-90.pages` | `0384/radial.pages` | Only `2025#1732719 1.11.1.2.5.2: 4.7124 → 1.5708` | *Likely*: the formula fits, with the centre outside the shape; the reddest point is on the edge, at 374, 398 |
+| `angle-135.pages` | `0384/radial.pages` | Only `2025#1732719 1.11.1.2.5.2: 4.7124 → 2.3562` | *Likely*: the formula fits, with the centre outside the shape; the reddest point is on the edge, at 398, 398 |
+| `angle-180.pages` | `0384/radial.pages` | Only `2025#1732719 1.11.1.2.5.2: 4.7124 → 3.1416` | *Likely*: the formula fits, with the centre outside the shape; the reddest point is on the edge, at 398, 378 |
+| `angle-225.pages` | `0384/radial.pages` | Only `2025#1732719 1.11.1.2.5.2: 4.7124 → 3.927` | *Likely*: the formula fits; the centre is found at 398, 350 |
+| `angle-270.pages` | `0384/radial.pages` | `same bytes`, `2025#1732719 1.11.1.2.5.2 = 4.7124` | *Likely*: the formula fits; the centre is found at 374, 338 |
+| `angle-315.pages` | `0384/radial.pages` | Only `2025#1732719 1.11.1.2.5.2: 4.7124 → 5.4978` | *Likely*: the formula fits; the centre is the shape's centre |
+
 ## Confidence
 
 *Likely*: the formula above, which fits eight angles within the grid's steps in one 100 × 100 shape. A shape that isn't square would test how width and height enter it.

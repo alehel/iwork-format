@@ -38,6 +38,12 @@ Field 4.3.2 is 256. There is no tile with index 1. The empty tile `Tile-905022-2
 
 Only tiles with content are stored, and the tile list skips the others: index 1, for rows 256–511, is missing. The rule from 0030 holds for every stored row: tile index × 256 + local row = 2 × 256 + 87 = 599 and 3 × 256 + 231 = 999. A reader has to use each entry's tile index, not its position in the list.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `sparse.numbers` | `0030/row-300.numbers` | `6001 4.3.1.1: 1 → 2`, `6001 4.3.1.1: absent → 3`, `6002 5.1: absent → 87`, `6002 5.1: absent → 231` | *Confirmed*: rows 599 and 999 are tile index × 256 plus the local row; that tiles without content are left out of the list is likely |
+
 ## Confidence
 
 *Confirmed*: a cell's row is tile index × 256 + its local row ([0030](0030-tiles.md) and this experiment).

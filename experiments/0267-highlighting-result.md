@@ -31,6 +31,14 @@ All four cells have the flags 0x3181 and four keys:
 
 The key for flag 0x80 is the cell's entry in the conditional-format list (type 9), here entry 1, shared by all four cells. The key for flag 0x100 records the result: 0 where the cell matches, and 15 where it doesn't. 0 is most likely the index of the first rule that matched, and 15 a value meaning none. So Numbers does cache which rule applies to each cell, and a reader can show the highlighting without evaluating the rule. This corrects the conclusion of 0259.
 
+## Evidence
+
+No documents of its own: it reads the cells of 0259's sample.
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `0259/highlight.numbers` | `0226/plain.numbers` | the keys of a cell that doesn't match, `6002 5.6 ~ x"4030010000000f000000"`, and of one that does, `6002 5.6 ~ x"40300100000000000000"` | *Likely*: the first key is the cell's conditional-format entry and the second the rule that matches it, 15 for none |
+
 ## Confidence
 
 *Likely*:

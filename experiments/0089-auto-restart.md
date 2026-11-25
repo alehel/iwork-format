@@ -35,6 +35,12 @@ The presentation record (type 2) changed two fields:
 
 Field 15 of the presentation is *auto restart*, and field 16 the idle time before a restart, in seconds. AppleScript's `maximum idle duration` of 30 became 1800 seconds, so AppleScript counts that setting in minutes. The default, 900 seconds, is 15 minutes, and is stored even when auto restart is off.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `autorestart.key` | `0025/empty.key` | `2 15: 0 → 1`, `2 16: 900.0 → 1800.0` | *Likely*: presentation fields 15 and 16 are auto restart and the idle time in seconds |
+
 ## Confidence
 
 *Likely*: presentation field 15 is auto restart and field 16 the idle time in seconds.

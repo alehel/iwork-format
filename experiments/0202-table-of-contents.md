@@ -43,6 +43,12 @@ A table of contents is an attachment in the body, at a U+FFFC, like a table. It 
 
 Pages also added a page break (U+0005) after the table.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `toc.pages` | `0179/plain.pages` | `records 2241: 0 → 1`, `records 2240: 0 → 1`, `2001 1: absent → 7`, `2010 2: absent → "1"` | *Likely*: a table of contents is an attachment with its own text and cached page numbers |
+
 ## Confidence
 
 *Likely*: a table of contents is a type-2241 attachment holding type 2240, with a text record of kind 7 and cached page numbers in type-2010 records.

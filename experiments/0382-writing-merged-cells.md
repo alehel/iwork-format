@@ -51,6 +51,15 @@ In a merged range's node, field 40.3 is the span of columns and 40.4 the span of
 
 The spec's earlier reading, that 40.4 = { 1, 2 } are columns B to C, was wrong.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `original.numbers` | `0044/merged.numbers` | `same bytes`, `6001#904595 47.2.3.2.1.1.40.3.1 = 2` | *Control*: Numbers draws C2:C3 merged; why 0044's script made that is unknown |
+| `column-b.numbers` | `original.numbers` | Only `6001#904595 47.2.3.2.1.1.40.3.1: 2 → 1` | *Confirmed*: field 40.3 is the span of columns: B2:B3 is drawn merged |
+| `columns-c-d.numbers` | `original.numbers` | Only `6001#904595 47.2.3.2.1.1.40.3.2: absent → 3` | *Confirmed*: its field 2 is the last column: C2:D3 |
+| `rows-2-5.numbers` | `original.numbers` | Only `6001#904595 47.2.3.2.1.1.40.4.2: 2 → 4` | *Confirmed*: field 40.4 is the span of rows: C2:C5 |
+
 ## Confidence
 
 *Confirmed*: field 40.3 of a merged range's node as its columns and 40.4 as its rows, first and last from 0, by writing them. Why 0044's script produced C2:C3 is *unknown*; rerunning it and reading the merge back would settle it.

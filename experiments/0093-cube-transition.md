@@ -32,9 +32,17 @@ The recipe sets slide 1's transition to `cube`, 1.5 seconds. The slide's field 4
 
 The slide node's field 7 became 1, as in 0071.
 
+*Corrected 2026-11-25:* field 12 is next to 4.2.8, not inside it: it is 4.2.12.
+
 ## Conclusion
 
 The stored name of AppleScript's `cube` effect is `apple:3D-cube`. Effect names are Keynote's own identifiers with an `apple:` prefix, not AppleScript's names, so a reader needs a table from one to the other. The duration is in field 3, in seconds.
+
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `cube.key` | `0025/empty.key` | `5 4.2.8.2: "none" → "apple:3D-cube"`, `5 4.2.8.3: 1.0 → 1.5` | *Likely*: the cube transition is stored as `apple:3D-cube` |
 
 ## Confidence
 

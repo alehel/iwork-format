@@ -48,6 +48,17 @@ Each image was compared with `plain.key`'s with [`recipes/0449-image-diff.swift`
 
 A build plays only when both lists are there: without its stage record in slide field 43, the build in field 2 is ignored and the title is shown from the start, and without field 2 the stage record does nothing either. Listing the same stage twice doesn't add a stage. So field 43 lists the stages to play, each naming its build, and a writer adding a build must add both the build and its stage. How a delivery in several steps is stored is still open, since Keynote doesn't let its delivery be set from a script.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `plain.key` | `theme/0257/plain.key` | `same bytes`, `5#2655467 2 = absent`, `5#2655467 43 = absent` | *Control*: no build, one image |
+| `build.key` | `theme/0257/build.key` | `same bytes`, `5#2655467 2.1 = 2655727`, `5#2655467 43.1 = 2655732` | *Control*: two images, the first without the title |
+| `stage-twice.key` | `build.key` | Only `5#2655467 43: ×1 → ×2` | *Confirmed*: a stage listed twice plays once |
+| `no-stages.key` | `build.key` | Only `5#2655467 43: ×1 → ×0` | *Confirmed*: without its stage the build doesn't play |
+| `no-builds.key` | `build.key` | Only `5#2655467 2: ×1 → ×0` | *Confirmed*: without the build its stage does nothing |
+| `no-builds-no-stages.key` | `build.key` | Only `5#2655467 2: ×1 → ×0`, `5#2655467 43: ×1 → ×0` | *Not used*: both lists removed; the text doesn't mention it |
+
 ## Confidence
 
 *Confirmed*: a build needs both its entry in slide field 2 and a type-153 stage in field 43, and a stage listed twice plays once, by writing them.

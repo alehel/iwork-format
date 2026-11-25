@@ -46,6 +46,16 @@ done
 
 A character style that leaves a property out passes on the paragraph style's value: `Framhevet` sets no italic, so `bold` is bold and italic when Body is italic. A property written as 0 in the character style turns it off over the paragraph style's 1, for bold and for italic alike. So a reader has to tell an absent property from a 0, and look further down the chain only when it is absent.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `original.pages` | `0351/bold.pages` | `same bytes`, `2021#1731541 11.1 = 1`, `2021#1731541 11.2 = absent` | *Control* |
+| `body-bold.pages` | `original.pages` | Only `2022#1731511 11.1: 0 → 1` | *Control*: both words are bold |
+| `body-bold-emph-off.pages` | `body-bold.pages` | Only `2021#1731541 11.1: 1 → 0` | *Confirmed*: 0 in the character style turns bold off |
+| `body-italic.pages` | `original.pages` | Only `2022#1731511 11.2: 0 → 1` | *Confirmed*: a left-out property is inherited: the second word is bold italic |
+| `body-italic-emph-off.pages` | `body-italic.pages` | Only `2021#1731541 11.2: absent → 0` | *Confirmed*: 0 in the character style turns italic off |
+
 ## Confidence
 
 *Confirmed*: a left-out character property is inherited and one set to 0 turns it off, by writing them.

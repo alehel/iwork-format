@@ -51,6 +51,14 @@ The drawable is at (960, 540), the middle of the slide, with a size of 0 × 0. T
 
 A sound is stored as a type-3007 record, the same type as a movie ([0187](0187-keynote-movie.md)). Its field 14 names the media file by data ID, as an image names its file. Field 29 describes the media's first track: its kind (`soun`), its time scale (8000, the sample rate) and its language (`und`, undetermined). Fields 3–5 are probably the start, end and poster times in seconds, with the end at the one-second length. Field 9 is 1 for a sound with no picture.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `audio.key` | `0168/untouched.key` | `records 3007: 2 → 3`, `part Data/tone-*.m4a: absent → present`, `3007 9: absent → 1`, `3007 29.1.1: absent → "soun"` | *Likely*: a sound is a type-3007 record that names its file in field 14 |
+| `loop.key` | `audio.key` | `3007 7: 1.0 → 0.5`, `3007 24: 0 → 1` | *Control*: the same sound looping at half volume, read in 0186 |
+| `movie.key` | `audio.key` | `part Data/clip-*.mov: absent → present`, `3007 9: 1 → 0` | *Control*: a movie, read in 0187 |
+
 ## Confidence
 
 *Likely*: a sound is a type-3007 record that names its file in field 14.

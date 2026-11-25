@@ -28,6 +28,12 @@ The recipe sets the column count to 3. Model field 7 changed from 7 to 3.
 
 Model field 7 is the number of columns.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `fewercols.numbers` | `0024/empty-a.numbers` | `6001 7: 7 → 3` | *Confirmed*: model field 7 is the column count |
+
 ## Confidence
 
 *Confirmed*: model field 7 is the column count ([0020](0020-a-table.md) and this experiment).

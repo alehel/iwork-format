@@ -35,6 +35,12 @@ The body text is still `One two`, and no character style is added. Run table 11 
 
 Placeholder text made in a document is the same type-2031 smart field as a template's, run over the placeholder's text. Field 2 differs: 0 here, against 1 in every template placeholder seen. It probably records where the placeholder came from, or whether its prompt should be selected as a whole when clicked. The prompt is the text the run covers.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `placeholder.pages` | `0158/essay.pages` | `2031 2: 1 → 0`, `2001 11.1.1: absent → 4`, `2001 3 = "One two"` | *Confirmed*, with 0158 and 0199: placeholder text is a type-2031 smart field over its prompt; field 2 is unknown |
+
 ## Confidence
 
 *Confirmed*, with 0158 and 0199: placeholder text is a type-2031 smart field over its prompt.

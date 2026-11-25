@@ -61,6 +61,24 @@ Pages finds each part through the component list in `Metadata.iwa` record 2, fie
 
 So a reader can find parts by listing the ZIP, as the spec says, but a writer that renames or adds a part must update the component list.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `original.pages` | `0002/hello.pages` | `same bytes` | *Control* |
+| `document-numbered.pages` | `original.pages` | Only `part Index/Document.iwa: present → absent`, `part Index/Document-1234567.iwa: absent → present` | *Confirmed*: renamed but not listed, it is damaged to Pages |
+| `document-other.pages` | `original.pages` | Only `part Index/Document.iwa: present → absent`, `part Index/Zebra.iwa: absent → present` | *Confirmed*: as above |
+| `stylesheet-numbered.pages` | `original.pages` | Only `part Index/DocumentStylesheet.iwa: present → absent`, `part Index/DocumentStylesheet-42.iwa: absent → present` | *Confirmed*: as above |
+| `stylesheet-own-id.pages` | `original.pages` | Only `part Index/DocumentStylesheet.iwa: present → absent`, `part Index/DocumentStylesheet-1732613.iwa: absent → present` | *Confirmed*: as above, even with the form saving produces |
+| `viewstate-own-id.pages` | `original.pages` | Only `part Index/ViewState.iwa: present → absent`, `part Index/ViewState-1732641.iwa: absent → present` | *Confirmed*: as above |
+| `viewstate-other.pages` | `original.pages` | Only `part Index/ViewState.iwa: present → absent`, `part Index/ViewState-99.iwa: absent → present` | *Confirmed*: as above |
+| `annotation-plain.pages` | `original.pages` | Only `part Index/AnnotationAuthorStorage-1732609.iwa: present → absent`, `part Index/AnnotationAuthorStorage.iwa: absent → present` | *Confirmed*: as above |
+| `metadata-other.pages` | `original.pages` | Only `part Index/Metadata.iwa: present → absent`, `part Index/Alpha.iwa: absent → present` | *Likely*: the metadata part can't be renamed: Pages can't open the document |
+| `metadata-renamed-only.pages` | `metadata-other.pages` | `same bytes` | *Not used*: a copy of the file above |
+| `viewstate-99-listed.pages` | `original.pages` | Only `11006#2 3.3: ×2 → ×3`, `11006#2 3.3 = "ViewState-99"`, `part Index/ViewState.iwa: present → absent`, `part Index/ViewState-99.iwa: absent → present` | *Confirmed*: with the new stored name in the component list, Pages opens it |
+| `document-zebra-listed.pages` | `original.pages` | Only `11006#2 3.3: ×2 → ×3`, `11006#2 3.3 = "Zebra"`, `part Index/Document.iwa: present → absent`, `part Index/Zebra.iwa: absent → present` | *Confirmed*: as above, with any name |
+| `annotation-plain-listed.pages` | `original.pages` | Only `11006#2 3.3: ×2 → ×1`, `11006#2 3.3 ≠ "AnnotationAuthorStorage-1732609"`, `part Index/AnnotationAuthorStorage-1732609.iwa: present → absent`, `part Index/AnnotationAuthorStorage.iwa: absent → present` | *Confirmed*: without field 3 the part has the component's name: Pages opens it |
+
 ## Confidence
 
 *Confirmed*: `Metadata.iwa` record 2's field 3 as the list of components, with field 2 the name and field 3 the stored name when it differs, by renaming parts with and without it.

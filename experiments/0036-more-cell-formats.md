@@ -90,6 +90,13 @@ G2 carries a duration format key, but Numbers reported its format as automatic a
 
 Bytes 6–7 differ by format: 0x0020 for the checkbox, 0x0080 for text, 0x0004 for the duration and 0x0001 for the others. In 0031 they were 0x0802 for currency and 0x0001 for percent. They may record which format the user chose, but that isn't established.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `formats.numbers` | `0031/kinds.numbers` | `6005 3.6.1: absent → 263`, `6005 3.6.1: absent → 267`, `6005 3.6.1: absent → 262`, `6005 3.6.1: absent → 268` | *Likely*: the format kinds of a checkbox, a rating, a fraction and a duration |
+| `formats.numbers` | `0031/kinds.numbers` | `6002 5.6 ~ x"050600000000200002140400000000000000f03f"`, `6005 3.12.1: absent → 8`, `6005 3.12.4: absent → 5.0`, `6005 3.3: absent → "042"` | *Likely*: cell type 6 is a boolean, and list type 12 holds cell controls |
+
 ## Confidence
 
 *Likely*: the flag bits and format kinds listed above, cell type 6 as a boolean, and list type 12 as cell controls.

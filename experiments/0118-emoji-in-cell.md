@@ -28,6 +28,12 @@ The recipe puts `hi🙂` in B2. The string table holds 6 bytes: `68 69 f0 9f 99 
 
 Cell text is UTF-8 in the string table, like body text, including characters outside the Basic Multilingual Plane.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `emoji.numbers` | `0024/empty-a.numbers` | `6005 3.3: absent → "hi🙂"`, `6005 3.3 ~ x"6869f09f9982"` | *Likely*: text in the string table is UTF-8 |
+
 ## Confidence
 
 *Likely*: string-table text is UTF-8.

@@ -30,6 +30,12 @@ The recipe puts 4 in B2, 2 in C2 and `=B2*C2` in E2. The formula list has one en
 
 Keynote tables store formulas in the same node format as Pages and Numbers.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `formula.key` | `0132/formula.pages` | `6005 3.5.1.1.1: ×3 → ×3`, `6005 3.5.1.1.1 = 36`, `6005 3.5.1.1.1 = 3` | *Confirmed*: Keynote stores a formula's nodes as Pages and Numbers do |
+
 ## Confidence
 
 *Confirmed*: formulas are stored the same way in all three apps ([0132](0132-pages-table-formula.md) and this experiment).

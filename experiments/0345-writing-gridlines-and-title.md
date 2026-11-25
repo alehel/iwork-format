@@ -37,6 +37,14 @@ Numbers opened each file on its own and exported it as PDF. The page was drawn, 
 
 Table style 11.34 = 0 removes the body's horizontal gridlines, leaving only the lines along the header and the table's outer edge. Model field 22 = 0 hides the table's name; Numbers itself leaves the field out for a hidden name, and 0 does the same.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `plain.numbers` | `0226/plain.numbers` | `same bytes` | *Control*: 22 lines down the column, and the name above the table |
+| `no-hlines.numbers` | `plain.numbers` | Only `6003#905007 11.34: absent → 0` | *Confirmed*: 11.34 = 0 hides the body's horizontal gridlines |
+| `no-title.numbers` | `plain.numbers` | Only `6001#904595 22: 1 → 0` | *Confirmed*: field 22 = 0 hides the table's name |
+
 ## Confidence
 
 *Confirmed*: table style 11.34 and model field 22, by writing them.

@@ -28,6 +28,12 @@ The recipe places the PNG of 0023 on slide 1 and sets `locked` to true. The imag
 
 Field 1.5 of a drawable block is 1 for a locked object. Since the block is shared by images, shapes and tables, it presumably works the same for all of them. A reader that only displays a document can ignore it.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `locked.key` | `0069/image.key` | `3005 1.5: 0 → 1` | *Likely*: field 1.5 of a drawable is the lock |
+
 ## Confidence
 
 *Likely*: drawable field 1.5 is the lock.

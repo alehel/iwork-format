@@ -35,6 +35,13 @@ key 1: { 6: { 1: 269, 8: 10, 9: 0, 10: 1 } }
 
 The numeral system format is format kind 269. Field 8 is most likely the base, 10 by default. Fields 9 and 10 are probably the number of places and how negative numbers are shown, which the app's Format inspector offers as options. The cell's value is an ordinary number, so a reader that doesn't know the format can still show 10.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `plain.numbers` | | `6002 5 = absent`, `6005 3.6.1 ≠ 269` | *Control*: a new document |
+| `numeral.numbers` | `plain.numbers` | `6002 5.6 = x"0502000000000100013000000a00000000000000000000000000 4030 0100000001000000"`, `6005 3.6.1: absent → 269`, `6005 3.6.8: absent → 10` | *Likely*: format kind 269 is the numeral system |
+
 ## Confidence
 
 *Likely*: format kind 269 is the numeral system.

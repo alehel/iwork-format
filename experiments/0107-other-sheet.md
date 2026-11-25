@@ -36,6 +36,12 @@ The cell holds 9.
 
 A reference to a table on another sheet is stored exactly like a reference to another table on the same sheet ([0065](0065-cross-table-reference.md)): by the table's UUID in field 28, with no mention of the sheet. Table UUIDs are unique in the document, so the sheet isn't needed.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `other-sheet.numbers` | `0064/functions.numbers` | `6005 3.5.1.1.28.1.2: absent → 3398054789`, `6005 3.5.1.1.28.1.5: absent → 1596672360`, `6001 1: absent → "85338ACA-4FB2-49C7-8301-129C68492B5F"`, `2 1: absent → "Andre"` | *Likely*: a reference to another sheet names the table by its UUID only |
+
 ## Confidence
 
 *Likely*: references name the target table by UUID only, whichever sheet it is on.

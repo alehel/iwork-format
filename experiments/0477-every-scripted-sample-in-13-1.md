@@ -70,6 +70,12 @@ Every document the recipes make comes out of 13.1 with the structure 15.4 gives 
 
 A reader of 15.4 documents needs to change nothing to read a 13.1 document, except to accept a missing field 93 on a table model and field 16 on an owner, and a language entry on text 15.4 leaves without one. A choice of 13.1's set, enough to hold every field path the set holds, is published with the fixtures under `release/13.1/` ([`fixtures/SELECTED.txt`](../fixtures/SELECTED.txt)).
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `release/13.1/**` | | `11006#2 7 = x"0d0102"` in every one | *Confirmed*: 306 documents made in 13.1 have 15.4's structure, but for what every 13.1 document differs in; the recipe compares them |
+
 ## Confidence
 
 *Confirmed*: for 306 documents made by the experiments' recipes, 13.1 writes the same structure as 15.4, apart from the differences every 13.1 document has. *Likely*: that 13.1 keeps type-4010 records for formulas over a range.

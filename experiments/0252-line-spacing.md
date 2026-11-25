@@ -34,6 +34,12 @@ The paragraph runs (field 5) point at a new paragraph style (type 2022) whose pa
 
 Paragraph property 13 is the line spacing, a message whose field 2 is the amount: 2.0 for double. Single spacing is the default and isn't stored. Field 13.1, absent here, is probably the kind of spacing (lines, at least, exactly, between), so absent means a multiple of the line height.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `double.pages` | `0236/plain.pages` | `records 2022: 242 → 243`, `2022 12.13.2: absent → 2.0` | *Likely*: paragraph property 13.2 is the line spacing as a multiple of the line height |
+
 ## Confidence
 
 *Likely*: paragraph property 13.2 is the line spacing as a multiple of the line height.

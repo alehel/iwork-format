@@ -45,6 +45,14 @@ done
 
 The order of field 1 is the order of the sheets, and a sheet left out of it isn't part of the document, though its records are still in the file, just as with Keynote's slides. The active sheet is kept by identity, not position: `Second` stayed active when it moved first.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `original.numbers` | `0037/two-sheets.numbers` | `same bytes` | *Control* |
+| `reversed.numbers` | `original.numbers` | Only `1#1 1: changed`, the two entries the other way round | *Confirmed*: Numbers lists `Second` first, and keeps it active |
+| `second-only.numbers` | `original.numbers` | Only `1#1 1: ×2 → ×1`, `1#1 1.1 ≠ 904532` | *Confirmed*: a sheet left out of field 1 isn't in the document; Numbers lists only `Second` |
+
 ## Confidence
 
 *Confirmed*: field 1 of a Numbers document root as its sheets in order, by writing it.

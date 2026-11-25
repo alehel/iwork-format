@@ -36,6 +36,12 @@ That is type 5 (date) with flags 0x9204: a date value (0x4), a formula key (0x20
 
 TODAY is function 154, called with no arguments. A formula's cached result keeps the kind of its value: here a date cell (type 5) with the date as a double, the formula key and a date format. A reader shows the cached date. TODAY changes daily, so Numbers recomputes it when it opens the file.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `today.numbers` | `0064/functions.numbers` | `6005 3.5.1.1.2: absent → 154`, `6005 3.5.1.1.3: 1 → 0`, `6002 5.6 ~ x"0505000000000000 04920000"` | *Likely*: TODAY is function 154, and its date result is stored as a date cell |
+
 ## Confidence
 
 *Likely*: TODAY is function 154, and a formula's cached result is stored as a cell of the result's type.

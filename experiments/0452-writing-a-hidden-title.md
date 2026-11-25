@@ -40,6 +40,13 @@ done
 
 A title placeholder left out of fields 7 and 42 is hidden, as a body is: AppleScript reports the title as not showing and its text isn't drawn, though field 5 still names it and its text is still in the file.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `original.key` | `theme/0025/hello.key` | `same bytes`, `5#2655467 7.1 = 2655477`, `5#2655467 42.1 = 2655477` | *Control*: the title is shown |
+| `title-hidden.key` | `original.key` | Only `5#2655467 7: ×3 → ×2`, `5#2655467 42: ×3 → ×2`, `5#2655467 7.1 ≠ 2655477`, `5#2655467 42.1 ≠ 2655477` | *Confirmed*: a title left out of fields 7 and 42 is hidden |
+
 ## Confidence
 
 *Confirmed*: hiding a title by leaving it out of slide fields 7 and 42, by writing it.

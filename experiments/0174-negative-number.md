@@ -30,6 +30,12 @@ B2 is a number cell with flags 0x00003001 (number, then two format keys). Its de
 
 A negative number is stored with the decimal128 sign bit (bit 127) set, whether it's typed or a formula's result.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `negative.numbers` | `0026/cells.numbers` | `6002 5.6 = x"0502000000000000013000000500000000000000000000000000 40b0 0100000001000000"` | *Confirmed*: a typed negative number has the sign bit of its decimal128 set |
+
 ## Confidence
 
 *Confirmed*: negative decimal128 numbers have the sign bit set ([0112](0112-unary-minus.md) and this experiment).

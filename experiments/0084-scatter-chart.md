@@ -26,6 +26,8 @@ The recipe adds the same 2 × 3 chart as 0067 to slide 1, with the type `scatter
 
 Compared with the vertical bar chart of 0067, the chart record (type 5021) differs only in field 10000.1, which is **9** here and 1 there. Fields 10000.2 (2), 10000.5 (1) and the other scalar fields of 10000 are unchanged. So are the data grid in 10000.7 (rows `r1`, `r2`, columns `a`, `b`, `c`, values {1, 2, 3} and {4, 5, 6}) and the counts of the repeated fields 13, 14, 17 and 20.
 
+*Corrected 2026-11-25:* besides the kind in 10000.1, the chart record's geometry (1.1), chart offset (10000.3), UUIDs (10000.7.4) and a reference (10000.10) differ from 0067's. The scalar fields and the data grid are the same.
+
 ## Conclusion
 
 Field 10000.1 of a chart is its type, and 9 is a scatter chart. The data is stored the same way whatever the type, so a reader can always get the numbers and labels from 10000.7, even for a type it can't draw. The values of 10000.1 found so far:
@@ -42,6 +44,12 @@ Field 10000.1 of a chart is its type, and 9 is a scatter chart. The data is stor
 | vertical_bar_3d | 12 | [0085](0085-3d-vertical-bar-chart.md) |
 
 The numbers skip some values (7, 8, 10, 11), presumably for the stacked, 3D and other types not tried here.
+
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `scatterplot_2d-row.key` | `0067/chart.key` | `5021 10000.1: 1 → 9`, `5021 10000.5 = 1` | *Likely*: chart field 10000.1 = 9 is a scatter chart |
 
 ## Confidence
 

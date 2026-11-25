@@ -41,6 +41,14 @@ Rechecking `samples/0101/notitle.key`: there, field 5 names the title placeholde
 
 A slide names its title placeholder in field 5 and its body placeholder in field 6, whether they are shown or not. Fields 7 and 42 list the objects on the slide that are shown, including those placeholders when they are visible. Hiding a placeholder only removes it from those two lists. So the reading of 0101, that field 7 names the title, was too narrow: field 7 lists every shown placeholder. A reader should draw what fields 7 and 42 list. Why there are two lists is unknown, but field 42 is possibly the drawing order.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `body.key` | | `5 6 = present` | *Control*: the slide with its body shown |
+| `no-body.key` | `body.key` | `5 7.1: ×47 → ×46`, `5 42.1: ×47 → ×46`, `5 6.1: ×19 → ×19` | *Likely*: a hidden body placeholder is left out of the shown objects in fields 7 and 42, and field 6 still names it |
+| `0101/notitle.key` | `0025/hello.key` | `5 7.1: ×44 → ×43`, `5 42.1: ×44 → ×43`, `5 5.1: ×18 → ×18` | *Likely*: the same for a hidden title, which field 5 still names |
+
 ## Confidence
 
 *Likely*:

@@ -59,6 +59,12 @@ A shape's outline has two forms:
 
 Both are in the shape's own units, here the same as its size. A reader probably scales them from the natural size to the size in 1.1.2.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `editable.pages` | `0213/plain-shape.pages` | `2011 1.3.5: ×1 → ×0`, `2011 1.3.8.1.1: ×0 → ×4`, `2011 1.3.8.1.1.4: absent → 1` | *Likely*: an outline is a path in field 1.3.5 or an editable path in 1.3.8 |
+
 ## Confidence
 
 *Likely*: the two path forms and the element kinds 1, 2 and 5.

@@ -36,6 +36,12 @@ In the type-10133 record:
 
 Field 33 of the view state is the page layout of the view: 1 for two pages side by side. The other fields that move are sizes and offsets of the visible area, which grows wider to fit two pages, consistent with field 7 being the visible area's size in document points ([0241](0241-zoom.md)). Like the zoom, this is a view preference that a reader can ignore.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `two-pages.pages` | `0236/plain.pages` | `10133 33: 0 → 1`, `10133 7.1: 582.4 → 1140.0`, `10133 15 = 1.25` | *Likely*: view state field 33 is 1 for two-page view |
+
 ## Confidence
 
 *Likely*: view state field 33 is 1 for two-page view.

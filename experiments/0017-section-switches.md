@@ -39,6 +39,8 @@ Record 1732614 is the one that holds the document's creation time, language and 
 
 No other record changed. In particular, the three header-and-footer sets of the section, and which set is in field 25, stayed the same.
 
+*Corrected 2026-11-25:* in `facing-pages.pages` view-state values change too: 10131 field 5.1.18 and 10133 field 33 go from 0 to 1. They are in `ViewState.iwa`, which a reader can ignore.
+
 ## Conclusion
 
 The two section-level switches map to fields of the section:
@@ -51,6 +53,14 @@ The two section-level switches map to fields of the section:
 *Facing pages* is a document-wide setting stored in field 34 of the type-10012 record, so type 10012 is probably the document's settings. With it on, a reader should expect left and right pages to differ, for example in their headers.
 
 None of these switches put the sets in fields 23 and 24 to use, so their purpose is still open. With facing pages on, the left page and right page may each use their own set. That would need a two-page document with header text on the second page.
+
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `hide-first.pages` | `0002/hello.pages` | `10011 28: 0 → 1`, `10011 17 = 1`, `10012 34 = 0` | *Likely*: section field 28 is *Hide on first page of section* |
+| `not-same-as-previous.pages` | `0002/hello.pages` | `10011 17: 1 → 0`, `10011 28 = 0`, `10012 34 = 0` | *Likely*: section field 17 is *Same as previous section* |
+| `facing-pages.pages` | `0002/hello.pages` | `10012 34: 0 → 1`, `10011 17 = 1`, `10011 28 = 0` | *Likely*: field 34 of type 10012 is *Facing pages* |
 
 ## Confidence
 

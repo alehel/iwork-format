@@ -44,6 +44,13 @@ The same ZIP entries, the same parts, the same number of records of each other t
 
 Pages and Numbers 14.5 write text boxes, shapes, lines, tables, cells of every kind, formulas, formats, styles, merges, sizes and sheets with the same records as 15.4. The one difference in content is a paragraph style that the 15.4 Numbers template adds, *Table Title 1*, for tables' titles; a reader finds styles by reference, so it needs nothing for it. What the spec says about these structures holds for 14.5 as written.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `*-*.numbers` | `*/*.numbers` | `11006#2 7: x"1a0400" → x"0e0401"`, `records 4011: 1 → 0`, `2022 1.2 ≠ "text-12-paragraphstyle-Table Title 1"` | *Confirmed*: 14.5 writes spreadsheets with 15.4's structure, without the *Table Title 1* style |
+| `*-*.pages` | `*/*.pages` | `11006#2 7: x"1a0400" → x"0e0401"`, `records 4011: 1 → 0` | *Confirmed*: 14.5 writes Pages documents with 15.4's structure |
+
 ## Confidence
 
 *Confirmed*: for the 24 documents of these recipes, 14.5 writes the same structure as 15.4, apart from Numbers' *Table Title 1* style.

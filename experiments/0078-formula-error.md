@@ -42,6 +42,12 @@ A formula whose result is an error is stored as cell type 8, with only its formu
 
 The number nodes' fields 42 and 43 also appear in [0031](0031-cell-kinds.md)'s `=B2*2`. Field 42 seems to hold the number as an integer, but neither field is needed to read the value, which is in field 4 as a double.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `error.numbers` | `0031/kinds.numbers` | `6002 5.6 ~ x"0508000000000000 00020000 01000000"`, `6005 3.5.1.1.1: absent → 4` | *Likely*: cell type 8 is an error result, with a formula key and no value |
+
 ## Confidence
 
 *Likely*: cell type 8 is an error result, stored with the formula key and no value.

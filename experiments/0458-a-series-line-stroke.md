@@ -44,6 +44,17 @@ The points run down a column through the first series' line, every point from y 
 
 Stroke property 48 draws a line chart's line: written red, the whole line is red, and the line is 6 points thick where it crosses the column, the stroke's width. The other solid strokes didn't change it; with their widths and the fills of 0457 they are probably the outlines and lines of other chart types. A reader drawing a line chart should take each series' line from its style's property 48.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `line.key` | `0296/baseline.key` | Only `5021#2655552 10000.1: 1 → 3` | *Control*: the input of the others |
+| `line-47.key` | `line.key` | Only `5028#2651484 10000.47.1.3: 0.0006 → 1.0`, `5028#2651484 10000.47.1.4: 0.6336 → 0.0`, `5028#2651484 10000.47.1.5: 1.0 → 0.0`, `5028#2651484 10000.47.1.12: 1 → 0` | *Likely*: property 47 isn't the line's stroke; the line stays blue |
+| `line-48.key` | `line.key` | Only `5028#2651484 10000.48.1.3: 0.0006 → 1.0`, `5028#2651484 10000.48.1.4: 0.6336 → 0.0`, `5028#2651484 10000.48.1.5: 1.0 → 0.0`, `5028#2651484 10000.48.1.12: 1 → 0` | *Confirmed*: property 48 is a line chart's line; the line is red, 6 points thick |
+| `line-50.key` | `line.key` | Only `5028#2651484 10000.50.1.3: 0.0006 → 1.0`, `5028#2651484 10000.50.1.4: 0.6336 → 0.0`, `5028#2651484 10000.50.1.5: 1.0 → 0.0`, `5028#2651484 10000.50.1.12: 1 → 0` | *Likely*: property 50 isn't the line's stroke; the line stays blue |
+| `line-51.key` | `line.key` | Only `5028#2651484 10000.51.1.3: 0.0006 → 1.0`, `5028#2651484 10000.51.1.4: 0.6336 → 0.0`, `5028#2651484 10000.51.1.5: 1.0 → 0.0`, `5028#2651484 10000.51.1.12: 1 → 0` | *Likely*: property 51 isn't the line's stroke; the line stays blue |
+| `line-53.key` | `line.key` | Only `5028#2651484 10000.53.1.3: 0.0006 → 1.0`, `5028#2651484 10000.53.1.4: 0.6336 → 0.0`, `5028#2651484 10000.53.1.5: 1.0 → 0.0`, `5028#2651484 10000.53.1.12: 1 → 0` | *Likely*: property 53 isn't the line's stroke; the line stays blue |
+
 ## Confidence
 
 *Confirmed*: series style property 48 as a line chart's line, colour and width, by writing its colour.

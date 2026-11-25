@@ -46,6 +46,16 @@ The recipe's helper reported only that these documents didn't open; macOS's cras
 
 Pages relies on field 1: a body storage must say 0, and a header's storage mustn't. Given another kind, a body makes Pages quit while opening the document, and so does a header storage claiming to be a body. So the kind isn't only a label for readers: a writer must give each text storage the kind of the place it is used.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `header-text.pages` | `0002/hello.pages` | Only `2001#1732234 3: absent → "Header text"` | *Control*: Pages opens it |
+| `body-kind-1.pages` | `0002/hello.pages` | Only `2001#1732539 1: 0 → 1` | *Confirmed*: a body must have kind 0; Pages quits while opening the file |
+| `body-kind-2.pages` | `0002/hello.pages` | Only `2001#1732539 1: 0 → 2` | *Confirmed*: a body must have kind 0; Pages quits while opening the file |
+| `body-kind-7.pages` | `0002/hello.pages` | Only `2001#1732539 1: 0 → 7` | *Confirmed*: a body must have kind 0; Pages quits while opening the file |
+| `header-kind-0.pages` | `header-text.pages` | Only `2001#1732234 1: 1 → 0` | *Confirmed*: a header mustn't have kind 0; Pages quits while opening the file |
+
 ## Confidence
 
 *Confirmed*: Pages needs a text storage's field 1 to match where it is used, by writing other kinds into a body and a header.

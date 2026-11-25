@@ -32,6 +32,13 @@ The recipe puts `one`, a line feed and `two` in B2. The string table holds `"one
 
 A line break in a cell is stored as U+000A inside the string. Byte 4 of the cell becomes 1. That may mark text with more than one line, but no other value of it has been seen. Bytes 6–7 changed with the format in [0036](0036-more-cell-formats.md), so bytes 4–7 seem to hold small extra flags.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `newline.numbers` | `0024/empty-a.numbers` | `6005 3.3: absent → "one\ntwo"` | *Likely*: a line break is kept in the string as U+000A |
+| `newline.numbers` | | `6002 5.6 ~ x"050300000100000008100200"` | *Unknown*: what byte 4 of a cell means; it is 1 here and 0 in an ordinary text cell |
+
 ## Confidence
 
 *Likely*: line breaks are kept in the string.

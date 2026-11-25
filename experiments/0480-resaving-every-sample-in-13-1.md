@@ -53,6 +53,12 @@ Field 10 of date fields, *unknown* in [0475](0475-every-scripted-sample-in-14-5.
 
 Saving through an older release loses what that release doesn't know: the date fields' field 10 and the drawables' field 14 are gone from 13.1's copies.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `resave/13.1/**` | | `11006#2 7 = x"0d0102"` in every one | *Confirmed*: 13.1 saves all 1,211 samples, and 994 of its copies have the structure of 16.0's but for what is known to differ; the recipe compares them |
+
 ## Confidence
 
 *Confirmed*: 13.1 saves all 1,211 samples, and 994 of its copies have the same structure as 16.0's but for what is known to differ. *Likely*: fields absent from its copies and present in the others' are ones 13.1 doesn't know.

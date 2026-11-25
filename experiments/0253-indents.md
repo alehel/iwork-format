@@ -36,6 +36,12 @@ The paragraph runs point at a new paragraph style whose properties, in field 12,
 
 Paragraph properties 7, 11 and 19 are the first-line, left and right indents, in points, whatever unit the app shows. A reader indents the first line by field 7 measured from the left edge of the text. Pages shows the first line's indent separately from the left indent, so the two are probably independent rather than added.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `indents.pages` | `0236/plain.pages` | `2022 12.7: absent → 28.3465`, `2022 12.11: absent → 56.6929`, `2022 12.19: absent → 85.0394` | *Likely*: properties 7, 11 and 19 are the first-line, left and right indents in points |
+
 ## Confidence
 
 *Likely*: paragraph properties 7, 11 and 19 are the first-line, left and right indents in points.

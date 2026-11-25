@@ -34,6 +34,12 @@ The body's character style runs (field 8) gain an entry at 4, pointing at a new 
 
 Character property 11.13 is the capitalisation, and 2 means small caps. The text in the body is still `One two`, in its original case: capitalisation is applied when drawing, so a reader must apply it itself to show the text as Pages does.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `small-caps.pages` | `0179/plain.pages` | `records 2021: 8 → 9`, `2021 11.13: absent → 2`, `2001 3 = "One two"` | *Likely*: character property 13 is 2 for small caps, and the text keeps its case |
+
 ## Confidence
 
 *Likely*: character property 13 is 2 for small caps, and the stored text keeps its case.

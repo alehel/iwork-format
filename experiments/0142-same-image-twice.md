@@ -28,6 +28,12 @@ osascript recipes/0139-pages-container.applescript twice "$PWD/samples/0142/twic
 
 Images with the same file share one data file and one data ID. A reader may find the same data ID in several image records.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `twice.pages` | `0023/image.pages` | `records 3005: 1 → 2`, `3005 11.1: absent → 24`, `11006 4: ×5 → ×5`, `part Data/red-8x4-24.png: same` | *Likely*: two images from the same file share one data file and one data ID |
+
 ## Confidence
 
 *Likely*: identical image files are stored once.

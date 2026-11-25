@@ -30,6 +30,8 @@ def document(records, parts=(), sha="x"):
     d = object.__new__(e.Document)
     d.rel, d.sha, d.parts = "made/up", sha, {p: b"" for p in parts}
     d.records = {(i, 0): (k, p) for i, k, p in records}
+    d.headers = {(i, 0): (k, message((1, k))) for i, k, p in records}
+    d.order, d.error = {"Index/Document.iwa": [(i, 0) for i, _, _ in records]}, None
     return d
 
 
@@ -69,6 +71,38 @@ class Statements(unittest.TestCase):
         self.holds("part preview*: present → absent")
         self.fails("part .iwph: present → present")
 
+    def test_counts_and_bytes(self):
+        self.holds("2021 11: ×1 → ×1")
+        self.fails("2021 11: ×1 → ×2")
+        self.holds('2001 3 ~ "w"')
+        self.holds('2001 3 = x"74776f"')
+        self.fails('2001 3 ~ "x"')
+        self.holds("2021 11.1 ≠ present")
+        self.fails("2021 11.11 ≠ 1")
+        self.fails("99 1 ≠ 1")  # there is no such record
+        self.holds("2001 3: changed")
+        self.fails("2001 3: changed", doc=SAME)
+
+    def test_header_and_order(self):
+        other = document([(i, k, p) for (i, _), (k, p) in reversed(BASE.records.items())], ["preview.jpg"])
+        other.headers[(1, 0)] = (2021, message((1, 2021), (5, 7)))
+        self.holds("header 2021#1 5: absent → 7", doc=other)
+        self.holds("order Index/Document.iwa: changed", doc=other)
+        self.fails("order Index/Document.iwa: changed", doc=SAME)
+        self.assertEqual(len(e.uncovered([], BASE, other)), 2)
+        self.assertEqual(e.uncovered(["header 2021#1 5: absent → 7", "order Index/Document.iwa: changed"], BASE, other), [])
+
+    def test_unreadable(self):
+        bad = document([], sha="z")
+        bad.error = "Index/Document.iwa: no"
+        self.holds("unreadable", doc=bad)
+        self.fails("unreadable")
+        self.fails("2021 11.1 = 1", doc=bad)
+
+    def test_float_precision(self):
+        self.fails("10000 30 = 595.4")
+        self.fails("10000 30 = 595.281")
+
     def test_same(self):
         self.holds("same records", doc=SAME)
         self.fails("same records")
@@ -106,6 +140,7 @@ class Tables(unittest.TestCase):
         (row,) = e.evidence_rows(md)
         self.assertEqual([e.sample(c, "0012") for c in row[:3]], ["samples/0012/a.pages", "samples/0008/b.pages", None])
         self.assertIsNone(e.evidence_rows("# x\n"))
+        self.assertEqual(e.evidence_rows("## Evidence\n\nNo documents of its own: x.\n"), [])
 
     def test_wrong_columns(self):
         with self.assertRaises(SystemExit):

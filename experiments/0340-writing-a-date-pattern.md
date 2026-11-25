@@ -35,6 +35,13 @@ Numbers opened each file on its own and read E2 through AppleScript.
 
 Field 14 of a date format is its pattern, in the Unicode date-pattern syntax that Apple's date formatters use: `yyyy`, `MM`, `dd`, `HH` and `mm`, with quoted literal text. Numbers shows any pattern written there, not only those its own menus offer.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `original.numbers` | `0031/kinds.numbers` | `same bytes` | *Control*: E2 is shown as 02.01.2026 12:00 |
+| `pattern.numbers` | `original.numbers` | Only `6005#904541 3.6.14: "dd.MM.y HH:mm" → "yyyy-MM-dd 'kl.' HH.mm"` | *Confirmed*: field 14 is the date pattern; E2 is shown as 2026-01-02 kl. 12.00 |
+
 ## Confidence
 
 *Confirmed*: date format field 14 is the pattern, by writing one.

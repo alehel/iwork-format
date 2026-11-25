@@ -40,6 +40,14 @@ Pages opened each file on its own through Launch Services and read the first wor
 
 A paragraph style's character properties work as read: 11.3 size, 11.5 font family face, 11.1 bold and 11.2 italic applied on top of it, and the colour in 11.46.1 with its copy in 11.7. Changing the style changes all text that uses it, with no change to the text's runs.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `original.pages` | `0002/hello.pages` | `same bytes` | *Control*: HelveticaNeue, 11 points, black |
+| `written.pages` | `original.pages` | Only `2022#1731511 11.1: 0 → 1`, `2022#1731511 11.2: 0 → 1`, `2022#1731511 11.3: 11.0 → 24.0`, `2022#1731511 11.5: "HelveticaNeue" → "Georgia"`, `2022#1731511 11.7.3: 0.0 → 0.8`, `2022#1731511 11.7.4: 0.0 → 0.1`, `2022#1731511 11.7.5: 0.0 → 0.1`, `2022#1731511 11.46.1.3: 0.0 → 0.8`, `2022#1731511 11.46.1.4: 0.0 → 0.1`, `2022#1731511 11.46.1.5: 0.0 → 0.1` | *Confirmed*: bold, italic, size, font and colour of a paragraph style; Pages reports Georgia-BoldItalic, 24 points, red |
+| `resaved.pages` | `written.pages` | `2022#1731511 11.3 = 24.0`, `2022#1731511 11.5 = "Georgia"`, `2022#1731511 11.46.1.3 = 0.8` | *Not used*: saved again by Pages, and not described in the text |
+
 ## Confidence
 
 *Confirmed*: paragraph style properties 11.1, 11.2, 11.3, 11.5 and 11.46, by writing them in Pages.

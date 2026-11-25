@@ -30,6 +30,12 @@ Every slide node (type 4) changed field 18 from 0 to 1. That is the node of slid
 
 Although AppleScript offers it as a document setting, showing slide numbers is stored per slide, in field 18 of each slide node. Turning it on for the document set it on every slide, layouts included. A reader should check each slide's own flag.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `slidenumbers.key` | `0025/empty.key` | `4 18: 0 → 1`, `4 18 ≠ 0` | *Likely*: field 18 of a slide node marks a slide whose number is shown; it is set on all of them |
+
 ## Confidence
 
 *Likely*: slide node field 18 marks a slide whose number is shown.

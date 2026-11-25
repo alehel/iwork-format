@@ -49,6 +49,12 @@ A page number field is a U+FFFC in the text, anchored through field 9 to a type-
 
 This explains 0032: a Numbers sheet's text holds a page number field, probably for printing the sheet.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `page-number.pages` | `0020/plain.pages` | `2001 3: "one" → "Page \ufffc"`, `2001 9.1.1: absent → 5`, `2043 4: absent → "decimal"` | *Likely*: a page number is U+FFFC anchored to a type-2043 record, with its number format in field 4 |
+
 ## Confidence
 
 *Likely*:

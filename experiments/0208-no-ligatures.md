@@ -34,6 +34,12 @@ The body's character style runs (field 8) gain an entry at 4, pointing at a new 
 
 Character property 11.16 is the ligature setting, and 0 means none. Since the default (absent) uses the font's standard ligatures, Use All is probably a third value.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `no-ligatures.pages` | `0179/plain.pages` | `records 2021: 8 → 9`, `2021 11.16: absent → 0` | *Likely*: character property 16 is 0 for no ligatures; nothing looked different, as no letters join |
+
 ## Confidence
 
 *Likely*: character property 16 is 0 for no ligatures.

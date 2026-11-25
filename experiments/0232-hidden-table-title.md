@@ -30,6 +30,12 @@ Apart from IDs, the only change is in the table model (type 6001): field 22, whi
 
 A table's title is its name (model field 8), and model field 22 says whether it's shown: 1 for shown, absent for hidden. Tables don't use the type-633 title of other objects. A reader should only draw the name when field 22 is 1.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `no-title.numbers` | `0230/plain.numbers` | `6001 22: 1 → absent`, `records 633: 0 → 0`, `records 3097: 2 → 2` | *Likely*: table model field 22 is 1 when the table's name is shown |
+
 ## Confidence
 
 *Likely*: table model field 22 is 1 when the table's name is shown.

@@ -47,6 +47,14 @@ Colours at the top left, the centre and the bottom right of the 1920 × 1080 sli
 
 Keynote draws a dynamic background from its motion style, rendering it again when it exports, and doesn't use the still in the image fill: replacing the still changed nothing, while red stops made the whole slide red. The still is there for whatever can't render the motion, such as other readers and previews. So a reader that can't run Keynote's generators should show the still, and a writer that changes a dynamic background should render a new still to go with it.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `original.key` | `theme/0271/dynamic.key` | `same bytes` | *Control* |
+| `still-green.key` | `original.key` | Only `part Data/motionBackground-9094.jpeg: changed` | *Confirmed*: Keynote ignores the still; the colours stay the same |
+| `motion-red.key` | `original.key` | Only `26#2651723 11.3.2.2.1.3: changed`, `26#2651723 11.3.2.2.1.4: changed`, `26#2651723 11.3.2.2.1.5: changed`, `26#2651723 11.3.2.2.1.3 = 1.0` | *Confirmed*: Keynote draws the background from the motion style's stops; the slide is red |
+
 ## Confidence
 
 *Confirmed*: Keynote renders a dynamic background from its motion style's stops and ignores the still, by writing them.

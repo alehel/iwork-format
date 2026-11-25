@@ -116,7 +116,7 @@ Within a header, field 1 is a number that is unique to one record in most parts.
 | --- | --- | --- | --- |
 | `AnnotationAuthorStorage-1732609.iwa` | 1 | 1732609 | 1.0.5 |
 | `CalculationEngine-1732610.iwa` | 8 | 1732610 – 1732654 | 1.0.5, 3.2.10 |
-| `Document.iwa` | 58 | 1 – 1732624 | 1.0.5, 2.4.0, 2.0.0, 1.1.0 |
+| `Document.iwa` | 52, with 58 payloads (first written as 58 records) | 1 – 1732624 | 1.0.5, 2.4.0, 2.0.0, 1.1.0 |
 | `DocumentMetadata.iwa` | 1 | 71 | 1.0.5 |
 | `DocumentStylesheet.iwa` | 493 | 1731481 – 1732639 | 1.0.5 |
 | `Metadata.iwa` | 6 | 2 – 1732655 | 1.0.5 |
@@ -164,6 +164,13 @@ Between two saves of the same empty content, these things vary and later compari
 - The ID numbers of objects made at save time (here 1732641 and up), and anything that refers to them.
 
 The template's objects keep their IDs and contents. The stylesheet and the previews are byte-for-byte identical.
+
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `empty-a.pages` | | `10012 26 = "2026-11-09T13:00:20+0100"`, `part Metadata/BuildVersionHistory.plist ~ "M15.4-7051.0.79-2"` | *Likely*: the ZIP package, the chunk header, the Snappy blocks and the record layout, which held for every byte of its parts |
+| `empty-b.pages` | `empty-a.pages` | `10012 26: "2026-11-09T13:00:20+0100" → "2026-11-09T13:00:33+0100"`, `part Metadata/DocumentIdentifier: changed`, `part Index/DocumentStylesheet.iwa: same`, `part preview*.jpg: same` | *Likely*: UUIDs, the creation time and the IDs of objects made at save time differ between two saves, and the stylesheet and previews don't |
 
 ## Confidence
 

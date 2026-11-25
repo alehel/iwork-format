@@ -47,6 +47,14 @@ Each page lists the comment in its margin as a number, the author, the time and 
 
 Field 1 of the type-3056 record is the comment's text, field 2.1 its time in seconds since 1 January 2001 UTC (shown in local time, two hours ahead in June in Oslo), and field 1 of the author's type-212 record the name shown. The name lives only in the author record, so renaming that record renames every comment that points at it.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `text.pages` | `0249/comment.pages` | Only `3056#1732721 1: "Note" → "Written comment"` | *Confirmed*: field 1 of type 3056 is the comment's text |
+| `time.pages` | `0249/comment.pages` | Only `3056#1732721 2.1: 815947123.8006 → 771681600.0` | *Confirmed*: field 2.1 is the time in seconds since 2001, UTC: 15 June 2025, 14:00 in Oslo |
+| `author.pages` | `0249/comment.pages` | Only `212#1732718 1: changed`, `212#1732718 1 = "Test Author"` | *Confirmed*: field 1 of type 212 is the author's name |
+
 ## Confidence
 
 *Confirmed*: a comment's text and time, and an author's name, by writing them.

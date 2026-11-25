@@ -35,6 +35,12 @@ The cell's flags are 0x00021028: 0x8 (string), 0x20 (cell style), 0x1000 and 0x2
 
 Field 11.3 of a cell style is text wrap, and 0 turns it off. Setting top alignment, already the default, added nothing to the style, so Numbers only stores what differs from its parent. Field 10 is 1, which agrees with it counting the properties a style sets. The background colour is field 11.1 ([0043](0043-cell-styles.md)).
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `top-nowrap.numbers` | `0043/styles.numbers` | `6004 11.3: absent → 0`, `6002 5.6 ~ x"0503000000000000 28100200"` | *Likely*: field 11.3 of a cell style is text wrap, 0 for off |
+
 ## Confidence
 
 *Likely*: cell style field 11.3 is text wrap, with 0 for off.

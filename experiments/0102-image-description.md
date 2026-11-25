@@ -32,6 +32,12 @@ The recipe places the PNG of 0023 on slide 1 and sets its `description` to `red 
 
 An object's accessibility description is text in field 1.8 of its drawable block. A reader that produces accessible output, such as alternative text in HTML, can take it from there.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `description.key` | `0069/image.key` | `3005 1.8: absent → "red bar"` | *Likely*: field 1.8 of a drawable is the accessibility description |
+
 ## Confidence
 
 *Likely*: drawable field 1.8 is the accessibility description.

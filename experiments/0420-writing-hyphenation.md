@@ -11,7 +11,7 @@ Field 9 of the type-10012 document settings is *Hyphenate the whole document*, 1
 | Pages | 15.4, in Norwegian |
 | macOS | 26.5.2 (25F84) |
 | Date | 2026-11-18 |
-| Input | `samples/0002/hello.pages`, with its body (1732539) replaced by fifteen long Norwegian compound words, such as `Arbeidsmiljølovgivningen`; settings record 1732614 has no hyphenation (field 9 = 0) |
+| Input | `samples/0002/hello.pages`, with its body (1732539) replaced by sixteen (first written as fifteen) long Norwegian compound words, such as `Arbeidsmiljølovgivningen`; settings record 1732614 has no hyphenation (field 9 = 0) |
 | Writer | The writer of [0287](0287-rewriting-a-document.md) for the text and [`recipes/0302-set-path.py`](../recipes/0302-set-path.py); exported with [`recipes/0372-in-app.sh`](../recipes/0372-in-app.sh) and read with [`recipes/0374-pdf-text.swift`](../recipes/0374-pdf-text.swift) |
 
 ## Recipe
@@ -42,6 +42,14 @@ With hyphenation, the first line ends `kommu-`, the third `konkur-` and the four
 ## Conclusion
 
 Field 9 turns on hyphenation for the whole document: Pages then breaks long words at the end of a line, at places its Norwegian hyphenation rules allow. A reader laying text out the same way should hyphenate when the field is 1, in the text's language.
+
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `text.pages` | `0002/hello.pages` | Only `2001#1732539 3: changed`, `2001#1732539 3 ~ "kommunikasjonsteknologien"` | *Control*: no line ends in a hyphen |
+| `hyphenate.pages` | `text.pages` | Only `10012#1732614 9: 0 → 1` | *Confirmed*: field 9 hyphenates the document; three lines end in a hyphen |
+| `no-hyphenate.pages` | `text.pages` | `same bytes`, `10012#1732614 9 = 0` | *Control*: no line ends in a hyphen |
 
 ## Confidence
 

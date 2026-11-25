@@ -47,6 +47,16 @@ Set 23's footer is empty, so page 1 of `field-18.pages` has no footer.
 
 Field 28 = 1 hides the header and footer on the section's first page. Field 18 = 1 makes the section's first page use its own set, the one in field 23, in place of set 25. Fields 20 and 21 change nothing that shows on these two pages.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `both.pages` | `0327/header.pages` | Only `2001#1732494 3: absent → "FIRSTSET"`, `2001#1732539 3: "hello" → "page one\u0005page two"` | *Control*: both pages show the headers of set 25 |
+| `hide-first.pages` | `both.pages` | Only `10011#1732296 28: 0 → 1` | *Confirmed*: field 28 hides the first page's header and footer |
+| `field-18.pages` | `both.pages` | Only `10011#1732296 18: 0 → 1` | *Confirmed*: field 18 gives the first page the headers of set 23 |
+| `field-20.pages` | `both.pages` | Only `10011#1732296 20: 0 → 1` | *Likely*: field 20 changes nothing on these two pages |
+| `field-21.pages` | `both.pages` | Only `10011#1732296 21: 0 → 1` | *Likely*: field 21 changes nothing on these two pages |
+
 ## Confidence
 
 *Confirmed*: field 28 hides the first page's header and footer. Field 18 switches the first page to set 23. Which control in Pages sets field 18 wasn't checked.

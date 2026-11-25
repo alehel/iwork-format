@@ -34,6 +34,12 @@ Objects that already existed keep their IDs when a document is saved again, but 
 
 Saving under a new name gives the document a new document UUID. It is a new document as far as the metadata goes.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `resaved.pages` | `0002/hello.pages` | `2001#1732539 3 = "hello"`, `part Index/ViewState.iwa: present → absent`, `part Index/ViewState-1732662.iwa: absent → present`, `part Metadata/DocumentIdentifier: changed` | *Likely*: existing objects keep their IDs, a part's name can change, and saving under a new name gives a new document UUID |
+
 ## Confidence
 
 *Likely*:

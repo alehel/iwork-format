@@ -28,6 +28,12 @@ The body text is `مرحبا بالعالم`, 25 UTF-8 bytes. Apart from the tex
 
 Pages stores no writing direction for this text. Either it works out the direction from the characters when it lays out the text, or a paragraph must be set to right-to-left in the app before anything is stored. A reader should lay out text by the Unicode bidirectional rules.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `rtl.pages` | `0020/plain.pages` | `2001 3: "one" → "مرحبا بالعالم"`, `2001 5.1: ×19 → ×19`, `2001 19: ×0 → ×0`, `records 2022: 242 → 242` | *Likely*: Arabic text set through AppleScript stores no direction |
+
 ## Confidence
 
 *Likely*: text set through AppleScript stores no direction.

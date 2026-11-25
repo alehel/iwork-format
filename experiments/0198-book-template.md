@@ -36,9 +36,18 @@ The recipe makes a document from the template `Application/00B_Blank_Portrait/IS
 
 The template's object IDs are much lower (the body is 69187), as with every template other than the blank one.
 
+*Corrected 2026-11-25:* only this template's IDs are lower. [0156](0156-page-layout-template.md)'s are near the blank document's, and those of 0158 and 0199 are higher.
+
 ## Conclusion
 
 A book is an ordinary word-processing document. What makes it a book is its template and page setup: a 3 : 4 page of 768.24 × 1023.84 points (10.67 × 14.22 inches) that matches no named paper, so the paper name in field 44 is empty. A reader needs nothing special for books. An empty field 44 means a custom paper size, given by fields 30 and 31.
+
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `book.pages` | `0179/plain.pages` | `10000 15.9: "Application/Blank/ISO" → "Application/00B_Blank_Portrait/ISO"`, `10000 30: 595.28 → 768.24`, `10000 31: 841.89 → 1023.84`, `10000 44: "iso-a4" → ""`, `10000 48 = absent` | *Likely*: a book is an ordinary document with a custom paper size, so without a paper name |
+| `image-slides.key` | `0168/untouched.key` | `records 5: 18 → 20`, `part Data/red-8x4-9076.png: absent → present` | *Not used*: a leftover presentation with an image on two added slides |
 
 ## Confidence
 

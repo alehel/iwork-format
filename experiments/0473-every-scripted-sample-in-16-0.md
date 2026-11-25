@@ -65,6 +65,14 @@ Every document the experiments' recipes make, 319 of them across all three apps,
 
 The set is published with the fixtures under `release/16.0/`. For the next release, the same three commands make and check its set.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `release/16.0/0047/two-tables.numbers` | | `4011 6 = present` | *Likely*: the type-4011 record's field 6 varies with the run |
+| `0047-two-tables-run4.numbers` | `release/16.0/0047/two-tables.numbers` | `4011 6: ×1 → ×0` | *Likely*: the same recipe run again doesn't write it |
+| `release/16.0/**` | | `11006#2 7 = x"1b0001"` in every one | *Confirmed*: 313 documents made in 16.0 have 15.4's structure, but for what every 16.0 document differs in; the recipe compares them |
+
 ## Confidence
 
 *Confirmed*: for 313 documents made by the experiments' recipes, 16.0 writes the same structure as 15.4, apart from the differences every 16.0 document has.

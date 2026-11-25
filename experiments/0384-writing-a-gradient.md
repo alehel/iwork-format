@@ -53,6 +53,16 @@ The stops' colours are drawn as written: the first stop's colour where the gradi
 
 Writing the kind as 1 makes the gradient radial, but its centre isn't the middle of the shape (the left edge is already fully green and the top isn't red), so a radial gradient needs more than the kind; [0275](0275-radial-gradient.md)'s record would show what Pages adds.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `original.pages` | `0260/gradient.pages` | `same bytes`, `2025#1732719 1.11.1.2.1 = 0`, `2025#1732719 1.11.1.2.5.2 = 4.7124` | *Control*: light blue at the top to dark blue at the bottom |
+| `red-green.pages` | `original.pages` | Only `2025#1732719 1.11.1.2.2.1.3: 0.34 → 1.00`, `2025#1732719 1.11.1.2.2.1.4: 0.76 → 0.00`, `2025#1732719 1.11.1.2.2.1.5: 1.00 → 0.00` | *Confirmed*: the stops' colours are drawn as written: red at the top to green at the bottom |
+| `angle-0.pages` | `red-green.pages` | Only `2025#1732719 1.11.1.2.5.2: 4.7124 → 0.0` | *Confirmed*: field 5.2 is the angle: red at the left to green at the right |
+| `stops-moved.pages` | `red-green.pages` | Only `2025#1732719 1.11.1.2.2.2: 0.0 → 0.4`, `2025#1732719 1.11.1.2.2.2: 1.0 → 0.6` | *Confirmed*: field 2.2 is a stop's position: solid bands before 0.4 and after 0.6 |
+| `radial.pages` | `red-green.pages` | Only `2025#1732719 1.11.1.2.1: 0 → 1` | *Likely*: kind 1 is radial; where it is centred is unknown |
+
 ## Confidence
 
 *Confirmed*: a linear gradient's stop colours, stop positions and angle, by writing them. Kind 1 as radial is *likely*; where a radial gradient is centred is *unknown*.

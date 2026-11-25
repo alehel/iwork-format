@@ -43,6 +43,17 @@ Each page was sampled every 4 points over the shape, and the centre taken where 
 
 At 315° the gradient is centred in the wide shape too, so Pages' own radial gradients are centred whatever the shape. At other angles the centre doesn't follow 0444's formula with either the height or the width, nor with the width and height applied separately: at 225° it moves up as well as right, which no form of the formula allows. So the formula found in a square isn't the general rule, and how a radial gradient's angle places its centre in other shapes is still open. A writer should keep radial gradients at 315°, as Pages does.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `wide.pages` | `0384/radial.pages` | Only `2011#1732647 1.1.1.2.1: 100.0 → 200.0`, `2011#1732647 1.3.5.2.1: 100.0 → 200.0` | *Control*: the shape made 200 × 100 |
+| `wide-315.pages` | `wide.pages` | Only `2025#1732719 1.11.1.2.5.2: 4.7124 → 5.4978` | *Confirmed*: at 315° the gradient is centred in a wide shape too |
+| `wide-0.pages` | `wide.pages` | Only `2025#1732719 1.11.1.2.5.2: 4.7124 → 0.0` | *Unknown*: how the angle places the centre, found 2 left and 44 down of the shape's |
+| `wide-45.pages` | `wide.pages` | Only `2025#1732719 1.11.1.2.5.2: 4.7124 → 0.7854` | *Unknown*: how the angle places the centre, found 22 right and 48 down of the shape's |
+| `wide-225.pages` | `wide.pages` | Only `2025#1732719 1.11.1.2.5.2: 4.7124 → 3.927` | *Unknown*: how the angle places the centre, found 78 right and 24 up of the shape's |
+| `wide-270.pages` | `wide.pages` | `same bytes`, `2025#1732719 1.11.1.2.5.2 = 4.7124` | *Unknown*: how the angle places the centre, found 34 right and 28 up of the shape's |
+
 ## Confidence
 
 *Confirmed*: a radial gradient at 315° is centred in a 200 × 100 shape as in a square. *Unknown*: how other angles place the centre in a shape that isn't square.

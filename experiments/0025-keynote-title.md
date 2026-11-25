@@ -56,6 +56,14 @@ The objects it refers to are a stylesheet (type 401), a paragraph style (type 20
 
 A slide has no sections, and its text record has no section runs (field 17), and no fields 1 or 12.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `empty.key` | `0024/empty-a.key` | `same bytes`, `2001 3 ≠ "hello"` | *Control* |
+| `hello.key` | `empty.key` | `2001 3: absent → "hello"` | *Likely*: a slide's title is a type-2001 record laid out like Pages' body text |
+| `hullo.key` | `hello.key` | `2001 3: "hello" → "hullo"` | *Likely*: the letters are in field 3 alone |
+
 ## Confidence
 
 *Likely*:

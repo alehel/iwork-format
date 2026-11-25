@@ -37,6 +37,15 @@ Pages opened each file on its own and exported it as PDF. The PDFs' `MediaBox` g
 
 Root fields 30 and 31 set the paper size, and 32 the left margin, as floats in points; Pages lays out the page from them as written. The word's first ink is about a point inside the margin, from the letter's side bearing.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `original.pages` | `0002/hello.pages` | `same bytes` | *Control*: A4, with the text 57 points from the left |
+| `letter.pages` | `original.pages` | Only `10000#1 30: 595.28 → 612.0`, `10000#1 31: 841.89 → 792.0` | *Confirmed*: fields 30 and 31 are the paper size; Pages exports 612 × 792 |
+| `margin.pages` | `original.pages` | Only `10000#1 32: 56.6929 → 150.0` | *Confirmed*: field 32 is the left margin; the text starts at 151 points |
+| `letter-resaved.pages` | `letter.pages` | `10000#1 30 = 612.0`, `10000#1 31 = 792.0` | *Not used*: saved again by Pages, and not described in the text |
+
 ## Confidence
 
 *Confirmed*: fields 30, 31 and 32 of Pages' document root, by writing them.

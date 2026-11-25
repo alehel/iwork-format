@@ -30,6 +30,12 @@ B2 is a number cell (type 2), flags 0x00003001, holding the decimal128 123. Numb
 
 Numbers converts text that looks like a number into a number, as when a user types it. A cell keeps digits as text only when its format is text, as in [0036](0036-more-cell-formats.md)'s F2 (`042`).
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `numtext.numbers` | `0026/cells.numbers` | `6002 5.6 = x"050200000000000001300000 7b0000000000000000000000000040300100000001000000"`, `6005 3.3: "abc" → absent` | *Likely*: text that looks like a number is stored as a number in an automatic cell |
+
 ## Confidence
 
 *Likely*: numeric-looking text in an automatic-format cell is stored as a number.

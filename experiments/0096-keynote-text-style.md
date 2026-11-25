@@ -34,6 +34,12 @@ The recipe makes a text item `box` on slide 1 and sets the `font` of its text to
 
 Formatting all of a text box's text gives its paragraph an unnamed paragraph style that sets the changed character properties, as in Pages. A character style isn't used. Field 10 is 3 for three properties, which again fits it counting the properties a style sets. Red is stored as in Pages and Numbers, (1.0, 0.149, 0.0).
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `textstyle.key` | `0068/textbox.key` | `records 2022: 225 → 226`, `2022 11.3: absent → 40.0`, `2022 11.5: absent → "Georgia"`, `2022 10: absent → 3` | *Likely*: formatting all the text makes an unnamed paragraph style, as in Pages |
+
 ## Confidence
 
 *Likely*: whole-text formatting in Keynote makes an unnamed paragraph style, as in Pages.

@@ -52,6 +52,16 @@ In `five-by-four.numbers` cell B2 still held 1, and the exported PDF showed the 
 
 The names are read from the fields written. A table's size isn't: it is the number of row and column UUIDs in its type-6267 record. Fields 6 and 7 of the table model and fields 3 and 2 of record 6305 are copies, which Numbers rewrites when it saves. Fields 2 and 3, and 5 and 6, look like a pair of maps between a column's (or row's) place and its UUID's place in the list, one each way. Making a table smaller is done by dropping UUIDs; making it larger would need new ones and wasn't tried.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `names.numbers` | `0226/plain.numbers` | Only `2#904532 1: "Ark 1" → "Budget"`, `6001#904595 8: "Tabell 1" → "Costs"` | *Confirmed*: the sheet's and the table's names; Numbers shows the new ones |
+| `more-rows.numbers` | `0226/plain.numbers` | Only `6001#904595 6: 22 → 40`, `6001#904595 7: 7 → 3` | *Confirmed*: the size doesn't come from 6001's counts; the table is still 22 by 7 |
+| `lists-only.numbers` | `0226/plain.numbers` | Only `6267#904603 1: ×7 → ×4`, `6267#904603 2: ×7 → ×4`, `6267#904603 3: ×7 → ×4`, `6267#904603 4: ×22 → ×5`, `6267#904603 5: ×22 → ×5`, `6267#904603 6: ×22 → ×5` | *Confirmed*: the size comes from the UUID lists; the table is 5 by 4 |
+| `five-by-four.numbers` | `lists-only.numbers` | Only `6001#904595 6: 22 → 5`, `6001#904595 7: 7 → 4`, `6305#904672 2: 7 → 4`, `6305#904672 3: 22 → 5` | *Confirmed*: 5 by 4 with the counts too, the same as without |
+| `five-by-four-resaved.numbers` | `five-by-four.numbers` | `6267#904603 1: ×4 → ×4`, `6267#904603 4: ×5 → ×5`, `6001#904595 6 = 5`, `6001#904595 7 = 4` | *Likely*: Numbers keeps the trimmed lists when it saves |
+
 ## Confidence
 
 *Confirmed*: the sheet and table names. Also confirmed: the size comes from the UUID lists of the type-6267 record, not from 6001's counts. *Likely*: fields 2/3 and 5/6 are index maps in each direction.

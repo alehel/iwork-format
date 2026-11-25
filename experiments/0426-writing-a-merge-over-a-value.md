@@ -44,6 +44,14 @@ The PDF's text is `42` and the table's name in all three; no cell lost its value
 
 A merged cell shows the value of the range even when it isn't stored in the range's top-left cell: with B2 in the middle or bottom of a merge whose first cell is empty, Numbers still draws 42 in the merged cell. The merged cell takes its look from its top-left cell, here a header row or column. Numbers itself stores a merged cell's value in the top-left cell, so a reader of a file Numbers made can keep looking there; with only one value in the range, which cell holds it doesn't matter. Which value wins when several cells of a merge hold one wasn't tested.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `b2-b3.numbers` | `0044/merged.numbers` | Only `6001#904595 47.2.3.2.1.1.40.3.1: 2 → 1` | *Likely*: 42 in the first cell of the merge is drawn in the merged cell |
+| `b1-b2.numbers` | `b2-b3.numbers` | Only `6001#904595 47.2.3.2.1.1.40.4.1: 1 → 0`, `6001#904595 47.2.3.2.1.1.40.4.2: 2 → 1` | *Confirmed*: 42 is drawn though it isn't in the first cell, in the header row's grey |
+| `a2-b3.numbers` | `b2-b3.numbers` | Only `6001#904595 47.2.3.2.1.1.40.3.1: 1 → 0`, `6001#904595 47.2.3.2.1.1.40.3.2: absent → 1` | *Confirmed*: 42 is drawn though it isn't in the first cell, in the header column's grey |
+
 ## Confidence
 
 *Confirmed*: a merged cell shows a value stored in another cell of the range when the top-left is empty, and takes its look from the top-left, by writing it.

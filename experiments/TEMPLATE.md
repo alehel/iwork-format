@@ -23,6 +23,14 @@ The part of the `iwork-probe` output that changed, trimmed to what matters. Neve
 
 What the change means, in your own words.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `changed.pages` | `NNNN/control.pages` | `2021 11.11: absent → 1` | *Likely*: what this document shows |
+
+One row for each document, or `No documents of its own: …` when there are none. [CONTRIBUTING.md](../CONTRIBUTING.md#adding-an-experiment) says how.
+
 ## Confidence
 
 *Confirmed*, *likely* or *unknown*. If it's not confirmed, name the follow-up experiment that would settle it.

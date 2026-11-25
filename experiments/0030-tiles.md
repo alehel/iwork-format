@@ -50,6 +50,12 @@ A table's rows are split into tiles of 256 rows each. The model lists them in fi
 
 Numbers, like Pages, names some table parts with a `-2` ending: an empty tile and three header storage buckets in both `cells.numbers` and `row-300.numbers`. The [0026](0026-numbers-cells.md) write-up said Numbers doesn't use the ending. That was wrong, because the comparison there collapsed part names, and it has been corrected. What the ending means is still unknown.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `row-300.numbers` | `0026/cells.numbers` | `6001 6: 22 → 300`, `6001 4.3.1.1: absent → 1`, `6002 5.1: absent → 43`, `6001 4.3.2 = 256` | *Likely*: row 300 is row 43 of a second tile, so a tile covers 256 rows |
+
 ## Confidence
 
 *Likely*:

@@ -46,6 +46,15 @@ done
 
 The order of field 3.2 is the order Keynote shows the slides in, and nothing else decides it. A slide node left out of the list isn't shown at all, though its records are still in the file, so a reader should list slides from field 3.2 and not from the slide parts it finds.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `original.key` | `theme/0160/move.key` | `same bytes`, `2#2652410 3 ~ x"120508fb8ba201120508918aa201120508808ba201"` (2655739, 2655505, 2655616) | *Control*: C, A, B |
+| `reversed.key` | `original.key` | Only `2#2652410 3 ~ x"120508808ba201120508918aa201120508fb8ba201"` (2655616, 2655505, 2655739) | *Confirmed*: Keynote shows B, A, C, the order of field 3.2 |
+| `rotated.key` | `original.key` | Only `2#2652410 3 ~ x"120508918aa201120508808ba201120508fb8ba201"` (2655505, 2655616, 2655739) | *Confirmed*: Keynote shows A, B, C |
+| `two.key` | `original.key` | Only `2#2652410 3.2: ×3 → ×2`, `2#2652410 3.2.1 ≠ 2655505` | *Confirmed*: a slide left out of the list isn't shown: B, C |
+
 ## Confidence
 
 *Confirmed*: field 3.2 of the presentation as the show order, and as the list of slides shown, by writing it.

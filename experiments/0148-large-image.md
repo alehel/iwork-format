@@ -34,6 +34,12 @@ The package holds two data files:
 
 For a large image, Pages stores the original and a reduced copy for display, each with its own data ID. The image record names the original in field 11 and the reduced copy in field 12. A reader can draw the small copy quickly and use the original when it needs full resolution.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `large.pages` | `0023/image.pages` | `part Data/gradient-3000x2000-24.png: absent → present`, `part Data/gradient-3000x2000-small-25.png: absent → present`, `3005 11.1 = 24`, `3005 12.1: absent → 25` | *Likely*: field 12 of an image names a reduced copy, made for a large image |
+
 ## Confidence
 
 *Likely*: image field 12 names a reduced copy, made for large images.

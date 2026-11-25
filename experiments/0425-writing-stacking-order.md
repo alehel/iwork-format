@@ -43,6 +43,13 @@ The square is 100 points wide, from x = 40 to 140.
 
 The list is the stacking order from back to front, and where the body's text stands in it matters. A shape listed after the body is in front of the text, and the text wraps around it, so `One` moved to the right of the square. A shape listed before the body is behind the text: the text is drawn over it and doesn't wrap. A reader should draw the page's objects in the list's order and wrap the body's text only around objects that come after it.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `over-text.pages` | `0213/plain-shape.pages` | Only `2011#1732647 1.1.1.1.1: 300.0 → 40.0`, `2011#1732647 1.1.1.1.2: 300.0 → 40.0`, `2011#1732647 1.2.1: 1731553 → 1731554` | *Confirmed*: a shape after the body is in front, and the text wraps around it |
+| `shape-first.pages` | `over-text.pages` | Only `10015#1732364 1: changed`, the two entries the other way round | *Confirmed*: a shape before the body is behind the text, which doesn't wrap |
+
 ## Confidence
 
 *Confirmed*: type 10015's field 1 as the stacking order, back to front, with text wrapping only around objects in front of the body, by writing it.

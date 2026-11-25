@@ -36,6 +36,12 @@ and the format list's entry is 267 (rating).
 
 A rating is a number with a control: kind 6, from 0 (field 3) to 5 (field 4) in steps of 1 (field 5). Zero stars is the number 0, so it isn't empty.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `rating0.numbers` | `0036/formats.numbers` | `6002 5.6 = x"05020000000001000134000000000000000000000000000000004030010000000100000001000000"`, `6005 3.12.1 = 6`, `6005 3.12.3 = 0.0`, `6005 3.12.4 = 5.0` | *Likely*: control kind 6 is a rating, from 0 to 5, and zero stars is the number 0 |
+
 ## Confidence
 
 *Likely*: cell-control kind 6 is a rating, with its minimum, maximum and step in fields 3, 4 and 5.

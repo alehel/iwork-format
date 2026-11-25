@@ -36,6 +36,12 @@ Type 6 (boolean), flags 0x00041202: a double (1.0), a formula key, and two more 
 
 A formula with a boolean result is a boolean cell holding the result as a double and the formula key. It has the boolean format (flag 0x40000) like a checkbox, but no control, so it shows as TRUE or FALSE, not as a checkbox.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `boolformula.numbers` | `0036/formats.numbers` | `6002 5.6 = x"05060000000000000212040000000000 0000f03f 010000000600000002000000"`, `6005 3.5: ×0 → ×1`, `6005 3.12: ×2 → ×0` | *Likely*: a boolean result is a type-6 cell with a double and a formula key, and no control |
+
 ## Confidence
 
 *Likely*: boolean results are stored as type-6 cells with a double, like other formula results.

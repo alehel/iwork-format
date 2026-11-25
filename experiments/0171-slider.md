@@ -36,6 +36,12 @@ and the format list's entry is 256 (number), with a field 6.2 of 253.
 
 A slider is a number with control kind 5, ranging here from 1 to 100 in steps of 1. Unlike a rating, its number format is an ordinary one. The cell's flags are the same as for a rating, so only the control entry tells them apart.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `slider.numbers` | `0036/formats.numbers` | `6002 5.6 = x"05020000000001000134000032000000000000000000000000004030010000000100000001000000"`, `6005 3.12.1: absent → 5`, `6005 3.12.3: 0.0 → 1.0`, `6005 3.12.4: 5.0 → 100.0` | *Likely*: control kind 5 is a slider, here from 1 to 100 |
+
 ## Confidence
 
 *Likely*: cell-control kind 5 is a slider.

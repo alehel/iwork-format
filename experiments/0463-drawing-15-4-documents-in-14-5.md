@@ -46,6 +46,14 @@ The four:
 
 When Pages exports comments, the word a comment covers may or may not be shaded, from one export to the next; a comparison of exported pages should allow for it.
 
+## Evidence
+
+No documents of its own: it draws the samples of 0319 to 0460 in 14.5 and compares the drawings. The one that differs because of the release:
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `0419/no-body.pages` | `0002/hello.pages` | Only `10012#1732614 1: 1 → 0` | *Confirmed*: 14.5 draws nothing where 15.4 drew the text |
+
 ## Confidence
 
 *Confirmed*: 14.5 draws 327 documents written or saved by 15.4 exactly as 15.4 did, and differs only for a body switched off over text.

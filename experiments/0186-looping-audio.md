@@ -34,6 +34,14 @@ Apart from IDs, the type-3007 record differs from 0185's in two fields:
 
 Field 7 is the volume, as a fraction of full volume: AppleScript's 0–100 scale divided by 100. Field 24 is the repetition: 0 for none and 1 for loop. Loop back and forth is probably 2.
 
+## Evidence
+
+No documents of its own: the looping sound is saved with 0185's.
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `0185/loop.key` | `0185/audio.key` | `3007 7: 1.0 → 0.5`, `3007 24: 0 → 1` | *Likely*: field 7 is the volume and field 24 the repetition |
+
 ## Confidence
 
 *Likely*: field 7 is the volume and field 24 the repetition.

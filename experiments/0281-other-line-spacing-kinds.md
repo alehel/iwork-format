@@ -31,6 +31,13 @@ As in 0276, in two new documents with the body text `One`:
 
 Line spacing kinds are 0 (absent) lines, 1 at least, 2 exactly and 4 between, the space added between lines. Kind 3 isn't offered by the menu, so the codes don't follow the menu's order. For kinds 1, 2 and 4 the amount is in points.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `at-least.pages` | `0276/exactly.pages` | `2022 12.13.1: 2 → 1`, `2022 12.13.2 = 20.0` | *Likely*: line spacing kind 1 is At Least |
+| `between.pages` | `0276/exactly.pages` | `2022 12.13.1: 2 → 4`, `2022 12.13.2: 20.0 → 13.0` | *Likely*: line spacing kind 4 is Between |
+
 ## Confidence
 
 *Likely*: line spacing kinds 1 at least and 4 between.

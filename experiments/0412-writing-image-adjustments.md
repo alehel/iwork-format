@@ -46,6 +46,16 @@ The image's position and size are the same in every file.
 
 Pages draws an adjusted image from the rendered copy that field 15 names: the pale, less saturated red. Without field 15 it draws the original file unadjusted, pure red, and doesn't apply the settings in field 14 when it opens the document, even when they are changed. Field 14 is only what the adjustment controls start from. So a reader should draw the file named in field 15 when there is one, as the spec already advises, and a writer that adjusts an image must render the copy itself.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `original.pages` | `0284/adjusted.pages` | `same bytes`, `3005#1732665 15.1 = 26` | *Control*: the adjusted colour is drawn |
+| `no-filtered-copy.pages` | `original.pages` | Only `3005#1732665 15: x"081a" → absent` | *Confirmed*: without the rendered copy, Pages draws the original, pure red |
+| `exposure-minus.pages` | `original.pages` | Only `3005#1732665 14.1: 0.3 → -0.8` | *Confirmed*: field 14 isn't applied on opening: the same colour |
+| `exposure-minus-no-copy.pages` | `no-filtered-copy.pages` | Only `3005#1732665 14.1: 0.3 → -0.8` | *Confirmed*: nor without the copy: pure red |
+| `unadjusted.pages` | `0023/image.pages` | `same bytes` | *Not used*: a copy of the image without adjustments |
+
 ## Confidence
 
 *Confirmed*: Pages draws an adjusted image from field 15's rendered copy and doesn't apply field 14 on opening, by writing them.

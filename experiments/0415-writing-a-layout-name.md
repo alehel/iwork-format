@@ -51,6 +51,14 @@ The other 15 layouts' names were the same in all three.
 
 Field 10 of a template slide is its layout's name, used as written wherever Keynote shows it, for the layout and for the slides based on it. Keynote doesn't translate or replace a name it doesn't know, so the names in a file are those of the language it was made in.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `original.key` | `theme/0160/move.key` | `same bytes` | *Control* |
+| `renamed.key` | `original.key` | Only `5#2651742 10: "Tittel" → "Written layout"` | *Confirmed*: field 10 is the layout's name, for the layout and the slide that uses it |
+| `renamed-blank.key` | `original.key` | Only `5#2652157 10: "Tom" → "Empty page"` | *Confirmed*: the same for a layout no slide uses |
+
 ## Confidence
 
 *Confirmed*: template slide field 10 as the layout's name, by writing it.

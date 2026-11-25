@@ -48,6 +48,13 @@ Categories don't move any cells. The table keeps its rows in their stored order,
 
 A reader that ignores categories still reads every cell correctly. Showing the groups needs the 6383 tree.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `plain.numbers` | | `6001 81.2.6 = 0` | *Control*: the table ungrouped |
+| `category.numbers` | `plain.numbers` | `records 6383: 1 → 4`, `6383 6.1.5.1: absent → "a"`, `6383 6.1.5.1: absent → "b"`, `6001 81.2.6: 0 → 1`; the same number of rows, `6001 6 = 22` | *Likely*: categories are a tree of type-6383 records that name rows by number, and the cells stay as they were |
+
 ## Confidence
 
 *Likely*: categories are a tree of type-6383 records naming rows by number, and they don't change the cells.

@@ -49,6 +49,17 @@ The nested comparison found no other field that only one release writes, apart f
 
 Every set of samples was saved by the release it is named for, except the copies 0476 called 14.5's.
 
+## Evidence
+
+No documents of its own: it reads the metadata of every document under `samples/`. One from each release:
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `release/16.0/0002/hello.pages` | | `11006#2 7 = x"1b0001"`, `part Metadata/Properties.plist ~ "27.0.1"` | *Confirmed*: field 7 is the format version, as 16.0 writes it |
+| `0002/hello.pages` | | `11006#2 7 = x"1a0400"`, `part Metadata/Properties.plist ~ "26.4.0"` | *Confirmed*: field 7 is the format version, as 15.4 writes it |
+| `release/14.5/0002/hello.pages` | | `11006#2 7 = x"0e0401"`, `part Metadata/Properties.plist ~ "14.4.1"` | *Confirmed*: field 7 is the format version, as 14.5 writes it |
+| `release/13.1/0002/hello.pages` | | `11006#2 7 = x"0d0102"`, `part Metadata/Properties.plist ~ "13.1.2"` | *Confirmed*: field 7 is the format version, as 13.1 writes it |
+
 ## Confidence
 
 *Confirmed*: for 6,140 documents from four releases, field 7 of type 11006 is `fileFormatVersion` as packed varints.

@@ -58,6 +58,17 @@ Writing it:
 
 Field 2.6 lists the data files a payload uses, by data ID, once for each place in the payload that names one, much as 2.5 lists the objects it refers to. Pages doesn't rely on it: the image is drawn and kept on saving whatever 2.6 says, and on saving Pages writes 2.6 again from the payload. A reader can use it to find the files a record needs without decoding the payload, and a writer should fill it as Pages does.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `original.pages` | `0023/image.pages` | `same bytes`, `header 3005#1732647 6 = x"18"`, `part Data/red-8x4-24.png: present → present` | *Control*: 2.6 is 24, the data ID of the image's file |
+| `image-no-data-refs.pages` | `original.pages` | Only `header 3005#1732647 6: x"18" → absent` | *Likely*: field 2.6 isn't read when opening: the image is red |
+| `image-other-data-ref.pages` | `original.pages` | Only `header 3005#1732647 6: x"18" → x"08"` | *Likely*: as above |
+| `original-saved.pages` | `original.pages` | `header 3005#1732647 6 = x"18"`, `part Data/red-8x4-24.png: same` | *Control*: Pages keeps 24 on saving |
+| `image-no-data-refs-saved.pages` | `image-no-data-refs.pages` | `header 3005#1732647 6: absent → x"18"`, `part Data/red-8x4-24.png: same` | *Confirmed*: Pages writes 2.6 again on saving |
+| `image-other-data-ref-saved.pages` | `image-other-data-ref.pages` | `header 3005#1732647 6: x"08" → x"18"`, `part Data/red-8x4-24.png: same` | *Confirmed*: as above |
+
 ## Confidence
 
 *Confirmed*: header field 2.6 as the data IDs the payload uses, against every sample, and that Pages rebuilds it on saving. *Likely*: Pages doesn't read it when opening.

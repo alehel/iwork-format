@@ -41,6 +41,13 @@ Position, size and rotation (1.1.4, 0) are unchanged.
 
 Geometry field 1.1.3 is a set of flags, 3 for every object seen so far. Flipping horizontally sets the bit 0x4. A reader must mirror the object about its vertical centre line when the bit is set. The two bits always set (0x1 and 0x2) are probably "size and position are valid" flags. A vertical flip is stored differently ([0214](0214-vertically-flipped-shape.md)).
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `plain-shape.pages` | | `2011 1.1.1.3 = 3`, `2011 1.1.1.4 = 0.0` | *Control*: the shape not flipped |
+| `flipped.pages` | `plain-shape.pages` | `2011 1.1.1.3: 3 → 7`, `2011 1.1.1.4 = 0.0` | *Likely*: bit 0x4 of geometry field 1.1.3 is a horizontal flip |
+
 ## Confidence
 
 *Likely*: bit 0x4 of geometry field 1.1.3 is a horizontal flip.

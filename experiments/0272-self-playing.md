@@ -32,9 +32,17 @@ Apart from IDs, the only change is in the presentation record (type 2):
 
 Fields 10 (5.0) and 11 (2.0) are present in both documents.
 
+*Corrected 2026-11-25:* in this pair a type-23 record's field 7 also goes from 0 to 2, in the view state.
+
 ## Conclusion
 
 Presentation field 9 is the presentation type: 0 for normal and 1 for self-playing. Links only is probably 2. Fields 10 and 11 are the self-playing delays in seconds, before each transition and each build. They are stored with their defaults even when the presentation isn't self-playing.
+
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `self-playing.key` | `0271/plain.key` | `2 9: 0 → 1`, `2 10 = 5.0`, `2 11 = 2.0` | *Likely*: presentation field 9 is the type, and fields 10 and 11 the self-playing delays |
 
 ## Confidence
 

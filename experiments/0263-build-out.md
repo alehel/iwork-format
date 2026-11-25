@@ -31,6 +31,12 @@ The effect identifier is the same, `apple:dissolve character`.
 
 Build-ins and build-outs are the same type-8 record. Field 4.18.1 says which, as the English word `In` or `Out`, and the effect identifier is shared. A reader showing the end state of a slide should hide objects with a build-out. One showing the start state should hide objects with a build-in.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `build-out.key` | `0257/build.key` | `8 4.18.1: "In" → "Out"`, `8 4.18.2 = "apple:dissolve character"`, `records 153: 1 → 1` | *Likely*: field 4.18.1 tells a build-in from a build-out; that builds are type-8 records is confirmed, with 0257 |
+
 ## Confidence
 
 *Confirmed*, with 0257: builds are type-8 records with their effect in field 4.18.

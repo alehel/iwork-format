@@ -30,6 +30,12 @@ In the table model (type 6001), field 13 changes from 1 to 0. Fields 9 and 10 (o
 
 Field 13 of the table model says whether header columns are frozen (1) or not (0). It is the column counterpart of field 12. Unlike header rows in 0125, the field is kept with the value 0 rather than dropped.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `frozencols.numbers` | `0181/plain.numbers` | `6001 13: 1 → 0`, `6001 12 = 1`, `6001 10 = 1` | *Likely*: field 13 is whether header columns are frozen |
+
 ## Confidence
 
 *Likely*: field 13 is whether header columns are frozen.

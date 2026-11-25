@@ -28,8 +28,16 @@ The recipe sets slide 1's `title showing` to false. The slide (type 5) lost its 
 
 A slide's field 7 names its title placeholder. When the title is hidden, the slide stops referring to it, so a reader that follows the slide's fields won't draw a title. That fits the layout's placeholders being optional parts of a slide.
 
+*Corrected 2026-11-25:* field 7 is a list of what the slide shows, as is field 42. Both lose the title placeholder, 2652199, when the title is hidden, and keep their other entries. Field 5 is what names the title placeholder, and still does; the placeholder's own record is unchanged. [keynote.md](../spec/keynote.md) describes this, which [0312](0312-writing-a-hidden-body.md) confirmed by writing.
+
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `notitle.key` | `0025/empty.key` | `5 7: ×44 → ×43`, `5 42: ×44 → ×43` | *Likely*: slide field 7 stops naming the title placeholder when the title is hidden |
+
 ## Confidence
 
-*Likely*: slide field 7 names the title placeholder, and is absent when the title is hidden.
+*Superseded* by the correction above: slide field 7 names the title placeholder, and is absent when the title is hidden.
 
 *Unknown*: slide field 42.

@@ -34,6 +34,12 @@ The body's character style runs (field 8) gain an entry at 4, pointing at a new 
 
 Character property 11.27 is the letter spacing (tracking), as a fraction of the font size: one step of Loosen adds 0.01, which the Format sidebar shows as 1%. Tighten probably stores a negative value.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `looser.pages` | `0179/plain.pages` | `records 2021: 8 → 9`, `2021 11.27: absent → 0.01` | *Likely*: character property 27 is the letter spacing as a fraction of the size |
+
 ## Confidence
 
 *Likely*: character property 27 is the letter spacing as a fraction of the size.

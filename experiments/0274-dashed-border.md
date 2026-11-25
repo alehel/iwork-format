@@ -50,6 +50,12 @@ Stroke field 6 is the line's pattern:
 
 A reader draws a dashed line by repeating the used lengths, scaled by the width.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `dashed.pages` | `0250/border.pages` | `2025 1.11.2.6.1: 1 → 0`, `2025 1.11.2.6.3: 0 → 2`, `2025 1.11.2.6.4: absent → 1.0` | *Likely*: pattern kind 0 is a dash pattern, with its lengths in field 4 and their count in field 3 |
+
 ## Confidence
 
 *Likely*: stroke pattern kind 0 is a dash pattern whose lengths are in field 4, with their count in field 3.

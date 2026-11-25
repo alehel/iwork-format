@@ -40,6 +40,14 @@ done
 
 Field 13 of the table model is whether the header columns are frozen, 1 for frozen, independently of field 12 for the header rows.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `original.numbers` | `0226/plain.numbers` | `same bytes`, `6001#904595 13 = 1` | *Control*: AppleScript says the header columns are frozen |
+| `columns-unfrozen.numbers` | `original.numbers` | Only `6001#904595 13: 1 → 0` | *Confirmed*: field 13 is whether the header columns are frozen |
+| `two-columns-unfrozen.numbers` | `original.numbers` | Only `6001#904595 10: 1 → 2`, `6001#904595 13: 1 → 0` | *Confirmed*: the same with two header columns |
+
 ## Confidence
 
 *Confirmed*: table model field 13 as header columns frozen, by writing it.

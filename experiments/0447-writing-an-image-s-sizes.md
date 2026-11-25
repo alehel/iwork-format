@@ -49,6 +49,16 @@ The red area's extent was read from each drawing.
 
 An image is drawn at the size in its geometry, 1.1.2, as in Keynote. Field 4, though it equals that size in every file Pages saved, isn't used for drawing, and neither is field 9, the natural size. Field 4 is probably the size the image had when its frame was last set, kept for the app's own use, as in 0446's image, whose field 4 was its full size. A reader should draw images by 1.1.2, and a writer should keep field 4 equal to it.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `original.pages` | `0023/image.pages` | `same bytes` | *Control*: drawn 8 × 4 |
+| `geometry-80.pages` | `original.pages` | Only `3005#1732647 1.1.2.1: 8.0 → 80.0`, `3005#1732647 1.1.2.2: 4.0 → 40.0` | *Confirmed*: an image is drawn at the size in 1.1.2 |
+| `field4-80.pages` | `original.pages` | Only `3005#1732647 4.1: 8.0 → 80.0`, `3005#1732647 4.2: 4.0 → 40.0` | *Confirmed*: field 4 isn't used for drawing; still drawn 8 × 4 |
+| `field9-80.pages` | `original.pages` | Only `3005#1732647 9.1: 8.0 → 80.0`, `3005#1732647 9.2: 4.0 → 40.0` | *Confirmed*: field 9 isn't used for drawing; still drawn 8 × 4 |
+| `both-80.pages` | `original.pages` | Only `3005#1732647 1.1.2.1: 8.0 → 80.0`, `3005#1732647 1.1.2.2: 4.0 → 40.0`, `3005#1732647 4.1: 8.0 → 80.0`, `3005#1732647 4.2: 4.0 → 40.0` | *Confirmed*: drawn as with 1.1.2 alone |
+
 ## Confidence
 
 *Confirmed*: an image's drawn size as its geometry's 1.1.2, again, and that field 9 isn't used for drawing either, by writing each.

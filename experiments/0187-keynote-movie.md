@@ -40,9 +40,19 @@ The package gains `Data/clip-9076.mov`, the movie unchanged, and `Data/posterIma
 
 The movie's position, (928, 516), puts its centre at (960, 540), the middle of the 1920 × 1080 slide.
 
+*Corrected 2026-11-25:* the records also differ in 29.1.3, 29.1.4, 29.1.11 (the size, 64 × 48 against 0 × 0) and 29.1.18.
+
 ## Conclusion
 
 A movie is the same type-3007 record as a sound. Field 14 names the movie file and field 15 a poster image that Keynote makes from its first frame. A reader that can't play the movie can show that image instead. Fields 20 and 21 are the movie's natural size; field 23 is 1 when it has pictures, and field 9 is 1 when it has only sound. Field 29 describes the first track, here `vide` with a time scale of 1000.
+
+## Evidence
+
+No documents of its own: the movie is saved with 0185's sounds.
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `0185/movie.key` | `0185/audio.key` | `part Data/posterImage-*.png: absent → present`, `3007 15.1: absent → present`, `3007 9: 1 → 0`, `3007 23: 0 → 1`, `3007 20.1: 0.0 → 64.0`, `3007 29.1.1: "soun" → "vide"` | *Likely*: a movie is the same record as a sound, with a poster image and a natural size |
 
 ## Confidence
 

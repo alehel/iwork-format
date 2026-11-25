@@ -39,6 +39,14 @@ Row 2 isn't in the bucket and keeps the table's default height.
 
 A bucket entry's index counts from 0 and its size is a float in points, which Numbers uses as written. Rows and columns not listed have the default size.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `original.numbers` | `0045/sizes.numbers` | `same bytes` | *Control*: row 3 is 50 high and column B 200 wide |
+| `written.numbers` | `original.numbers` | Only `6006#904914 2.2: 50.0 → 80.0`, `6006#904958 2.2: 200.0 → 123.5` | *Confirmed*: a bucket entry holds an index from 0 and a size; Numbers reports row 3 as 80 and column B as 123.5 |
+| `resaved.numbers` | `original.numbers` | `6006#904914 2.2: 50.0 → 80.0`, `6006#904958 2.2: 200.0 → 123.5` | *Not used*: saved again by Numbers, and not described in the text |
+
 ## Confidence
 
 *Confirmed*: header storage bucket entries, by writing them.

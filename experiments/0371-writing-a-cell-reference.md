@@ -41,6 +41,15 @@ The arguments are the reference's number, then the column's value and absolute f
 
 The encoding reads as described. Zigzag 4 is index 2, column C; zigzag 3 is offset −2; zigzag 5 is offset −3. Field 2 of each axis decides whether Numbers shows a `$` before it. Changing a reference changes the result, since Numbers recalculates on opening: $C2 + B$2 = 2 + 4 = 6.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `abs-c.numbers` | `0106/mixed.numbers` | Only `6005#904540 3.5.1.1.26.1: 2 → 4` | *Confirmed*: an absolute column 4 is C: Numbers shows `=$C2+B$2` |
+| `rel-c.numbers` | `0106/mixed.numbers` | Only `6005#904540 3.5.1.1.26.1: 5 → 3` | *Confirmed*: a relative column 3 is two to the left of E: `=$B2+C$2` |
+| `all-relative.numbers` | `0106/mixed.numbers` | Only `6005#904540 3.5.1.1.26.1 ≠ 2`, `6005#904540 3.5.1.1.26.2 ≠ 1` | *Confirmed*: column 5 with the flag 0 is relative: `=B2+B$2` |
+| `all-absolute.numbers` | `0106/mixed.numbers` | Only `6005#904540 3.5.1.1.27.1 ≠ 0`, `6005#904540 3.5.1.1.27.2 ≠ 0` | *Confirmed*: row 2 with the flag 1 is absolute: `=$B$2+B$2` |
+
 ## Confidence
 
 *Confirmed*: the cell-reference node's columns, rows and absolute flags, by writing them.

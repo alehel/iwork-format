@@ -28,6 +28,12 @@ The recipe puts 3, 1 and 2 in B2, B3 and B4, then sorts the table ascending by c
 
 Sorting rewrites the cells in their new rows. A reader shows the rows in the stored order and needs nothing extra.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `sort.numbers` | `0024/empty-a.numbers` | `6002 5: ×0 → ×3`, `6002 5.1: absent → 1`, `6002 5.1: absent → 2`, `6002 5.1: absent → 3`; the rows hold 1, 2 and 3 in that order | *Likely*: sorting rewrites the stored rows, which were filled as 3, 1 and 2 |
+
 ## Confidence
 
 *Likely*: a sort rewrites the stored rows.

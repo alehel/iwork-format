@@ -40,6 +40,13 @@ The other shadow fields are unchanged.
 
 The stored angle is 360° minus the sidebar's angle. The sidebar measures counter-clockwise, as on a compass rose drawn with y pointing up. The file measures clockwise on the page, where y points down, which is the same direction on screen. A reader can place the shadow at (offset × cos a, offset × sin a) from the shape in page coordinates, where a is the stored angle. At 315° that puts the shadow up and to the right, as Pages drew it.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `shadow-0.pages` | `0251/shadow.pages` | `2025 1.11.4.2: 90.0 → 0.0` | *Likely*: 0° in the sidebar is stored as 0 |
+| `shadow-45.pages` | `0251/shadow.pages` | `2025 1.11.4.2: 90.0 → 315.0` | *Likely*: the stored angle is 360° minus the sidebar's; Pages draws the shadow up and to the right |
+
 ## Confidence
 
 *Likely*: the stored shadow angle is in page coordinates, with y down, and equals 360° minus the sidebar's angle.

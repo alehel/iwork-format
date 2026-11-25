@@ -42,11 +42,19 @@ HeaderStorageBucket-904958-2.iwa (model field 4.2)
           2: { 1: 6, 2: 98.0, 3: 0, 4: 0 }
 ```
 
+*Corrected 2026-11-25:* values outside the two buckets change too, all of them in records that record the table's state in the calculation engine (types 4000, 4008 and 6000 field 14) or the document root (type 1 fields 5.1 and 8.5.1, and type 205).
+
 ## Conclusion
 
 Table model field 4.1 names the row headers and field 4.2 the column headers. Each header storage bucket (type 6006) lists, in its repeated field 2, the rows or columns that have their own settings. Field 1 is the row or column index, counted from 0, and field 2 is its height or width in points. Only rows and columns with a non-default size appear. A new Numbers table already lists columns 5 and 6 at 98 points, so its default width must be something else. In Pages' table of [0021](0021-table-cells.md), the four columns were listed at 120.4 points each.
 
 A reader needs the default row height and column width, which this experiment doesn't show. They are probably in the table model or its style.
+
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `sizes.numbers` | `0024/empty-a.numbers` | `6006#904914 2.1: absent → 2`, `6006#904914 2.2: absent → 50.0`, `6006 2.1: absent → 1`, `6006 2.2: absent → 200.0` | *Likely*: header storage buckets list rows and columns by index, with the size in field 2 |
 
 ## Confidence
 

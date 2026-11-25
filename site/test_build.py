@@ -244,6 +244,14 @@ class Evidence(Case):
         self.assertIn(b.SAMPLES_REPO + "/raw/v1/keynote/0012/k.key", out)
         self.assertNotIn(".zip", out)
 
+    def test_pattern_links_to_the_folder(self):
+        b._FIXTURES["published"].update({"0012/s-1.pages": ("s1", ""), "0012/s-2.pages": ("s2", "")})
+        self.record.append({"file": "samples/0012/s-*.pages", "compared": "samples/*/m.pages", "difference": "", "documents": []})
+        out = self.table(self.ROWS + ["| `s-*.pages` | `*/m.pages` | | *Control* |"])
+        self.assertEqual(b.PROBLEMS, [])  # both are named by the pattern
+        self.assertIn('/tree/main/0012">2 published</a>', out)
+        self.assertIn('<td role="cell" data-label="Compared with"><code>*/m.pages</code></td>', out)
+
     def test_unchecked_table_is_reported(self):
         self.table([self.ROWS[0].replace("1 1 = 1", "1 1 = 2")] + self.ROWS[1:])
         self.assertProblem("run fixtures/evidence.py")

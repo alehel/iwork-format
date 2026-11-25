@@ -43,6 +43,14 @@ swift recipes/0399-pdf-diff.swift $O/text.pdf $O/ligatures-off.pdf $O/ligatures-
 
 Field 10 turns ligatures on and off for the whole document: at 0, Pages draws `ffi` and `ffl` as separate letters. A reader laying text out with ligatures should do so only when the field is 1, the default. Which pairs join depends on the font.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `text.pages` | `0002/hello.pages` | Only `2001#1732539 3: "hello" → "office efficient affluent fifty flight"` | *Control*: drawn with ligatures |
+| `ligatures-off.pages` | `text.pages` | Only `10012#1732614 10: 1 → 0` | *Confirmed*: field 10 turns ligatures off; the letters are drawn separately |
+| `ligatures-on.pages` | `text.pages` | `same bytes`, `10012#1732614 10 = 1` | *Control*: drawn as `text.pages` |
+
 ## Confidence
 
 *Confirmed*: type-10012 field 10 as using ligatures in the whole document, by writing it.

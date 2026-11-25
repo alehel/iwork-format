@@ -43,6 +43,14 @@ The words' places were read with PDFKit's `findString` on each exported page.
 
 Pages applies the bidirectional rules within a paragraph, so a run of Arabic is laid out right to left: the first Arabic word stands to the right of the second. But the paragraph's base direction stays left-to-right, from its style, even when its first strong character is Arabic: the Arabic line starts at the left margin, and in the mixed line the runs follow each other from left to right, with the first Arabic word on the left. A reader should lay out each paragraph with a left-to-right base direction unless its style says otherwise, not detect the direction from the text.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `latin.pages` | `0002/hello.pages` | Only `2001#1732539 3: "hello" → "Hello world"` | *Control* |
+| `arabic.pages` | `0002/hello.pages` | Only `2001#1732539 3: "hello" → "مرحبا بالعالم"` | *Confirmed*: a run of Arabic is laid out right to left, in a paragraph that still starts at the left margin |
+| `mixed.pages` | `0002/hello.pages` | Only `2001#1732539 3: "hello" → "مرحبا ABC بالعالم"` | *Confirmed*: the paragraph's direction isn't taken from its text; the runs go left to right |
+
 ## Confidence
 
 *Confirmed*: Pages lays out Arabic runs right to left within a left-to-right paragraph and doesn't take the paragraph's direction from its text, by writing it. How a right-to-left paragraph is stored, when set in the app, is *unknown*.

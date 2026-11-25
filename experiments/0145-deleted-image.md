@@ -28,6 +28,12 @@ The package has no `Data/` files, and `Metadata.iwa` record 2 has no data entry 
 
 Data that nothing uses is dropped when the document is saved. A reader doesn't have to skip unused files.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `deleted.pages` | `0023/image.pages` | `records 3005: 1 → 0`, `part Data/*: present → absent`, `11006 4.4: "red-8x4-24.png" → absent` | *Likely*: an unused data file and its entry are removed on save |
+
 ## Confidence
 
 *Likely*: unused data files and their entries are removed on save.

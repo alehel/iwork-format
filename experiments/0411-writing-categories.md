@@ -50,6 +50,15 @@ The table in each exported sheet, after its header row (each group's heading, th
 
 Numbers draws a category from its stored tree and doesn't regroup the rows by their values when it opens a document. A group's heading is the value in its field 7. Field 6, the same value with the group's rows, didn't change the heading when written alone; it is probably the grouping key. The rows under a group are those in its field 9, whatever their cells hold: written so, group `a` showed the rows whose kind is `b`. A reader can show a category from the tree as stored.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `original.numbers` | `0226/category.numbers` | `same bytes`, `6383#905560 7.5.1 = "a"`, `6383#905560 9.1.1 = 1` | *Control* |
+| `value-z-6-only.numbers` | `original.numbers` | Only `6383#905560 6.1.5.1: "a" → "z"` | *Unknown*: what field 6 is for; the sheet is drawn the same |
+| `value-z.numbers` | `value-z-6-only.numbers` | Only `6383#905560 7.5.1: "a" → "z"` | *Confirmed*: field 7 is the group's heading, drawn as z |
+| `rows-swapped.numbers` | `original.numbers` | Only `6383#905560 9.1.1: 1 → 2`, `6383#905560 9.1.1: 3 → 4`, `6383#905561 9.1.1: 2 → 1`, `6383#905561 9.1.1: 4 → 3` | *Confirmed*: field 9 is the group's rows, and Numbers doesn't regroup them on opening |
+
 ## Confidence
 
 *Confirmed*: a group's heading as its field 7 and its rows as field 9, and that Numbers doesn't regroup on opening, by writing them. What Numbers uses field 6 for is *unknown*.

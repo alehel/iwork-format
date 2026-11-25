@@ -46,6 +46,13 @@ A Pages text box is a shape of type 2011. Its position and size are in field 1.1
 
 A box placed on the page is listed by the page-level record of type 10015 next to the body, like an image.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `text-box.pages` | `0020/plain.pages` | `records 2011: 0 → 1`, `2011 1.1.1.2.1: absent → 250.0`, `2011 1.1.1.2.2: absent → 128.0`, `2001 3: absent → "box"` | *Likely*: a text box is type 2011, with its geometry in 1.1 |
+| `text-box.pages` | | `2011 2.1 = 1732650`, `2011 4.1 = 1732650`, `2001#1732650 3 = "box"`, `2001#1732650 1 = absent` | *Likely*: fields 2 and 4 name the text, which has no field 1 |
+
 ## Confidence
 
 *Likely*:

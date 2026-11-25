@@ -53,6 +53,13 @@ A page break is the character U+0005 in the text, and it also ends a paragraph: 
 
 Facing pages on its own doesn't give left pages their own headers. The left page used the same header text record as the right page, from the set in section field 25. So the sets in fields 23 and 24 belong to some option that is still off. Pages has a switch for different left and right pages in other versions. If 15.4 has one, it may only show in the Section tab once facing pages is on, and this experiment didn't look there.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `left-page-header.pages` | `0016/header.pages` | `2001 3: "body" → "one\u0005Two"`, `2001 5.1.1: absent → 4` | *Likely*: a page break is U+0005 and starts a paragraph |
+| `left-page-header.pages` | `0016/header.pages` | `10012 34: 0 → 1`, `10011 19 = 0`, `2001#1732234 3: "Head" → "left"` | *Likely*: with only facing pages on, left and right pages share the set in section field 25 |
+
 ## Confidence
 
 *Likely*:

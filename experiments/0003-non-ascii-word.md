@@ -99,6 +99,13 @@ The pairs `{1: 0, 2: n}` and `{1: n, 2: 0}` look like ranges written as a start 
 
 The 0002 write-up said that nothing but the known save-to-save noise changed outside record 2001. That missed these `ViewState.iwa` values, and it has been corrected.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `blabaer.pages` | `0002/hello.pages` | `2001 3: "hello" → "blåbær"`, `10131 6: 5 → 6`, `10132 10: 5 → 6` | *Confirmed*: field 3 of the body's type-2001 record is the text, as UTF-8 |
+| `emoji.pages` | `0002/hello.pages` | `2001 3: "hello" → "hi🙂"`, `10131 6: 5 → 4`, `10132 10: 5 → 4` | *Likely*: positions count UTF-16 code units, of which the text has 4 |
+
 ## Confidence
 
 *Confirmed*: the body text is field 3 of the body's type-2001 record in `Document.iwa`, as UTF-8 with no terminator, and an empty body leaves the field out (0002 and this experiment).

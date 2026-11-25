@@ -34,6 +34,13 @@ The script sets the pattern to a dash with two lengths, 2 and 2. Pages opened th
 
 Field 1 = 0 makes the stroke dashed, field 3 says how many of the length slots are used, and the lengths alternate dash and gap. They are in units of the stroke's width: lengths of 2 on a 5-point stroke give 10-point dashes and 10-point gaps.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `dashed.pages` | `0330/original.pages` | Only `2025#1732710 1.11.2.6.1: 1 → 0`, `2025#1732710 1.11.2.6.3: 0 → 2`, `2025#1732710 1.11.2.6.4: changed`, `2025#1732710 1.11.2.6.4 = 2.0` | *Confirmed*: the pattern's kind, count and lengths, in stroke widths; drawn as 10-point dashes and gaps |
+| `dashed-resaved.pages` | `dashed.pages` | `2025#1732710 1.11.2.6.1 = 0`, `2025#1732710 1.11.2.6.3 = 2`, `2025#1732710 1.11.2.6.4 = 2.0` | *Not used*: Pages' own save of it |
+
 ## Confidence
 
 *Confirmed*: the dash pattern's kind, count and lengths, by writing them; the lengths are multiples of the stroke width (one stroke width tested).

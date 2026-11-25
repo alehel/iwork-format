@@ -36,6 +36,13 @@ Pages opened each file on its own and exported it as PDF; PDFKit listed the link
 
 Email and phone links are written like web links: the URL in field 2, with the `mailto:` or `tel:` scheme deciding the kind. A phone number can be written without the percent-encoded spaces Pages uses.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `email.pages` | `0190/email.pages` | Only `2032#1732708 2: "mailto:no_reply@apple.com" → "mailto:someone@example.org"` | *Confirmed*: field 2 is an email link's address |
+| `phone.pages` | `0190/phone.pages` | Only `2032#1732700 2: "tel:%2012%2034%2056%2078" → "tel:+4712345678"` | *Confirmed*: field 2 is a phone link's address |
+
 ## Confidence
 
 *Confirmed*: email and phone link addresses, by writing them.

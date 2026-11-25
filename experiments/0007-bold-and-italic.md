@@ -69,6 +69,14 @@ Bold and italic are stored the same way as a size. They go in a new, unnamed cha
 
 Field 10 of a character style was 1 when the style set one property and 2 when it set two. It may count the properties, or the edits that made the style. This experiment can't tell those apart.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `bold.pages` | `0004/large.pages` | `2021 11.1: absent → 1`, `2021 11.3: 24.0 → absent` | *Likely*: field 11.1 of a character style is bold |
+| `italic.pages` | `0004/large.pages` | `2021 11.2: absent → 1`, `2021 11.3: 24.0 → absent` | *Likely*: field 11.2 is italic |
+| `bold-italic.pages` | `bold.pages` | `2021 11.2: absent → 1`, `2021 10: 1 → 2` | *Likely*: one style holds both properties |
+
 ## Confidence
 
 *Likely*:

@@ -49,6 +49,13 @@ Its text (type 2001) has no field 3: it is empty. The prompt `Infotekst` that Pa
 
 A caption is a type-633 record named by the object's drawable field 1.11. It is a text shape (like the type-2011 shapes of [0049](0049-text-box.md)) whose parent is the captioned object. Its field 3 is 1 for a caption. When an object has no caption, 1.11 names a type-3097 record instead: the empty records seen with every object are placeholders for a caption and a title that aren't shown. An empty caption stores no text. The prompt comes from the app.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `caption.pages` | `0023/image.pages` | `records 633: 0 → 1`, `records 3097: 2 → 1`, `633 3: absent → 1`, `records 2001: 19 → 20` | *Likely*: a caption is a type-633 text shape in place of the type-3097 placeholder |
+| `old/gallery.pages` | | `2001 3 = "One\ufffc"`, `2001 3 = "Infotekst"` | *Not used*: the text doesn't mention it; by its name an image gallery |
+
 ## Confidence
 
 *Likely*: drawable field 1.11 names the caption, a type-633 text shape with field 3 = 1, or a type-3097 placeholder when there's none.

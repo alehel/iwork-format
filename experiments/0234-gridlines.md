@@ -34,6 +34,12 @@ The table model's field 3 now names a new table style (type 6003). The new style
 
 Gridlines are table style properties, like alternating rows ([0230](0230-alternating-rows.md)). Property 34 is the horizontal gridlines of the body, and 0 turns them off. A new table doesn't store the property, so it shows them. The other four buttons are probably neighbouring properties: vertical body lines, and the lines of header rows, header columns and footer rows.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `no-horizontal-lines.numbers` | `0230/plain.numbers` | `6003 10: 1 → 2`, `6003 11.34: absent → 0` | *Likely*: property 34 = 0 hides the body's horizontal gridlines, which disappeared in Numbers |
+
 ## Confidence
 
 *Likely*: table style property 34 = 0 hides the body's horizontal gridlines.

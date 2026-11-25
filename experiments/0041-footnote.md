@@ -51,6 +51,13 @@ The body's new character-style run is most likely the superscript style of the m
 
 `iwork-probe text` now shows U+000E as `[footnote]`.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `footnote.pages` | `0020/plain.pages` | `2001 3: "one" → "one\u000e"`, `2001 16.1.1: absent → 3`, `records 2008: 0 → 1` | *Likely*: a footnote mark is U+000E, and field 16 holds the footnote runs |
+| `footnote.pages` | `0020/plain.pages` | `2001 3: absent → "\ufffc note"`, `2001 1: absent → 2`, `records 2004: 0 → 1` | *Likely*: the footnote text has field 1 = 2 and starts with an anchored number |
+
 ## Confidence
 
 *Likely*:

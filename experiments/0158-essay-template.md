@@ -37,6 +37,8 @@ The body record has a field 11 not seen before: a run table whose entries point 
 
 Each range ends at an entry with no field 2. The root has extra fields 2, 3, 4, 6, 7, 20 and 47 compared with blank documents.
 
+*Corrected 2026-11-25:* the root has no extra fields: `0020/plain.pages` has the same ones. And the last range, from 83, has no entry after it to end it.
+
 ## Conclusion
 
 Field 11 of a text record is a run table of smart fields over ranges of the text:
@@ -46,6 +48,12 @@ Field 11 of a text record is a run table of smart fields over ranges of the text
 - **Type 2036:** a merge field, here the author's full name.
 
 The text inside each range is what the field shows now. A reader can show it as plain text and still be right; to update fields, it needs these records.
+
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `essay.pages` | `0020/plain.pages` | `records 2031: 0 → 5`, `2034 2: absent → "d. MMMM y"`, `2036 2: absent → "TPMailMerge_FullNamePseudoProperty"`, `2001 11.1: ×0 → ×12` | *Likely*: body field 11 marks ranges of placeholder text (2031), a date (2034) and a merge field (2036) |
 
 ## Confidence
 

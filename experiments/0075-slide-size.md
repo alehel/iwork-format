@@ -31,6 +31,12 @@ The recipe sets the document's `width` to 1024 and `height` to 768.
 
 The presentation's field 4 is the slide size in points, as 0038 suggested. Resizing set field 14 on every slide node, which may mark its thumbnail as out of date. A reader should take the size from the presentation, not from the thumbnails.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `size.key` | `0025/empty.key` | `2 4.1: 1920.0 → 1024.0`, `2 4.2: 1080.0 → 768.0` | *Confirmed*: field 4 of the presentation is the slide size |
+
 ## Confidence
 
 *Confirmed*: presentation field 4 is the slide size ([0038](0038-second-slide.md) and this experiment).

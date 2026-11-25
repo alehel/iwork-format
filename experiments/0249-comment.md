@@ -38,6 +38,12 @@
 
 A comment and a highlight are the same thing: a type-2013 annotation in run table 23, whose type-3056 record holds the comment's text in field 1. A highlight is a comment with empty text. A reader can list comments by walking table 23 and reading 3056.1, with the author and time alongside.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `comment.pages` | `0200/highlight.pages` | `3056 1: "" → "Note"`, `records 2013: 1 → 1`, `2001 23.1.1 = 0`, `2001 23.1.2 = present` | *Confirmed*, with 0200: a comment is a highlight whose type-3056 record holds text |
+
 ## Confidence
 
 *Confirmed*, with 0200: comments and highlights are type-2013 records in run table 23, with their text, time and author in a type-3056 record.

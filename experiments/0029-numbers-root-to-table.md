@@ -58,6 +58,16 @@ Pages lays out the table model's field 4 the same way, so a table reader can be 
 
 Type 2 is the sheet in Numbers but, from [0027](0027-document-roots.md), the presentation in Keynote. Like type 1, it is a type number that means different things in different apps.
 
+## Evidence
+
+No documents of its own: it reads `0026/cells.numbers` and `0021/cells.pages`.
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `0026/cells.numbers` | | `1#1 1.1 = 904532`, `2#904532 2.1 = 904769`, `6000#904769 2.1 = 904595`, `6001#904595 4.3.1.2.1 = 904547` | *Likely*: Numbers' root leads through the sheet, the drawable and the table model to the tile |
+| `0026/cells.numbers` | | `6001 4.3.2 = 256` | *Unknown*: whether a tile covers 256 rows |
+| `0021/cells.pages` | | `6001#1732723 4.3.1.2.1 = 1732696`, `6001#1732723 4.2.1 = 1732917` | *Likely*: Pages' table model names its tile and header storage in the same fields |
+
 ## Confidence
 
 *Likely*:

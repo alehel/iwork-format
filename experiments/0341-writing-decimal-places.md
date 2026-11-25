@@ -40,6 +40,15 @@ Numbers opened each file on its own and read C2 through AppleScript.
 
 Field 2 is the number of decimal places in number-like formats too, and 253 means automatic: as many as the value needs. Fields 4 and 5 had no visible effect on a small positive value; they may control negative numbers or the thousands separator, which this value can't show.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `original.numbers` | `0031/kinds.numbers` | `same bytes` | *Control*: C2 is shown as 25 % |
+| `pct2.numbers` | `original.numbers` | Only `6005#904541 3.6.2: changed` (the percent format's, from 253 to 2) | *Confirmed*: field 2 is the decimal places; C2 is shown as 25,00 % |
+| `pct-f4.numbers` | `original.numbers` | Only `6005#904541 3.6.4: changed`, `6005#904541 3.6.4 = 1` | *Unknown*: what field 4 is; C2 is shown as 25 % |
+| `pct-f5.numbers` | `original.numbers` | Only `6005#904541 3.6.5: changed`, `6005#904541 3.6.5 = 1` | *Unknown*: what field 5 is; C2 is shown as 25 % |
+
 ## Confidence
 
 *Confirmed*: field 2 is the decimal places, 253 automatic.

@@ -35,6 +35,12 @@ The exponent is the top bits of the last two bytes, shifted right by one, minus 
 
 Numbers keeps any number as a decimal128 with a coefficient of up to about 16 digits and an exponent. Both values here came from AppleScript doubles and were normalised to 15 significant digits, so a reader should decode the coefficient and exponent generally rather than expect a fixed scale.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `extremes.numbers` | | `6002 5.6 ~ x"00407a10f35a00000000000000004c30"`, `6002 5.6 ~ x"0080c6a47e8d03000000000000001630"` | *Confirmed*: 1E+20 and 0.000001 are stored as decimal128 |
+
 ## Confidence
 
 *Confirmed*: numbers are decimal128 ([0021](0021-table-cells.md), [0026](0026-numbers-cells.md) and this experiment).

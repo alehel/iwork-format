@@ -37,6 +37,13 @@ The third line's baseline would be at 66.2 + 2 × 12 = 90.2 and the sixth's at 6
 
 12.1.2 is the number of lines the drop cap spans: the letter is scaled to reach from the top of the first line down to the baseline of the last line it covers, 33 points tall for 3 lines and 71 for 6, and it grows wider in proportion.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `three.pages` | `0261/drop-cap.pages` | `same bytes` | *Control*: a drop cap three lines tall |
+| `six.pages` | `three.pages` | Only `10024#1732137 12.1.2: 3 → 6` | *Confirmed*: 12.1.2 is the number of lines; the letter reaches the sixth baseline |
+
 ## Confidence
 
 *Confirmed*: drop-cap style 12.1.2 is the number of lines, by writing it and measuring.

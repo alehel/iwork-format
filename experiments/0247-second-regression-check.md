@@ -37,6 +37,10 @@ The six failures are expected: their parts are encrypted, so none of them frames
 
 The container findings hold for everything added since 0178: every new record type is framed by the same chunk and record layout and listed in its parent's header references. That includes media, tracked changes, highlights, captions, groups, masks, chart links, pivot tables and category trees. `iwork-probe` doesn't decrypt yet, so a reader built on it must first decrypt password-protected documents.
 
+## Evidence
+
+No documents of its own: it checks every document in `samples/`, 353 at the time.
+
 ## Confidence
 
 *Confirmed*: framing and header-reference reachability hold for all 347 unencrypted samples.

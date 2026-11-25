@@ -69,7 +69,7 @@ A reader with the password can decrypt each part and then read it as normal. A r
 | --- | --- | --- | --- |
 | `plain.pages` | | `2001 3 = "one"` | *Control* |
 | `locked.pages` | `plain.pages` | `part .iwph: absent → present`, `part .iwpv2: absent → present`, `part preview*.jpg: present → absent`; read with the password, `2001 3 = "one"` | *Likely*: the key derivation, the cipher and which files are added, left out and encrypted |
-| `locked2.pages` | `locked.pages` | `part .iwpv2: present → present`; read with the password, `2001 3 = "one"` | *Likely*: the salt is new on each save |
+| `locked2.pages` | `locked.pages` | `part .iwpv2: changed`; read with the password, `2001 3 = "one"` | *Likely*: the salt is new on each save |
 | `unlocked.pages` | `plain.pages` | `part .iwph: absent → absent`, `part .iwpv2: absent → absent`, `part preview.jpg: present → present`, `2001 3 = "one"` | *Likely*: a removed password leaves no password files behind |
 
 ## Confidence

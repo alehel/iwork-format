@@ -40,6 +40,15 @@ The value is written as a coefficient of 12345 with exponent 0 and the sign bit,
 
 The sign bit makes a decimal128 negative, and Numbers reads −12345 as written. Field 4 of a number format is the negative-number style: 1 drops the minus sign, which fits Numbers' style that shows negatives in red without one; the colour can't be read through AppleScript. Field 5 turns on the thousands separator, and any non-zero value does.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `negative.numbers` | `0226/plain.numbers` | Only `6002#904547 5.6: changed`, `6002#904547 5.6 ~ x"393000000000000000000000000040b0"` | *Confirmed*: the sign bit makes a decimal128 negative; B2 is −12345 |
+| `f4.numbers` | `negative.numbers` | Only `6005#904541 3.6.4: 0 → 1` | *Likely*: field 4 is the negative style; B2 is shown as 12345 |
+| `f5.numbers` | `negative.numbers` | Only `6005#904541 3.6.5: 0 → 1` | *Confirmed*: field 5 is the thousands separator; B2 is shown as −12 345 |
+| `f5-2.numbers` | `negative.numbers` | Only `6005#904541 3.6.5: 0 → 2` | *Likely*: any other value than 0 turns it on |
+
 ## Confidence
 
 *Confirmed*: negative decimal128s, and field 5 as the thousands separator, by writing them.

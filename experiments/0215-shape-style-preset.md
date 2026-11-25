@@ -39,6 +39,12 @@ Both shapes' style references (field 1.2) change from 1731553 to 1731554. No sty
 
 Each preset in the sidebar is a named style in the stylesheet, `shape-N-shapestyle`, numbered in the order of the swatches: 0 black, 1 blue and, from 0077, 3 red. Choosing one only changes the shape's style reference. Several shapes can share one preset style.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `blue-style.pages` | `0213/plain-shape.pages` | `2011 1.2.1: 1731553 → 1731554`, `2025#1731554 1.1.2 = "shape-1-shapestyle"`, `2025#1731554 1.11.1.1.4 = 0.633`, `records 2025: 26 → 26` | *Confirmed*, with 0077: a preset is a named type-2025 style that both shapes point at |
+
 ## Confidence
 
 *Confirmed*, with 0077: shape style presets are named type-2025 styles that shapes point at directly.

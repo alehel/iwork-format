@@ -42,6 +42,15 @@ The first line's ink, marker and word together:
 
 Field 11 = 0 removes the marker and leaves the text where it was; field 16 is the character drawn as the marker; and the first occurrence of field 13 indents the first level's marker and text together by its value in points. The text itself never changes: list markers aren't in it.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `dash.pages` | `0014/dash-list.pages` | `same bytes` | *Control*: drawn with a dash |
+| `none.pages` | `dash.pages` | Only `2023#1731488 11: 2 → 0` | *Confirmed*: field 11 = 0 removes the marker and leaves the text in place |
+| `guillemet.pages` | `dash.pages` | Only `2023#1731488 16: "-" → "»"` | *Confirmed*: field 16 is the marker's text |
+| `indent72.pages` | `dash.pages` | Only `2023#1731488 13: changed` (the first value, from 0 to 72) | *Confirmed*: field 13 is the indent; marker and text move right by 72 points |
+
 ## Confidence
 
 *Confirmed*: list style fields 11, 13 and 16, by writing them and measuring.

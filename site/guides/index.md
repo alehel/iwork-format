@@ -10,6 +10,8 @@ Each finding links to the experiments that support it and carries a confidence l
 | *Likely* | One experiment supports it, and nothing contradicts it |
 | *Unknown* | Seen in files, but its meaning isn't established yet |
 
+Every experiment ends with an Evidence table: its documents, what differs between them, and what each shows. The documents can be downloaded one by one, and the differences are checked against them by script. [0367](../../experiments/0367-writing-orientation.md) is an example.
+
 The pages describe the files the newest apps write, Pages, Keynote and Numbers 16.0. Where something doesn't hold for every release checked, back to 13.1, a note says which release brought it; [Releases](../../spec/releases.md) gathers them.
 
 ## Where to start

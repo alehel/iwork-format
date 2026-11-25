@@ -42,6 +42,14 @@ The text area runs from 56.69 to 538.59 points, so its centre is at 297.6.
 
 12.1 = 1 right-aligns the paragraphs to the right margin, and 2 centres them on the text area: the lines' middles are at 297.9 and 297.5. The Body style's 4 lays out as left in this left-to-right text, which fits natural alignment.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `original.pages` | `0005/two-lf.pages` | `same bytes` | *Control*: both lines start at the left margin |
+| `align-1.pages` | `original.pages` | Only `2022#1731511 12.1: 4 → 1` | *Confirmed*: 1 is right-aligned; both lines end at the right margin |
+| `align-2.pages` | `original.pages` | Only `2022#1731511 12.1: 4 → 2` | *Confirmed*: 2 is centred; both lines are centred on the text area |
+
 ## Confidence
 
 *Confirmed*: paragraph alignment values 1 and 2, by writing them and measuring.

@@ -28,6 +28,12 @@ The recipe reads word 2's size and sets it again. The body record is the same as
 
 Setting a property to the value it already resolves to makes no style. A reader won't find redundant character styles from that, though one made in other ways might still repeat an inherited value.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `defaultsize.pages` | `0020/plain.pages` | `2001 3: "one" → "one two three"`, `2001 8: ×0 → ×0`, `records 2021: 8 → 8` | *Likely*: setting a size a word already has stores nothing |
+
 ## Confidence
 
 *Likely*: setting a property to its current value doesn't store anything.

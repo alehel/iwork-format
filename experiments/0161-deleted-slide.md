@@ -28,6 +28,12 @@ Field 3.2 lists two nodes, for `A` and `C`. No record holds the text `B`, and no
 
 A deleted slide leaves nothing behind. Part names can move between slides from one save to the next: `Slide.iwa` held the second slide here, which is `C` once `B` is gone.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `delete.key` | `0038/two-slides.key` | `2 3.2: ×2 → ×2`, `2001 3: absent → "A"`, `2001 3: absent → "C"`, `2001 3 ≠ "B"` | *Likely*: a deleted slide's records and part are removed |
+
 ## Confidence
 
 *Likely*: a deleted slide's records and part are removed.

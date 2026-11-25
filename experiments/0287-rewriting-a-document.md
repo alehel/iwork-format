@@ -45,6 +45,14 @@ Pages opens it without a warning, reports the body text `One`, and saves it agai
 
 The chunk and record layers of the spec are complete enough to write: a document whose every `.iwa` part was framed again by an independent encoder opens and saves normally. Pages doesn't need its own Snappy matches. Any valid raw Snappy block is accepted, including one with no compression at all, so a writer can skip compression entirely.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `original.pages` | `0236/plain.pages` | `same bytes` | *Control*: what is rewritten |
+| `rewritten.pages` | `original.pages` | Only the encoding: `same records`, `same parts` | *Confirmed*: Pages opens a document whose chunks and records were encoded again |
+| `resaved.pages` | `rewritten.pages` | `2001#1732539 3 = "One"` | *Likely*: Pages saves it again as usual |
+
 ## Confidence
 
 *Confirmed*: re-encoded chunks and records, with header field 2.3 recomputed, are accepted by Pages.

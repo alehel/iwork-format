@@ -40,6 +40,13 @@ Keynote exports PNG images with a Display P3 profile.
 
 The slide style's 11.1.1 is the slide's background colour, and Keynote draws exactly the sRGB colour written, converted to the image's Display P3 profile on export. Comparing colours from exported images needs that conversion; read raw, they aren't the stored values.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `original.key` | `theme/0025/hello.key` | `same bytes` | *Control*: a white slide |
+| `written.key` | `original.key` | Only `9#2651744 11.1.1.3: changed`, `9#2651744 11.1.1.4: 1.0 → 0.9`, `9#2651744 11.1.1.5: 1.0 → 0.6` (the first was just below 1 already) | *Confirmed*: 11.1.1 of the slide style is the background colour Keynote draws |
+
 ## Confidence
 
 *Confirmed*: slide style 11.1.1 is the background colour, by writing it.

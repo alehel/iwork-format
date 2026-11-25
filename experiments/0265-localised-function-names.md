@@ -43,6 +43,15 @@ Numbers parses formulas in the app's language. It accepts English names too, unl
 
 The file stores only the number, never a name. So formulas are portable between languages, and a reader must print function names from a table such as this spec's, in the language it wants. The TIME row of 0248 is wrong and should read HOUR with three arguments.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `TID.numbers` | `0248/TIME.numbers` | `6005 3.5.1.1.2: 60 → 152`, `6005 3.5.1.1.3 = 3` | *Likely*: TID, the Norwegian name of TIME, is function 152, while 0248's TIME is stored as HOUR |
+| `SUMMER.numbers` | | `6005 3.5.1.1.2 = 168`, `6005 3.5.1.1.3 = 2` | *Likely*: the Norwegian name is stored as SUM's number |
+| `MINUTT.numbers` | | `6005 3.5.1.1.2 = 90`, `6005 3.5.1.1.3 = 1` | *Likely*: the Norwegian name is stored as MINUTE's number |
+| `TIMEVALUE.numbers` | `TID.numbers` | `6005 3.5.1.1.2: 152 → 153`, `6005 3.5.1.1.6: absent → "1:00"` | *Likely*: the English name is accepted too, as function 153 |
+
 ## Confidence
 
 *Likely*: formulas set through AppleScript are parsed in the app's language, and the file stores language-independent function numbers.

@@ -39,6 +39,12 @@ The comparison nodes are 7 `>`, 8 `>=`, 9 `<`, 10 `<=`, 11 `=` and 12 `<>`. IF i
 
 Formulas typed in a Norwegian Numbers separate arguments with `;`, but the stored form has no separators, so it doesn't depend on the language.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `if.numbers` | `0064/functions.numbers` | `6005 3.5.1.1.1: absent → 7`, `6005 3.5.1.1.1: absent → 8`, `6005 3.5.1.1.1: absent → 9`, `6005 3.5.1.1.1: absent → 10`, `6005 3.5.1.1.1: absent → 11`, `6005 3.5.1.1.1: absent → 12`, `6005 3.5.1.1.1: absent → 34`, `6005 3.5.1.1.1: absent → 35`, `6005 3.5.1.1.2: absent → 62` | *Likely*: nodes 7 to 12 are the comparisons, IF is function 62, and 34 and 35 enclose its second and third arguments |
+
 ## Confidence
 
 *Likely*:

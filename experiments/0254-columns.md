@@ -37,6 +37,12 @@ Nothing else changes.
 
 Type-2024 records are column styles, applied to the body through run table 12. Property 11.7.1 holds the number of columns (field 1) and probably the gap between them as a fraction of the text width (field 2, 0.05). A reader that lays out the body should split it into that many columns.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `two-columns.pages` | `0236/plain.pages` | `2024 10: 1 → 2`, `2024 11.7.1.1: absent → 2`, `2024 11.7.1.2: absent → 0.05`, `2001 12.1.2.1: changed` | *Likely*: run table 12 names a column style with the number of columns in 11.7.1.1; the unit of the gap is unknown |
+
 ## Confidence
 
 *Likely*: run table 12 holds column styles (type 2024), with the number of columns in 11.7.1.1.

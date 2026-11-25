@@ -38,6 +38,8 @@ The recipe sets B2 to 4 and C2 to 2, then writes nine formulas in E2 to E10. The
 
 The formula list's keys 1–8 follow the order of the cells that hold formulas.
 
+*Corrected 2026-11-25:* E9 does hold a cell, of type 8, whose key leads through a data list of type 5 to a text record holding `IF(B2>1,1,0)`: the formula that couldn't be read is kept as text.
+
 ## Conclusion
 
 Operator nodes, together with those from 0031 and 0035:
@@ -54,6 +56,12 @@ Operator nodes, together with those from 0031 and 0035:
 Function numbers (node 16, field 2): AVERAGE 15, COUNT 30, MAX 84, MIN 88, and SUM 168 ([0035](0035-formula-references.md)). They rise in the alphabetical order of the English names, which makes SUM = 168 likely. So the node `16, 168` that ended the merged range in 0044 really is SUM, and what it does there is still open.
 
 The IF formula was rejected and left E9 empty. In Norwegian, Numbers separates function arguments with `;`, not `,`, so the formula was probably invalid as typed.
+
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `functions.numbers` | `0035/formulas.numbers` | `6005 3.5.1.1.1: absent → 2`, `6005 3.5.1.1.1: absent → 4`, `6005 3.5.1.1.1: absent → 5`, `6005 3.5.1.1.1: absent → 6`, `6005 3.5.1.1.2: absent → 15`, `6005 3.5.1.1.2: absent → 30`, `6005 3.5.1.1.2: absent → 84`, `6005 3.5.1.1.2: absent → 88` | *Likely*: nodes 2, 4, 5 and 6 are `-`, `/`, `^` and `&`, and functions 15, 30, 84 and 88 are AVERAGE, COUNT, MAX and MIN |
 
 ## Confidence
 

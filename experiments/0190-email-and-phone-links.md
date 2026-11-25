@@ -32,6 +32,13 @@ Field 1 holds a new UUID each time.
 
 Web, email and phone links are all type-2032 smart fields. The kind of link is given only by the scheme of the address in field 2: `http:`, `mailto:` or `tel:`. The phone number is stored percent-encoded, with each space as `%20`, so a reader should decode the address before showing it.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `email.pages` | `0189/link.pages` | `2032 2: "http://www.apple.com/no" → "mailto:no_reply@apple.com"` | *Confirmed*, with 0189: an email link is the same record; that only the scheme tells them apart is likely |
+| `phone.pages` | `0189/link.pages` | `2032 2: "http://www.apple.com/no" → "tel:%2012%2034%2056%2078"` | *Confirmed*, with 0189: so is a phone link, percent-encoded |
+
 ## Confidence
 
 *Confirmed*, with 0189: links are type-2032 smart fields with the address in field 2.

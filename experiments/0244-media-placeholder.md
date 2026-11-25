@@ -36,6 +36,12 @@ The image data is still stored, and the image's drawable is unchanged.
 
 Field 7 of an image record is 1 when the image is a media placeholder. The picture it holds is shown until the user replaces it, so a reader can draw it like any image. Only an editor needs the flag.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `media-placeholder.pages` | `0228/caption.pages` | `3005 7: 0 → 1` | *Likely*: image field 7 marks a media placeholder |
+
 ## Confidence
 
 *Likely*: image field 7 marks a media placeholder.

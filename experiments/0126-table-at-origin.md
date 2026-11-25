@@ -28,6 +28,12 @@ The recipe sets the table's position to (0, 0). The drawable's position (field 1
 
 The stored y of a Numbers table is 28 points less than the y Numbers reports, here as in 0059. The difference is constant, so it is probably room above the table for its name. A reader that places a table by its stored position should add 28 to y when the name is shown, though when exactly that applies isn't tested.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `origin.numbers` | `0024/empty-a.numbers` | `6000 1.1.1.2: 0.3234 → -28.0`, `6000 1.1.1.1 = 0.0` | *Likely*: the stored y is 28 points less than the y Numbers reports, here 0 |
+
 ## Confidence
 
 *Likely*: a table's stored y is 28 points less than its reported y.

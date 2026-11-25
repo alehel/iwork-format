@@ -42,6 +42,16 @@ Each file was opened in Pages on its own and exported as PDF; the page was drawn
 
 Pages draws a paragraph border's edges from 12.15: 1 a line above, 2 a line below, 4 a box around the paragraph, set about 6.7 points outside the margins at the sides. 12.45, the bit set that Pages also writes, doesn't change what is drawn here, at least while 12.15 is present. A writer should set both, as Pages does.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `original.pages` | `0262/border.pages` | `same bytes` | *Control*: a line above the paragraph |
+| `new-bottom.pages` | `original.pages` | Only `2022#1732697 12.45: 1 → 2` | *Unknown*: when 12.45 is used; drawn as the original |
+| `new-all.pages` | `original.pages` | Only `2022#1732697 12.45: 1 → 15` | *Unknown*: as above |
+| `old-bottom.pages` | `original.pages` | Only `2022#1732697 12.15: 1 → 2` | *Confirmed*: 12.15 = 2 draws a line below |
+| `old-all.pages` | `original.pages` | Only `2022#1732697 12.15: 1 → 4` | *Confirmed*: 12.15 = 4 draws a box |
+
 ## Confidence
 
 *Confirmed*: 12.15 decides the edges drawn (1 top, 2 bottom, 4 all), by writing it and measuring.

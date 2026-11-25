@@ -46,6 +46,20 @@ Fields 10000.2 (2) and 10000.5 (1, by row) are the same in all nine. The data gr
 
 Chart types run from 1 to 19. The 2D types are 1–9, with the stacked ones after the plain ones. The 3D types are 12–19, in the order vertical bar, horizontal bar, line, area, pie, then the three stacked types. Numbers 10 and 11 weren't produced by any AppleScript type; they are probably the kinds AppleScript doesn't offer, such as bubble or mixed charts. As before, the type doesn't change how the data is stored.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `stacked_horizontal_bar_2d-row.key` | `0079/pie_2d-row.key` | `5021 10000.1: 5 → 7` | *Likely*: chart type 7 is a stacked horizontal bar chart |
+| `stacked_area_2d-row.key` | `0079/pie_2d-row.key` | `5021 10000.1: 5 → 8` | *Likely*: chart type 8 is a stacked area chart |
+| `horizontal_bar_3d-row.key` | `0079/pie_2d-row.key` | `5021 10000.1: 5 → 13` | *Likely*: chart type 13 is a 3D horizontal bar chart |
+| `line_3d-row.key` | `0079/pie_2d-row.key` | `5021 10000.1: 5 → 14` | *Likely*: chart type 14 is a 3D line chart |
+| `area_3d-row.key` | `0079/pie_2d-row.key` | `5021 10000.1: 5 → 15` | *Likely*: chart type 15 is a 3D area chart |
+| `pie_3d-row.key` | `0079/pie_2d-row.key` | `5021 10000.1: 5 → 16` | *Likely*: chart type 16 is a 3D pie chart |
+| `stacked_vertical_bar_3d-row.key` | `0079/pie_2d-row.key` | `5021 10000.1: 5 → 17` | *Likely*: chart type 17 is a 3D stacked vertical bar chart |
+| `stacked_horizontal_bar_3d-row.key` | `0079/pie_2d-row.key` | `5021 10000.1: 5 → 18` | *Likely*: chart type 18 is a 3D stacked horizontal bar chart |
+| `stacked_area_3d-row.key` | `0079/pie_2d-row.key` | `5021 10000.1: 5 → 19` | *Likely*: chart type 19 is a 3D stacked area chart |
+
 ## Confidence
 
 *Likely*: the numbers in the table above.

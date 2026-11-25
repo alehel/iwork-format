@@ -28,6 +28,12 @@ The recipe makes a shape on slide 1 and sets its `rotation` to 45. Reading the f
 
 Geometry field 1.1.4 is the rotation in degrees for shapes in Keynote too, as for images and lines in Pages.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `rotation.key` | `0098/opacity.key` | `2011 1.1.1.4: 0.0 → 45.0` | *Confirmed*: geometry field 1.1.4 is the rotation in degrees, for shapes in Keynote too |
+
 ## Confidence
 
 *Confirmed*: geometry field 1.1.4 is the rotation in degrees ([0056](0056-image-rotation.md) in Pages and this experiment in Keynote).

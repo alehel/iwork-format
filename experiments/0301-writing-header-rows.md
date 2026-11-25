@@ -44,6 +44,13 @@ Fields 9, 10, 11 and 12 of the table model are what they were read as: header ro
 
 The apps seemed to refuse to open a document while another with the same document ID was open. [0302](0302-writing-a-transition.md) found refusals with no other document open, and that opening files through Launch Services (`open -a`) avoids them, so that explanation was wrong.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `headers.numbers` | `0226/plain.numbers` | Only `6001#904595 9: 1 → 2`, `6001#904595 10: 1 → 0`, `6001#904595 11: absent → 1`, `6001#904595 12: 1 → 0` | *Confirmed*: table model fields 9 to 12; Numbers reports 2 header rows, no header column, 1 footer row and header rows not frozen |
+| `headers-resaved.numbers` | `headers.numbers` | `6001#904595 9 = 2`, `6001#904595 10: 0 → absent`, `6001#904595 11 = 1`, `6001#904595 12: 0 → absent` | *Likely*: Numbers leaves out the fields that are 0 |
+
 ## Confidence
 
 *Confirmed*: table model fields 9 to 12, by writing them.

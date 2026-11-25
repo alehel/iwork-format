@@ -51,6 +51,16 @@ Each failure was repeated with Keynote freshly started, with the same result. Th
 
 Field 17 does name the slide's layout: rewriting it with its own value keeps it, and AppleScript reports the template slide's name. But it can't be changed on its own. Keynote expects the slide's style and its placeholders to match the layout's, and a slide pointing at another layout while keeping the old one's placeholders makes Keynote quit. A writer that changes a slide's layout has to rebuild the slide's placeholders from the new layout, as Keynote does; a reader can still take a slide's layout from field 17.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `original.key` | `theme/0160/move.key` | `same bytes`, `5#2655467 17.1 = 2651742` | *Control* |
+| `rewritten.key` | `original.key` | `same records`, `same parts` | *Likely*: Keynote opens it and reports the layout field 17 names |
+| `same-as-c.key` | `original.key` | Only `5#2655467 17.1: 2651742 → 2651826` | *Likely*: the layout can't be changed alone: Keynote quits while opening it |
+| `picture.key` | `original.key` | Only `5#2655467 17.1: 2651742 → 2651768` | *Likely*: as above |
+| `blank.key` | `original.key` | Only `5#2655467 17.1: 2651742 → 2652157` | *Likely*: as above |
+
 ## Confidence
 
 *Likely*: field 17 as the slide's layout (read back, not changed). *Likely*: a slide's placeholders must belong to its layout. The follow-up is to write a slide whose placeholders and style are taken from the new layout.

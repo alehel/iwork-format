@@ -34,6 +34,12 @@ The body's character style runs (field 8) gain an entry at 4, pointing at a new 
 
 All caps is the same property as small caps ([0205](0205-small-caps.md)), with the value 1. The stored text is still lowercase. The menu's other two options, title case and initial capitals, are probably further values of this property.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `all-caps.pages` | `0205/small-caps.pages` | `2021 11.13: 2 → 1`, `2001 3 = "One two"` | *Confirmed*, with 0205: character property 13 is the capitalisation; that 1 is all caps is likely |
+
 ## Confidence
 
 *Confirmed*, with 0205: character property 13 is the capitalisation. *Likely*: 1 is all caps.

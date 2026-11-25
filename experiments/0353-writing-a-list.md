@@ -37,6 +37,14 @@ In `list.pages`, each line starts with the marker at the margin and the word fol
 
 Run table 7 is enough to make paragraphs into a list: with no level entry in table 6, they take the first level. The marker and the indent come from the list style.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `original.pages` | `0005/two-lf.pages` | `same bytes` | *Control*: the lines have no markers |
+| `list.pages` | `original.pages` | Only `2001#1732539 7.1: ×1 → ×2`, `2001#1732539 7.1.2.1: 1731481 → 1731488` | *Confirmed*: table 7 makes the paragraphs a list; both lines get a dash |
+| `list-resaved.pages` | `list.pages` | `2001#1732539 7.1: ×2 → ×2`, `2001#1732539 7.1.2.1 = 1731488` | *Not used*: Pages' own save of it |
+
 ## Confidence
 
 *Confirmed*: list runs (table 7), by writing them.

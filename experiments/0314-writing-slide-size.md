@@ -35,6 +35,14 @@ Keynote opened each file on its own and read the presentation's size and the fir
 
 Field 4.1 is the slide width and 4.2 the height, floats in points, and Keynote uses them as written. The objects keep their geometry, so in the written file the title runs past the slide's right edge. A writer that changes the size has to place the objects itself. Whether Keynote's own Slide Size setting moves and scales them wasn't tested.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `original.key` | `theme/0025/hello.key` | `same bytes` | *Control*: Keynote reports 1920 × 1080 |
+| `written.key` | `original.key` | Only `2#2652410 4.1: 1920.0 → 1024.0`, `2#2652410 4.2: 1080.0 → 768.0` | *Confirmed*: fields 4.1 and 4.2 are the slide size; Keynote reports 1024 × 768, and the title where it was |
+| `resaved.key` | `original.key` | `2#2652410 4.1: 1920.0 → 1024.0`, `2#2652410 4.2: 1080.0 → 768.0` | *Not used*: saved again by Keynote, and not described in the text |
+
 ## Confidence
 
 *Confirmed*: presentation fields 4.1 and 4.2, by writing them. *Likely*: writing them doesn't rescale anything.

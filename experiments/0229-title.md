@@ -32,6 +32,12 @@ Field 1.11 still names the caption.
 
 Drawable field 1.10 names the title and 1.11 the caption. Both are type-633 text shapes when shown and type-3097 placeholders when not, with field 3 saying which (2 a title, 1 a caption). A reader that shows titles and captions can find them through these two fields and draw them relative to their object. The position (above or below) is probably set in the type-634 record.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `title-and-caption.pages` | `0228/caption.pages` | `records 633: 1 → 2`, `records 3097: 1 → 0`, `633 3: absent → 2` | *Confirmed*, with 0228: a title is a second type-633 record, in place of the other type-3097 placeholder |
+
 ## Confidence
 
 *Confirmed*, with 0228: titles and captions are type-633 records named by drawable fields 1.10 and 1.11, with type-3097 placeholders when hidden.

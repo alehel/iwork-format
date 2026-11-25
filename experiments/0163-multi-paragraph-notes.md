@@ -28,6 +28,12 @@ The notes text record (field 1 = 4) holds `one\ntwo\nthree`, with line feeds bet
 
 Presenter notes are stored like any other text, with paragraphs separated by line feeds and one paragraph-style entry each.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `notes.key` | `0039/notes.key` | `2001 3: "notes here" → "one\ntwo\nthree"`, `2001 5.1.1: absent → 4`, `2001 5.1.1: absent → 8` | *Likely*: presenter notes hold paragraphs as body text does |
+
 ## Confidence
 
 *Likely*: presenter notes hold paragraphs as body text does.

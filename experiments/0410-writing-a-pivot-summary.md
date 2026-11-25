@@ -48,6 +48,16 @@ The pivot table in each exported sheet:
 
 Numbers shows a pivot table's stored cells and label as they are. It doesn't recompute the pivot when it opens the document, so the written function has no visible effect yet. It doesn't recompute it when the source changes either: after B2 became 5 the pivot still said a = 4, until it is refreshed in the app. So a reader is right to show a pivot table's cells as they are, and a writer that changes a pivot's definition must also write the cells and labels it should show. Whether Numbers then reads 5.1.3 as Average when refreshing wasn't tested, since refreshing has no AppleScript command.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `sum.numbers` | `0279/sum.numbers` | `same bytes`, `6370#905722 5.1.3 = 2` | *Control*: a 4, b 6, total 10 |
+| `numbers-average.numbers` | `0279/average.numbers` | `same bytes`, `6370 5.1.3 = 18` | *Control*: Numbers' own average: a 2, b 3, total 2.5 |
+| `written-average.numbers` | `sum.numbers` | Only `6370#905722 5.1.3: 2 → 18` | *Confirmed*: Numbers shows the stored sums and doesn't recompute them on opening |
+| `sum-edited.numbers` | `sum.numbers` | `6002 5.6 ~ x"05000000000000000000000000004030"` (5 in B2), `6370 5.1.3 = 2` | *Confirmed*: nor when the source changes: a is still 4 |
+| `written-average-edited.numbers` | `written-average.numbers` | `6002 5.6 ~ x"05000000000000000000000000004030"` (5 in B2), `6370 5.1.3 = 18` | *Confirmed*: as above |
+
 ## Confidence
 
 *Confirmed*: Numbers shows a pivot table's stored cells and doesn't recompute them on opening or when the source changes. The summary codes stay *likely*.

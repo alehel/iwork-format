@@ -36,6 +36,14 @@ Record 2655570 is the image's own style, an unnamed child of the theme's image s
 
 Image style field 11.2 is the opacity and 11.4.1 the reflection's strength, both fractions from 0 to 1 that AppleScript shows as percentages. A property can be set in an object's own child style without touching the theme's style it inherits from.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `original.key` | `theme/0099/reflection.key` | `same bytes` | *Control*: Keynote reports opacity 100 and reflection 40 |
+| `written.key` | `original.key` | Only `3016#2655570 11.2: absent → 0.4`, `3016#2655570 11.4.1: 0.4 → 0.75` | *Confirmed*: the opacity and the reflection; Keynote reports 40 and 75 |
+| `resaved.key` | `original.key` | `3016#2655570 11.2: absent → 0.4`, `3016#2655570 11.4.1: 0.4 → 0.75` | *Not used*: saved again by Keynote, and not described in the text |
+
 ## Confidence
 
 *Confirmed*: image style fields 11.2 and 11.4.1, by writing them.

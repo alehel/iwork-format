@@ -47,6 +47,12 @@ A link to a bookmark is a type-2039 smart field. Its field 2 is `#` followed by 
 
 Both run tables end the link at position 3, and the bookmark covers `two` from position 4.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `bookmark-link.pages` | `0191/bookmark.pages` | `records 2039: 0 → 1`, `2035 1.1 = "B3EA9C7C-BDCF-41C7-9E6B-E441FE2FEF95"`, `2039 2: absent → "#B3EA9C7C-BDCF-41C7-9E6B-E441FE2FEF95"`, `2001 15.1.1: absent → 4` | *Likely*: a link to a bookmark is type 2039, naming it by # and its UUID |
+
 ## Confidence
 
 *Likely*: a link to a bookmark is type 2039, naming the bookmark by `#` and its UUID in field 2.

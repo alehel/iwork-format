@@ -37,9 +37,20 @@ Pages opened each file on its own and exported it as PDF; each page was drawn an
 
 0.6, 0.8, 1.0 in Display P3 is 0.541, 0.807, 1.000 in sRGB.
 
+*Corrected 2026-11-25:* `space1.pages` is byte for byte `0328/background.pages`, so field 12 = 1 was never written here, and the row for 1 is the row for absent again. That 1 is sRGB rests on the colours the apps wrote with it, which matched sRGB ([0309](0309-writing-a-cell-colour.md)).
+
 ## Conclusion
 
 Field 12 of a colour message is its colour space: 1 (or absent, or 0) for sRGB and 2 for Display P3, which the apps convert when drawing. Other values seem to fall back to sRGB. The apps write 1 for the colours seen so far; a colour picked in Display P3 would presumably be stored with 2. A reader must check field 12 before treating the components as sRGB.
+
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `space0.pages` | `0328/background.pages` | Only `10011#1732296 30.1.12: absent → 0` | *Likely*: 0 is drawn as sRGB, as without the field |
+| `space1.pages` | `0328/background.pages` | `same bytes` | *Control*: named for field 12 = 1, but the same document as without the field; drawn as sRGB |
+| `space2.pages` | `0328/background.pages` | Only `10011#1732296 30.1.12: absent → 2` | *Likely*: field 12 is the colour space, and 2 is Display P3 |
+| `space3.pages` | `0328/background.pages` | Only `10011#1732296 30.1.12: absent → 3` | *Likely*: another value is drawn as sRGB |
 
 ## Confidence
 

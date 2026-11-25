@@ -54,6 +54,13 @@ Field 19 holds language runs, and only on text that was typed or rewritten in th
 
 A reader that only wants the text and its formatting can skip both fields.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `no-capital.pages` | `0006/return-ui.pages` | `2001 3: "One\nTwo" → "one two"`, `2001 20.1.1: ×3 → ×0`, `2001 19.1.1: absent → 3` | *Confirmed*: text with no correction has no field 20, and field 19 holds language runs on typed text |
+| `capital.pages` | `no-capital.pages` | `2001 3: "one two" → "One. Two "`, `2001 20.1.1: ×0 → ×4`, `2001 20.1.1: absent → 5`, `2001 20.1.2: ×0 → ×2` | *Confirmed*: field 20 records the two corrected ranges, with a UUID each |
+
 ## Confidence
 
 *Confirmed*:

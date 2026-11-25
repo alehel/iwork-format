@@ -37,6 +37,14 @@ Saved again, the string table holds `kind` (key 1, 1 cell), `n` (2, 1), `alpha` 
 
 Text cells hold only a key: both cells using key 3 show the new string, and Numbers keeps the entry and its use count as written. A writer can change every occurrence of a text by changing one entry.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `original.numbers` | `0226/plain.numbers` | `same bytes` | *Control*: A2 and A4 show a |
+| `written.numbers` | `original.numbers` | Only `6005#904552 3.3: "a" → "alpha"` | *Confirmed*: text cells hold a key into the string table; Numbers shows alpha in A2 and A4 |
+| `resaved.numbers` | `original.numbers` | `6005#904552 3.3: "a" → "alpha"`, `6005#904552 3: ×4 → ×4` | *Likely*: Numbers keeps the entry when it saves |
+
 ## Confidence
 
 *Confirmed*: string keys and the string table, by writing them.

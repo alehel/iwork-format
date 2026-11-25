@@ -80,6 +80,14 @@ The image's record, type 3005, holds its position and size on the page in field 
 
 An image placed on the page, rather than in the text, is listed by page-level records (types 10015 and 10010), next to the body text itself.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `plain.pages` | | `2001 3 = "one"` | *Control* |
+| `image.pages` | `plain.pages` | `part Data/red-8x4-24.png: absent → present`, `11006 4.4: absent → "red-8x4-24.png"`, `11006 4.2: absent → x"9386b0525252e1123578796d7d71d976c2228023"` | *Likely*: an image file is kept under its name and data ID, and listed with its SHA-1 |
+| `image.pages` | `plain.pages` | `3005 11.1: absent → 24`, `3005 1.1.2.1: absent → 8.0`, `3005 1.1.2.2: absent → 4.0` | *Likely*: type 3005 is an image, with its data ID in 11.1 and its size in 1.1 |
+
 ## Confidence
 
 *Likely*:

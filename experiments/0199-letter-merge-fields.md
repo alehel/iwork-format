@@ -32,7 +32,7 @@ AppleScript reports 12 placeholders. Eight tags are contact properties: `TPMailM
 
 | Field | Holds | Values seen |
 | --- | --- | --- |
-| 1 | `{ 1: UUID, 2: 1 }` | |
+| 1 | `{ 1: { 1: UUID }, 2: 1 }` (first written without the inner level) | |
 | 2 | The contact property | `TPMailMerge_FullNamePseudoProperty`, `postalAddresses`, `phoneNumbers`, `emailAddresses` |
 | 3 | How to format it, for addresses | `TPMailMerge_PostalAddressMultiLinePseudoKey` |
 | 4 | Which of the contact's values, by label | `_$!<Home>!$_`, `_$!<Work>!$_`, `_$!<Mobile>!$_` |
@@ -48,6 +48,12 @@ A type-2031 placeholder holds only `{ 1: { 1: UUID }, 2: 1 }`. Its prompt is the
 A merge field names a property of a contact, as in the macOS Contacts framework: the property key in field 2, the label of the value in field 4 (in Contacts' `_$!<…>!$_` form), and a formatting key in field 3 where needed. Field 5 says whose contact it draws from: 0 the sender (the document's author) and 1 the recipient. The text the field shows now is in the body, so a reader can show the letter as it stands without resolving any contact.
 
 A placeholder (type 2031) carries no text of its own. AppleScript's `tag` reports a merge field's property key, or a plain placeholder's prompt text.
+
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `letter.pages` | `0158/essay.pages` | `records 2036: 1 → 8`, `2036 2: absent → "postalAddresses"`, `2036 4: absent → "_$!<Home>!$_"`, `2036 5: absent → 1` | *Likely*: fields 2 to 5 of a merge field are a contact property, its format, its label and whose contact it is |
 
 ## Confidence
 

@@ -30,6 +30,12 @@ The formula's nodes are `36 B2` and `13`. The cell's value is a decimal128 whose
 
 Unary minus is node 13, after its operand, separate from subtraction (node 2). A negative number is stored as a decimal128 with its sign bit set, the top bit of the last byte (0xb0 instead of 0x30).
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `minus.numbers` | `0064/functions.numbers` | `6005 3.5.1.1.1: absent → 13`, `6002 5.6 ~ x"040000000000000000000000000040b0"` | *Likely*: node 13 is unary minus, and a negative decimal128 sets the top bit of its last byte |
+
 ## Confidence
 
 *Likely*: node 13 is unary minus, and negative values set the decimal128 sign bit.

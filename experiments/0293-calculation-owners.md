@@ -46,6 +46,16 @@ An empty presentation has two type-4008 records. One is the same in both themes.
 
 Type 4008 is a record the calculation engine keeps for something that can take part in formulas, here called an owner. Its field 1 is the owner's UUID and field 2 the number the engine knows it by, and each owner has one type-4009 list, numbered the same. The test theme's tables have more owners, numbered differently, because the theme brings a different set of earlier owners with it. These records don't hold cells, values or formulas, so a reader doesn't need them to read a table. What each owner stands for, and what the lists' entries record, is *unknown*.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `theme/0073/table.key` | `0073/table.key` | `records 4008: 13 → 13`, `records 4009: 3 → 5`, `4009 1: 13 → 14`, `4008 2 = 14` | *Likely*: the owners and their lists come from the theme, not the table |
+| `probe/orig-0249.pages` | `0249/comment.pages` | `same bytes` | *Not used*: a copy, not named in the text |
+| `probe/orig-0268.pages` | `0268/accepted.pages` | `same bytes` | *Not used*: a copy, not named in the text |
+| `probe/reenc-0268.pages` | `probe/orig-0268.pages` | Only the encoding: `same records`, `same parts` | *Not used*: encoded again, not named in the text |
+| `written/*.pages` | | `212 1 = present` | *Not used*: comments, a highlight and tracked changes with a placeholder author, not named in the text |
+
 ## Confidence
 
 *Confirmed*: a type-4009 list's field 1 equals its owner's field 2 (1,215 pairs).

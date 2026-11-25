@@ -30,6 +30,12 @@ The presentation record (type 2) changed field 18 from 0 to 1. Apart from save-t
 
 Field 18 of the presentation is *auto play*: 1 starts the slideshow when the file opens.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `autoplay.key` | `0025/empty.key` | `2 18: 0 → 1` | *Likely*: presentation field 18 is auto play |
+
 ## Confidence
 
 *Likely*: presentation field 18 is auto play.

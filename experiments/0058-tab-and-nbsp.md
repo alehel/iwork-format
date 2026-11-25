@@ -34,6 +34,12 @@ Compared with `hello.pages`, field 3 is the only difference in the body record, 
 
 A tab is stored as U+0009 and a non-breaking space as U+00A0, as plain characters in the text with nothing else attached. A reader treats them as ordinary text. Where tabs stop is presumably set by the paragraph style, which this experiment doesn't look at.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `tab.pages` | `0002/hello.pages` | `2001 3: "hello" → "a\tb\u00a0c"` | *Likely*: tabs and non-breaking spaces are plain characters in the text |
+
 ## Confidence
 
 *Likely*: tabs and non-breaking spaces are plain characters with no runs of their own.
