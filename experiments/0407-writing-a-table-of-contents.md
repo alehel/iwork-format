@@ -56,6 +56,18 @@ Pages draws a table of contents from its type-2052 entry records, one per entry:
 
 Field 2 of the entry didn't change the drawing; it isn't the page number.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `original.pages` | `0202/toc.pages` | `same bytes` | *Control*: drawn `One 1` |
+| `entry-text.pages` | `original.pages` | Only `2001#1732763 3: "One\t\ufffc" → "Two\t\ufffc"` | *Confirmed*: Pages ignores the finished text of a table of contents |
+| `page-number.pages` | `original.pages` | Only `2010#1732772 2: "1" → "9"` | *Confirmed*: Pages ignores its cached page numbers |
+| `heading-renamed.pages` | `original.pages` | Only `2001#1732539 3: "One\ufffc\u0005" → "Six\ufffc\u0005"` | *Likely*: the entry isn't made again from the heading when the document opens |
+| `entry-model-text.pages` | `original.pages` | Only `2052#1732770 4: "One" → "Written entry"` | *Confirmed*: field 4 of type 2052 is the text drawn for an entry |
+| `entry-model-roman.pages` | `original.pages` | Only `2052#1732770 9: "decimal" → "upper-roman"` | *Confirmed*: field 9 is the format of its page number |
+| `entry-model-field2.pages` | `original.pages` | Only `2052#1732770 2: 1 → 5` | *Likely*: field 2 isn't the page number |
+
 ## Confidence
 
 *Confirmed*: type 2052 as a table of contents entry, with field 4 its text and field 9 its page number format, by writing them; and that Pages ignores the finished text and cached page numbers when drawing. *Likely*: field 5 as the source paragraph style. What fields 2 and 6 hold is *unknown*.

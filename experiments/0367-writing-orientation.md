@@ -41,6 +41,17 @@ In each PDF the text starts at the margins, 57 points from the left and 58 from 
 
 The page is drawn from fields 30 and 31 alone. Field 42 doesn't turn the page, and Pages neither corrects it nor the size to match: it saves both as they were written. To make a landscape page, write the swapped size and set 42 = 1, as Pages itself does, so its orientation control agrees.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `flag-only.pages` | `0002/hello.pages` | Only `10000#1 42: 0 → 1` | *Confirmed*: field 42 doesn't turn the page Pages draws |
+| `swap-only.pages` | `0002/hello.pages` | Only `10000#1 30: 595.28 → 841.89`, `10000#1 31: 841.89 → 595.28` | *Confirmed*: fields 30 and 31 decide the page size |
+| `both.pages` | `swap-only.pages` | Only `10000#1 42: 0 → 1` | *Confirmed*: field 42 changes nothing in the drawn page |
+| `flag-only-resaved.pages` | | `10000#1 30 = 595.28`, `10000#1 31 = 841.89`, `10000#1 42 = 1` | *Likely*: Pages saves the flag and the size as written |
+| `swap-only-resaved.pages` | | `10000#1 30 = 841.89`, `10000#1 31 = 595.28`, `10000#1 42 = 0` | *Likely*: as above |
+| `both-resaved.pages` | | `10000#1 30 = 841.89`, `10000#1 31 = 595.28`, `10000#1 42 = 1` | *Likely*: as above |
+
 ## Confidence
 
 *Confirmed*: the page size comes from fields 30 and 31, not field 42, by writing them. *Likely*: field 42 only drives the orientation shown in the Document sidebar, which wasn't looked at.

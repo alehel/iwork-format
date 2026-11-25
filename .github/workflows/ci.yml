@@ -28,6 +28,7 @@ jobs:
         with:
           python-version: "3.13"
       - run: python3 -I site/test_build.py
+      - run: python3 -I fixtures/test_evidence.py
       # Fails on Markdown the builder can't render and on broken links in the built site.
       - run: python3 -I site/build.py
       # The committed site must be what the Markdown builds. The overview names the build's revision, so it differs.

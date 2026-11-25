@@ -199,6 +199,70 @@ class Experiments(Case):
         self.assertEqual(b.experiment_releases(md), ["15.4"])
 
 
+class Evidence(Case):
+    HERE = "experiments/0012-underline-and-strikethrough.md"
+
+    def setUp(self):
+        super().setUp()
+        self.saved = (dict(b._FIXTURES), b.evidence_record, b.SAMPLES_REF)
+        b._FIXTURES.clear()
+        b._FIXTURES.update(published={"0012/a.pages": ("aa", ""), "keynote/0012/k.key": ("kk", ""), "0008/m.pages": ("mm", "saved by 14.5")},
+                           copies={"0012/c.pages": "0008/m.pages"}, left={"0012/n.pages": "holds the user's name"})
+        self.record = [{"file": "samples/0012/a.pages", "compared": "samples/0008/m.pages", "difference": "`1 1 = 1`",
+                        "documents": [{"path": "samples/0012/a.pages", "sha256": "aa", "compared": "samples/0008/m.pages", "compared_sha256": "mm"}]},
+                       {"file": "samples/0012/c.pages", "compared": None, "difference": "", "documents": [{"path": "samples/0012/c.pages", "sha256": "mm"}]},
+                       {"file": "samples/0012/k.key", "compared": None, "difference": "",
+                        "documents": [{"path": "samples/0012/k.key", "sha256": "oo"}, {"path": "samples/theme/0012/k.key", "sha256": "kk"}]},
+                       {"file": "samples/0012/n.pages", "compared": None, "difference": "", "documents": [{"path": "samples/0012/n.pages", "sha256": "nn"}]}]
+        b.evidence_record = lambda: {"0012": self.record}
+
+    def tearDown(self):
+        b._FIXTURES.clear()
+        b._FIXTURES.update(self.saved[0])
+        b.evidence_record, b.SAMPLES_REF = self.saved[1:]
+
+    ROWS = ["| `a.pages` | `0008/m.pages` | `1 1 = 1` | *Likely*: x |", "| `c.pages` | | | *Control* |",
+            "| `k.key` | | | *Control* |", "| `n.pages` | | | *Control* |"]
+
+    def table(self, rows=None):
+        return self.render("| File | Compared with | Difference | Shows |\n| --- | --- | --- | --- |\n" + "\n".join(rows or self.ROWS), self.HERE)
+
+    def test_links_and_notes(self):
+        b.SAMPLES_REF = None
+        out = self.table()
+        self.assertEqual(b.PROBLEMS, [])
+        self.assertIn("iwork-format-fixtures-15.4.zip", out)
+        self.assertIn("iwork-format-fixtures-14.5.zip", out)
+        self.assertIn("same file as <code>0008/m.pages</code>", out)
+        self.assertIn("remade with the test theme", out)
+        self.assertIn("not published: holds the user&#x27;s name", out)
+
+    def test_direct_links(self):
+        b.SAMPLES_REF = "v1"
+        out = self.table()
+        self.assertIn(b.SAMPLES_REPO + "/raw/v1/0012/a.pages", out)
+        self.assertIn(b.SAMPLES_REPO + "/raw/v1/keynote/0012/k.key", out)
+        self.assertNotIn(".zip", out)
+
+    def test_unchecked_table_is_reported(self):
+        self.table([self.ROWS[0].replace("1 1 = 1", "1 1 = 2")] + self.ROWS[1:])
+        self.assertProblem("run fixtures/evidence.py")
+
+    def test_other_checksum_is_reported(self):
+        self.record[0]["documents"][0]["sha256"] = "zz"
+        self.table()
+        self.assertProblem("another checksum")
+
+    def test_unnamed_document_is_reported(self):
+        self.record.pop()
+        self.table(self.ROWS[:3])
+        self.assertProblem("doesn't name 0012/n.pages")
+
+    def test_confidence_is_required(self):
+        self.table([self.ROWS[0].replace("*Likely*: x", "x")] + self.ROWS[1:])
+        self.assertProblem("begins with")
+
+
 class Features(Case):
     HEADER = "<!-- feature-inventory -->\n\n| ID | Feature | Apps | Also | Evidence | Owner | Spec |\n| --- | --- | --- | --- | --- | --- | --- |\n"
     OWNER = "[#7](https://github.com/alehel/iwork-format/issues/7)"

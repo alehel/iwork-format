@@ -47,6 +47,17 @@ done
 
 The stored position is the top-left corner of the whole table object, including the name shown above it. AppleScript reports where the table's body starts: 28 points lower while the name is shown, and the stored position itself when the name is hidden. x is the same either way. So a reader placing a table should start its body 28 points below the stored y when field 22 shows the name, which is where the name is drawn.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `original.numbers` | `0226/plain.numbers` | `same bytes`, `6000#904769 1.1.1.2 = 0.32`, `6001#904595 22 = 1` | *Control*: reported at 0, 28 |
+| `y-100.numbers` | `original.numbers` | Only `6000#904769 1.1.1.2: 0.32 → 100.0` | *Confirmed*: reported 28 points below the stored y while the name is shown |
+| `x-50-y-0.numbers` | `original.numbers` | Only `6000#904769 1.1.1.1: 0.0 → 50.0`, `6000#904769 1.1.1.2: 0.32 → 0.0` | *Confirmed*: x is reported as stored |
+| `y-minus-28.numbers` | `original.numbers` | Only `6000#904769 1.1.1.2: 0.32 → -28.0` | *Confirmed*: as `y-100.numbers` |
+| `no-name.numbers` | `original.numbers` | Only `6001#904595 22: 1 → 0` | *Confirmed*: reported at 0, 0, with the name hidden |
+| `no-name-y-100.numbers` | `no-name.numbers` | Only `6000#904769 1.1.1.2: 0.32 → 100.0` | *Confirmed*: the stored y is reported while the name is hidden |
+
 ## Confidence
 
 *Confirmed*: the stored position as the table object's corner, with the body 28 points lower while the name is shown, by writing the position and the name's visibility.

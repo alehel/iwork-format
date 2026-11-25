@@ -39,6 +39,13 @@ Field 11.11 of a style is underline and 11.12 is strikethrough. In both, 1 is wh
 
 The format may allow other values, such as for double underlines, which the sidebar buttons don't make. A reader that meets a value other than 0 or 1 should treat it as "on" until an experiment says more.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `underline.pages` | `0008/middle.pages` | `2021 11.11: absent → 1`, `2021 11.1: 1 → absent` | *Likely*: field 11.11 of a character style is underline |
+| `strikethrough.pages` | `0008/middle.pages` | `2021 11.12: absent → 1`, `2021 11.1: 1 → absent` | *Likely*: field 11.12 of a character style is strikethrough |
+
 ## Confidence
 
 *Likely*: field 11.11 is underline and 11.12 is strikethrough, with 0 off and 1 for the default line.

@@ -63,6 +63,15 @@ A password-protected document keeps its package layout, but encrypts every `.iwa
 
 A reader with the password can decrypt each part and then read it as normal. A reader without it can still tell that a document is protected (by `.iwpv2`) and show the hint. The salt is new on each save.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `plain.pages` | | `2001 3 = "one"` | *Control* |
+| `locked.pages` | `plain.pages` | `part .iwph: absent → present`, `part .iwpv2: absent → present`, `part preview*.jpg: present → absent`; read with the password, `2001 3 = "one"` | *Likely*: the key derivation, the cipher and which files are added, left out and encrypted |
+| `locked2.pages` | `locked.pages` | `part .iwpv2: present → present`; read with the password, `2001 3 = "one"` | *Likely*: the salt is new on each save |
+| `unlocked.pages` | `plain.pages` | `part .iwph: absent → absent`, `part .iwpv2: absent → absent`, `part preview.jpg: present → present`, `2001 3 = "one"` | *Likely*: a removed password leaves no password files behind |
+
 ## Confidence
 
 *Likely*:

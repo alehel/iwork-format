@@ -26,7 +26,8 @@ In your first pull request, add this line to its description:
    To open a document from a script, use `open -a "Pages Creator Studio" FILE` and then work on the front document: AppleScript's own `open` is sometimes refused with "the operation is not permitted" ([0302](experiments/0302-writing-a-transition.md)).
 4. Compare the documents with `iwork-probe`, and paste only the part of the output that changed.
 5. Record the app and macOS versions. The spec describes the newest release: when something you find holds in it and not in an older one, or the other way round, begin the statement with a version note, `[since: 15.4]` or `[until: 14.5]` ([spec/releases.md](spec/releases.md)). Don't list releases one by one in the chapters.
-6. Add the experiment's number to the Evidence column of each feature it shows something about in [`spec/features.md`](spec/features.md). The site works out from its setup which app it ran in and whether it wrote the document; a feature found in an app's interface that the inventory doesn't list yet gets a new row and an owning issue.
+6. If it helps a reader check the result, add an `## Evidence` section before Confidence: a table of the experiment's documents, what each is compared with, what differs and what that shows ([0367](experiments/0367-writing-orientation.md) is an example). Write the differences as statements `python3 -I fixtures/evidence.py` can check, which its documentation lists; `--diff A B` prints what differs. The table must name every document of the experiment, and the site links each to where it is published. This is being tried on a few experiments.
+7. Add the experiment's number to the Evidence column of each feature it shows something about in [`spec/features.md`](spec/features.md). The site works out from its setup which app it ran in and whether it wrote the document; a feature found in an app's interface that the inventory doesn't list yet gets a new row and an owning issue.
 
 ## Publishing the site
 
@@ -38,7 +39,7 @@ The site in `docs/` is built from the Markdown; never edit the HTML. Before push
 4. Look at a changed page at phone, middle (about 960 pixels) and desktop widths, and Tab through it once: the skip link comes first, and every link and menu shows where the focus is. [`site/ACCESSIBILITY.md`](site/ACCESSIBILITY.md) records the fuller checks and their results; add to it when you rerun them.
 5. Commit the Markdown and `docs/` together.
 
-[spec/releases.md](spec/releases.md#when-a-new-release-comes) lists what to do when a new release comes. [`fixtures/SELECTED.txt`](fixtures/SELECTED.txt), made by `python3 -I fixtures/select.py`, says which documents of the larger sets are published.
+[spec/releases.md](spec/releases.md#when-a-new-release-comes) lists what to do when a new release comes. [`fixtures/SELECTED.txt`](fixtures/SELECTED.txt), made by `python3 -I fixtures/select.py`, says which documents of the larger sets are published. When the zips change, `python3 -I fixtures/samples_repo.py ZIP_DIR REPO_DIR` unpacks them into a checkout of [iwork-format-samples](https://github.com/alehel/iwork-format-samples), which the Evidence tables link to; push it with the upload.
 
 ## Confidence
 

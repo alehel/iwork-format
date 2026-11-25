@@ -308,3 +308,18 @@ ul.uncited li { break-inside: avoid; }
   ul.uncited { columns: 1; }
 }
 @media print { .top .search { display: none; } }
+
+/* Evidence tables: where each document is published, quietly under its name. */
+.evidence .where { display: block; font-size: .85em; color: var(--fg-soft); white-space: normal; }
+.evidence td:first-child, .evidence td:nth-child(2) { min-width: 9.5rem; }
+.evidence td:nth-child(3) { min-width: 13rem; }
+.evidence td:nth-child(4) { min-width: 12rem; }
+.evidence-note { font-size: .9rem; color: var(--fg-soft); }
+@media (max-width: 1100px) { /* each row as a block, with its columns' names */
+  .evidence table, .evidence tbody, .evidence tr, .evidence td { display: block; }
+  .evidence thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+  .evidence tr { border: 1px solid var(--rule); border-radius: 6px; padding: .5rem .8rem; margin: 0 0 .8rem; }
+  .evidence td { border: 0; padding: .2rem 0; overflow-wrap: anywhere; }
+  .evidence td.none { display: none; }
+  .evidence td::before { content: attr(data-label); display: block; font-size: .75rem; font-weight: 600; color: var(--fg-soft); }
+}

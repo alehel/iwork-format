@@ -40,6 +40,14 @@ In `resaved.key`, field 4.2.8 holds `apple:push`, 3.25, 1.5 and 1, as written. F
 
 The reading of field 4.2.8 holds when writing: field 2 names the effect, by the identifier AppleScript calls `push`; field 3 is its duration and field 5 its delay, both doubles in seconds; field 6 = 1 starts it automatically. Nothing else in the slide needs to change.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `original.key` | `theme/0071/transition.key` | `same bytes` | *Control*: Keynote reports dissolve, 2.0, 0.5 and not automatic |
+| `written.key` | `original.key` | Only `5#2655467 4.2.8.2: "apple:dissolve" → "apple:push"`, `5#2655467 4.2.8.3: 2.0 → 3.25`, `5#2655467 4.2.8.5: 0.5 → 1.5`, `5#2655467 4.2.8.6: 0 → 1` | *Confirmed*: Keynote reports all four new values |
+| `resaved.key` | `original.key` | `5 4.2.8.2: "apple:dissolve" → "apple:push"`, `5 4.2.8.3 = 3.25`, `5 4.2.8.5 = 1.5`, `5 4.2.8.6: 0 → 1` | *Likely*: Keynote keeps them when it saves |
+
 ## Confidence
 
 *Confirmed*: transition fields 4.2.8.2, 3, 5 and 6.

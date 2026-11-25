@@ -84,6 +84,13 @@ Record 2001 also points at the stylesheet (field 2) and at four other objects th
 
 The chunk and record layout from 0001 held again, so it is now *confirmed* and written up in [spec/container.md](../spec/container.md).
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `hello.pages` | `0001/empty-a.pages` | `2001 3: absent → "hello"` | *Likely*: field 3 of a type-2001 record is the body text, and an empty body has no field 3 |
+| `hullo.pages` | `hello.pages` | `2001#1732539 3: "hello" → "hullo"` | *Likely*: no other field changes with the letters; what else differs also differs between two saves of the same document |
+
 ## Confidence
 
 *Confirmed*: the chunk and record layout (agrees with 0001).

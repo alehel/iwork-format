@@ -24,6 +24,7 @@ import re
 import shutil
 import subprocess
 import sys
+import urllib.parse
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT = os.path.join(ROOT, "docs")
@@ -218,6 +219,9 @@ def render(md, here, toc=None):
                 if len(rows[-1]) != len(header):
                     problem(here, f"table row has {len(rows[-1])} cells, its header {len(header)}: {lines[i][:60]}")
                 i += 1
+            if header == EVIDENCE_COLUMNS and here.startswith("experiments/"):
+                out.append(evidence_table(rows, here))
+                continue
             t = ['<div class="table"><table>']
             keyed = not any(header)  # "| | |": a two-column list of names and values, as in an experiment's setup
             if not keyed:
@@ -366,6 +370,134 @@ def experiment_releases(md):
             if v not in found:
                 found.append(v)
     return found
+
+
+# --- Evidence tables ---------------------------------------------------------------------------
+
+# An experiment's Evidence table says which documents it rests on, what differs between them and what
+# that shows. fixtures/evidence.py checks the differences against the documents, which only the owner's
+# machine has, and records what it checked in fixtures/EVIDENCE.json; the builder checks that the tables
+# are the ones recorded, that they name every document of the experiment and that each published
+# document has the recorded checksum (fixtures/INDEX.md), and links each to where it is published.
+EVIDENCE_COLUMNS = ["File", "Compared with", "Difference", "Shows"]
+EVIDENCE_SHOWS = re.compile(r"^\*(Confirmed|Likely|Unknown|Control)\*")
+SAMPLES_REPO = "https://github.com/alehel/iwork-format-samples"
+SAMPLES_REF = "main"  # the branch or commit there that holds the documents; None: link to the zips instead
+_FIXTURES = {}
+
+
+def fixtures_index():
+    """fixtures/INDEX.md as published documents {path: (sha256, note)}, copies {path: path} and left out {path: why}."""
+    if not _FIXTURES:
+        published, copies, left = {}, {}, {}
+        section = ""
+        for line in read("fixtures/INDEX.md").splitlines():
+            if line.startswith("## "):
+                section = line[3:]
+            m = re.match(r"^\| `([^`]+)` \| (.*) \|$", line)
+            if m and section == "Copies":
+                copies[m[1]] = m[2].strip("`")
+            elif m and section == "Left out":
+                left[m[1]] = m[2]
+            elif m:
+                cells = [c.strip() for c in m[2].split(" | ")]
+                published[m[1]] = (cells[2].strip("` |"), cells[3].strip(" |") if len(cells) > 3 else "")
+        _FIXTURES.update(published=published, copies=copies, left=left)
+    return _FIXTURES
+
+
+def evidence_record():
+    with open(os.path.join(ROOT, "fixtures", "EVIDENCE.json"), encoding="utf-8") as f:
+        return json.load(f)
+
+
+def published_path(rel):
+    """The path a document in samples/ is published under, as fixtures/build.py gives it."""
+    path = rel[len("samples/"):]
+    return "keynote/" + path[len("theme/"):] if path.startswith("theme/") else path.replace("resave/", "resaved/", 1) if path.startswith("resave/") else path
+
+
+def sample_path(cell, number):
+    """The path in samples/ an Evidence cell names, or None."""
+    m = re.match(r"^`([^`]+)`", cell)
+    if not m:
+        return None
+    return "samples/" + (m[1] if re.match(r"^(?:\d{4}|theme|release|resave)/", m[1]) else f"{number}/{m[1]}")
+
+
+def download_url(path, note):
+    """Where a published document can be downloaded, and the words for it."""
+    if SAMPLES_REF:  # a folder package is there as a ZIP of the folder
+        folder = ".zip" if note.startswith("a folder package") else ""
+        return f"{SAMPLES_REPO}/raw/{SAMPLES_REF}/{urllib.parse.quote(path)}{folder}", "download"
+    m = re.search(r"saved by (\d+\.\d+)", note)
+    release = m[1] if m else (path.split("/")[1] if path.startswith(("release/", "resaved/")) else "15.4")
+    return f"{REPO}/releases/download/fixtures/iwork-format-fixtures-{release}.zip", f"in the {release} zip"
+
+
+def evidence_file(cell, rel, documents, here):
+    """A document's name with a link to where it is published, or why it isn't."""
+    index, name = fixtures_index(), inline(cell, here)
+    path = published_path(rel)
+    remade = [d["path"] for d in documents if d["path"] != rel]
+    note = ""
+    if path not in index["published"] and path not in index["copies"] and remade:
+        path, note = published_path(remade[0]), "remade with the test theme"
+    elif path not in index["published"] and path not in index["copies"] and "keynote/" + path in {**index["published"], **index["copies"]}:
+        path, note = "keynote/" + path, "remade with the test theme"
+    if path in index["copies"]:
+        path = index["copies"][path]
+        note = ", ".join(x for x in (note, f"same file as <code>{html.escape(path)}</code>") if x)
+    if path in index["published"]:
+        url, words = download_url(path, index["published"][path][1])
+        label = html.escape(f"{cell.strip('`')}: {words}", quote=True)
+        return f'{name} <span class="where"><a href="{html.escape(url)}" aria-label="{label}">{words}</a>{"; " + note if note else ""}</span>'
+    return f'{name} <span class="where">not published{": " + html.escape(index["left"][path]) if path in index["left"] else ""}</span>'
+
+
+def evidence_table(rows, here):
+    number = os.path.basename(here)[:4]
+    recorded = evidence_record().get(number, [])
+    index = fixtures_index()
+    named, out = set(), []
+    stated = [(sample_path(r[0], number), sample_path(r[1], number), r[2]) for r in rows]
+    if stated != [(r["file"], r["compared"], r["difference"]) for r in recorded]:
+        problem(here, "the Evidence table isn't the one fixtures/EVIDENCE.json records as checked; run fixtures/evidence.py")
+    records = {}  # a document can have several rows; one that was remade is remade in all of them
+    for r in recorded:
+        records.setdefault(r["file"], []).extend(r["documents"])
+    for r in recorded:
+        for d in r["documents"]:
+            for rel, sha in ((d["path"], d["sha256"]), (d.get("compared"), d.get("compared_sha256"))):
+                path = rel and published_path(rel)
+                path = index["copies"].get(path, path)
+                if path in index["published"] and index["published"][path][0] != sha:
+                    problem(here, f"{path} was checked with another checksum than the published document's")
+    for (file_cell, base_cell, difference, shows), (rel, base, _) in zip(rows, stated):
+        if not rel:
+            problem(here, f"an Evidence row names no document: {file_cell[:40]}")
+            continue
+        named.update(published_path(d["path"]) for d in records.get(rel, []))
+        named.add(published_path(rel))
+        if not EVIDENCE_SHOWS.match(shows):
+            problem(here, f"what a document shows begins with *Confirmed*, *Likely*, *Unknown* or *Control*: {shows[:40]}")
+        cells = (evidence_file(file_cell, rel, records.get(rel, []), here),
+                 evidence_file(base_cell, base, [], here) if base and not base.startswith(f"samples/{number}/") else inline(base_cell, here),
+                 inline(difference, here), inline(shows, here))
+        # The roles keep it a table where a narrow page shows each row as a block (style.css).
+        out.append('<tr role="row">' + "".join(
+            f'<td role="cell" data-label="{c}">{v}</td>' if v else '<td role="cell" class="none"></td>'
+            for c, v in zip(EVIDENCE_COLUMNS, cells)) + "</tr>")
+    ours = re.compile(rf"^(?:keynote/)?{number}/")
+    for path in sorted({p for k in ("published", "copies", "left") for p in index[k] if ours.match(p)} - named):
+        problem(here, f"the Evidence table doesn't name {path}")
+    intro = (f'<p class="evidence-note"><code>2021#5 11.1: 0 → 1</code> says that field 11.1 of the type-2021 record with ID 5 held 0 and '
+             'holds 1; without an ID, that some record of the type does. These statements were checked against the documents by script '
+             f'(<a href="{html.escape(link_target("../fixtures/evidence.py", here))}">fixtures/evidence.py</a>); <em>only</em> '
+             "means that nothing else differs but the previews. What the app showed, and what follows from it, is the experiment's own.</p>")
+    head = "".join(f'<th role="columnheader" scope="col">{c}</th>' for c in EVIDENCE_COLUMNS)
+    return (intro + f'<div class="table evidence"><table role="table"><thead role="rowgroup"><tr role="row">{head}</tr></thead>'
+            '<tbody role="rowgroup">' + "".join(out) + "</tbody></table></div>")
 
 
 # --- Feature inventory -------------------------------------------------------------------------

@@ -52,6 +52,16 @@ pages-radial (315°)          written-radial (270°)        radial-315          
 
 For a radial gradient the angle in 5.2 doesn't only turn it: it moves the centre. At 315°, the angle Pages uses, the first stop's colour is at the middle of the shape and the gradient falls off evenly towards the corners, as in Pages' own radial gradient. At 270° the centre moved right of the middle, and at 90° to the bottom right, partly outside the shape. Field 4 changes nothing that is drawn, which fits its reading as a mark of the advanced editor. So a writer should give a radial gradient the angle 315° to centre it. How the angle places the centre in general wasn't worked out.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `pages-radial.pages` | `0275/radial.pages` | `same bytes`, `2025 1.11.1.2.4 = 1`, `2025 1.11.1.2.5.2 = 5.4978` | *Control*: a radial gradient Pages made, centred |
+| `written-radial.pages` | `0384/radial.pages` | `same bytes`, `2025#1732719 1.11.1.2.1 = 1`, `2025#1732719 1.11.1.2.5.2 = 4.7124` | *Control*: a written one, not centred |
+| `radial-advanced.pages` | `written-radial.pages` | Only `2025#1732719 1.11.1.2.4: 0 → 1` | *Confirmed*: field 4 doesn't change the drawing |
+| `radial-315.pages` | `written-radial.pages` | Only `2025#1732719 1.11.1.2.5.2: 4.7124 → 5.4978` | *Confirmed*: at 315° the gradient is centred |
+| `radial-90.pages` | `written-radial.pages` | Only `2025#1732719 1.11.1.2.5.2: 4.7124 → 1.5708` | *Unknown*: how other angles place the centre |
+
 ## Confidence
 
 *Confirmed*: a radial gradient (kind 1) at 315° is centred on the shape, and field 4 doesn't change the drawing, by writing them. How other angles place the centre is *unknown*; a finer grid over more angles would settle it.

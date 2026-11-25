@@ -49,6 +49,14 @@ The first four tags, which belong to the sender block, in order:
 
 Field 2 of a merge field is the property key Pages reports and merges by, and Pages keeps a key it doesn't know rather than rejecting the field. Which values a key can take is up to the Contacts framework; a reader only needs to show the field's current text, which is in the body.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `original.pages` | `0199/letter.pages` | `same bytes`, `2036#2489890 2 = "emailAddresses"` | *Control* |
+| `email-to-phone.pages` | `original.pages` | Only `2036#2489890 2: "emailAddresses" → "phoneNumbers"` | *Confirmed*: field 2 of type 2036 is the property a merge field reports |
+| `email-to-custom.pages` | `original.pages` | Only `2036#2489890 2: "emailAddresses" → "someMadeUpKey"` | *Likely*: Pages keeps a property it doesn't know |
+
 ## Confidence
 
 *Confirmed*: field 2 of type 2036 as the merge field's property key, by writing it.

@@ -30,6 +30,12 @@ The saved file was changed to Package and saved in place as in 0146.
 
 Numbers saves the same folder form as Pages and Keynote. All three apps share it, so a reader can open folder documents from any of them the same way.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `package.numbers` | `0024/empty-a.numbers` | `part Index.zip: absent → present`, `part Metadata/Properties.plist: present → present`, `records 6001: 1 → 1` | *Confirmed*: a spreadsheet saved as a package is a folder with its `.iwa` parts in an inner ZIP file |
+
 ## Confidence
 
 *Confirmed*: the folder form, with `.iwa` parts in `Index.zip`, is shared by all three apps ([0076](0076-package-format.md), [0146](0146-keynote-package.md) and this experiment).

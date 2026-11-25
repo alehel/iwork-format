@@ -57,6 +57,13 @@ A slide added through AppleScript had no thumbnail when saved: its node has no f
 
 The template slides' nodes aren't listed in field 3.2. Whatever lists them is still to be found.
 
+## Evidence
+
+| File | Compared with | Difference | Shows |
+| --- | --- | --- | --- |
+| `two-slides.key` | `0025/hello.key` | `records 4: 18 → 19`, `records 5: 18 → 19`, `2001 3: absent → "second"` | *Likely*: a second slide adds a slide node (type 4) and a slide (type 5) |
+| `two-slides.key` | `0025/hello.key` | `4 10 = absent`, original only: in the remake the first slide has no thumbnail either | *Likely*: a slide node's thumbnail is optional |
+
 ## Confidence
 
 *Likely*:
