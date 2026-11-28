@@ -77,7 +77,7 @@ Move with Text makes the picture an attachment, as a table in the text is: a U+F
 
 The 2003 record holds the picture's offset from its anchor, in points: field 3 from the left edge of the body's text column, and field 5 from the bottom of the line that holds the U+FFFC (here also the paragraph's last line, so the two can't be told apart). Pages places the picture from this offset when it lays out the text, and doesn't update the picture's 1.1.1 in the file when the text before it moves. A reader should take the position of a Move with Text object from the anchor and the 2003 offset, not from 1.1.1.
 
-Wrap type 5 is not Inline with Text: written into a floating picture it changed nothing drawn.
+Wrap type 5 is not Inline with Text: written into a floating picture it changed nothing drawn. (It is the sidebar's None, and Inline with Text is wrap 0, [0489](0489-the-text-wrap-menu.md), [0490](0490-writing-inline-with-text.md).)
 
 ## Evidence
 
@@ -95,4 +95,4 @@ Wrap type 5 is not Inline with Text: written into a floating picture it changed 
 
 *Likely*: the 2003 record's fields 3 and 5 are the offset from the text column's left edge and from the bottom of the anchor's line, and Move with Text objects leave type 10010 but stay in 10015. One experiment; a second would drag the picture to another offset and anchor it in a paragraph's first line.
 
-*Unknown*: 2003 fields 2 and 4 (both 0), and how Inline with Text is stored. AppleScript can't put a picture in the text (Pages refuses `make new image` in the body text), and the wrap pop-up that offers Inline with Text can't be used in the background; a follow-up needs the Pages window in front.
+*Unknown*: 2003 fields 2 and 4 (both 0). AppleScript can't put a picture in the text (Pages refuses `make new image` in the body text), and the wrap pop-up that offers Inline with Text can't be used in the background; [0489](0489-the-text-wrap-menu.md) chose it with the Pages window in front, and found it to be this attachment with wrap 0.

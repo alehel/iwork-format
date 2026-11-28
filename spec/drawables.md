@@ -27,19 +27,21 @@ The object's position (geometry 1.1.1) is from the top-left corner of its own pa
 
 ### Move with Text
 
-An object set to Move with Text is anchored in the text as other attachments are: a U+FFFC, an entry in the text's attachment runs (field 9) at that position, a type-2003 record whose field 1 names the object, and the text as the object's parent in drawable field 1.2, *confirmed* for a picture as for a table ([0020](../experiments/0020-a-table.md), [0487](../experiments/0487-move-with-text.md)). It still floats: it stays in type 10015, keeps its own geometry and wrap, and has no entry in type 10010, since its page follows the text. The 2003 record holds its offset in points: field 3 from the left edge of the text column, field 5 from the bottom of the line holding the U+FFFC. Pages draws the object from the anchor and this offset, and doesn't update 1.1.1 in the file when the text before it moves, so a reader should do the same. *Likely* ([0487](../experiments/0487-move-with-text.md)). Fields 2 and 4 of the 2003 record (0) and how Inline with Text is stored are *unknown*.
+An object set to Move with Text is anchored in the text as other attachments are: a U+FFFC, an entry in the text's attachment runs (field 9) at that position, a type-2003 record whose field 1 names the object, and the text as the object's parent in drawable field 1.2, *confirmed* for a picture as for a table ([0020](../experiments/0020-a-table.md), [0487](../experiments/0487-move-with-text.md)). It still floats: it stays in type 10015, keeps its own geometry and wrap, and has no entry in type 10010, since its page follows the text. The 2003 record holds its offset in points: field 3 from the left edge of the text column, field 5 from the bottom of the line holding the U+FFFC. Pages draws the object from the anchor and this offset, and doesn't update 1.1.1 in the file when the text before it moves, so a reader should do the same. *Likely* ([0487](../experiments/0487-move-with-text.md)). Fields 2 and 4 of the 2003 record (0) are *unknown*.
+
+Inline with Text is the same attachment with wrap type 1.3.1 = 0: the object is drawn in its line like a character, after the text before the U+FFFC, with its bottom on the line's baseline, and the line grows to hold it; its 1.1.1 and the 2003 offset aren't used. With any other wrap the attached object floats at the offset. Pages leaves an inline object out of type 10015, but an attached object is drawn the same whether it is listed there or not, so a reader should go by the wrap type. *Confirmed* by writing ([0489](../experiments/0489-the-text-wrap-menu.md), [0490](../experiments/0490-writing-inline-with-text.md)); the baseline is *likely*.
 
 ### Text wrap
 
-Drawable field 1.3 holds the object's text wrap ([0488](../experiments/0488-writing-text-wrap.md)):
+Drawable field 1.3 holds the object's text wrap, as the Arrange sidebar sets it ([0488](../experiments/0488-writing-text-wrap.md), [0489](../experiments/0489-the-text-wrap-menu.md)):
 
 | Field | Holds |
 | --- | --- |
-| 1.3.1 | How text wraps: 0 none, the object drawn over the text; 1 around, on the sides 1.3.2 chooses; 2 above and below, with nothing beside it; 3 on one side only (the wider one, in the one case seen); 4 automatic, Pages' default, which wrapped on both sides there. *Likely* |
-| 1.3.2 | The sides for wrap 1: 0 left, 1 right, 2 both (default); ignored by wraps 3 and 4. *Likely* |
-| 1.3.3 | Text fit: 1 by default; 0 keeps the full spacing on lines that only partly reach the object's top or bottom, so most likely 0 is the box and 1 the outline fit. *Likely* |
+| 1.3.1 | How text wraps. The sidebar's entries: 4 Automatic, Pages' default, which wrapped on both sides in the case seen; 1 Around, on the sides 1.3.2 chooses; 2 Above and Below, with nothing beside the object; 5 None, the object drawn over the text; and, for an object attached to the text, 0 Inline with Text (see [Move with Text](#move-with-text)). *Confirmed* by the sidebar and by drawing written values. Values the sidebar doesn't offer: 0 on an object on the page is drawn as None, and 3 wraps on one side only, the wider one in the case seen. *Likely* |
+| 1.3.2 | The sides for wrap 1: 0 left, 1 right, 2 both. The sidebar has no choice of sides and always writes 2; wraps 3 and 4 ignore it. *Likely*, by writing |
+| 1.3.3 | Text fit: 0 the box, 1 the outline (Pages' default), which lets lines that only partly reach the object's top or bottom come closer. *Confirmed* |
 | 1.3.4 | The spacing between the text and the object, in points, beside, above and below it; 12 by default. *Confirmed* by writing it |
-| 1.3.5 | 0.5 by default, matching the sidebar's 50 % alpha, most likely the alpha threshold for outline fit. *Unknown* |
+| 1.3.5 | The alpha for outline fit, as a fraction: 0.5 by default, the sidebar's 50 %. *Likely*; how it changes the wrap isn't tested |
 | 1.3.6 | 0; 1 changes nothing drawn. *Unknown* |
 
 ## Geometry

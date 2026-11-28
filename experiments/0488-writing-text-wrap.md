@@ -74,11 +74,11 @@ Drawable field 1.3 is the object's text wrap:
 
 | Field | Holds | Values seen |
 | --- | --- | --- |
-| 1.3.1 | How text wraps | 0 none: the text runs under the object, which is drawn over it; 1 around, on the sides 1.3.2 chooses; 2 above and below, nothing beside; 3 on one side only, the left here, where there is more room (and 1.3.2 is ignored); 4 the sidebar's *Automatic*, Pages' default, here on both sides, and 1.3.2 is ignored. 5 drew as 0 |
+| 1.3.1 | How text wraps | 0: the text runs under the object, which is drawn over it (for an object attached to the text, 0 is Inline with Text, [0489](0489-the-text-wrap-menu.md), [0490](0490-writing-inline-with-text.md)); 1 around, on the sides 1.3.2 chooses; 2 above and below, nothing beside; 3 on one side only, the left here, where there is more room (and 1.3.2 is ignored); 4 the sidebar's *Automatic*, Pages' default, here on both sides, and 1.3.2 is ignored; 5 drew as 0, and is the sidebar's *None* ([0489](0489-the-text-wrap-menu.md)) |
 | 1.3.2 | Which sides, for wrap 1 | 0 left, 1 right, 2 both (Pages' default) |
-| 1.3.3 | Text fit | Pages' default is 1; 0 keeps the full spacing on lines that only partly reach the object's top or bottom edge, which 1 lets closer, so 0 is most likely the sidebar's box fit and 1 its outline (alpha) fit |
+| 1.3.3 | Text fit | Pages' default is 1; 0 keeps the full spacing on lines that only partly reach the object's top or bottom edge, which 1 lets closer, so 0 is the sidebar's box fit and 1 its outline (alpha) fit, as [0489](0489-the-text-wrap-menu.md) showed |
 | 1.3.4 | The spacing between the text and the object, in points, on every side | 12.0 by default, the sidebar's 12 pt |
-| 1.3.5 | Most likely the alpha threshold for outline fit, from 0 to 1 | 0.5, the sidebar's 50 %; not tested, since the picture is opaque |
+| 1.3.5 | Most likely the alpha threshold for outline fit, from 0 to 1 | 0.5, the sidebar's 50 % (70 % writes 0.7, [0489](0489-the-text-wrap-menu.md)); not drawn here, since the picture is opaque |
 | 1.3.6 | Unknown | 0; 1 changed nothing drawn |
 
 ## Evidence
@@ -90,24 +90,24 @@ Drawable field 1.3 is the object's text wrap:
 | `base.pages` | `small-picture.pages` | Only `3005#1732688 1.1.2.1: 8.0 → 80.0`, `3005#1732688 1.1.2.2: 4.0 → 40.0`, `3005#1732688 4.1: 8.0 → 80.0`, `3005#1732688 4.2: 4.0 → 40.0` | *Control*: an 80 × 40 picture in the text |
 | `gap-30.pages` | `base.pages` | Only `3005#1732688 1.3.4: 12.0 → 30.0` | *Confirmed*: 1.3.4 is the spacing in points |
 | `type-2-gap-30.pages` | `base.pages` | Only `3005#1732688 1.3.1: 4 → 2`, `3005#1732688 1.3.4: 12.0 → 30.0` | *Confirmed*: the spacing applies above and below too |
-| `type-0.pages` | `base.pages` | Only `3005#1732688 1.3.1: 4 → 0` | *Likely*: 0 is no wrap |
+| `type-0.pages` | `base.pages` | Only `3005#1732688 1.3.1: 4 → 0` | *Likely*: 0 draws an object on the page without wrap |
 | `type-1.pages` | `base.pages` | Only `3005#1732688 1.3.1: 4 → 1` | *Likely*: 1 wraps around, on both sides with 1.3.2 = 2 |
 | `type-2.pages` | `base.pages` | Only `3005#1732688 1.3.1: 4 → 2` | *Likely*: 2 is above and below |
 | `type-3.pages` | `base.pages` | Only `3005#1732688 1.3.1: 4 → 3` | *Likely*: 3 wraps on one side |
-| `type-5.pages` | `base.pages` | Only `3005#1732688 1.3.1: 4 → 5` | *Unknown*: 5 draws as no wrap |
+| `type-5.pages` | `base.pages` | Only `3005#1732688 1.3.1: 4 → 5` | *Confirmed*: 5 draws as no wrap; it is the sidebar's None ([0489](0489-the-text-wrap-menu.md)) |
 | `sides-0.pages` | `base.pages` | Only `3005#1732688 1.3.2: 2 → 0` | *Likely*: with wrap 4 the sides are ignored |
 | `sides-1.pages` | `base.pages` | Only `3005#1732688 1.3.2: 2 → 1` | *Likely*: with wrap 4 the sides are ignored |
 | `type-1-sides-0.pages` | `base.pages` | Only `3005#1732688 1.3.1: 4 → 1`, `3005#1732688 1.3.2: 2 → 0` | *Likely*: side 0 is the left |
 | `type-1-sides-1.pages` | `base.pages` | Only `3005#1732688 1.3.1: 4 → 1`, `3005#1732688 1.3.2: 2 → 1` | *Likely*: side 1 is the right |
 | `type-3-sides-0.pages` | `base.pages` | Only `3005#1732688 1.3.1: 4 → 3`, `3005#1732688 1.3.2: 2 → 0` | *Likely*: with wrap 3 the sides are ignored |
 | `type-3-sides-1.pages` | `base.pages` | Only `3005#1732688 1.3.1: 4 → 3`, `3005#1732688 1.3.2: 2 → 1` | *Likely*: with wrap 3 the sides are ignored |
-| `fit-0.pages` | `base.pages` | Only `3005#1732688 1.3.3: 1 → 0` | *Likely*: 1.3.3 is the text fit |
+| `fit-0.pages` | `base.pages` | Only `3005#1732688 1.3.3: 1 → 0` | *Confirmed*: 1.3.3 is the text fit, 0 the box ([0489](0489-the-text-wrap-menu.md)) |
 | `field6-1.pages` | `base.pages` | Only `3005#1732688 1.3.6: 0 → 1` | *Unknown*: changes nothing drawn |
 
 ## Confidence
 
-*Confirmed* by writing: 1.3.4 is the gap between the text and the object, in points, beside and above and below it.
+*Confirmed* by writing: 1.3.4 is the gap between the text and the object, in points, beside and above and below it. *Confirmed* with the sidebar in [0489](0489-the-text-wrap-menu.md): 1.3.1 = 1 around, 2 above and below, 4 automatic and 5 none, and 1.3.3 = 0 box and 1 outline fit.
 
-*Likely*: the meanings of 1.3.1 (0 none, 1 around, 2 above and below, 3 one side, 4 automatic), 1.3.2 (0 left, 1 right, 2 both, for wrap 1) and 1.3.3 (text fit). Which side wrap 3 and wrap 4 choose, and the names Pages gives them, need the sidebar's pop-up, which couldn't be used in the background: a follow-up should choose each wrap there and compare.
+*Likely*: 1.3.1 = 0 drawn without wrap on an object on the page, 3 on one side, and 1.3.2 (0 left, 1 right, 2 both, for wrap 1). The sidebar offers neither wrap 3 nor a choice of sides ([0489](0489-the-text-wrap-menu.md)), so which side 3 and 4 choose can only be found by more writing.
 
-*Unknown*: 1.3.5, most likely the alpha threshold (a picture with transparency would show it), 1.3.6, and wrap type 5.
+*Unknown*: how 1.3.5, the alpha ([0489](0489-the-text-wrap-menu.md)), changes the wrap (a picture with transparency would show it), and 1.3.6.
