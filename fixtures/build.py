@@ -48,7 +48,7 @@ writer = load("writer", "recipes/0287-iwa-writer.py")
 TEMPLATES = {"0090", "0158", "0199"}
 SKIP = {"samples/0198/image-slides.key": "a dead end, not part of an experiment's result"}
 OURS = re.compile(
-    r"^(photo-[a-f](-small)?|background|alpha|small|red-8x4(-filtered)?|rød bilde|gradient-3000x2000(-small)?|"
+    r"^(photo-[a-f](-small)?|background|alpha|small|red-8x4(-filtered)?|blue-8x4|rød bilde|gradient-3000x2000(-small)?|"
     r"square|data|tone|clip|posterImage|mt-[0-9A-F-]+|st-[0-9A-F-]+)-\d+\.\w+$")
 # Test passwords, from experiments 0179 and 0180.
 # Documents whose comments, highlights or tracked changes record the project owner's name as

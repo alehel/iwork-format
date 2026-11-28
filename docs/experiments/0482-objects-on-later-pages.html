@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0482: Objects on later pages · iWork file format specification</title>
+<meta name="description" content="iWork file format specification">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<a class="skip" href="#page-content">Skip to content</a>
+<header class="top"><a class="brand" href="../index.html">iWork format</a><span class="sub">A clean-room specification of Pages, Keynote and Numbers files</span><form class="search" action="../search.html" role="search"><input type="search" name="q" aria-label="Search the specification" placeholder="Search, e.g. 6001"></form><a class="repo" href="https://github.com/alehel/iwork-format">Repository</a></header>
+<p class="wip"><strong>Work in progress.</strong> This specification is incomplete and changes as new experiments run. Each finding says how sure it is: <em>confirmed</em>, <em>likely</em> or <em>unknown</em>. See <a href="../spec/index.html">what each chapter covers so far</a>.</p>
+<div class="layout no-toc">
+<nav class="side" aria-label="Contents"><details open><summary>Contents</summary><ul><li><a href="../index.html">Overview</a></li><li class="group">Guides</li><li><a href="../guides/anatomy.html">Reading a Pages document</a></li><li><a href="../guides/numbers-table.html">Reading a Numbers table</a></li><li><a href="../guides/writing.html">Writing a document</a></li><li><a href="../guides/samples.html">Sample files</a></li><li class="group">Specification</li><li class="releases-line"><a href="../spec/releases.html">Describes 16.0 · also checked: 15.4, 14.5, 13.1</a></li><li><a href="../spec/index.html">Layers and status</a></li><li><a href="../spec/container.html">1. Container</a></li><li><a href="../spec/text.html">2. Text</a></li><li><a href="../spec/styles.html">3. Styles</a></li><li><a href="../spec/tables.html">4. Tables</a></li><li><a href="../spec/drawables.html">5. Drawables, media and charts</a></li><li class="group">Apps</li><li><a href="../spec/pages.html">Pages</a></li><li><a href="../spec/keynote.html">Keynote</a></li><li><a href="../spec/numbers.html">Numbers</a></li><li class="group">Reference</li><li><a href="../search.html">Search</a></li><li><a href="../spec/types.html">Record types</a></li><li><a href="../spec/features.html">Features and scope</a></li><li><a href="../spec/releases.html">Releases</a></li><li class="group">Evidence</li><li><a href="index.html">All experiments</a></li><li><a href="topics.html">By topic</a></li></ul></details></nav>
+
+<main id="page-content" tabindex="-1">
+<h1 id="0482-objects-on-later-pages">0482: Objects on later pages<a class="anchor" href="#0482-objects-on-later-pages" aria-label="Link to this section: 0482: Objects on later pages">#</a></h1><p class="ran">App release: <span class="release">16.0</span></p>
+<p><strong>Status:</strong> run</p>
+<p>So far every object placed on the page ("Stay on Page") was on page 1. There, a type-10015 record lists it next to the body's text, and a type-10010 record lists it as <code>1: { 1: 0, 4: { 1: { 1: &lt;id&gt; } } }</code>, with a meaning not yet known (<a href="0023-an-image.html">0023</a>). This experiment places pictures on pages 2 and 3 of a three-page document, and on page 1 for comparison, to see how a page is recorded.</p>
+<h2 id="setup">Setup<a class="anchor" href="#setup" aria-label="Link to this section: Setup">#</a></h2>
+<div class="table"><table><tbody><tr><th scope="row">Pages</th><td>16.0 (7052.0.68)</td></tr><tr><th scope="row">macOS</th><td>26.5.2 (25F84)</td></tr><tr><th scope="row">Date</th><td>2026-11-28</td></tr><tr><th scope="row">Input</th><td><code>three-pages.pages</code>: <code>samples/0002/hello.pages</code> with the body text written as <code>one</code>, U+0005, <code>two</code>, U+0005, <code>three</code>, so that it has three pages (<a href="0018-page-break-and-left-page.html">0018</a>). AppleScript can't make a page break: Pages drops U+0005 from a body text set by script</td></tr><tr><th scope="row">Recipe</th><td><a href="https://github.com/alehel/iwork-format/blob/main/recipes/0482-place-on-pages.sh"><code>recipes/0482-place-on-pages.sh</code></a> opens a document, places the 8 × 4 red picture of <a href="0023-an-image.html">0023</a> on each page it is given, in that order, and saves a copy. Exported with <a href="https://github.com/alehel/iwork-format/blob/main/recipes/0372-in-app.sh"><code>recipes/0372-in-app.sh</code></a> and checked with <a href="https://github.com/alehel/iwork-format/blob/main/recipes/0482-red-per-page.swift"><code>recipes/0482-red-per-page.swift</code></a>, which says on which page of a PDF red is drawn, and where</td></tr></tbody></table></div>
+<h2 id="recipe">Recipe<a class="anchor" href="#recipe" aria-label="Link to this section: Recipe">#</a></h2>
+<pre class="lang-bash"><code>mkdir -p samples/0482
+S=samples/0482
+python3 -I recipes/0023-image.py &quot;$PWD/$S/red-8x4.png&quot;
+python3 -I recipes/0287-iwa-writer.py samples/0002/hello.pages $S/three-pages.pages \
+  --text 1732539 &quot;$(printf &#x27;one\005two\005three&#x27;)&quot;
+R=recipes/0482-place-on-pages.sh
+sh $R $S/three-pages.pages $S/on-2-and-3.pages $S/red-8x4.png 2 3
+sh $R $S/three-pages.pages $S/on-1-and-1.pages $S/red-8x4.png 1 1
+sh $R $S/three-pages.pages $S/on-2-and-2.pages $S/red-8x4.png 2 2
+sh $R $S/three-pages.pages $S/on-3-then-2.pages $S/red-8x4.png 3 2
+sh $R $S/three-pages.pages $S/on-1-and-3.pages $S/red-8x4.png 1 3
+sh recipes/0372-in-app.sh Pages $S/on-2-and-3.pages &quot;export d to POSIX file \&quot;$PWD/$S/on-2-and-3.pdf\&quot; as PDF&quot;
+swift recipes/0482-red-per-page.swift $S/on-2-and-3.pdf</code></pre>
+<p>Pages reported three pages for each document. In every one, the first picture placed is 1732688 and the second 1732695.</p>
+<h2 id="observation">Observation<a class="anchor" href="#observation" aria-label="Link to this section: Observation">#</a></h2>
+<h3 id="the-two-records">The two records<a class="anchor" href="#the-two-records" aria-label="Link to this section: The two records">#</a></h3>
+<p>In all five documents the root (object 1, type 10000) names record 1732278, type 10010, in field 3 and record 1732364, type 10015, in field 20, as it does in <code>0023/image.pages</code>.</p>
+<p>Record 1732364 (type 10015) always lists the body's text, then the pictures in the order they were placed:</p>
+<pre><code>1: { 1: 1732539 }   1: { 1: 1732688 }   1: { 1: 1732695 }</code></pre>
+<p>Record 1732278 (type 10010) has one field-1 entry for each page that has a picture:</p>
+<div class="table"><table><thead><tr><th scope="col">File</th><th scope="col">Pictures placed on</th><th scope="col">10010 field 1</th></tr></thead><tbody><tr><td><code>on-2-and-3.pages</code></td><td>2, 3</td><td><code>{ 1: 1, 4: { 1: { 1: 1732688 } } }</code>, <code>{ 1: 2, 4: { 1: { 1: 1732695 } } }</code></td></tr><tr><td><code>on-1-and-1.pages</code></td><td>1, 1</td><td><code>{ 1: 0, 4: { 1: { 1: 1732688 } }, 4: { 1: { 1: 1732695 } } }</code></td></tr><tr><td><code>on-2-and-2.pages</code></td><td>2, 2</td><td><code>{ 1: 1, 4: { 1: { 1: 1732688 } }, 4: { 1: { 1: 1732695 } } }</code></td></tr><tr><td><code>on-3-then-2.pages</code></td><td>3, then 2</td><td><code>{ 1: 1, 4: { 1: { 1: 1732695 } } }</code>, <code>{ 1: 2, 4: { 1: { 1: 1732688 } } }</code></td></tr><tr><td><code>on-1-and-3.pages</code></td><td>1, 3</td><td><code>{ 1: 0, 4: { 1: { 1: 1732688 } } }</code>, <code>{ 1: 2, 4: { 1: { 1: 1732695 } } }</code></td></tr></tbody></table></div>
+<h3 id="the-pictures-positions">The pictures' positions<a class="anchor" href="#the-pictures-positions" aria-label="Link to this section: The pictures&#x27; positions">#</a></h3>
+<p>Both pictures in <code>on-2-and-3.pages</code> are at about the same place, 1.1.1 = (286.8, 397.71) and (286.8, 397.51), the middle of an A4 page (595.28 × 841.89). In the PDF, page 2 has red at (286.8, 397.5)–(295.0, 401.8) and page 3 at (286.8, 397.2)–(295.0, 401.5), in points from each page's top-left corner. Page 1 has none.</p>
+<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion" aria-label="Link to this section: Conclusion">#</a></h2>
+<p>Type 10010 is the list of the pages that have objects placed on them. Each entry of its field 1 is one page: 1.1 is the page's number, counting from 0 for the document's first page, and each 1.4 names one object on it (4.1.1). A page with no placed object has no entry, so page 1 of <code>on-2-and-3.pages</code> is missing. Entries are in page order, whatever order the objects were placed in. Objects on the same page share one entry, with one field 4 each, in the order they were placed.</p>
+<p>Type 10015 stays a single list for the whole document, whatever page an object is on: the body's text and every placed object, back to front (<a href="0425-writing-stacking-order.html">0425</a>). An object on page 3 is in it like one on page 1, and the body's text is first in a document made by placing objects on a page.</p>
+<p>An object's position (drawable field 1.1.1) is measured from the top-left corner of its own page, not of the document: both pictures sit at y ≈ 397.6 though one is a page lower.</p>
+<p>The root (type 10000) names the 10010 record in field 3 and the 10015 record in field 20.</p>
+<h2 id="evidence">Evidence<a class="anchor" href="#evidence" aria-label="Link to this section: Evidence">#</a></h2>
+<p class="evidence-note"><code>2021#5 11.1: 0 → 1</code> says that field 11.1 of the type-2021 record with ID 5 held 0 and holds 1; without an ID, that some record of the type does. <code>=</code> is a value it holds, <code>≠</code> one it doesn't, <code>~</code> bytes it contains, and <code>×2</code> how often a field occurs. These statements were checked against the documents by script (<a href="https://github.com/alehel/iwork-format/blob/main/fixtures/evidence.py">fixtures/evidence.py</a>); <em>only</em> means that nothing else differs but the previews. What the app showed, and what follows from it, is the experiment's own.</p><div class="table evidence"><table role="table"><thead role="rowgroup"><tr role="row"><th role="columnheader" scope="col">File</th><th role="columnheader" scope="col">Compared with</th><th role="columnheader" scope="col">Difference</th><th role="columnheader" scope="col">Shows</th></tr></thead><tbody role="rowgroup"><tr role="row"><td role="cell" data-label="File"><code>three-pages.pages</code> <span class="where">not published</span></td><td role="cell" data-label="Compared with"><code>0002/hello.pages</code> <span class="where"><a href="https://github.com/alehel/iwork-format-samples/raw/main/0002/hello.pages" aria-label="0002/hello.pages: download">download</a></span></td><td role="cell" data-label="Difference">Only <code>2001#1732539 3: &quot;hello&quot; → &quot;one\u0005two\u0005three&quot;</code></td><td role="cell" data-label="Shows"><em>Control</em>: the input, three pages and no picture</td></tr><tr role="row"><td role="cell" data-label="File"><code>on-2-and-3.pages</code> <span class="where">not published</span></td><td role="cell" data-label="Compared with"><code>three-pages.pages</code></td><td role="cell" data-label="Difference"><code>10010#1732278 1.1 = 1</code>, <code>10010#1732278 1.1 = 2</code>, <code>10010#1732278 1.1 ≠ 0</code>, <code>10015#1732364 1.1 = 1732695</code>, <code>10000 3.1 = 1732278</code>, <code>10000 20.1 = 1732364</code></td><td role="cell" data-label="Shows"><em>Likely</em>: one 10010 entry per page with an object, numbered from 0; one 10015 list for every page</td></tr><tr role="row"><td role="cell" data-label="File"><code>on-1-and-1.pages</code> <span class="where">not published</span></td><td role="cell" data-label="Compared with"><code>on-2-and-3.pages</code></td><td role="cell" data-label="Difference"><code>10010#1732278 1: ×2 → ×1</code>, <code>10010#1732278 1.4: ×2 → ×2</code>, <code>10010#1732278 1.1: 1 → 0</code></td><td role="cell" data-label="Shows"><em>Likely</em>: two objects on one page share an entry, with a field 4 each</td></tr><tr role="row"><td role="cell" data-label="File"><code>on-2-and-2.pages</code> <span class="where">not published</span></td><td role="cell" data-label="Compared with"><code>on-1-and-1.pages</code></td><td role="cell" data-label="Difference"><code>10010#1732278 1.1: 0 → 1</code></td><td role="cell" data-label="Shows"><em>Likely</em>: page 2 is numbered 1</td></tr><tr role="row"><td role="cell" data-label="File"><code>on-3-then-2.pages</code> <span class="where">not published</span></td><td role="cell" data-label="Compared with"><code>on-2-and-3.pages</code></td><td role="cell" data-label="Difference"><code>10010#1732278 1: changed</code>, <code>10010#1732278 1.1 = 1</code>, <code>10010#1732278 1.1 = 2</code></td><td role="cell" data-label="Shows"><em>Likely</em>: entries are in page order, not the order objects were placed</td></tr><tr role="row"><td role="cell" data-label="File"><code>on-1-and-3.pages</code> <span class="where">not published</span></td><td role="cell" data-label="Compared with"><code>on-2-and-3.pages</code></td><td role="cell" data-label="Difference"><code>10010#1732278 1.1: 1 → 0</code>, <code>10010#1732278 1.1 ≠ 1</code></td><td role="cell" data-label="Shows"><em>Likely</em>: a page between two pages with objects has no entry</td></tr><tr role="row"><td role="cell" data-label="File"><code>0023/image.pages</code> <span class="where"><a href="https://github.com/alehel/iwork-format-samples/raw/main/0023/image.pages" aria-label="0023/image.pages: download">download</a></span></td><td role="cell" data-label="Compared with"><code>on-1-and-1.pages</code></td><td role="cell" data-label="Difference"><code>10000 3.1 = 1732278</code>, <code>10000 20.1 = 1732364</code>, <code>10010#1732278 1.1 = 0</code></td><td role="cell" data-label="Shows"><em>Confirmed</em>: the root names 10010 in field 3 and 10015 in field 20, in 15.4 as in 16.0</td></tr></tbody></table></div>
+<h2 id="confidence">Confidence<a class="anchor" href="#confidence" aria-label="Link to this section: Confidence">#</a></h2>
+<p><em>Confirmed</em>: the root's field 3 names the type-10010 record and field 20 the type-10015 record (this experiment and <a href="0023-an-image.html">0023</a>). The page numbers, the position measured from the object's own page and the page order of the entries are confirmed by writing them in <a href="0484-writing-an-object-s-page.html">0484</a>, and the numbering across sections in <a href="0486-page-numbers-across-sections.html">0486</a>.</p>
+<p><em>Likely</em>: the rest of the reading of type 10010 above, and that 10015 is one list for the whole document.</p>
+<footer><p>Built from the repository's Markdown. Every finding links to the experiment behind it. Source: <a href="https://github.com/alehel/iwork-format/blob/main/experiments/0482-objects-on-later-pages.md"><code>experiments/0482-objects-on-later-pages.md</code></a>.</p></footer>
+</main>
+</div>
+<script>
+// On narrow screens the contents and on-this-page lists start folded; on wide ones they stay open.
+(function () {
+  // From 48rem to 72rem the on-this-page list sits folded above the page instead of beside it.
+  var narrow = window.matchMedia("(max-width: 48rem)");
+  var middle = window.matchMedia("(max-width: 72rem)");
+  var side = document.querySelector(".side > details"), toc = document.querySelector(".toc > details");
+  var tocSummary = document.querySelector(".toc summary");
+  function fit() {
+    if (side) side.open = !narrow.matches;
+    if (toc) toc.open = !middle.matches;
+    // On wide screens the list can't fold, so its heading isn't a control.
+    if (tocSummary) { if (middle.matches) tocSummary.removeAttribute("tabindex"); else tocSummary.tabIndex = -1; }
+    scrollers();
+  }
+  // A table or code block wider than the page scrolls sideways; make it reachable by keyboard, with a name.
+  function scrollers() {
+    var boxes = document.querySelectorAll("main .table, main pre");
+    for (var i = 0; i < boxes.length; i++) {
+      var b = boxes[i];
+      if (b.scrollWidth > b.clientWidth + 1) {
+        b.tabIndex = 0; b.setAttribute("role", "region");
+        b.setAttribute("aria-label", (b.tagName === "PRE" ? "Code" : "Table") + ", scrolls sideways");
+      } else if (b.hasAttribute("role")) {
+        b.removeAttribute("tabindex"); b.removeAttribute("role"); b.removeAttribute("aria-label");
+      }
+    }
+  }
+  window.addEventListener("resize", scrollers);
+  fit();
+  if (narrow.addEventListener) { narrow.addEventListener("change", fit); middle.addEventListener("change", fit); }
+  document.addEventListener("click", function (e) {
+    if (middle.matches && e.target.closest && e.target.closest(".toc a")) fit();
+  });
+})();
+</script>
+</body>
+</html>
